@@ -338,6 +338,12 @@
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="6dp"
+                android:background="@color/light_gray3" />
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

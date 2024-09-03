@@ -5,7 +5,10 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.iprism.school.R
 import com.iprism.school.databinding.ActivityHomeBinding
+import com.iprism.school.fragments.ChildCareFragment
 import com.iprism.school.fragments.HomeFragment
+import com.iprism.school.fragments.MessagesFragment
+import com.iprism.school.fragments.ScannerFragment
 
 class HomeActivity : AppCompatActivity() {
 
@@ -25,19 +28,17 @@ class HomeActivity : AppCompatActivity() {
                 R.id.home -> {
                     switchFragment(HomeFragment())
                     true
-                }
-                R.id.messages -> {
-                    // Respond to navigation item 2 click
+                }R.id.messages -> {
+                    switchFragment(MessagesFragment())
                     true
-                }R.id.messages -> {
-                // Respond to navigation item 2 click
-                true
-                }R.id.messages -> {
-                // Respond to navigation item 2 click
-                true
-                }R.id.messages -> {
-                // Respond to navigation item 2 click
-                true
+                }R.id.scanner -> {
+                    switchFragment(ScannerFragment())
+                    true
+                }R.id.childcare -> {
+                    switchFragment(ChildCareFragment())
+                    true
+                }R.id.help -> {
+                    true
                 }
                 else -> false
             }
