@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.OtpVerificationActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/blue"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="50dp">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:maxWidth="140dp"
+                    android:maxHeight="140dp"
+                    app:srcCompat="@drawable/app_logo" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/inter_semibold"
+                    android:text="Login to Little Pebbles\nInternational Preschool"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/otp_view_ll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="14dp"
+                android:visibility="visible">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_bold"
+                        android:text="OTP"
+                        android:textColor="@color/black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="@font/inter"
+                    android:text="Please do not share OTP with anyone "
+                    android:textColor="@color/blue1" />
+
+                <TextView
+                    android:id="@+id/count_down_time_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="58dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="58dp"
+                    android:fontFamily="@font/inter_bold"
+                    android:gravity="center"
+                    android:text="00:00"
+                    android:textColor="@color/red"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter"
+                        android:text="Did not receive any code? "
+                        android:textColor="#222325" />
+
+                    <Button
+                        android:id="@+id/resend_btn"
+                        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_bold"
+                        android:paddingLeft="-1dp"
+                        android:text="RESEND OTP"
+                        android:textColor="@color/green" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/confirm_mobile_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:fontFamily="@font/inter_semibold"
+                    android:gravity="center"
+                    android:padding="13dp"
+                    android:text="Continue"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    app:cornerRadius="8dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
