@@ -20,7 +20,7 @@ class OtpVerificationActivity : AppCompatActivity() {
 
     private fun handleContinueBtn() {
         binding.continueBtn.setOnClickListener(View.OnClickListener {
-            //startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, HomeActivity::class.java))
         })
     }
 }

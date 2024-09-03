@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home"
+        android:title="Home"
+        android:icon="@drawable/home_img"/>
+    <item
+        android:id="@+id/messages"
+        android:title="Messages"
+        android:icon="@drawable/messages_img"/>
+    <item
+        android:id="@+id/scanner"
+        android:title="Scanner"
+        android:icon="@drawable/scanner_img"/>
+    <item
+        android:id="@+id/childcare"
+        android:title="Child Care"
+        android:icon="@drawable/child_care_img"/>
+    <item
+        android:id="@+id/help"
+        android:title="Help"
+        android:icon="@drawable/help_img"/>
+</menu>
