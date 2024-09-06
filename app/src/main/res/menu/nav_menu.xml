@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+    <item
+        android:id="@+id/firstOne"
+        android:orderInCategory="1"
+        android:title="First One"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/menuSortNewest"
+                android:title="1-1" />
+            <item
+                android:id="@+id/menuSortRating"
+                android:title="1-2" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/action_refresh"
+        android:orderInCategory="2"
+        android:title="Second One"
+        app:showAsAction="ifRoom"/>
+</menu>
