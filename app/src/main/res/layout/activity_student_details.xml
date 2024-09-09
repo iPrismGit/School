@@ -914,6 +914,7 @@
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="4dp"
+        android:backgroundTint="@color/red"
         android:fontFamily="@font/inter"
         android:padding="13dp"
         android:text="Delete"
