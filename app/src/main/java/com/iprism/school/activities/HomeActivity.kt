@@ -13,13 +13,23 @@ import com.iprism.school.fragments.ScannerFragment
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityHomeBinding
+    private var tag : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         handleBottomNav()
-        switchFragment(HomeFragment())
+        if (intent.hasExtra("tag")) {
+            tag = intent.getStringExtra("tag").toString()
+        }
+        if (tag.equals("msg", true)) {
+            binding.bottomNavigationView.selectedItemId = R.id.messages
+            switchFragment(MessagesFragment())
+        } else {
+            binding.bottomNavigationView.selectedItemId = R.id.home
+            switchFragment(HomeFragment())
+        }
     }
 
     private fun handleBottomNav() {

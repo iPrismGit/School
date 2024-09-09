@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.iprism.school.activities.HomeActivity
 import com.iprism.school.activities.StudentsActivity
 import com.iprism.school.databinding.FragmentHomeBinding
 
@@ -17,19 +18,41 @@ class HomeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHomeBinding.inflate(layoutInflater)
         handleStudentsLL()
-        binding.menuImg.setOnClickListener(View.OnClickListener {
-            if (binding.drawer.isDrawerOpen(Gravity.LEFT)) {
-                binding.drawer.closeDrawer(Gravity.LEFT)
-            } else {
-                binding.drawer.openDrawer(Gravity.LEFT)
-            }
-        })
+        handleInboxLL()
+        handleMenuImg()
+        handleMessageLl()
         return binding.root
     }
 
     private fun handleStudentsLL() {
         binding.studentsLl.setOnClickListener(View.OnClickListener {
             startActivity(Intent(context, StudentsActivity::class.java))
+        })
+    }
+
+    private fun handleInboxLL() {
+        binding.inboxLl.setOnClickListener(View.OnClickListener {
+            var intent = Intent(context, HomeActivity::class.java)
+            intent.putExtra("tag", "msg")
+            startActivity(intent)
+        })
+    }
+
+    private fun handleMessageLl() {
+        binding.messageLl.setOnClickListener(View.OnClickListener {
+            var intent = Intent(context, HomeActivity::class.java)
+            intent.putExtra("tag", "msg")
+            startActivity(intent)
+        })
+    }
+
+    private fun handleMenuImg() {
+        binding.menuImg.setOnClickListener(View.OnClickListener {
+            if (binding.drawer.isDrawerOpen(Gravity.LEFT)) {
+                binding.drawer.closeDrawer(Gravity.LEFT)
+            } else {
+                binding.drawer.openDrawer(Gravity.LEFT)
+            }
         })
     }
 }
