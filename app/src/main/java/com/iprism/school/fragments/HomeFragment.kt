@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.iprism.school.activities.ConsentsActivity
 import com.iprism.school.activities.HomeActivity
 import com.iprism.school.activities.StudentsActivity
 import com.iprism.school.databinding.FragmentHomeBinding
@@ -21,7 +22,14 @@ class HomeFragment : Fragment() {
         handleInboxLL()
         handleMenuImg()
         handleMessageLl()
+        handleConsentsLo()
         return binding.root
+    }
+
+    private fun handleConsentsLo() {
+        binding.consentsLo.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(context, ConsentsActivity::class.java))
+        })
     }
 
     private fun handleStudentsLL() {
