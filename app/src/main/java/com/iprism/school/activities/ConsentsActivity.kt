@@ -1,5 +1,6 @@
 package com.iprism.school.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -17,7 +18,14 @@ class ConsentsActivity : AppCompatActivity() {
         binding = ActivityConsentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         handleBack();
+        handleAddConsentIv();
         setUpTabs()
+    }
+
+    private fun handleAddConsentIv() {
+        binding.addConsentIv.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(this, CreateConsentActivity::class.java))
+        })
     }
 
     private fun handleBack() {
