@@ -27,7 +27,6 @@
         <activity
             android:name=".activities.HomeActivity"
             android:exported="false" />
-
         <activity
             android:name=".activities.OtpVerificationActivity"
             android:exported="false" />
