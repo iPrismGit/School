@@ -60,11 +60,10 @@
                     android:id="@+id/profile_img"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:layout_marginTop="16dp"
                     android:src="@drawable/message_profile"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout6" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
                     android:id="@+id/update_profile_img"
@@ -125,7 +124,6 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/textView36"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
@@ -140,7 +138,6 @@
                         android:orientation="horizontal">
 
                         <EditText
-                            android:id="@+id/editTextText4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -161,7 +158,6 @@
                             android:padding="9dp">
 
                             <ImageView
-                                android:id="@+id/imageView14"
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
                                 android:src="@drawable/calendar_img1" />
@@ -238,7 +234,6 @@
                         android:textColor="@color/black" />
 
                     <EditText
-                        android:id="@+id/editTextText2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
@@ -260,11 +255,167 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/edit_text_bg"
                         android:layout_marginTop="12dp"
                         android:orientation="horizontal">
 
                         <EditText
-                            android:id="@+id/editTextText4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Enter new password"
+                            android:layout_marginRight="8dp"
+                            android:background="transparent"
+                            android:inputType="text"
+                            android:padding="12dp"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginRight="12dp"
+                            app:srcCompat="@drawable/password_img" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Confirm Password*"
+                        android:textColor="@color/black" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/edit_text_bg"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Enter confirm password"
+                            android:background="transparent"
+                            android:inputType="text"
+                            android:padding="12dp"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginRight="12dp"
+                            app:srcCompat="@drawable/password_img" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="#FFC442"
+                    android:fontFamily="@font/inter_medium"
+                    android:padding="12dp"
+                    android:text="Account Details"
+                    android:textColor="@color/black" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Employee ID*"
+                        android:textColor="@color/black" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/edit_text_bg"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            android:layout_weight="1"
+                            android:background="transparent"
+                            android:ems="10"
+                            android:hint="Employee ID"
+                            android:inputType="text"
+                            android:padding="12dp"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/textView34"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="12dp"
+                            android:fontFamily="@font/inter_bold"
+                            android:text="GENERATE ID"
+                            android:textColor="@color/blue" />
+
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Designation"
+                        android:textColor="@color/black" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/edit_text_bg"
+                        android:ems="10"
+                        android:hint="Designation"
+                        android:inputType="text"
+                        android:padding="12dp"
+                        android:textSize="14sp" />
+
+                    <CheckBox
+                        android:id="@+id/checkBox5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/inter"
+                        android:text="Use designation to send messages" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Date of Joining"
+                        android:textColor="@color/black" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal">
+
+                        <EditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -285,11 +436,45 @@
                             android:padding="9dp">
 
                             <ImageView
-                                android:id="@+id/imageView14"
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
                                 android:src="@drawable/calendar_img1" />
                         </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Confirm Password*"
+                        android:textColor="@color/black" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:background="@drawable/edit_text_bg"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ems="10"
+                            android:hint="Enter confirm password"
+                            android:background="transparent"
+                            android:inputType="text"
+                            android:padding="12dp"
+                            android:textSize="14sp" />
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_marginRight="12dp"
+                            app:srcCompat="@drawable/password_img" />
+
                     </LinearLayout>
 
 
