@@ -888,6 +888,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/staff_ll"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="40dp"
@@ -902,6 +903,7 @@
                             android:src="@drawable/baseline_circle_24" />
 
                         <TextView
+                            android:id="@+id/staff_txt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

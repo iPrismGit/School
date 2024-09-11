@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.iprism.school.activities.ConsentsActivity
 import com.iprism.school.activities.HomeActivity
+import com.iprism.school.activities.StaffActivity
 import com.iprism.school.activities.StudentsActivity
 import com.iprism.school.databinding.FragmentHomeBinding
 
@@ -23,6 +24,7 @@ class HomeFragment : Fragment() {
         handleMenuImg()
         handleMessageLl()
         handleConsentsLo()
+        handleStaffLl()
         return binding.root
     }
 
@@ -50,6 +52,13 @@ class HomeFragment : Fragment() {
         binding.messageLl.setOnClickListener(View.OnClickListener {
             var intent = Intent(context, HomeActivity::class.java)
             intent.putExtra("tag", "msg")
+            startActivity(intent)
+        })
+    }
+
+    private fun handleStaffLl() {
+        binding.staffLl.setOnClickListener(View.OnClickListener {
+            val intent = Intent(context, StaffActivity::class.java)
             startActivity(intent)
         })
     }
