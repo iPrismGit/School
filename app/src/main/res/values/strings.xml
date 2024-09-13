@@ -2,6 +2,8 @@
     <string name="app_name">School</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
+    <string name="no_active_consents">No Active Consents</string>
+    <string name="no_inactive_consents">No Inactive Consents</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <!-- TODO: Remove or change this placeholder text -->

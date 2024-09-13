@@ -1,19 +1,19 @@
 package com.iprism.school.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.iprism.school.databinding.ConsentItemBinding
 
-class ActiveConsentsAdapter(var activity: FragmentActivity) : RecyclerView.Adapter<ActiveConsentsAdapter.ActiveConsentsViewHolder>() {
+class ConsentsAdapter(var context: Context) : RecyclerView.Adapter<ConsentsAdapter.ActiveConsentsViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActiveConsentsAdapter.ActiveConsentsViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConsentsAdapter.ActiveConsentsViewHolder {
         var binding : ConsentItemBinding = ConsentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ActiveConsentsViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: ActiveConsentsAdapter.ActiveConsentsViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ConsentsAdapter.ActiveConsentsViewHolder, position: Int) {
 
     }
 
