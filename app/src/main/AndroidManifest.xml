@@ -13,6 +13,9 @@
         android:theme="@style/Theme.School"
         tools:targetApi="31">
         <activity
+            android:name=".activities.SingleConsentActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.StaffActivity"
             android:exported="false" />
         <activity
