@@ -492,7 +492,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_marginRight="12dp"
-                            app:srcCompat="@drawable/down_arrow_img" />
+                            app:srcCompat="@drawable/up_arrow_img" />
 
                     </LinearLayout>
 
@@ -527,7 +527,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_marginRight="12dp"
-                            app:srcCompat="@drawable/down_arrow_img" />
+                            app:srcCompat="@drawable/up_arrow_img" />
 
                     </LinearLayout>
 
