@@ -28,7 +28,6 @@ class CreateConsentActivity : AppCompatActivity() {
         setContentView(binding.root)
         classInfoList = getClassInfoList()
         setupCheckboxes(binding.checkBox6, binding.checkBox7)
-        setupClassAdapter()
         setDateAndTime()
         handleBack()
         handleTimeLo()
@@ -36,23 +35,6 @@ class CreateConsentActivity : AppCompatActivity() {
         handleSendBtn()
     }
 
-    private fun setupClassAdapter() {
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, classInfoList)
-        binding.classesSp.adapter = adapter
-        binding.studentsSp.adapter = adapter
-        binding.groupsSp.adapter = adapter
-        binding.classesSp.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                val selectedClassID = p0?.getItemAtPosition(p2) as ClassInfo
-                Log.d("selectedClass", selectedClassID.toString())
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
-
-        }
-    }
 
     private fun handleSendBtn() {
         binding.sendBtn.setOnClickListener(View.OnClickListener {

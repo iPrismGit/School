@@ -6,6 +6,7 @@
     <string name="no_inactive_consents">No Inactive Consents</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="create_consent">Create Consent</string>
+    <string name="edit_consent">Edit Consent</string>
     <string name="date">Date</string>
     <string name="title_notifications">Notifications</string>
     <!-- TODO: Remove or change this placeholder text -->

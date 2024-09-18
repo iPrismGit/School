@@ -1,5 +1,6 @@
 package com.iprism.school.activities
 
+import android.content.Intent
 import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -26,6 +27,14 @@ class SingleConsentActivity : AppCompatActivity() {
         handleBack()
         handleDownArrow()
         handleDeleteBtn()
+        handleEditBtn()
+    }
+
+    private fun handleEditBtn() {
+        binding.editIv.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this, EditConsentActivity::class.java)
+            startActivity(intent)
+        })
     }
 
     private fun handleDeleteBtn() {
