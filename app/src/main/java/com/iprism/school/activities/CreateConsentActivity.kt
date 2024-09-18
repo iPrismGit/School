@@ -7,7 +7,10 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.Spinner
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.iprism.school.R
 import com.iprism.school.databinding.ActivityCreateConsentBinding
 import com.iprism.school.model.ClassInfo
 import com.iprism.school.utils.DateTimeUtils
@@ -33,8 +36,30 @@ class CreateConsentActivity : AppCompatActivity() {
         handleTimeLo()
         handleDateLo()
         handleSendBtn()
+        handleCameraBtn()
+        handleDocumentIv()
     }
 
+    private fun handleDocumentIv() {
+        binding.linkIv.setOnClickListener(View.OnClickListener {
+            Toast.makeText(this, "Phone Gallery Open..", Toast.LENGTH_SHORT).show()
+        })
+    }
+
+    private fun handleCameraBtn() {
+        binding.cameraIv.setOnClickListener(View.OnClickListener {
+            showOptionsDialog()
+        })
+    }
+
+    private fun showOptionsDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.camera_dilog_box, null)
+        val dialogBuilder = AlertDialog.Builder(this)
+        dialogBuilder.setView(dialogView)
+        val dialog = dialogBuilder.create()
+        dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+        dialog.show()
+    }
 
     private fun handleSendBtn() {
         binding.sendBtn.setOnClickListener(View.OnClickListener {

@@ -15,6 +15,13 @@ class EditConsentActivity : AppCompatActivity() {
         binding = ActivityEditConsentBinding.inflate(layoutInflater)
         setContentView(binding.root)
         handleSendBtn()
+        handleBack()
+    }
+
+    private fun handleBack() {
+        binding.backIv.setOnClickListener(View.OnClickListener {
+            finish()
+        })
     }
 
     private fun handleSendBtn() {
@@ -23,4 +30,5 @@ class EditConsentActivity : AppCompatActivity() {
             finish()
         })
     }
+
 }
