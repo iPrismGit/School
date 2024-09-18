@@ -1,8 +1,13 @@
 package com.iprism.school.activities
 
+import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
+import android.widget.Toast
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.R
 import com.iprism.school.databinding.ActivitySingleConsentBinding
 
@@ -10,6 +15,9 @@ class SingleConsentActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySingleConsentBinding
     private var isInfoVisible: Boolean = false
+    private lateinit var crossImage: ImageView
+    private lateinit var cancelImage: ImageView
+    private lateinit var deleteImage: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,6 +25,13 @@ class SingleConsentActivity : AppCompatActivity() {
         setContentView(binding.root)
         handleBack()
         handleDownArrow()
+        handleDeleteBtn()
+    }
+
+    private fun handleDeleteBtn() {
+        binding.trashIv.setOnClickListener(View.OnClickListener {
+            showDeleteBottomSheet()
+        })
     }
 
     private fun handleDownArrow() {
@@ -40,6 +55,36 @@ class SingleConsentActivity : AppCompatActivity() {
             binding.dropDownIv.setImageResource(R.drawable.up_arrow_img)
         }
         isInfoVisible = !isInfoVisible
+    }
+
+    private fun showDeleteBottomSheet() {
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val bottomSheetView: View = LayoutInflater.from(this)
+            .inflate(R.layout.delete_consent_bottom_sheet, null)
+        bottomSheetDialog.setContentView(bottomSheetView)
+        cancelImage = bottomSheetDialog.findViewById<View>(R.id.cancel_button) as ImageView
+        crossImage = bottomSheetDialog.findViewById<View>(R.id.cross_iv) as ImageView
+        deleteImage = bottomSheetDialog.findViewById<View>(R.id.delete_button) as ImageView
+        bottomSheetDialog.setOnShowListener { dialog ->
+            val bottomSheet =
+                (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            bottomSheet?.setBackgroundResource(R.drawable.rounded_bottom_sheet_background)
+        }
+
+        cancelImage.setOnClickListener(View.OnClickListener {
+            bottomSheetDialog.dismiss()
+        })
+
+        crossImage.setOnClickListener(View.OnClickListener {
+            bottomSheetDialog.dismiss()
+        })
+
+        deleteImage.setOnClickListener(View.OnClickListener {
+            bottomSheetDialog.dismiss()
+            Toast.makeText(this, "Deleted", Toast.LENGTH_SHORT).show()
+        })
+
+        bottomSheetDialog.show()
     }
 
 }
