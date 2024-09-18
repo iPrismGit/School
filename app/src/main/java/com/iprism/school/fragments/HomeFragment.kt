@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.iprism.school.activities.ConsentsActivity
 import com.iprism.school.activities.HomeActivity
+import com.iprism.school.activities.MealPlannerActivity
 import com.iprism.school.activities.StudentsActivity
 import com.iprism.school.databinding.FragmentHomeBinding
 
@@ -21,9 +22,16 @@ class HomeFragment : Fragment() {
         handleStudentsLL()
         handleInboxLL()
         handleMenuImg()
+        handleMealPlanningLo();
         handleMessageLl()
         handleConsentsLo()
         return binding.root
+    }
+
+    private fun handleMealPlanningLo() {
+        binding.mealPlannerLo.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(context, MealPlannerActivity::class.java))
+        })
     }
 
     private fun handleConsentsLo() {
@@ -63,4 +71,5 @@ class HomeFragment : Fragment() {
             }
         })
     }
+
 }

@@ -85,7 +85,6 @@
                 android:layout_height="32dp"
                 android:layout_gravity="center"
                 android:layout_marginEnd="12dp"
-
                 android:padding="4dp"
                 android:src="@drawable/email_img_gray" />
         </LinearLayout>
