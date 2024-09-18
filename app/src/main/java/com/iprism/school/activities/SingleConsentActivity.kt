@@ -28,6 +28,14 @@ class SingleConsentActivity : AppCompatActivity() {
         handleDownArrow()
         handleDeleteBtn()
         handleEditBtn()
+        handleInfoBtn()
+    }
+
+    private fun handleInfoBtn() {
+        binding.infoIv.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this, ConsentInfoActivity::class.java)
+            startActivity(intent)
+        })
     }
 
     private fun handleEditBtn() {
@@ -68,8 +76,7 @@ class SingleConsentActivity : AppCompatActivity() {
 
     private fun showDeleteBottomSheet() {
         val bottomSheetDialog = BottomSheetDialog(this)
-        val bottomSheetView: View = LayoutInflater.from(this)
-            .inflate(R.layout.delete_consent_bottom_sheet, null)
+        val bottomSheetView: View = LayoutInflater.from(this).inflate(R.layout.delete_consent_bottom_sheet, null)
         bottomSheetDialog.setContentView(bottomSheetView)
         cancelImage = bottomSheetDialog.findViewById<View>(R.id.cancel_button) as ImageView
         crossImage = bottomSheetDialog.findViewById<View>(R.id.cross_iv) as ImageView

@@ -10,6 +10,7 @@ import com.iprism.school.databinding.ActivityEditConsentBinding
 class EditConsentActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditConsentBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditConsentBinding.inflate(layoutInflater)
