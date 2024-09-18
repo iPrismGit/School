@@ -29,6 +29,14 @@ class SingleConsentActivity : AppCompatActivity() {
         handleDeleteBtn()
         handleEditBtn()
         handleInfoBtn()
+        handleEmailBtn()
+    }
+
+    private fun handleEmailBtn() {
+        binding.emailIv.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this, ConsentEmailReportActivity::class.java)
+            startActivity(intent)
+        })
     }
 
     private fun handleInfoBtn() {
