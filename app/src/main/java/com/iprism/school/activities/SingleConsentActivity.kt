@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -17,8 +18,8 @@ class SingleConsentActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySingleConsentBinding
     private var isInfoVisible: Boolean = false
     private lateinit var crossImage: ImageView
-    private lateinit var cancelImage: ImageView
-    private lateinit var deleteImage: ImageView
+    private lateinit var cancelBtn: Button
+    private lateinit var deleteBtn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,16 +87,16 @@ class SingleConsentActivity : AppCompatActivity() {
         val bottomSheetDialog = BottomSheetDialog(this)
         val bottomSheetView: View = LayoutInflater.from(this).inflate(R.layout.delete_consent_bottom_sheet, null)
         bottomSheetDialog.setContentView(bottomSheetView)
-        cancelImage = bottomSheetDialog.findViewById<View>(R.id.cancel_button) as ImageView
+        cancelBtn = bottomSheetDialog.findViewById<View>(R.id.cancel_btn) as Button
         crossImage = bottomSheetDialog.findViewById<View>(R.id.cross_iv) as ImageView
-        deleteImage = bottomSheetDialog.findViewById<View>(R.id.delete_button) as ImageView
+        deleteBtn = bottomSheetDialog.findViewById<View>(R.id.delete_button) as Button
         bottomSheetDialog.setOnShowListener { dialog ->
             val bottomSheet =
                 (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
             bottomSheet?.setBackgroundResource(R.drawable.rounded_bottom_sheet_background)
         }
 
-        cancelImage.setOnClickListener(View.OnClickListener {
+        cancelBtn.setOnClickListener(View.OnClickListener {
             bottomSheetDialog.dismiss()
         })
 
@@ -103,7 +104,7 @@ class SingleConsentActivity : AppCompatActivity() {
             bottomSheetDialog.dismiss()
         })
 
-        deleteImage.setOnClickListener(View.OnClickListener {
+        deleteBtn.setOnClickListener(View.OnClickListener {
             bottomSheetDialog.dismiss()
             Toast.makeText(this, "Deleted", Toast.LENGTH_SHORT).show()
         })

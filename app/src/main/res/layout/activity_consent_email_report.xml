@@ -89,15 +89,24 @@
                 android:src="@drawable/email_img_gray" />
         </LinearLayout>
 
-        <ImageView
+        <Button
             android:id="@+id/share_report_btn"
+            style="@style/Widget.Material3.Button.OutlinedButton.Icon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:adjustViewBounds="true"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?attr/selectableItemBackground"
-            app:srcCompat="@drawable/share_report_btn" />
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
+            android:padding="12dp"
+            android:layout_marginTop="32dp"
+            android:text="Share Report"
+            android:textAllCaps="false"
+            android:textColor="@color/blue"
+            android:textSize="14dp"
+            app:cornerRadius="8dp"
+            android:fontFamily="@font/inter_semibold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:strokeColor="@color/blue" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
