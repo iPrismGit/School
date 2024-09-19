@@ -1,5 +1,6 @@
 package com.iprism.school.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -22,6 +23,7 @@ class MealPlannerActivity : AppCompatActivity() {
     private lateinit var crossIv : ImageView
     private lateinit var remarkstxt : TextView
     private lateinit var okBtn : Button
+    private  var foodType : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +31,13 @@ class MealPlannerActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupFoodsAdapter()
         setupFoodTypesAdapter()
+        handleAddBtn()
+    }
+
+    private fun handleAddBtn() {
+        binding.addFoodBtn.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(this, CreateMealActivity::class.java))
+        })
     }
 
     private fun setupFoodTypesAdapter() {
@@ -55,7 +64,6 @@ class MealPlannerActivity : AppCompatActivity() {
 
         })
     }
-
 
     private fun showFoodDetailsBottomSheet(foodId : String) {
         val bottomSheetDialog = BottomSheetDialog(this)

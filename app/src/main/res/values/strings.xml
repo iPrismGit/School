@@ -8,7 +8,12 @@
     <string name="create_consent">Create Consent</string>
     <string name="edit_consent">Edit Consent</string>
     <string name="meal_planner">Meal Planner</string>
+    <string name="create_meal_planner">Create Meal Planner</string>
     <string name="date">Date</string>
+    <string name="meals">Meal*</string>
+    <string name="type">Type*</string>
+    <string name="remarks">Remarks</string>
+    <string name="select_date">Select Date*</string>
     <string name="title_notifications">Notifications</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
