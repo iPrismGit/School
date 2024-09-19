@@ -8,8 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.iprism.school.databinding.ConsentItemBinding
 import com.iprism.school.interfaces.OnConsentClickListener
 
-class ConsentsAdapter(var context: Context) :
-    RecyclerView.Adapter<ConsentsAdapter.ActiveConsentsViewHolder>() {
+class ConsentsAdapter(var context: Context) : RecyclerView.Adapter<ConsentsAdapter.ActiveConsentsViewHolder>() {
 
     private lateinit var onConsentClickListener: OnConsentClickListener
 
