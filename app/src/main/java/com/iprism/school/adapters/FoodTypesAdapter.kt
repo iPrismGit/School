@@ -51,6 +51,6 @@ class FoodTypesAdapter(context: Context) : Adapter<FoodTypesAdapter.FoodTypeView
 
     class FoodTypeViewHolder(var binding: FoodCategoryItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
     }
+
 }
