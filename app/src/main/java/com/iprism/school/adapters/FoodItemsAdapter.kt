@@ -24,7 +24,7 @@ class FoodItemsAdapter(context: Context) :
 
     override fun onBindViewHolder(holder: FoodItemsAdapter.FoodItemViewHolder, position: Int) {
         holder.binding.root.setOnClickListener(View.OnClickListener {
-            onFoodClickListener.onFoodItemClick(position.toString())
+            onFoodClickListener.onFoodItemClick(position.toString(), "", "")
         })
 
         holder.binding.informationIv.setOnClickListener(View.OnClickListener {

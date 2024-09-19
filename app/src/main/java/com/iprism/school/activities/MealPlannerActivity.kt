@@ -53,15 +53,19 @@ class MealPlannerActivity : AppCompatActivity() {
         var layoutManager = LinearLayoutManager(this)
         binding.foodsRv.layoutManager = layoutManager
         foodItemsAdapter.setListener(object : OnFoodClickListener {
-            override fun onFoodItemClick(foodId: String) {
-                Log.d("FoodID", foodId)
+
+            override fun onFoodItemClick(foodId: String, foodName: String, remarks: String) {
+                val intent = Intent(this@MealPlannerActivity, EditMealPlannerActivity::class.java)
+                intent.putExtra("foodId", foodId)
+                intent.putExtra("foodName", "")
+                intent.putExtra("remarks", "")
+                startActivity(intent)
             }
 
             override fun onFoodInfoClick(foodId: String) {
-                Log.d("FoodID", foodId)
+
                 showFoodDetailsBottomSheet(foodId)
             }
-
         })
     }
 
@@ -84,7 +88,6 @@ class MealPlannerActivity : AppCompatActivity() {
                 bottomSheetDialog.dismiss()
             })
         }
-
         bottomSheetDialog.show()
     }
 
