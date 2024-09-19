@@ -2,15 +2,26 @@ package com.iprism.school.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.R
 import com.iprism.school.adapters.FoodItemsAdapter
 import com.iprism.school.adapters.FoodTypesAdapter
 import com.iprism.school.databinding.ActivityMealPlannerBinding
+import com.iprism.school.interfaces.OnFoodClickListener
 
 class MealPlannerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMealPlannerBinding
+    private lateinit var crossIv : ImageView
+    private lateinit var remarkstxt : TextView
+    private lateinit var okBtn : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +34,7 @@ class MealPlannerActivity : AppCompatActivity() {
     private fun setupFoodTypesAdapter() {
         var foodTypesAdapter = FoodTypesAdapter(this)
         binding.foodTypesRv.adapter = foodTypesAdapter
-        var  layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        var layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.foodTypesRv.layoutManager = layoutManager
     }
 
@@ -32,6 +43,41 @@ class MealPlannerActivity : AppCompatActivity() {
         binding.foodsRv.adapter = foodItemsAdapter
         var layoutManager = LinearLayoutManager(this)
         binding.foodsRv.layoutManager = layoutManager
+        foodItemsAdapter.setListener(object : OnFoodClickListener {
+            override fun onFoodItemClick(foodId: String) {
+                Log.d("FoodID", foodId)
+            }
+
+            override fun onFoodInfoClick(foodId: String) {
+                Log.d("FoodID", foodId)
+                showFoodDetailsBottomSheet(foodId)
+            }
+
+        })
+    }
+
+
+    private fun showFoodDetailsBottomSheet(foodId : String) {
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val bottomSheetView: View = LayoutInflater.from(this).inflate(R.layout.food_information_bottom_sheet, null)
+        bottomSheetDialog.setContentView(bottomSheetView)
+        crossIv = bottomSheetDialog.findViewById<View>(R.id.cross_iv) as ImageView
+        remarkstxt = bottomSheetDialog.findViewById<View>(R.id.remarks_txt) as TextView
+        okBtn = bottomSheetDialog.findViewById<View>(R.id.ok_btn) as Button
+        remarkstxt.text = "Food " + foodId
+        bottomSheetDialog.setOnShowListener { dialog ->
+            val bottomSheet = (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            bottomSheet?.setBackgroundResource(R.drawable.rounded_bottom_sheet_background)
+            okBtn.setOnClickListener(View.OnClickListener {
+                bottomSheetDialog.dismiss()
+            })
+
+            crossIv.setOnClickListener(View.OnClickListener {
+                bottomSheetDialog.dismiss()
+            })
+        }
+
+        bottomSheetDialog.show()
     }
 
 }

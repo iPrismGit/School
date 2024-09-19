@@ -9,17 +9,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.iprism.school.databinding.FoodCategoryItemBinding
+import com.iprism.school.interfaces.OnFoodClickListener
 
 class FoodTypesAdapter(context: Context) : Adapter<FoodTypesAdapter.FoodTypeViewHolder>() {
 
     private var selectedPosition: Int = 0
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): FoodTypesAdapter.FoodTypeViewHolder {
-        var binding =
-            FoodCategoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodTypesAdapter.FoodTypeViewHolder {
+        var binding = FoodCategoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FoodTypeViewHolder(binding)
     }
 
