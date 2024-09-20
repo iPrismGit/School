@@ -20,10 +20,10 @@ import com.iprism.school.interfaces.OnFoodClickListener
 class MealPlannerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMealPlannerBinding
-    private lateinit var crossIv : ImageView
-    private lateinit var remarkstxt : TextView
-    private lateinit var okBtn : Button
-    private  var foodType : String = ""
+    private lateinit var crossIv: ImageView
+    private lateinit var remarkstxt: TextView
+    private lateinit var okBtn: Button
+    private var foodType: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +31,14 @@ class MealPlannerActivity : AppCompatActivity() {
         setContentView(binding.root)
         setupFoodsAdapter()
         setupFoodTypesAdapter()
+        handleBack()
         handleAddBtn()
+    }
+
+    private fun handleBack() {
+        binding.backIv.setOnClickListener(View.OnClickListener {
+            finish()
+        })
     }
 
     private fun handleAddBtn() {
@@ -69,16 +76,18 @@ class MealPlannerActivity : AppCompatActivity() {
         })
     }
 
-    private fun showFoodDetailsBottomSheet(foodId : String) {
+    private fun showFoodDetailsBottomSheet(foodId: String) {
         val bottomSheetDialog = BottomSheetDialog(this)
-        val bottomSheetView: View = LayoutInflater.from(this).inflate(R.layout.food_information_bottom_sheet, null)
+        val bottomSheetView: View =
+            LayoutInflater.from(this).inflate(R.layout.food_information_bottom_sheet, null)
         bottomSheetDialog.setContentView(bottomSheetView)
         crossIv = bottomSheetDialog.findViewById<View>(R.id.cross_iv) as ImageView
         remarkstxt = bottomSheetDialog.findViewById<View>(R.id.remarks_txt) as TextView
         okBtn = bottomSheetDialog.findViewById<View>(R.id.ok_btn) as Button
         remarkstxt.text = "Food " + foodId
         bottomSheetDialog.setOnShowListener { dialog ->
-            val bottomSheet = (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            val bottomSheet =
+                (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
             bottomSheet?.setBackgroundResource(R.drawable.rounded_bottom_sheet_background)
             okBtn.setOnClickListener(View.OnClickListener {
                 bottomSheetDialog.dismiss()

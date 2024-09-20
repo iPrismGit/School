@@ -3,10 +3,7 @@ package com.iprism.school.activities
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.CheckBox
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -65,7 +62,7 @@ class CreateConsentActivity : AppCompatActivity() {
     private fun handleSendBtn() {
         binding.sendBtn.setOnClickListener(View.OnClickListener {
             Log.d("selectedValue", selectedValue)
-            ToastUtils.showCustomToast(this, "Consents Created Successfully")
+            ToastUtils.showSuccessCustomToast(this, "Consents Created Successfully")
             finish()
         })
     }

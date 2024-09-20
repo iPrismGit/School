@@ -3,8 +3,6 @@ package com.iprism.school.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.iprism.school.R
-import com.iprism.school.databinding.ActivityStaffAttendanceBinding
 import com.iprism.school.databinding.ActivityStaffAttendanceEmailReportBinding
 import com.iprism.school.utils.ToastUtils
 
@@ -22,7 +20,7 @@ class StaffAttendanceEmailReportActivity : AppCompatActivity() {
 
     private fun handleShareReportBtn() {
        binding.shareReportBtn.setOnClickListener(View.OnClickListener {
-           ToastUtils.showCustomToast(this, "Report Emailed Successfully")
+           ToastUtils.showSuccessCustomToast(this, "Report Emailed Successfully")
            finish()
        })
     }

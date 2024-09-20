@@ -16,18 +16,43 @@ import com.iprism.school.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
 
-    private lateinit var binding : FragmentHomeBinding
+    private lateinit var binding: FragmentHomeBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentHomeBinding.inflate(layoutInflater)
         handleStudentsLL()
         handleInboxLL()
         handleMenuImg()
-        handleMealPlanningLo();
+        handleMealPlanningLo()
         handleMessageLl()
         handleConsentsLo()
+        handleMessageLo()
+        handleDirectoriesLo()
+        handleFeeLo()
         handleStaffAttendenceLo()
         return binding.root
+    }
+
+    private fun handleFeeLo() {
+        binding.feeLo.setOnClickListener(View.OnClickListener {
+            binding.allFeesesLo.visibility = View.VISIBLE
+        })
+    }
+
+    private fun handleDirectoriesLo() {
+        binding.directoryLo.setOnClickListener(View.OnClickListener {
+            binding.allDirectoriesLo.visibility = View.VISIBLE
+        })
+    }
+
+    private fun handleMessageLo() {
+        binding.messagesLo.setOnClickListener(View.OnClickListener {
+            binding.allMessagesLo.visibility = View.VISIBLE
+        })
     }
 
     private fun handleStaffAttendenceLo() {
