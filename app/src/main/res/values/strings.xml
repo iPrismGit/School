@@ -10,6 +10,9 @@
     <string name="meal_planner">Meal Planner</string>
     <string name="create_meal_planner">Create Meal Planner</string>
     <string name="date">Date</string>
+    <string name="staff_attendance">Staff Attendance</string>
+    <string name="marked">Marked</string>
+    <string name="not_marked">Not Marked</string>
     <string name="meals">Meal*</string>
     <string name="type">Type*</string>
     <string name="remarks">Remarks</string>

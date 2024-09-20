@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.iprism.school.activities.ConsentsActivity
 import com.iprism.school.activities.HomeActivity
 import com.iprism.school.activities.MealPlannerActivity
+import com.iprism.school.activities.StaffAttendanceActivity
 import com.iprism.school.activities.StudentsActivity
 import com.iprism.school.databinding.FragmentHomeBinding
 
@@ -25,7 +26,14 @@ class HomeFragment : Fragment() {
         handleMealPlanningLo();
         handleMessageLl()
         handleConsentsLo()
+        handleStaffAttendenceLo()
         return binding.root
+    }
+
+    private fun handleStaffAttendenceLo() {
+        binding.staffAtendenceLo.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(context, StaffAttendanceActivity::class.java))
+        })
     }
 
     private fun handleMealPlanningLo() {
