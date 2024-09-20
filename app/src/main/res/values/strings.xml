@@ -12,6 +12,9 @@
     <string name="date">Date</string>
     <string name="staff_attendance">Staff Attendance</string>
     <string name="marked">Marked</string>
+    <string name="name">Name</string>
+    <string name="in_time">In Time</string>
+    <string name="out_time">Out Time</string>
     <string name="not_marked">Not Marked</string>
     <string name="meals">Meal*</string>
     <string name="type">Type*</string>
