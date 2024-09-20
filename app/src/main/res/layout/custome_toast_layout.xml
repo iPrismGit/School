@@ -19,6 +19,7 @@
         android:id="@+id/toastImage"
         android:layout_width="28dp"
         android:layout_height="28dp"
+        android:padding="4dp"
         android:src="@drawable/submited_img" />
 
     <TextView

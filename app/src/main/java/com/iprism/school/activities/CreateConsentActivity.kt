@@ -14,6 +14,7 @@ import com.iprism.school.R
 import com.iprism.school.databinding.ActivityCreateConsentBinding
 import com.iprism.school.model.ClassInfo
 import com.iprism.school.utils.DateTimeUtils
+import com.iprism.school.utils.ToastUtils
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -64,6 +65,7 @@ class CreateConsentActivity : AppCompatActivity() {
     private fun handleSendBtn() {
         binding.sendBtn.setOnClickListener(View.OnClickListener {
             Log.d("selectedValue", selectedValue)
+            ToastUtils.showCustomToast(this, "Consents Created Successfully")
             finish()
         })
     }

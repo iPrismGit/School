@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 
 import com.iprism.school.databinding.ActivityEditConsentBinding
+import com.iprism.school.utils.ToastUtils
 
 class EditConsentActivity : AppCompatActivity() {
 
@@ -27,7 +28,7 @@ class EditConsentActivity : AppCompatActivity() {
 
     private fun handleSendBtn() {
         binding.sendBtn.setOnClickListener(View.OnClickListener {
-            Toast.makeText(this, "Consent Edited Successfully", Toast.LENGTH_SHORT).show()
+            ToastUtils.showCustomToast(this, "Consent Edited Successfully")
             finish()
         })
     }

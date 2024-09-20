@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.iprism.school.R
 import com.iprism.school.databinding.ActivityConsentEmailReportBinding
 import com.iprism.school.databinding.ActivityConsentInfoBinding
+import com.iprism.school.utils.ToastUtils
 
 class ConsentEmailReportActivity : AppCompatActivity() {
 
@@ -22,7 +23,7 @@ class ConsentEmailReportActivity : AppCompatActivity() {
 
     private fun handleShareReportBtn() {
         binding.shareReportBtn.setOnClickListener(View.OnClickListener {
-            Toast.makeText(this, "Report Shared..!", Toast.LENGTH_SHORT).show()
+            ToastUtils.showCustomToast(this, "Report Emailed Successfully")
             finish()
         })
     }
