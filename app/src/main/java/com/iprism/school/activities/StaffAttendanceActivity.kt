@@ -1,7 +1,9 @@
 package com.iprism.school.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,8 +21,15 @@ class StaffAttendanceActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityStaffAttendanceBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        handleEmailIv()
         setupStaffAttendanceAdapter()
         setupRadioButtonListener(binding.staffRadioGroup)
+    }
+
+    private fun handleEmailIv() {
+        binding.emailIv.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(this, StaffAttendanceEmailReportActivity::class.java))
+        })
     }
 
     private fun setupStaffAttendanceAdapter() {

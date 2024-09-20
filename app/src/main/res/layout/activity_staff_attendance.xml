@@ -37,6 +37,7 @@
             android:textSize="18dp" />
 
         <ImageView
+            android:id="@+id/email_iv"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_margin="12dp"
