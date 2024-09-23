@@ -11,8 +11,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.R
+import com.iprism.school.adapters.StudentsAttendanceAdapter
 import com.iprism.school.databinding.ActivityAttendanceBinding
 import com.iprism.school.databinding.ActivityStaffAttendanceBinding
 import com.iprism.school.utils.DateTimeUtils
@@ -37,10 +39,18 @@ class AttendanceActivity : AppCompatActivity() {
         binding = ActivityAttendanceBinding.inflate(layoutInflater)
         setContentView(binding.root)
         handleBack()
+        setupSudentsAttendanceAdapter()
         handlePendingLo()
         handleRejectedLo()
         handleEditBtn()
         handleSaveAttendanceBtn()
+    }
+
+    private fun setupSudentsAttendanceAdapter() {
+        var attendanceAdapter = StudentsAttendanceAdapter(this)
+        binding.studentAttendanceRv.adapter = attendanceAdapter
+        var linearLayoutManager = LinearLayoutManager(this)
+        binding.studentAttendanceRv.layoutManager = linearLayoutManager
     }
 
     private fun handleSaveAttendanceBtn() {
