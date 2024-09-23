@@ -23,7 +23,7 @@ object DateTimeUtils {
         val datePickerDialog = DatePickerDialog(
             dateTxt.context,
             { _: DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int ->
-                c.set(year, monthOfYear + 1, dayOfMonth)
+                c.set(year, monthOfYear , dayOfMonth)
 
                 // Format the date to "dd MMM, yyyy"
                 val sdf = SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
