@@ -116,7 +116,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/inter_semibold"
                             android:gravity="center"
-                            android:textColor="@color/blue"
+                            android:textColor="@color/blue3"
                             android:text="Pending " />
 
                         <TextView
@@ -125,7 +125,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/inter_semibold"
                             android:gravity="center"
-                            android:textColor="@color/blue"
+                            android:textColor="@color/blue3"
                             android:text="(0)" />
                     </LinearLayout>
 

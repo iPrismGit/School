@@ -22,24 +22,22 @@ class AttendanceActivity : AppCompatActivity() {
         handleRejectedLo()
     }
 
-    @SuppressLint("ResourceAsColor")
     private fun handleRejectedLo() {
         binding.rejectedLo.setOnClickListener(View.OnClickListener {
-            binding.rejectedTxt.setTextColor(R.color.blue)
-            binding.rejectedCountTxt.setTextColor(R.color.blue)
-            binding.pendingTxt.setTextColor(R.color.blue)
-            binding.pendingCountTxt.setTextColor(R.color.blue)
+            binding.rejectedTxt.setTextColor(resources.getColor(R.color.blue3))
+            binding.rejectedCountTxt.setTextColor(resources.getColor(R.color.blue3))
+            binding.pendingTxt.setTextColor(resources.getColor(R.color.gray1))
+            binding.pendingCountTxt.setTextColor(resources.getColor(R.color.gray1))
             attendanceType = "rejected"
         })
     }
 
-    @SuppressLint("ResourceAsColor")
     private fun handlePendingLo() {
         binding.pendingLo.setOnClickListener(View.OnClickListener {
-            binding.pendingTxt.setTextColor(R.color.blue)
-            binding.pendingCountTxt.setTextColor(R.color.blue)
-            binding.rejectedTxt.setTextColor(R.color.blue)
-            binding.rejectedCountTxt.setTextColor(R.color.blue)
+            binding.pendingTxt.setTextColor(resources.getColor(R.color.blue3))
+            binding.pendingCountTxt.setTextColor(resources.getColor(R.color.blue3))
+            binding.rejectedTxt.setTextColor(resources.getColor(R.color.gray1))
+            binding.rejectedCountTxt.setTextColor(resources.getColor(R.color.gray1))
             attendanceType = "pending"
         })
     }
