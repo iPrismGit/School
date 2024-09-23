@@ -11,6 +11,9 @@
     <string name="create_meal_planner">Create Meal Planner</string>
     <string name="date">Date</string>
     <string name="staff_attendance">Staff Attendance</string>
+    <string name="save_attendance">Save Attendance</string>
+    <string name="attendance">Attendance</string>
+    <string name="send_notification_to_parent">Send notification to parent</string>
     <string name="marked">Marked</string>
     <string name="name">Name</string>
     <string name="in_time">In Time</string>

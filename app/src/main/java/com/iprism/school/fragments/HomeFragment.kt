@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.iprism.school.activities.AttendanceActivity
 import com.iprism.school.activities.ConsentsActivity
 import com.iprism.school.activities.HomeActivity
 import com.iprism.school.activities.MealPlannerActivity
@@ -34,7 +35,14 @@ class HomeFragment : Fragment() {
         handleDirectoriesLo()
         handleFeeLo()
         handleStaffAttendenceLo()
+        handleAttendenceLo()
         return binding.root
+    }
+
+    private fun handleAttendenceLo() {
+        binding.attendanceLo.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(context, AttendanceActivity::class.java))
+        })
     }
 
     private fun handleFeeLo() {

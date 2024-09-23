@@ -23,6 +23,7 @@
     <color name="pink">#FB5678</color>
     <color name="message_bg">#F1A7E4</color>
     <color name="attendance_bg">#F85A3F</color>
+    <color name="attendance_not_marked">#FB8700</color>
     <color name="calendar_bg">#367CF6</color>
     <color name="consents_bg">#26DAC1</color>
     <color name="diary_bg">#FFC442</color>
