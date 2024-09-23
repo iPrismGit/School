@@ -14,6 +14,7 @@
     <string name="save_attendance">Save Attendance</string>
     <string name="attendance">Attendance</string>
     <string name="send_notification_to_parent">Send notification to parent</string>
+    <string name="no_student_found_please_change_class">No student found. Please change class.</string>
     <string name="marked">Marked</string>
     <string name="name">Name</string>
     <string name="in_time">In Time</string>

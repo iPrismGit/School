@@ -64,6 +64,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
 
         <LinearLayout
+            android:id="@+id/linearLayout12"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:orientation="vertical"
@@ -116,8 +117,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/inter_semibold"
                             android:gravity="center"
-                            android:textColor="@color/blue3"
-                            android:text="Pending " />
+                            android:text="Pending "
+                            android:textColor="@color/blue3" />
 
                         <TextView
                             android:id="@+id/pending_count_txt"
@@ -125,8 +126,8 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/inter_semibold"
                             android:gravity="center"
-                            android:textColor="@color/blue3"
-                            android:text="(0)" />
+                            android:text="(0)"
+                            android:textColor="@color/blue3" />
                     </LinearLayout>
 
                     <View
@@ -140,10 +141,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="center"
                         android:clickable="true"
                         android:focusable="true"
                         android:foreground="?attr/selectableItemBackground"
+                        android:gravity="center"
                         android:orientation="vertical"
                         android:padding="8dp">
 
@@ -210,7 +211,19 @@
                 android:id="@+id/student_attendance_rv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/no_student_found_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@string/no_student_found_please_change_class"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/save_attendance_btn"
