@@ -75,7 +75,7 @@ class CreateMealActivity : AppCompatActivity() {
 
     private fun handleSubmitBtn() {
         binding.submitBtn.setOnClickListener(View.OnClickListener {
-            Toast.makeText(this, "Meal Created Successfully", Toast.LENGTH_SHORT).show()
+            ToastUtils.showSuccessCustomToast(this, "Meal Created Successfully")
             finish()
         })
     }

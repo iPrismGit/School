@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.iprism.school.R
 import com.iprism.school.adapters.CalenderAdapter
 import com.iprism.school.databinding.ActivityCalenderBinding
+import com.iprism.school.interfaces.OnCalenderClickListener
 import java.util.Locale
 
 class CalenderActivity : AppCompatActivity() {
@@ -67,6 +68,14 @@ class CalenderActivity : AppCompatActivity() {
         binding.calendersIv.adapter = calenderAdapter
         var linearLayoutManager = LinearLayoutManager(this)
         binding.calendersIv.layoutManager = linearLayoutManager
+        calenderAdapter.setListener(object : OnCalenderClickListener {
+            override fun onItemClick(calenderId: String) {
+                val intent = Intent(this@CalenderActivity, CalenderDetailsActivity::class.java)
+                intent.putExtra("calenderId", calenderId)
+                startActivity(intent)
+            }
+
+        })
     }
 
     private fun handleAddCalenderBtn() {

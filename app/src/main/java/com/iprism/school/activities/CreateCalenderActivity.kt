@@ -11,6 +11,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.R
 import com.iprism.school.databinding.ActivityCreateCalenderBinding
 import com.iprism.school.utils.DateTimeUtils
+import com.iprism.school.utils.ToastUtils
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -33,6 +34,14 @@ class CreateCalenderActivity : AppCompatActivity() {
         handleAdvanceOptionsLo()
         handleLinkIv()
         handleLocationIv()
+        handleCreateBtn()
+    }
+
+    private fun handleCreateBtn() {
+        binding.createBtn.setOnClickListener(View.OnClickListener {
+            ToastUtils.showSuccessCustomToast(this, "Event created Successfully")
+            finish()
+        })
     }
 
     private fun handleTimeLo() {
@@ -51,7 +60,7 @@ class CreateCalenderActivity : AppCompatActivity() {
         val calendar: Calendar = Calendar.getInstance()
         val sdf = SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
         val stf = SimpleDateFormat("hh:mm a", Locale.getDefault())
-        val formattedDate: String = sdf.format(calendar.getTime())
+        val formattedDate: String = sdf.format(calendar.time)
         val formattedTime = stf.format(calendar.time)
         binding.dateTxt.text = formattedDate
         binding.timeTxt.text = formattedTime
@@ -115,7 +124,7 @@ class CreateCalenderActivity : AppCompatActivity() {
         okBtn.setOnClickListener(View.OnClickListener {
             bottomSheetDialog.dismiss()
         })
-
         bottomSheetDialog.show()
     }
+
 }

@@ -390,7 +390,7 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/send_btn"
+                    android:id="@+id/create_btn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40dp"
@@ -398,7 +398,7 @@
                     android:backgroundTint="@color/blue"
                     android:fontFamily="@font/inter"
                     android:padding="12dp"
-                    android:text="SEND"
+                    android:text="CREATE"
                     android:textAllCaps="false"
                     app:cornerRadius="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"

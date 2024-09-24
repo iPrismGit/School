@@ -24,10 +24,10 @@
 
         <TextView
             android:id="@+id/toastText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:text="Sorry we could not process you request \nPlease try again later"
             android:hint="Changes saved successfully!"
             android:textColor="@android:color/white"
