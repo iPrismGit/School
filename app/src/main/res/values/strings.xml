@@ -7,6 +7,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="create_consent">Create Consent</string>
     <string name="create_calender">Create Calender</string>
+    <string name="edit_calender">Edit Calender</string>
     <string name="calender_details">Calender Details</string>
     <string name="edit_consent">Edit Consent</string>
     <string name="meal_planner">Meal Planner</string>

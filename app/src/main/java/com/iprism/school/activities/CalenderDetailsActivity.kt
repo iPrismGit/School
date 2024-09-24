@@ -1,5 +1,6 @@
 package com.iprism.school.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -59,7 +60,9 @@ class CalenderDetailsActivity : AppCompatActivity() {
 
     private fun handleEdit() {
         binding.editIv.setOnClickListener(View.OnClickListener {
-
+            var intent = Intent(this, EditCalenderActivity::class.java)
+            intent.putExtra("calenderId", calenderId)
+            startActivity(intent)
         })
     }
 
