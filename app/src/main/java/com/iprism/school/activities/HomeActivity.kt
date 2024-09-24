@@ -12,8 +12,8 @@ import com.iprism.school.fragments.ScannerFragment
 
 class HomeActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityHomeBinding
-    private var tag : String = ""
+    private lateinit var binding: ActivityHomeBinding
+    private var tag: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +26,9 @@ class HomeActivity : AppCompatActivity() {
         if (tag.equals("msg", true)) {
             binding.bottomNavigationView.selectedItemId = R.id.messages
             switchFragment(MessagesFragment())
+        } else if (tag.equals("Dairy", true) || tag.equals("DayCare", true)) {
+            binding.bottomNavigationView.selectedItemId = R.id.childcare
+            switchFragment(ChildCareFragment())
         } else {
             binding.bottomNavigationView.selectedItemId = R.id.home
             switchFragment(HomeFragment())
@@ -34,22 +37,31 @@ class HomeActivity : AppCompatActivity() {
 
     private fun handleBottomNav() {
         binding.bottomNavigationView.setOnItemSelectedListener() { item ->
-            when(item.itemId) {
+            when (item.itemId) {
                 R.id.home -> {
                     switchFragment(HomeFragment())
                     true
-                }R.id.messages -> {
+                }
+
+                R.id.messages -> {
                     switchFragment(MessagesFragment())
                     true
-                }R.id.scanner -> {
+                }
+
+                R.id.scanner -> {
                     switchFragment(ScannerFragment())
                     true
-                }R.id.childcare -> {
+                }
+
+                R.id.childcare -> {
                     switchFragment(ChildCareFragment())
                     true
-                }R.id.help -> {
+                }
+
+                R.id.help -> {
                     true
                 }
+
                 else -> false
             }
         }
@@ -61,4 +73,5 @@ class HomeActivity : AppCompatActivity() {
             .replace(R.id.flFragment, fragment)
             .commit();
     }
+
 }

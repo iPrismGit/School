@@ -38,7 +38,25 @@ class HomeFragment : Fragment() {
         handleStaffAttendenceLo()
         handleCalenderLo()
         handleAttendenceLo()
+        handleDairy()
+        handleDayCare()
         return binding.root
+    }
+
+    private fun handleDayCare() {
+        binding.dayCareLo.setOnClickListener(View.OnClickListener {
+            var intent = Intent(context, HomeActivity::class.java)
+            intent.putExtra("tag", "DayCare")
+            startActivity(intent)
+        })
+    }
+
+    private fun handleDairy() {
+        binding.dairyLo.setOnClickListener(View.OnClickListener {
+            var intent = Intent(context, HomeActivity::class.java)
+            intent.putExtra("tag", "Dairy")
+            startActivity(intent)
+        })
     }
 
     private fun handleCalenderLo() {
