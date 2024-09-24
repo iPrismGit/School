@@ -1,7 +1,10 @@
 package com.iprism.school.activities
 
+import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -10,10 +13,15 @@ import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.R
 import com.iprism.school.databinding.ActivityCreateMealBinding
+import com.iprism.school.utils.ToastUtils
+import java.util.Locale
 
 class CreateMealActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreateMealBinding
+    private val dateFormat = SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
+    private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    private var calendar = Calendar.getInstance()
     private lateinit var crossImage: ImageView
     private lateinit var okBtn: Button
     private lateinit var cancelBtn: Button
@@ -22,9 +30,41 @@ class CreateMealActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateMealBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setDate()
         handleBack()
         handleSubmitBtn()
         handleFoodTypeLo()
+        hanldeLeftBtn()
+        handleRightBtn()
+    }
+
+    private fun setDate() {
+        val calendar: java.util.Calendar = java.util.Calendar.getInstance()
+        val sdf = java.text.SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
+        val sdfString = java.text.SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val formattedDate: String = sdf.format(calendar.time)
+        val formattedDateString: String = sdfString.format(calendar.time)
+        Log.d("dateFormatString", formattedDateString)
+        binding.dateTxt.text = formattedDate
+    }
+
+    private fun hanldeLeftBtn() {
+        binding.leftArrowIv.setOnClickListener(View.OnClickListener {
+            changeDate(-1)
+        })
+    }
+
+    private fun handleRightBtn() {
+        binding.rightArrowIv.setOnClickListener(View.OnClickListener {
+            changeDate(1)
+        })
+    }
+
+    private fun changeDate(days: Int) {
+        calendar.add(Calendar.DAY_OF_MONTH, days)
+        binding.dateTxt.text = dateFormat.format(calendar.time)
+        var dateFormatString = simpleDateFormat.format(calendar.time)
+        Log.d("dateFormatString", dateFormatString)
     }
 
     private fun handleFoodTypeLo() {
@@ -70,7 +110,6 @@ class CreateMealActivity : AppCompatActivity() {
 
         okBtn.setOnClickListener(View.OnClickListener {
             bottomSheetDialog.dismiss()
-            Toast.makeText(this, "Meal Added", Toast.LENGTH_SHORT).show()
         })
 
         bottomSheetDialog.show()
