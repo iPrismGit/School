@@ -4,7 +4,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.iprism.school.R
+import com.iprism.school.adapters.CalenderAdapter
 import com.iprism.school.databinding.ActivityCalenderBinding
 
 class CalenderActivity : AppCompatActivity() {
@@ -16,10 +18,18 @@ class CalenderActivity : AppCompatActivity() {
         binding = ActivityCalenderBinding.inflate(layoutInflater)
         setContentView(binding.root)
         handleBack()
-        hanldeAddCalenderBtn()
+        handleAddCalenderBtn()
+        setupCalenderAdapter()
     }
 
-    private fun hanldeAddCalenderBtn() {
+    private fun setupCalenderAdapter() {
+        var calenderAdapter = CalenderAdapter(this)
+        binding.calendersIv.adapter = calenderAdapter
+        var  linearLayoutManager = LinearLayoutManager(this)
+        binding.calendersIv.layoutManager = linearLayoutManager
+    }
+
+    private fun handleAddCalenderBtn() {
         binding.addCalenderBtn.setOnClickListener(View.OnClickListener {
             startActivity(Intent(this, CreateCalenderActivity::class.java))
         })

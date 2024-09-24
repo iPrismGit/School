@@ -6,6 +6,7 @@
     <string name="no_inactive_consents">No Inactive Consents</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="create_consent">Create Consent</string>
+    <string name="create_calender">Create Calender</string>
     <string name="edit_consent">Edit Consent</string>
     <string name="meal_planner">Meal Planner</string>
     <string name="create_meal_planner">Create Meal Planner</string>

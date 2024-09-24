@@ -203,7 +203,7 @@
                                     android:layout_height="40dp"
                                     android:layout_margin="20dp"
                                     android:adjustViewBounds="true"
-                                    android:src="@drawable/digital_content_img" />
+                                    android:src="@drawable/calender_img" />
                             </androidx.cardview.widget.CardView>
 
                             <TextView
