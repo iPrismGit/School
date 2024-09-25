@@ -28,7 +28,12 @@ class HomeActivity : AppCompatActivity() {
             switchFragment(MessagesFragment())
         } else if (tag.equals("Dairy", true) || tag.equals("DayCare", true)) {
             binding.bottomNavigationView.selectedItemId = R.id.childcare
-            switchFragment(ChildCareFragment())
+            val childFragment = ChildCareFragment()
+            val bundle = Bundle()
+            bundle.putString("tag", tag) // Pass your value here
+            childFragment.arguments = bundle
+            switchFragment(childFragment)
+            true
         } else {
             binding.bottomNavigationView.selectedItemId = R.id.home
             switchFragment(HomeFragment())
@@ -54,7 +59,11 @@ class HomeActivity : AppCompatActivity() {
                 }
 
                 R.id.childcare -> {
-                    switchFragment(ChildCareFragment())
+                    val childFragment = ChildCareFragment()
+                    val bundle = Bundle()
+                    bundle.putString("tag", "Dairy") // Pass your value here
+                    childFragment.arguments = bundle
+                    switchFragment(childFragment)
                     true
                 }
 
