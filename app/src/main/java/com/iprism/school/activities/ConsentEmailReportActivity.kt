@@ -18,6 +18,8 @@ class ConsentEmailReportActivity : AppCompatActivity() {
         handleShareReportBtn()
     }
 
+
+
     private fun handleShareReportBtn() {
         binding.shareReportBtn.setOnClickListener(View.OnClickListener {
             ToastUtils.showSuccessCustomToast(this, "Report Emailed Successfully")

@@ -15,6 +15,8 @@ import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.iprism.school.R
+import com.iprism.school.activities.CreatedDiaryActivity
+import com.iprism.school.activities.DaycareEmailReportActivity
 import com.iprism.school.activities.DaycareReportsActivity
 import com.iprism.school.activities.SetActivityIconActivity
 import com.iprism.school.adapters.PagerAdapter
@@ -50,7 +52,14 @@ class ChildCareFragment : Fragment() {
         hanldeSaveBtn()
         handleCalenderBtn()
         handleThreeDots()
+        handleEmailBtn()
         return binding.root
+    }
+
+    private fun handleEmailBtn() {
+        binding.emailIv.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(context, DaycareEmailReportActivity::class.java))
+        })
     }
 
     private fun handleThreeDots() {
@@ -82,6 +91,7 @@ class ChildCareFragment : Fragment() {
     private fun hanldeSaveBtn() {
         binding.saveBtn.setOnClickListener(View.OnClickListener {
             blinkButton(binding.saveBtn)
+            startActivity(Intent(context, CreatedDiaryActivity::class.java))
             ToastUtils.showSuccessCustomToast( requireContext(),"Daily Report Created Successfully")
         })
     }
