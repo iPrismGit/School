@@ -10,6 +10,8 @@
     <string name="edit_calender">Edit Calender</string>
     <string name="calender_details">Calender Details</string>
     <string name="edit_consent">Edit Consent</string>
+    <string name="day_care_reports">Day Care Reports</string>
+    <string name="set_activity_icon">Set Activity Icon</string>
     <string name="meal_planner">Meal Planner</string>
     <string name="create_meal_planner">Create Meal Planner</string>
     <string name="date">Date</string>
