@@ -5,10 +5,19 @@ import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.R
+import com.iprism.school.adapters.CreatedDiariesAdapter
 import com.iprism.school.databinding.ActivityCreatedDiaryBinding
 import com.iprism.school.databinding.ActivityDaycareEmailReportBinding
+import com.iprism.school.interfaces.OnCreatedDiariesClickListener
+import com.iprism.school.utils.ToastUtils
 import java.util.Locale
 
 class CreatedDiaryActivity : AppCompatActivity() {
@@ -17,6 +26,9 @@ class CreatedDiaryActivity : AppCompatActivity() {
     private val dateFormat = SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
     private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     private var calendar = Calendar.getInstance()
+    private lateinit var crossImage: ImageView
+    private lateinit var cancelBtn: Button
+    private lateinit var deleteBtn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +36,55 @@ class CreatedDiaryActivity : AppCompatActivity() {
         setContentView(binding.root)
         setDate()
         handleLeftBtn()
-        handleBack();
+        handleBack()
+        setupCreatedDiariesAdapter()
+    }
+
+    private fun setupCreatedDiariesAdapter() {
+        var createdDiariesAdapter = CreatedDiariesAdapter(this)
+        binding.dairiesRv.adapter = createdDiariesAdapter
+        var  linearLayoutManager = LinearLayoutManager(this)
+        binding.dairiesRv.layoutManager = linearLayoutManager
+        createdDiariesAdapter.setListener(object : OnCreatedDiariesClickListener{
+                override fun onDeleteClickListener(dairyId: Int) {
+                    showDeleteBottomSheet(dairyId)
+                }
+
+                override fun onInformationClickListener(dairyId: Int) {
+
+                }
+
+            }
+        )
+    }
+
+    private fun showDeleteBottomSheet(diaryId : Int) {
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val bottomSheetView: View = LayoutInflater.from(this).inflate(R.layout.delete_bottom_sheet, null)
+        bottomSheetDialog.setContentView(bottomSheetView)
+        cancelBtn = bottomSheetDialog.findViewById<View>(R.id.cancel_btn) as Button
+        crossImage = bottomSheetDialog.findViewById<View>(R.id.cross_iv) as ImageView
+        deleteBtn = bottomSheetDialog.findViewById<View>(R.id.delete_button) as Button
+        bottomSheetDialog.setOnShowListener { dialog ->
+            val bottomSheet =
+                (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            bottomSheet?.setBackgroundResource(R.drawable.rounded_bottom_sheet_background)
+        }
+
+        cancelBtn.setOnClickListener(View.OnClickListener {
+            bottomSheetDialog.dismiss()
+        })
+
+        crossImage.setOnClickListener(View.OnClickListener {
+            bottomSheetDialog.dismiss()
+        })
+
+        deleteBtn.setOnClickListener(View.OnClickListener {
+            bottomSheetDialog.dismiss()
+            ToastUtils.showSuccessCustomToast(this, "Diary Deleted Successfully")
+        })
+
+        bottomSheetDialog.show()
     }
 
     private fun handleBack() {
