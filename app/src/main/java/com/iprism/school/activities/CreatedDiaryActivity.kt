@@ -1,5 +1,6 @@
 package com.iprism.school.activities
 
+import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
@@ -9,13 +10,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.R
 import com.iprism.school.adapters.CreatedDiariesAdapter
 import com.iprism.school.databinding.ActivityCreatedDiaryBinding
-import com.iprism.school.databinding.ActivityDaycareEmailReportBinding
 import com.iprism.school.interfaces.OnCreatedDiariesClickListener
 import com.iprism.school.utils.ToastUtils
 import java.util.Locale
@@ -46,12 +45,14 @@ class CreatedDiaryActivity : AppCompatActivity() {
         var  linearLayoutManager = LinearLayoutManager(this)
         binding.dairiesRv.layoutManager = linearLayoutManager
         createdDiariesAdapter.setListener(object : OnCreatedDiariesClickListener{
-                override fun onDeleteClickListener(dairyId: Int) {
-                    showDeleteBottomSheet(dairyId)
+                override fun onDeleteClickListener(diaryId: Int) {
+                    showDeleteBottomSheet(diaryId)
                 }
 
-                override fun onInformationClickListener(dairyId: Int) {
-
+                override fun onInformationClickListener(diaryId: Int) {
+                    var intent = Intent(this@CreatedDiaryActivity, DiaryDeliveryReportsActivity::class.java)
+                    intent.putExtra("diaryId", diaryId)
+                    startActivity(intent)
                 }
 
             }
