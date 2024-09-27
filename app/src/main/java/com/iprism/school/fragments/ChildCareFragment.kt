@@ -14,6 +14,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.iprism.school.R
 import com.iprism.school.activities.CreatedDiaryActivity
+import com.iprism.school.activities.DayCareReportsActivity
 import com.iprism.school.activities.DaycareEmailReportActivity
 import com.iprism.school.activities.DaycareReportActivity
 import com.iprism.school.activities.SetActivityIconActivity
@@ -68,7 +69,7 @@ class ChildCareFragment : Fragment() {
 
     private fun handleCalenderBtn() {
         binding.calenderIv.setOnClickListener(View.OnClickListener {
-            startActivity(Intent(context, DaycareReportActivity::class.java))
+            startActivity(Intent(context, DayCareReportsActivity::class.java))
         })
     }
 
@@ -81,16 +82,18 @@ class ChildCareFragment : Fragment() {
                     startActivity(Intent(context, SetActivityIconActivity::class.java))
                     true
                 }
+
                 else -> false
             }
         }
         popupMenu.show()
     }
+
     private fun hanldeSaveBtn() {
         binding.saveBtn.setOnClickListener(View.OnClickListener {
             blinkButton(binding.saveBtn)
             startActivity(Intent(context, CreatedDiaryActivity::class.java))
-            ToastUtils.showSuccessCustomToast( requireContext(),"Daily Report Created Successfully")
+            ToastUtils.showSuccessCustomToast(requireContext(), "Daily Report Created Successfully")
         })
     }
 

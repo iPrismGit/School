@@ -32,7 +32,7 @@
             android:fontFamily="@font/inter_bold"
             android:gravity="center_vertical"
             android:paddingStart="8dp"
-            android:text="@string/day_care_reports"
+            android:text="Day Care Report"
             android:textColor="@color/black"
             android:textSize="18dp" />
 
