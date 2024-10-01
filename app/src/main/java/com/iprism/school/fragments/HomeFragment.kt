@@ -12,6 +12,7 @@ import com.iprism.school.activities.CalenderActivity
 import com.iprism.school.activities.ConsentsActivity
 import com.iprism.school.activities.HomeActivity
 import com.iprism.school.activities.MealPlannerActivity
+import com.iprism.school.activities.PromotionsActivity
 import com.iprism.school.activities.RatingsAndReviewsActivity
 import com.iprism.school.activities.StaffAttendanceActivity
 import com.iprism.school.activities.StudentsActivity
@@ -41,11 +42,18 @@ class HomeFragment : Fragment() {
         handleAttendenceLo()
         handleDairy()
         handleDayCare()
-        handleReviewsAndRAtingsLo()
+        handleReviewsAndRatingsLo()
+        handlePromotionsLo()
         return binding.root
     }
 
-    private fun handleReviewsAndRAtingsLo() {
+    private fun handlePromotionsLo() {
+        binding.promotionsLo.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(requireContext(), PromotionsActivity::class.java))
+        })
+    }
+
+    private fun handleReviewsAndRatingsLo() {
         binding.reviewsAndRatingsLo.setOnClickListener(View.OnClickListener {
             startActivity(Intent(requireContext(), RatingsAndReviewsActivity::class.java))
         })

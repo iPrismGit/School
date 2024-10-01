@@ -67,7 +67,7 @@ class RatingsAndReviewsActivity : AppCompatActivity() {
             binding.staff5Rb
         )
         setSelectedRating(
-            18 / 5,
+            19 / 5,
             binding.average1Rb,
             binding.average2Rb,
             binding.average3Rb,
