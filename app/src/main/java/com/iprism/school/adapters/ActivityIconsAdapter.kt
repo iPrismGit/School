@@ -10,11 +10,12 @@ import com.iprism.school.databinding.DayCareItemBinding
 import com.iprism.school.databinding.SetIconItemBinding
 import com.iprism.school.interfaces.OnDayCareClickListener
 
-class ActivityIconsAdapter(var context: Context) : Adapter<ActivityIconsAdapter.ActivityIconsViewHolder>() {
+class ActivityIconsAdapter(var context: Context) :
+    Adapter<ActivityIconsAdapter.ActivityIconsViewHolder>() {
 
     private lateinit var listener: OnDayCareClickListener
 
-    fun setupListener(listener: OnDayCareClickListener){
+    fun setupListener(listener: OnDayCareClickListener) {
         this.listener = listener
     }
 
@@ -28,10 +29,11 @@ class ActivityIconsAdapter(var context: Context) : Adapter<ActivityIconsAdapter.
 
     override fun onBindViewHolder(
         holder: ActivityIconsAdapter.ActivityIconsViewHolder,
-        position: Int) {
+        position: Int
+    ) {
         holder.binding.dayCareNameTxt.text = "Snacks Time- $position"
         holder.binding.root.setOnClickListener(View.OnClickListener {
-
+            listener.onItemLick(position.toString(), holder.binding.dayCareNameTxt.text.toString())
         })
     }
 
@@ -39,7 +41,8 @@ class ActivityIconsAdapter(var context: Context) : Adapter<ActivityIconsAdapter.
         return 10
     }
 
-    public class ActivityIconsViewHolder(var binding: DayCareItemBinding):ViewHolder(binding.root){
+    public class ActivityIconsViewHolder(var binding: DayCareItemBinding) :
+        ViewHolder(binding.root) {
 
     }
 

@@ -18,6 +18,8 @@
     <string name="date">Date</string>
     <string name="calender">Calender</string>
     <string name="staff_attendance">Staff Attendance</string>
+    <string name="reviews_and_ratings"><![CDATA[Reviews & Ratings]]></string>
+    <string name="curriculum_and_activities"><![CDATA[Curriculum & Activities]]></string>
     <string name="save_attendance">Save Attendance</string>
     <string name="attendance">Attendance</string>
     <string name="send_notification_to_parent">Send notification to parent</string>

@@ -20,8 +20,8 @@ import com.iprism.school.utils.ToastUtils
 class SetActivityIconActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySetIconBinding
-    private lateinit var crossImg : ImageView
-    private lateinit var activityIconsRv : RecyclerView
+    private lateinit var crossImg: ImageView
+    private lateinit var activityIconsRv: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,11 +36,11 @@ class SetActivityIconActivity : AppCompatActivity() {
         binding.activityIconsRv.adapter = setActivityIconsAdapter
         var layoutManager = LinearLayoutManager(this)
         binding.activityIconsRv.layoutManager = layoutManager
-        setActivityIconsAdapter.setupListener(object : OnActivityClickListener{
-                override fun onItemClick(imageUrl: String, id: String) {
-                    showActivityIconsDialog()
-                }
-            })
+        setActivityIconsAdapter.setupListener(object : OnActivityClickListener {
+            override fun onItemClick(imageUrl: String, id: String) {
+                showActivityIconsDialog()
+            }
+        })
     }
 
     private fun handleBack() {
@@ -62,12 +62,18 @@ class SetActivityIconActivity : AppCompatActivity() {
         activityIconsRv.adapter = activityIconsAdapter
         var linearLayout = GridLayoutManager(this, 3)
         activityIconsRv.layoutManager = linearLayout
-        activityIconsAdapter.setupListener(object : OnDayCareClickListener{
+        crossImg.setOnClickListener(View.OnClickListener {
+            dialog.dismiss()
+        })
+        activityIconsAdapter.setupListener(object : OnDayCareClickListener {
             override fun onItemLick(id: String, name: String) {
-                ToastUtils.showSuccessCustomToast(this@SetActivityIconActivity , "Activity Icon Changed Successfully")
+                ToastUtils.showSuccessCustomToast(
+                    this@SetActivityIconActivity, "Activity Icon Changed Successfully"
+                )
                 dialog.dismiss()
             }
         })
+
         dialog.show()
     }
 
