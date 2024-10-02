@@ -1,27 +1,35 @@
 package com.iprism.school.fragments
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.iprism.school.R
 import com.iprism.school.activities.AttendanceActivity
 import com.iprism.school.activities.CalenderActivity
 import com.iprism.school.activities.ConsentsActivity
 import com.iprism.school.activities.FeedBackActivity
 import com.iprism.school.activities.HomeActivity
+import com.iprism.school.activities.LoginActivity
 import com.iprism.school.activities.MealPlannerActivity
 import com.iprism.school.activities.PromotionsActivity
 import com.iprism.school.activities.RatingsAndReviewsActivity
 import com.iprism.school.activities.StaffAttendanceActivity
 import com.iprism.school.activities.StudentsActivity
 import com.iprism.school.databinding.FragmentHomeBinding
+import com.iprism.school.utils.ToastUtils
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var yesBtn :Button
+    private lateinit var noBtn :Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +54,36 @@ class HomeFragment : Fragment() {
         handleReviewsAndRatingsLo()
         handlePromotionsLo()
         handleSuggestionsLo()
+        handleLogoutLo()
         return binding.root
+    }
+
+    private fun handleLogoutLo() {
+        binding.logoutLo.setOnClickListener(View.OnClickListener {
+
+        })
+    }
+
+    @SuppressLint("MissingInflatedId")
+    private fun showOptionsDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.log_out_dialog, null)
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+        dialogBuilder.setView(dialogView)
+        val dialog = dialogBuilder.create()
+        dialog.window?.setBackgroundDrawableResource(R.drawable.dialog_background)
+        yesBtn = dialogView.findViewById(R.id.yes_btn) as Button
+        noBtn = dialogView.findViewById(R.id.no_btn) as Button
+        noBtn.setOnClickListener(View.OnClickListener {
+            ToastUtils.showSuccessCustomToast(requireContext(), "Clicked On No Button")
+            dialog.dismiss()
+        })
+
+        yesBtn.setOnClickListener(View.OnClickListener {
+            ToastUtils.showSuccessCustomToast(requireContext(), "Clicked On No Button")
+            dialog.dismiss()
+            startActivity(Intent(requireContext(), LoginActivity::class.java))
+        })
+        dialog.show()
     }
 
     private fun handleSuggestionsLo() {
