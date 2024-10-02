@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.iprism.school.activities.AttendanceActivity
 import com.iprism.school.activities.CalenderActivity
 import com.iprism.school.activities.ConsentsActivity
+import com.iprism.school.activities.FeedBackActivity
 import com.iprism.school.activities.HomeActivity
 import com.iprism.school.activities.MealPlannerActivity
 import com.iprism.school.activities.PromotionsActivity
@@ -44,7 +45,14 @@ class HomeFragment : Fragment() {
         handleDayCare()
         handleReviewsAndRatingsLo()
         handlePromotionsLo()
+        handleSuggestionsLo()
         return binding.root
+    }
+
+    private fun handleSuggestionsLo() {
+        binding.sendSuggestionsLo.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(requireContext(), FeedBackActivity::class.java))
+        })
     }
 
     private fun handlePromotionsLo() {

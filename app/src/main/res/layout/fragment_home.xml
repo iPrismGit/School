@@ -534,12 +534,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:fontFamily="@font/inter_semibold"
-                                android:text="View All"
                                 android:gravity="center_vertical"
+                                android:text="View All"
                                 android:textColor="@color/blue2" />
 
                             <ImageView
@@ -796,8 +797,9 @@
                         android:id="@+id/all_messages_lo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
                         <LinearLayout
                             android:id="@+id/inbox_ll"
                             android:layout_width="match_parent"
@@ -912,8 +914,9 @@
                         android:id="@+id/all_directories_lo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -1041,7 +1044,6 @@
                     </LinearLayout>
 
 
-
                     <LinearLayout
                         android:id="@+id/staff_atendence_lo"
                         android:layout_width="match_parent"
@@ -1137,6 +1139,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:visibility="gone">
+
                         <LinearLayout
                             android:id="@+id/pending_feee_lo"
                             android:layout_width="match_parent"
@@ -1192,7 +1195,6 @@
                             android:layout_height="1dp"
                             android:background="?android:attr/listDivider" />
                     </LinearLayout>
-
 
 
                     <LinearLayout
