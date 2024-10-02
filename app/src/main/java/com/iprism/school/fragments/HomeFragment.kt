@@ -79,7 +79,7 @@ class HomeFragment : Fragment() {
         })
 
         yesBtn.setOnClickListener(View.OnClickListener {
-            ToastUtils.showSuccessCustomToast(requireContext(), "Clicked On No Button")
+            ToastUtils.showSuccessCustomToast(requireContext(), "Clicked On Yes Button")
             dialog.dismiss()
             startActivity(Intent(requireContext(), LoginActivity::class.java))
         })
