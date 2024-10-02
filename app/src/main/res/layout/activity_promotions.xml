@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".activities.PromotionsActivity">
 
-
     <LinearLayout
         android:id="@+id/linearLayout9"
         android:layout_width="0dp"
@@ -112,7 +111,7 @@ in the parent app." />
 
 
         <Button
-            android:id="@+id/cancel_btn"
+            android:id="@+id/save_btn"
             style="@style/Widget.Material3.Button.OutlinedButton.Icon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

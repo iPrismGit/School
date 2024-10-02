@@ -1338,6 +1338,7 @@
                         android:background="?android:attr/listDivider" />
 
                     <LinearLayout
+                        android:id="@+id/invite_parents_lo"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -1366,6 +1367,7 @@
                         android:background="?android:attr/listDivider" />
 
                     <LinearLayout
+                        android:id="@+id/send_suggestions_lo"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
