@@ -72,22 +72,5 @@
             app:layout_constraintStart_toStartOf="parent" />
     </LinearLayout>
 
-    <com.wang.avi.AVLoadingIndicatorView
-        android:id="@+id/loader"
-        style="@style/AVLoadingIndicatorView"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/_40sdp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center"
-        android:background="@android:color/transparent"
-        android:paddingHorizontal="@dimen/_6sdp"
-        android:visibility="gone"
-        app:indicatorColor="@color/blue"
-        app:indicatorName="LineSpinFadeLoaderIndicator"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

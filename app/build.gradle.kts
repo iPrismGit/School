@@ -51,7 +51,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
-    implementation("com.wang.avi:library:2.1.3")
     implementation("com.intuit.ssp:ssp-android:1.1.0")
     implementation("com.intuit.sdp:sdp-android:1.1.0")
     implementation ("de.hdodenhof:circleimageview:3.1.0")
