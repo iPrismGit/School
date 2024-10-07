@@ -98,7 +98,6 @@ class ChildCareFragment : Fragment() {
     }
 
     private fun blinkButton(button: Button) {
-        // ObjectAnimator to animate the button's alpha (opacity)
         val blinkAnimation = ObjectAnimator.ofFloat(button, "alpha", 0f, 1f)
         blinkAnimation.duration = 500 // 500ms for the blink
         blinkAnimation.repeatCount = 0 // Blink twice

@@ -60,12 +60,12 @@ class HomeFragment : Fragment() {
 
     private fun handleLogoutLo() {
         binding.logoutLo.setOnClickListener(View.OnClickListener {
-
+            showLogoutDialog()
         })
     }
 
     @SuppressLint("MissingInflatedId")
-    private fun showOptionsDialog() {
+    private fun showLogoutDialog() {
         val dialogView = layoutInflater.inflate(R.layout.log_out_dialog, null)
         val dialogBuilder = AlertDialog.Builder(requireContext())
         dialogBuilder.setView(dialogView)
