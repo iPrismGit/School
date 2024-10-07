@@ -911,7 +911,6 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/staff_ll"
                         android:id="@+id/all_directories_lo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -919,6 +918,7 @@
                         android:visibility="gone">
 
                         <LinearLayout
+                            android:id="@+id/staff_ll"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="40dp"
@@ -926,16 +926,6 @@
                             android:orientation="horizontal"
                             android:padding="12dp">
 
-                        <TextView
-                            android:id="@+id/staff_txt"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Staff"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
-                    </LinearLayout>
                             <ImageView
                                 android:layout_width="8dp"
                                 android:layout_height="8dp"
@@ -943,6 +933,7 @@
                                 android:src="@drawable/baseline_circle_24" />
 
                             <TextView
+                                android:id="@+id/staff_txt"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -951,6 +942,7 @@
                                 android:textColor="@color/black"
                                 android:textSize="14sp" />
                         </LinearLayout>
+
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -1048,510 +1040,511 @@
                                 android:textSize="14sp" />
                         </LinearLayout>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="?android:attr/listDivider" />
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:id="@+id/staff_atendence_lo"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/message2" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Staff Attendance"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="?android:attr/listDivider" />
-
-                    <LinearLayout
-                        android:id="@+id/meal_planner_lo"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/meal_planner_img" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Meal Planner"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider" />
-
-                    <LinearLayout
-                        android:id="@+id/fee_lo"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/rupee_img" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Fee"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:layout_gravity="center"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/drop_down_img" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/all_feeses_lo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-                        <LinearLayout
-                            android:id="@+id/pending_feee_lo"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="40dp"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:padding="12dp">
-
-                            <ImageView
-                                android:layout_width="8dp"
-                                android:layout_height="8dp"
-                                android:layout_marginRight="8dp"
-                                android:src="@drawable/baseline_circle_24" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/inter_medium"
-                                android:text="Pending Fee"
-                                android:textColor="@color/black"
-                                android:textSize="14sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/collect_fee_lo"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="40dp"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:padding="12dp">
-
-                            <ImageView
-                                android:layout_width="8dp"
-                                android:layout_height="8dp"
-                                android:layout_marginRight="8dp"
-                                android:src="@drawable/baseline_circle_24" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:fontFamily="@font/inter_medium"
-                                android:text="Collect Fee"
-                                android:textColor="@color/black"
-                                android:textSize="14sp" />
-                        </LinearLayout>
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="?android:attr/listDivider" />
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/track_cabs_img" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Track Cabs"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/pending_requests_img" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Pending Requests"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/child_handover_img" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Child Handover"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider" />
-
-                    <LinearLayout
-                        android:id="@+id/promotions_lo"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/promotions_img" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Promotions"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider" />
-
-                    <LinearLayout
-                        android:id="@+id/reviews_and_ratings_lo"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/reviews_ratings_img" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Reviews &amp; Ratings"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider" />
-
-                    <LinearLayout
-                        android:id="@+id/invite_parents_lo"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/invite_parents_img" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Invite Parents to HP"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider" />
-
-                    <LinearLayout
-                        android:id="@+id/send_suggestions_lo"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/send_suggestions_img" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Send Suggestions to HP"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/online_class_img" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Online Class"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/assessment_img" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Assessment"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/help_tutorials_img" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Help Tutorials"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/about_us_img" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="About us"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider" />
-
-                    <LinearLayout
-                        android:id="@+id/logout_lo"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/logout_img" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Logout"
-                            android:textColor="@color/black"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider" />
-
                 </LinearLayout>
 
+
+                <LinearLayout
+                    android:id="@+id/staff_atendence_lo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/message2" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Staff Attendance"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:id="@+id/meal_planner_lo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/meal_planner_img" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Meal Planner"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:id="@+id/fee_lo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/rupee_img" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Fee"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/drop_down_img" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/all_feeses_lo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:id="@+id/pending_feee_lo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="40dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="8dp"
+                            android:layout_height="8dp"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/baseline_circle_24" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Pending Fee"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/collect_fee_lo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="40dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="8dp"
+                            android:layout_height="8dp"
+                            android:layout_marginRight="8dp"
+                            android:src="@drawable/baseline_circle_24" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Collect Fee"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/listDivider" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/track_cabs_img" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Track Cabs"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="24dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/pending_requests_img" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Pending Requests"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/child_handover_img" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Child Handover"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:id="@+id/promotions_lo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/promotions_img" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Promotions"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:id="@+id/reviews_and_ratings_lo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/reviews_ratings_img" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Reviews &amp; Ratings"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:id="@+id/invite_parents_lo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/invite_parents_img" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Invite Parents to HP"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:id="@+id/send_suggestions_lo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/send_suggestions_img" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Send Suggestions to HP"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/online_class_img" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Online Class"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/assessment_img" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Assessment"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/help_tutorials_img" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Help Tutorials"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/about_us_img" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="About us"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:id="@+id/logout_lo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@drawable/logout_img" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Logout"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
             </LinearLayout>
+
 
         </ScrollView>
     </com.google.android.material.navigation.NavigationView>
