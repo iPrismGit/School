@@ -80,7 +80,7 @@
                     android:layout_height="40dp"
                     android:backgroundTint="@android:color/white"
                     android:fontFamily="@font/inter_medium"
-                    android:text="Deactivate"
+                    android:text="Reactivate"
                     android:textAllCaps="false"
                     android:textColor="@color/blue"
                     app:cornerRadius="8dp"
