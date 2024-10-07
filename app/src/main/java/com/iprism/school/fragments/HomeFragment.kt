@@ -16,6 +16,7 @@ import com.iprism.school.activities.CalenderActivity
 import com.iprism.school.activities.ConsentsActivity
 import com.iprism.school.activities.FeedBackActivity
 import com.iprism.school.activities.HomeActivity
+import com.iprism.school.activities.StaffActivity
 import com.iprism.school.activities.LoginActivity
 import com.iprism.school.activities.MealPlannerActivity
 import com.iprism.school.activities.PromotionsActivity
@@ -43,6 +44,7 @@ class HomeFragment : Fragment() {
         handleMealPlanningLo()
         handleMessageLl()
         handleConsentsLo()
+        handleStaffLl()
         handleMessageLo()
         handleDirectoriesLo()
         handleFeeLo()
@@ -186,6 +188,13 @@ class HomeFragment : Fragment() {
         binding.messageLl.setOnClickListener(View.OnClickListener {
             var intent = Intent(context, HomeActivity::class.java)
             intent.putExtra("tag", "msg")
+            startActivity(intent)
+        })
+    }
+
+    private fun handleStaffLl() {
+        binding.staffLl.setOnClickListener(View.OnClickListener {
+            val intent = Intent(context, StaffActivity::class.java)
             startActivity(intent)
         })
     }

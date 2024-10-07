@@ -911,6 +911,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/staff_ll"
                         android:id="@+id/all_directories_lo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -925,6 +926,16 @@
                             android:orientation="horizontal"
                             android:padding="12dp">
 
+                        <TextView
+                            android:id="@+id/staff_txt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Staff"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+                    </LinearLayout>
                             <ImageView
                                 android:layout_width="8dp"
                                 android:layout_height="8dp"
