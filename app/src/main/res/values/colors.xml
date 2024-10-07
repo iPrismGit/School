@@ -7,12 +7,15 @@
     <color name="light_blue">#1B55F1</color>
     <color name="blue1">#222D87</color>
     <color name="blue2">#204186</color>
+    <color name="blue3">#204184</color>
     <color name="light_gray">#F1F1F1</color>
     <color name="light_gray3">#F2F2F2</color>
     <color name="gray1">#666666</color>
     <color name="red">#E61E28</color>
     <color name="light_gray1">#838383</color>
     <color name="green">#00CC66</color>
+    <color name="date_bg_color">#DBDBDB</color>
+    <color name="thick_green">#0FBC00</color>
     <color name="light_gray2">#D1D1D1</color>
     <color name="yellow">#FFCC00</color>
     <color name="lavender_mist">#E2E9FC</color>
@@ -21,6 +24,7 @@
     <color name="pink">#FB5678</color>
     <color name="message_bg">#F1A7E4</color>
     <color name="attendance_bg">#F85A3F</color>
+    <color name="attendance_not_marked">#FB8700</color>
     <color name="calendar_bg">#367CF6</color>
     <color name="consents_bg">#26DAC1</color>
     <color name="diary_bg">#FFC442</color>

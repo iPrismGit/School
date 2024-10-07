@@ -64,14 +64,15 @@
         </androidx.viewpager2.widget.ViewPager2>
     </LinearLayout>
 
-    <ImageView
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_consent_iv"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="130dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="100dp"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/floating_img" />
+        app:srcCompat="@drawable/baseline_add_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -153,6 +153,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/attendance_lo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -184,6 +185,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/calender_lo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -201,7 +203,7 @@
                                     android:layout_height="40dp"
                                     android:layout_margin="20dp"
                                     android:adjustViewBounds="true"
-                                    android:src="@drawable/digital_content_img" />
+                                    android:src="@drawable/calender_img" />
                             </androidx.cardview.widget.CardView>
 
                             <TextView
@@ -254,6 +256,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/dairy_lo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -285,6 +288,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/day_care_lo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -525,20 +529,29 @@
                             android:textColor="@color/black"
                             android:textSize="16sp" />
 
-                        <TextView
+                        <LinearLayout
+                            android:id="@+id/messages_view_all_lo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter_semibold"
-                            android:text="View All"
-                            android:textColor="@color/blue2" />
+                            android:orientation="horizontal">
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:adjustViewBounds="true"
-                            android:maxWidth="32dp"
-                            android:maxHeight="32dp"
-                            android:src="@drawable/right_arrow_img" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:fontFamily="@font/inter_semibold"
+                                android:gravity="center_vertical"
+                                android:text="View All"
+                                android:textColor="@color/blue2" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:adjustViewBounds="true"
+                                android:maxWidth="32dp"
+                                android:maxHeight="32dp"
+                                android:src="@drawable/right_arrow_img" />
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
@@ -750,6 +763,7 @@
                         android:background="?android:attr/listDivider" />
 
                     <LinearLayout
+                        android:id="@+id/messages_lo"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -780,84 +794,93 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/inbox_ll"
+                        android:id="@+id/all_messages_lo"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="40dp"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                        <ImageView
-                            android:layout_width="8dp"
-                            android:layout_height="8dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/baseline_circle_24" />
+                        <LinearLayout
+                            android:id="@+id/inbox_ll"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="40dp"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="12dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Inbox"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
+                            <ImageView
+                                android:layout_width="8dp"
+                                android:layout_height="8dp"
+                                android:layout_marginRight="8dp"
+                                android:src="@drawable/baseline_circle_24" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/inter_medium"
+                                android:text="Inbox"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="40dp"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="12dp">
+
+                            <ImageView
+                                android:layout_width="8dp"
+                                android:layout_height="8dp"
+                                android:layout_marginRight="8dp"
+                                android:src="@drawable/baseline_circle_24" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/inter_medium"
+                                android:text="Sent"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="40dp"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="12dp">
+
+                            <ImageView
+                                android:layout_width="8dp"
+                                android:layout_height="8dp"
+                                android:layout_marginRight="8dp"
+                                android:src="@drawable/baseline_circle_24" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/inter_medium"
+                                android:text="Scheduled"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?android:attr/listDivider" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="40dp"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="8dp"
-                            android:layout_height="8dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/baseline_circle_24" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Sent"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="40dp"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="8dp"
-                            android:layout_height="8dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/baseline_circle_24" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Scheduled"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider" />
-
-                    <LinearLayout
+                        android:id="@+id/directory_lo"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -889,18 +912,19 @@
 
                     <LinearLayout
                         android:id="@+id/staff_ll"
+                        android:id="@+id/all_directories_lo"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="40dp"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                        <ImageView
-                            android:layout_width="8dp"
-                            android:layout_height="8dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/baseline_circle_24" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="40dp"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="12dp">
 
                         <TextView
                             android:id="@+id/staff_txt"
@@ -912,109 +936,127 @@
                             android:textColor="@color/black"
                             android:textSize="14sp" />
                     </LinearLayout>
+                            <ImageView
+                                android:layout_width="8dp"
+                                android:layout_height="8dp"
+                                android:layout_marginRight="8dp"
+                                android:src="@drawable/baseline_circle_24" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="40dp"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/inter_medium"
+                                android:text="Staff"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+                        </LinearLayout>
 
-                        <ImageView
-                            android:layout_width="8dp"
-                            android:layout_height="8dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/baseline_circle_24" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="40dp"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="12dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Students"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
+                            <ImageView
+                                android:layout_width="8dp"
+                                android:layout_height="8dp"
+                                android:layout_marginRight="8dp"
+                                android:src="@drawable/baseline_circle_24" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/inter_medium"
+                                android:text="Students"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="40dp"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="12dp">
+
+                            <ImageView
+                                android:layout_width="8dp"
+                                android:layout_height="8dp"
+                                android:layout_marginRight="8dp"
+                                android:src="@drawable/baseline_circle_24" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/inter_medium"
+                                android:text="Groups"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="40dp"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="12dp">
+
+                            <ImageView
+                                android:layout_width="8dp"
+                                android:layout_height="8dp"
+                                android:layout_marginRight="8dp"
+                                android:src="@drawable/baseline_circle_24" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/inter_medium"
+                                android:text="Subjects"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="40dp"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="12dp">
+
+                            <ImageView
+                                android:layout_width="8dp"
+                                android:layout_height="8dp"
+                                android:layout_marginRight="8dp"
+                                android:src="@drawable/baseline_circle_24" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/inter_medium"
+                                android:text="Classes"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?android:attr/listDivider" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="40dp"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="8dp"
-                            android:layout_height="8dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/baseline_circle_24" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Groups"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
-                    </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="40dp"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="8dp"
-                            android:layout_height="8dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/baseline_circle_24" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Subjects"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="40dp"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="8dp"
-                            android:layout_height="8dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/baseline_circle_24" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Classes"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider" />
-
-                    <LinearLayout
+                        android:id="@+id/staff_atendence_lo"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -1043,6 +1085,7 @@
                         android:background="?android:attr/listDivider" />
 
                     <LinearLayout
+                        android:id="@+id/meal_planner_lo"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -1071,6 +1114,7 @@
                         android:background="?android:attr/listDivider" />
 
                     <LinearLayout
+                        android:id="@+id/fee_lo"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -1101,57 +1145,68 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/all_feeses_lo"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="40dp"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
-                        <ImageView
-                            android:layout_width="8dp"
-                            android:layout_height="8dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/baseline_circle_24" />
+                        <LinearLayout
+                            android:id="@+id/pending_feee_lo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="40dp"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="12dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Pending Fee"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
+                            <ImageView
+                                android:layout_width="8dp"
+                                android:layout_height="8dp"
+                                android:layout_marginRight="8dp"
+                                android:src="@drawable/baseline_circle_24" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/inter_medium"
+                                android:text="Pending Fee"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/collect_fee_lo"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="40dp"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:padding="12dp">
+
+                            <ImageView
+                                android:layout_width="8dp"
+                                android:layout_height="8dp"
+                                android:layout_marginRight="8dp"
+                                android:src="@drawable/baseline_circle_24" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:fontFamily="@font/inter_medium"
+                                android:text="Collect Fee"
+                                android:textColor="@color/black"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?android:attr/listDivider" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="40dp"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
-
-                        <ImageView
-                            android:layout_width="8dp"
-                            android:layout_height="8dp"
-                            android:layout_marginRight="8dp"
-                            android:src="@drawable/baseline_circle_24" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/inter_medium"
-                            android:text="Collect Fee"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="?android:attr/listDivider" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -1238,6 +1293,7 @@
                         android:background="?android:attr/listDivider" />
 
                     <LinearLayout
+                        android:id="@+id/promotions_lo"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -1266,6 +1322,7 @@
                         android:background="?android:attr/listDivider" />
 
                     <LinearLayout
+                        android:id="@+id/reviews_and_ratings_lo"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -1294,6 +1351,7 @@
                         android:background="?android:attr/listDivider" />
 
                     <LinearLayout
+                        android:id="@+id/invite_parents_lo"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -1322,6 +1380,7 @@
                         android:background="?android:attr/listDivider" />
 
                     <LinearLayout
+                        android:id="@+id/send_suggestions_lo"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -1462,6 +1521,7 @@
                         android:background="?android:attr/listDivider" />
 
                     <LinearLayout
+                        android:id="@+id/logout_lo"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"

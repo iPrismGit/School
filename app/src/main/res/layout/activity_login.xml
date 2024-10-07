@@ -68,10 +68,10 @@
                 <EditText
                     android:id="@+id/mobile_number_et"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="46dp"
                     android:layout_marginTop="12dp"
                     android:layout_weight="0.8"
-                    android:background="@drawable/edit_text_bg"
+                    android:background="@drawable/edit_text"
                     android:hint="Enter Mobile Number"
                     android:inputType="number"
                     android:maxLength="10"

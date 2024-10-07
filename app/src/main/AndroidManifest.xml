@@ -13,6 +13,75 @@
         android:theme="@style/Theme.School"
         tools:targetApi="31">
         <activity
+            android:name=".activities.FeedBackActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.PromotionsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.RatingsAndReviewsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.DayCareReportsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.DiaryDeliveryReportsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.CreatedDiaryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.DaycareEmailReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.SetActivityIconActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.DaycareReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.EditCalenderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.CalenderDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.CreateCalenderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.CalenderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.AttendanceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.StaffAttendanceEmailReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.StaffAttendanceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.EditMealPlannerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.CreateMealActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.MealPlannerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ConsentEmailReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ConsentInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.EditConsentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.SingleConsentActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.StaffActivity"
             android:exported="false" />
         <activity

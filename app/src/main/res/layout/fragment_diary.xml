@@ -29,17 +29,27 @@
                 android:textColor="@color/black" />
 
             <LinearLayout
-                android:id="@+id/linearLayout5"
+                android:id="@+id/date_lo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="46dp"
                 android:layout_marginTop="12dp"
-                android:background="@drawable/edit_text_bg"
-                android:orientation="horizontal"
-                android:padding="10dp">
+                android:background="@drawable/edit_text"
+                android:orientation="horizontal">
 
-                <Spinner
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingStart="12dp"
+                    android:gravity="center_vertical"
+                    android:hint="02 Sep, 2024"/>
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:padding="8dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/down_arrow_img"/>
 
             </LinearLayout>
 
@@ -53,17 +63,28 @@
                 android:textColor="@color/black" />
 
             <LinearLayout
+                android:id="@+id/groups_lo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="46dp"
                 android:layout_marginTop="12dp"
-                android:background="@drawable/edit_text_bg"
-                android:orientation="horizontal"
-                android:padding="10dp">
+                android:background="@drawable/edit_text"
+                android:orientation="horizontal">
 
-                <Spinner
-                    android:id="@+id/spinner"
+                <TextView
+                    android:id="@+id/date_txt"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="match_parent"
+                    android:hint="PLAY GROUP (Class Teacher)"
+                    android:layout_weight="1"
+                    android:paddingStart="12dp"
+                    android:gravity="center_vertical"/>
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:padding="8dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="12dp"
+                    android:src="@drawable/down_arrow_img"/>
 
             </LinearLayout>
 
@@ -111,13 +132,52 @@
             <EditText
                 android:id="@+id/editTextText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="46dp"
                 android:layout_marginTop="12dp"
-                android:background="@drawable/edit_text_bg"
+                android:background="@drawable/edit_text"
                 android:ems="10"
+                android:textSize="14dp"
                 android:hint="Enter"
                 android:inputType="text"
                 android:padding="12dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/checkBox8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Select All" />
+
+                <ImageView
+                    android:id="@+id/imageView24"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:padding="6dp"
+                    android:adjustViewBounds="true"
+                    android:layout_gravity="center"
+                    android:src="@drawable/cameara_img" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider16"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/dairy_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
         </LinearLayout>
     </ScrollView>
 

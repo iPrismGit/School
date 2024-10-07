@@ -13,12 +13,13 @@ import com.iprism.school.databinding.ActivityConsentsBinding
 class ConsentsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityConsentsBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityConsentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        handleBack();
-        handleAddConsentIv();
+        handleBack()
+        handleAddConsentIv()
         setUpTabs()
     }
 
