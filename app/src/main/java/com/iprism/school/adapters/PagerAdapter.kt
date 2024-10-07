@@ -17,4 +17,5 @@ class PagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount(): Int {
         return 2 // Number of tabs
     }
+
 }
