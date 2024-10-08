@@ -21,6 +21,13 @@ class StudentsActivity : AppCompatActivity() {
         setContentView(binding.root)
 //        handleStudent()
         setupStudentsAdapter()
+        handleAddBtn()
+    }
+
+    private fun handleAddBtn() {
+        binding.addBtn.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(this, FillSchoolDetailsActivity::class.java))
+        })
     }
 
     private fun setupStudentsAdapter() {
@@ -32,7 +39,6 @@ class StudentsActivity : AppCompatActivity() {
             override fun onItemClick(calenderId: String) {
                 startActivity(Intent(this@StudentsActivity, StudentDetailsActivity::class.java))
             }
-
         })
     }
 
