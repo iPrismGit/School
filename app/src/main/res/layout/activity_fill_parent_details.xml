@@ -35,7 +35,7 @@
             android:layout_marginLeft="12dp"
             android:layout_weight="1"
             android:fontFamily="@font/inter_bold"
-            android:text="Fill Personal Details"
+            android:text="Fill Parent Details"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
@@ -61,32 +61,65 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:src="@drawable/progress_two_img" />
+                android:src="@drawable/progress_three_img" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="16dp">
+                android:orientation="horizontal"
+                android:gravity="center">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="16dp">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/imageView28"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/activity_defualt_icon"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/parent_one_iv"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/activity_defualt_icon"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:id="@+id/imageView29"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:srcCompat="@drawable/white_cam" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <ImageView
+                        android:id="@+id/camera_one_iv"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:srcCompat="@drawable/white_cam" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="16dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/parent_two_iv"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/activity_defualt_icon"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/camera_two_iv"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:srcCompat="@drawable/white_cam" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+
 
             <TextView
                 android:id="@+id/textView18"
@@ -94,10 +127,9 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:layout_marginBottom="6dp"
-                android:text="Name*" />
+                android:text="Father Name*" />
 
             <EditText
-                android:id="@+id/editTextText8"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:textSize="14sp"
@@ -112,184 +144,51 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:layout_marginBottom="6dp"
-                android:text="Date of Birth*"
+                android:text="Father Mobile Number*"
                 android:layout_marginTop="12dp"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:orientation="horizontal">
-
-                <TextView
+                <EditText
                     android:id="@+id/date_of_birth_txt"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="46dp"
                     android:background="@drawable/edit_text"
-                    android:hint="Choose Date of Birth"
-                    android:gravity="center_vertical"
+                    android:hint="Enter"
+                    android:inputType="number"
+                    android:maxLength="10"
                     android:textColor="@color/black"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="16dp"
+                    android:textSize="14dp"
                     android:paddingStart="12dp"
                     android:paddingEnd="12dp"/>
-
-                <LinearLayout
-                    android:id="@+id/date_of_birth_cv_lo"
-                    android:layout_width="56dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/calender_bg"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/date_of_birth_cv"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:padding="2dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/calendar_img1"/>
-                </LinearLayout>
-            </LinearLayout>
-
-            <TextView
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:layout_marginBottom="6dp"
-                android:text="Date of Joining*"
-                android:layout_marginTop="12dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/date_of_joining_txt"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/edit_text"
-                    android:hint="Choose Date of Joining"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/black"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="16dp"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"/>
-
-                <LinearLayout
-                    android:id="@+id/date_of_joining_cv_lo"
-                    android:layout_width="56dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/calender_bg"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/date_of_joining_cv"
-                        android:layout_width="match_parent"
-                        android:layout_height="32dp"
-                        android:padding="2dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/calendar_img1"/>
-                </LinearLayout>
-            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:layout_marginBottom="6dp"
-                android:text="Blood Group"
-                android:layout_marginTop="12dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:orientation="horizontal"
-                android:background="@drawable/edit_text">
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:hint="Select"
-                    android:layout_weight="1"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"/>
-
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:padding="10dp"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/down_arrow_img"/>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:layout_marginBottom="6dp"
-                android:text="Gender"
-                android:layout_marginTop="12dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:orientation="horizontal"
-                android:background="@drawable/edit_text">
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:hint="Select"
-                    android:layout_weight="1"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"/>
-
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:padding="10dp"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/down_arrow_img"/>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:layout_marginBottom="6dp"
-                android:text="Cast"
+                android:text="Father Email"
                 android:layout_marginTop="12dp"/>
 
             <EditText
-                android:id="@+id/cast_txt"
+                android:id="@+id/editTextTextEmailAddress2"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
-                android:textSize="14sp"
+                android:ems="10"
+                android:hint="Enter"
                 android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:textSize="14dp"
                 android:background="@drawable/edit_text"
-                android:inputType="text"
-                android:hint="Name" />
+                android:inputType="textEmailAddress" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:layout_marginBottom="6dp"
-                android:text="Religion"
+                android:text="Father Occupation"
                 android:layout_marginTop="12dp"/>
 
             <EditText
-                android:id="@+id/religion_txt"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:textSize="14sp"
@@ -303,7 +202,61 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:layout_marginBottom="6dp"
-                android:text="Nationality"
+                android:text="Mother Name*"
+                android:layout_marginTop="12dp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:textSize="14sp"
+                android:paddingStart="12dp"
+                android:background="@drawable/edit_text"
+                android:inputType="text"
+                android:hint="Enter" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:layout_marginBottom="6dp"
+                android:text="Mother Mobile Number*"
+                android:layout_marginTop="12dp"/>
+
+            <EditText
+                android:id="@+id/cast_txt"
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:textSize="14sp"
+                android:paddingStart="12dp"
+                android:maxLength="10"
+                android:background="@drawable/edit_text"
+                android:inputType="number"
+                android:hint="Enter" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:layout_marginBottom="6dp"
+                android:text="Mother Email "
+                android:layout_marginTop="12dp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:ems="10"
+                android:hint="Enter"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:textSize="14dp"
+                android:background="@drawable/edit_text"
+                android:inputType="textEmailAddress" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:layout_marginBottom="6dp"
+                android:text="Mother Occupation"
                 android:layout_marginTop="12dp"/>
 
             <EditText
@@ -314,6 +267,74 @@
                 android:paddingStart="12dp"
                 android:background="@drawable/edit_text"
                 android:inputType="text"
+                android:hint="Enter" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:layout_marginBottom="6dp"
+                android:text="Guardian Name*"
+                android:layout_marginTop="12dp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:textSize="14sp"
+                android:paddingStart="12dp"
+                android:background="@drawable/edit_text"
+                android:inputType="text"
+                android:hint="Enter" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:layout_marginBottom="6dp"
+                android:text="Guardian Mobile Number*"
+                android:layout_marginTop="12dp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:textSize="14sp"
+                android:paddingStart="12dp"
+                android:maxLength="10"
+                android:background="@drawable/edit_text"
+                android:inputType="number"
+                android:hint="Enter" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:layout_marginBottom="6dp"
+                android:text="Address*"
+                android:layout_marginTop="12dp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:textSize="14sp"
+                android:paddingStart="12dp"
+                android:background="@drawable/edit_text"
+                android:inputType="text"
+                android:hint="Enter" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:layout_marginBottom="6dp"
+                android:text="PIN Code*"
+                android:layout_marginTop="12dp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="46dp"
+                android:textSize="14sp"
+                android:paddingStart="12dp"
+                android:background="@drawable/edit_text"
+                android:inputType="number"
                 android:hint="Enter" />
 
             <LinearLayout
@@ -360,6 +381,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
