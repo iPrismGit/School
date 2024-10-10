@@ -1,5 +1,6 @@
 package com.iprism.school.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -21,7 +22,8 @@ class FillParentDetailsActivity : AppCompatActivity() {
 
     private fun handleNext() {
         binding.nextButton.setOnClickListener(View.OnClickListener {
-
+            var  intent  = Intent(this, FillOtherDetailsActivity::class.java)
+            startActivity(intent)
         })
     }
 
