@@ -30,8 +30,8 @@ import com.iprism.school.utils.ToastUtils
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var yesBtn :Button
-    private lateinit var noBtn :Button
+    private lateinit var yesBtn: Button
+    private lateinit var noBtn: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
