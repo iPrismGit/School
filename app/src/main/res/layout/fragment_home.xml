@@ -943,8 +943,8 @@
                                 android:textSize="14sp" />
                         </LinearLayout>
 
-
                         <LinearLayout
+                            android:id="@+id/students_lo"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="40dp"
@@ -969,6 +969,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/groups_lo"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="40dp"
@@ -993,6 +994,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/subjects_lo"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="40dp"
@@ -1017,6 +1019,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/classes_lo"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="40dp"
