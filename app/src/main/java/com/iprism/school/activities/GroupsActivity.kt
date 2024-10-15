@@ -9,6 +9,7 @@ import com.iprism.school.R
 import com.iprism.school.adapters.GroupsAdapter
 import com.iprism.school.databinding.ActivityGroupsBinding
 import com.iprism.school.databinding.AddMoreBottomSheetLayoutBinding
+import com.iprism.school.interfaces.OnGroupItemClickListener
 
 class GroupsActivity : AppCompatActivity() {
 
@@ -33,6 +34,13 @@ class GroupsActivity : AppCompatActivity() {
         binding.groupsRv.adapter = groupsAdapter
         var linearLayoutManager = LinearLayoutManager(this)
         binding.groupsRv.layoutManager = linearLayoutManager
+        groupsAdapter.setListener(object : OnGroupItemClickListener{
+            override fun onItemClick(id: String) {
+                var intent = Intent(this@GroupsActivity, GroupDetailsActivity::class.java)
+                startActivity(intent)
+            }
+
+        })
     }
 
 }
