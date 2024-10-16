@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/back_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
@@ -42,7 +42,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/create_user_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
@@ -114,8 +114,8 @@
                     <EditText
                         android:id="@+id/editTextText2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_height="46dp"
+                        android:layout_marginTop="6dp"
                         android:background="@drawable/edit_text"
                         android:ems="10"
                         android:hint="Name"
@@ -134,25 +134,27 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="6dp"
                         android:orientation="horizontal">
 
-                        <EditText
+                        <TextView
+                            android:id="@+id/date_of_birth_txt"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="46dp"
                             android:layout_weight="1"
                             android:background="@drawable/edit_text"
                             android:ems="10"
                             android:hint="Choose Date of Birth"
-                            android:inputType="text"
+                            android:textColor="@color/black"
                             android:padding="12dp"
                             android:textSize="14sp" />
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:id="@+id/date_of_birth_cv_lo"
+                            android:layout_width="56dp"
+                            android:layout_height="46dp"
                             android:layout_marginLeft="12dp"
-                            android:background="@drawable/edit_text"
+                            android:background="@drawable/calender_bg"
                             android:gravity="center"
                             android:orientation="vertical"
                             android:padding="9dp">
@@ -177,8 +179,8 @@
                     <LinearLayout
                         android:id="@+id/linearLayout5"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="12dp"
+                        android:layout_height="46dp"
+                        android:layout_marginTop="6dp"
                         android:background="@drawable/edit_text"
                         android:orientation="horizontal"
                         android:padding="10dp">
@@ -200,12 +202,13 @@
                     <EditText
                         android:id="@+id/editTextText5"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_height="46dp"
+                        android:layout_marginTop="6dp"
                         android:background="@drawable/edit_text"
                         android:ems="10"
                         android:hint="Mobile No."
-                        android:inputType="text"
+                        android:maxLength="10"
+                        android:inputType="number"
                         android:padding="12dp"
                         android:textSize="14sp" />
                 </LinearLayout>
@@ -235,12 +238,12 @@
 
                     <EditText
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_height="46dp"
+                        android:layout_marginTop="6dp"
                         android:background="@drawable/edit_text"
                         android:ems="10"
                         android:hint="Email"
-                        android:inputType="text"
+                        android:inputType="textEmailAddress"
                         android:padding="12dp"
                         android:textSize="14sp" />
 
@@ -254,22 +257,22 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="46dp"
                         android:gravity="center"
                         android:background="@drawable/edit_text"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="6dp"
                         android:orientation="horizontal">
 
                         <EditText
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginRight="8dp"
                             android:layout_weight="1"
                             android:background="@android:color/transparent"
                             android:ems="10"
                             android:hint="Enter new password"
-                            android:inputType="text"
-                            android:padding="12dp"
+                            android:inputType="textPassword"
+                            android:padding="6dp"
                             android:textSize="14sp" />
 
                         <ImageView
@@ -290,10 +293,10 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="46dp"
                         android:gravity="center"
                         android:background="@drawable/edit_text"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="6dp"
                         android:orientation="horizontal">
 
                         <EditText
@@ -344,13 +347,13 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_height="46dp"
+                        android:layout_marginTop="6dp"
                         android:background="@drawable/edit_text"
                         android:gravity="center"
                         android:orientation="horizontal">
 
-                        <EditText
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="8dp"
@@ -384,8 +387,8 @@
 
                     <EditText
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_height="46dp"
+                        android:layout_marginTop="6dp"
                         android:background="@drawable/edit_text"
                         android:ems="10"
                         android:hint="Designation"
@@ -412,25 +415,27 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="6dp"
                         android:orientation="horizontal">
 
-                        <EditText
+                        <TextView
+                            android:id="@+id/date_of_joining_txt"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="46dp"
                             android:layout_weight="1"
                             android:background="@drawable/edit_text"
                             android:ems="10"
                             android:hint="Date of Joining"
-                            android:inputType="text"
+                            android:textColor="@color/black"
                             android:padding="12dp"
                             android:textSize="14sp" />
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:id="@+id/date_of_joining_cv_lo"
+                            android:layout_width="56dp"
+                            android:layout_height="46dp"
                             android:layout_marginLeft="12dp"
-                            android:background="@drawable/edit_text"
+                            android:background="@drawable/calender_bg"
                             android:gravity="center"
                             android:orientation="vertical"
                             android:padding="9dp">
@@ -446,13 +451,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/inter_medium"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="6dp"
                         android:text="Department"
                         android:textColor="@color/black" />
 
                     <EditText
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="46dp"
                         android:layout_marginTop="12dp"
                         android:background="@drawable/edit_text"
                         android:ems="10"
@@ -471,13 +476,13 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="46dp"
                         android:gravity="center"
                         android:background="@drawable/edit_text"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="6dp"
                         android:orientation="horizontal">
 
-                        <EditText
+                        <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -492,7 +497,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_marginRight="12dp"
-                            app:srcCompat="@drawable/up_arrow_img" />
+                            app:srcCompat="@drawable/down_arrow_img" />
 
                     </LinearLayout>
 
@@ -506,10 +511,11 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="46dp"
                         android:gravity="center"
                         android:background="@drawable/edit_text"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="6dp"
+                        android:layout_marginBottom="30dp"
                         android:orientation="horizontal">
 
                         <EditText
@@ -527,7 +533,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:layout_marginRight="12dp"
-                            app:srcCompat="@drawable/up_arrow_img" />
+                            app:srcCompat="@drawable/down_arrow_img" />
 
                     </LinearLayout>
 
@@ -540,12 +546,12 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/create_user_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="20dp"
         android:fontFamily="@font/inter_semibold"
         android:padding="13dp"
         android:text="Create User"
