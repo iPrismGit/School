@@ -1,5 +1,6 @@
 package com.iprism.school.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.iprism.school.R
+import com.iprism.school.activities.EditStaffDetailsActivity
 import com.iprism.school.adapters.StaffAdapter
 import com.iprism.school.databinding.ActivityCreateStaffBinding
 import com.iprism.school.databinding.DeactivateStaffDialogBinding
@@ -36,7 +38,8 @@ class StaffActiveFragment : Fragment() {
         binding.activeStaffRv.layoutManager = linearLayoutManager
         staffAdapter.setListener(object : OnStaffClickListener{
             override fun onItemClick() {
-
+                var intent = Intent(requireContext(), EditStaffDetailsActivity::class.java)
+                startActivity(intent)
             }
 
             override fun onDeActiveClick() {

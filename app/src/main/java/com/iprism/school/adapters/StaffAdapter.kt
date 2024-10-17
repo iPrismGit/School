@@ -30,6 +30,10 @@ class StaffAdapter(context: Context) : Adapter<StaffAdapter.StaffViewHolder>() {
         holder.binding.root.setOnClickListener(View.OnClickListener {
             listener.onItemClick()
         })
+
+        holder.binding.deactivateBtn.setOnClickListener(View.OnClickListener {
+            listener.onDeActiveClick()
+        })
     }
 
     override fun getItemCount(): Int {

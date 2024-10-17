@@ -33,7 +33,7 @@
             android:layout_marginLeft="12dp"
             android:layout_weight="1"
             android:fontFamily="@font/inter_bold"
-            android:text="Create Staff"
+            android:text="Edit Staff"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
@@ -79,23 +79,38 @@
                     app:layout_constraintBottom_toBottomOf="@+id/profile_img"
                     app:layout_constraintEnd_toEndOf="@+id/profile_img"
                     app:srcCompat="@drawable/camera_img" />
+
+                <LinearLayout
+                    android:id="@+id/send_message_lo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/profile_img">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/blue_arrow_left" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="4dp"
+                        android:textSize="12dp"
+                        android:textColor="@color/blue"
+                        android:gravity="center_vertical"
+                        android:text="Send Message" />
+                </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView38"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:background="#FFC442"
-                    android:fontFamily="@font/inter_medium"
-                    android:padding="12dp"
-                    android:text="Personal Details"
-                    android:textColor="@color/black" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -120,6 +135,46 @@
                         android:ems="10"
                         android:hint="Name"
                         android:inputType="text"
+                        android:padding="12dp"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_medium"
+                        android:layout_marginTop="12dp"
+                        android:text="Email*"
+                        android:textColor="@color/black" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/edit_text"
+                        android:ems="10"
+                        android:hint="Email"
+                        android:inputType="textEmailAddress"
+                        android:padding="12dp"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Mobile No.*"
+                        android:textColor="@color/black" />
+
+                    <EditText
+                        android:id="@+id/editTextText5"
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+                        android:layout_marginTop="6dp"
+                        android:background="@drawable/edit_text"
+                        android:ems="10"
+                        android:hint="Mobile No."
+                        android:inputType="number"
+                        android:maxLength="10"
                         android:padding="12dp"
                         android:textSize="14sp" />
 
@@ -151,6 +206,49 @@
 
                         <LinearLayout
                             android:id="@+id/date_of_birth_cv_lo"
+                            android:layout_width="56dp"
+                            android:layout_height="46dp"
+                            android:layout_marginLeft="12dp"
+                            android:background="@drawable/calender_bg"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="9dp">
+
+                            <ImageView
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:src="@drawable/calendar_img1" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Date of Joining"
+                        android:textColor="@color/black" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/date_of_joining_txt"
+                            android:layout_width="match_parent"
+                            android:layout_height="46dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/edit_text"
+                            android:ems="10"
+                            android:hint="Date of Joining"
+                            android:padding="12dp"
+                            android:textColor="@color/black"
+                            android:textSize="14sp" />
+
+                        <LinearLayout
+                            android:id="@+id/date_of_joining_cv_lo"
                             android:layout_width="56dp"
                             android:layout_height="46dp"
                             android:layout_marginLeft="12dp"
@@ -209,152 +307,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:fontFamily="@font/inter_medium"
-                        android:text="Mobile No.*"
-                        android:textColor="@color/black" />
-
-                    <EditText
-                        android:id="@+id/editTextText5"
-                        android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:layout_marginTop="6dp"
-                        android:background="@drawable/edit_text"
-                        android:ems="10"
-                        android:hint="Mobile No."
-                        android:inputType="number"
-                        android:maxLength="10"
-                        android:padding="12dp"
-                        android:textSize="14sp" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:background="#FFC442"
-                    android:fontFamily="@font/inter_medium"
-                    android:padding="12dp"
-                    android:text="Account Details"
-                    android:textColor="@color/black" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_medium"
-                        android:text="Email*"
-                        android:textColor="@color/black" />
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:layout_marginTop="6dp"
-                        android:background="@drawable/edit_text"
-                        android:ems="10"
-                        android:hint="Email"
-                        android:inputType="textEmailAddress"
-                        android:padding="12dp"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:fontFamily="@font/inter_medium"
-                        android:text="Password*"
-                        android:textColor="@color/black" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:layout_marginTop="6dp"
-                        android:background="@drawable/edit_text"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginRight="8dp"
-                            android:layout_weight="1"
-                            android:background="@android:color/transparent"
-                            android:ems="10"
-                            android:hint="Enter new password"
-                            android:inputType="textPassword"
-                            android:padding="6dp"
-                            android:textSize="14sp" />
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_marginRight="12dp"
-                            app:srcCompat="@drawable/password_img" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:fontFamily="@font/inter_medium"
-                        android:text="Confirm Password*"
-                        android:textColor="@color/black" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:layout_marginTop="6dp"
-                        android:background="@drawable/edit_text"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@android:color/transparent"
-                            android:ems="10"
-                            android:hint="Enter confirm password"
-                            android:inputType="text"
-                            android:padding="12dp"
-                            android:textSize="14sp" />
-
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:layout_marginRight="12dp"
-                            app:srcCompat="@drawable/password_img" />
-
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:background="#FFC442"
-                    android:fontFamily="@font/inter_medium"
-                    android:padding="12dp"
-                    android:text="Account Details"
-                    android:textColor="@color/black" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="12dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:fontFamily="@font/inter_medium"
                         android:text="Employee ID*"
                         android:textColor="@color/black" />
 
@@ -393,76 +345,6 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:fontFamily="@font/inter_medium"
-                        android:text="Designation"
-                        android:textColor="@color/black" />
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="46dp"
-                        android:layout_marginTop="6dp"
-                        android:background="@drawable/edit_text"
-                        android:ems="10"
-                        android:hint="Designation"
-                        android:inputType="text"
-                        android:padding="12dp"
-                        android:textSize="14sp" />
-
-                    <CheckBox
-                        android:id="@+id/checkBox5"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter"
-                        android:text="Use designation to send messages"
-                        android:textColor="@color/black" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:fontFamily="@font/inter_medium"
-                        android:text="Date of Joining"
-                        android:textColor="@color/black" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/date_of_joining_txt"
-                            android:layout_width="match_parent"
-                            android:layout_height="46dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/edit_text"
-                            android:ems="10"
-                            android:hint="Date of Joining"
-                            android:padding="12dp"
-                            android:textColor="@color/black"
-                            android:textSize="14sp" />
-
-                        <LinearLayout
-                            android:id="@+id/date_of_joining_cv_lo"
-                            android:layout_width="56dp"
-                            android:layout_height="46dp"
-                            android:layout_marginLeft="12dp"
-                            android:background="@drawable/calender_bg"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="9dp">
-
-                            <ImageView
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:src="@drawable/calendar_img1" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:fontFamily="@font/inter_medium"
                         android:text="Department"
@@ -484,36 +366,120 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:fontFamily="@font/inter_medium"
-                        android:text="Select Access Rights"
+                        android:text="Designation"
                         android:textColor="@color/black" />
 
-                    <LinearLayout
-                        android:id="@+id/access_rights_lo"
+                    <EditText
                         android:layout_width="match_parent"
                         android:layout_height="46dp"
                         android:layout_marginTop="6dp"
                         android:background="@drawable/edit_text"
-                        android:gravity="center"
-                        android:orientation="horizontal">
+                        android:ems="10"
+                        android:hint="Designation"
+                        android:inputType="text"
+                        android:padding="12dp"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <CheckBox
+                        android:id="@+id/designation_cb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter"
+                        android:text="Use designation to send messages"
+                        android:textColor="@color/black" />
+
+                    <CheckBox
+                        android:id="@+id/change_password_cb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter"
+                        android:text="Change Password"
+                        android:textColor="@color/black" />
+                    <LinearLayout
+                        android:id="@+id/password_lo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Password*"
+                            android:textColor="@color/black" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="46dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/edit_text"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="8dp"
+                                android:layout_weight="1"
+                                android:background="@android:color/transparent"
+                                android:ems="10"
+                                android:hint="Enter new password"
+                                android:inputType="textPassword"
+                                android:padding="6dp"
+                                android:textSize="14sp" />
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginRight="12dp"
+                                app:srcCompat="@drawable/password_img" />
+
+                        </LinearLayout>
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@android:color/transparent"
-                            android:ems="10"
-                            android:textColor="@color/black"
-                            android:hint="Select Access Rights"
-                            android:padding="12dp"
-                            android:textSize="14sp" />
+                            android:layout_marginTop="12dp"
+                            android:fontFamily="@font/inter_medium"
+                            android:text="Confirm Password*"
+                            android:textColor="@color/black" />
 
-                        <ImageView
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="8dp"
-                            android:padding="8dp"
-                            android:src="@drawable/down_arrow_img" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="46dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/edit_text"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="@android:color/transparent"
+                                android:ems="10"
+                                android:hint="Enter confirm password"
+                                android:inputType="text"
+                                android:padding="12dp"
+                                android:textSize="14sp" />
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginRight="12dp"
+                                app:srcCompat="@drawable/password_img" />
+
+                        </LinearLayout>
+
 
                     </LinearLayout>
 
@@ -530,7 +496,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="46dp"
                         android:layout_marginTop="6dp"
-                        android:layout_marginBottom="30dp"
                         android:background="@drawable/edit_text"
                         android:gravity="center"
                         android:orientation="horizontal">
@@ -559,21 +524,47 @@
 
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/create_user_btn"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="12dp"
+                    android:orientation="horizontal"
                     android:layout_marginBottom="20dp"
-                    android:fontFamily="@font/inter_semibold"
-                    android:padding="13dp"
-                    android:text="Create User"
-                    android:textAllCaps="false"
-                    app:cornerRadius="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    android:padding="12dp">
+
+                    <Button
+                        android:id="@+id/edit_rights_btn"
+                        style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:padding="12dp"
+                        android:layout_weight="1"
+                        android:text="Edit Rights"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="14dp"
+                        app:cornerRadius="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:strokeColor="@color/black" />
+
+                    <Button
+                        android:id="@+id/updates_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/inter_semibold"
+                        android:padding="13dp"
+                        android:text="Updates"
+                        android:textAllCaps="false"
+                        app:cornerRadius="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+                </LinearLayout>
+
 
             </LinearLayout>
 
