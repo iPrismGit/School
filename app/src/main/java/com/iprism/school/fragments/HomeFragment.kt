@@ -24,6 +24,7 @@ import com.iprism.school.activities.PromotionsActivity
 import com.iprism.school.activities.RatingsAndReviewsActivity
 import com.iprism.school.activities.StaffAttendanceActivity
 import com.iprism.school.activities.StudentsActivity
+import com.iprism.school.activities.SubjectsActivity
 import com.iprism.school.databinding.FragmentHomeBinding
 import com.iprism.school.utils.ToastUtils
 
@@ -60,7 +61,14 @@ class HomeFragment : Fragment() {
         handleLogoutLo()
         hnaldestudentsLo()
         handleGroupsLo()
+        handleSubjectsLo()
         return binding.root
+    }
+
+    private fun handleSubjectsLo() {
+        binding.subjectsLo.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(context, SubjectsActivity::class.java))
+        })
     }
 
     private fun handleGroupsLo() {

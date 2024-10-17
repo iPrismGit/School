@@ -9,13 +9,14 @@ import com.iprism.school.R
 import com.iprism.school.databinding.ActivityCreateStaffBinding
 import com.iprism.school.databinding.AddMoreBottomSheetLayoutBinding
 import com.iprism.school.databinding.GenderBottomSheetDialogBinding
+import com.iprism.school.databinding.RightsBottomSheetBinding
 import com.iprism.school.utils.DateTimeUtils
 import com.iprism.school.utils.ToastUtils
 
 class CreateStaffActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreateStaffBinding
-    private var genderType : String = ""
+    private var genderType: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +27,13 @@ class CreateStaffActivity : AppCompatActivity() {
         handleDOBCalenderLo()
         handleDOJCalenderLo()
         handleGenderLo()
+        handleRightsLo()
+    }
+
+    private fun handleRightsLo() {
+        binding.accessRightsLo.setOnClickListener(View.OnClickListener {
+            showAddRightsBottomSheet()
+        })
     }
 
     private fun handleGenderLo() {
@@ -44,9 +52,9 @@ class CreateStaffActivity : AppCompatActivity() {
             bottomSheet?.setBackgroundResource(R.drawable.rounded_bottom_sheet_background)
             setupCheckboxes(bottomBinding.maleCb, bottomBinding.femaleCb)
             bottomBinding.confirmBtn.setOnClickListener(View.OnClickListener {
-                if (genderType.equals("")){
+                if (genderType.equals("")) {
                     ToastUtils.showErrorCustomToast(this, "Please Select gender Type")
-                }else{
+                } else {
                     bottomSheetDialog.dismiss()
                     binding.genderTxt.text = genderType
                     ToastUtils.showSuccessCustomToast(this, genderType)
@@ -58,6 +66,30 @@ class CreateStaffActivity : AppCompatActivity() {
             })
 
             bottomBinding.cancelBtn.setOnClickListener(View.OnClickListener {
+                bottomSheetDialog.dismiss()
+            })
+        }
+        bottomSheetDialog.show()
+    }
+
+    private fun showAddRightsBottomSheet() {
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val rightsBinding = RightsBottomSheetBinding.inflate(layoutInflater)
+        bottomSheetDialog.setContentView(rightsBinding.root)
+        bottomSheetDialog.setOnShowListener { dialog ->
+            val bottomSheet =
+                (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            bottomSheet?.setBackgroundResource(R.drawable.rounded_bottom_sheet_background)
+            rightsBinding.confirmBtn.setOnClickListener(View.OnClickListener {
+                bottomSheetDialog.dismiss()
+                ToastUtils.showSuccessCustomToast(this, "Rights Added Successfully")
+            })
+
+            rightsBinding.crossIv.setOnClickListener(View.OnClickListener {
+                bottomSheetDialog.dismiss()
+            })
+
+            rightsBinding.cancelBtn.setOnClickListener(View.OnClickListener {
                 bottomSheetDialog.dismiss()
             })
         }

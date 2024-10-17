@@ -20,6 +20,15 @@
         android:theme="@style/Theme.School"
         tools:targetApi="31">
         <activity
+            android:name=".activities.CreateClassSubjectsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.ClassSubjectsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.SubjectsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.EditRightsActivity"
             android:exported="false" />
         <activity
