@@ -2,13 +2,23 @@ package com.iprism.school.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.iprism.school.databinding.ActivityCreateClassSubjectsBinding
 import com.iprism.school.databinding.ActivityEditRightsBinding
 import com.iprism.school.databinding.ClassSubjectItemBinding
+import com.iprism.school.interfaces.OnSubjectClickListener
 
 class ClassSubjectsAdapter(context: Context):Adapter<ClassSubjectsAdapter.ClassSubjectViewHolder>() {
+
+
+    private lateinit var listener: OnSubjectClickListener
+
+    fun setListener(listener: OnSubjectClickListener){
+        this.listener = listener
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -19,9 +29,10 @@ class ClassSubjectsAdapter(context: Context):Adapter<ClassSubjectsAdapter.ClassS
     }
 
     override fun onBindViewHolder(
-        holder: ClassSubjectsAdapter.ClassSubjectViewHolder,
-        position: Int
-    ) {
+        holder: ClassSubjectsAdapter.ClassSubjectViewHolder, position: Int) {
+        holder.binding.root.setOnClickListener(View.OnClickListener {
+            listener.onItemClick(position.toString())
+        })
     }
 
     override fun getItemCount(): Int {

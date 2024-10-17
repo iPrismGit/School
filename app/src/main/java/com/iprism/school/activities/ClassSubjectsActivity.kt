@@ -10,6 +10,7 @@ import com.iprism.school.adapters.ClassSubjectsAdapter
 import com.iprism.school.databinding.ActivityClassSubjectsBinding
 import com.iprism.school.databinding.ActivitySubjectsBinding
 import com.iprism.school.databinding.ClassSubjectItemBinding
+import com.iprism.school.interfaces.OnSubjectClickListener
 
 class ClassSubjectsActivity : AppCompatActivity() {
 
@@ -26,7 +27,7 @@ class ClassSubjectsActivity : AppCompatActivity() {
 
     private fun handleAddBtn() {
         binding.addClassSubjectsBtn.setOnClickListener(View.OnClickListener {
-            startActivity(Intent(this, CreateClassSubjectsActivity::class.java) )
+            startActivity(Intent(this, CreateClassSubjectsActivity::class.java))
         })
     }
 
@@ -35,6 +36,13 @@ class ClassSubjectsActivity : AppCompatActivity() {
         binding.classSubjectsRv.adapter = classSubjectsAdapter
         var linearLayoutManager = LinearLayoutManager(this)
         binding.classSubjectsRv.layoutManager = linearLayoutManager
+        classSubjectsAdapter.setListener(object : OnSubjectClickListener {
+            override fun onItemClick(id: String) {
+                var intent =
+                    Intent(this@ClassSubjectsActivity, UpdateClassSubjectsActivity::class.java)
+                startActivity(intent)
+            }
+        })
     }
 
     private fun handleBack() {
