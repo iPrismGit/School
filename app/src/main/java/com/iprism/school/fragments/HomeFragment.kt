@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import com.iprism.school.R
 import com.iprism.school.activities.AttendanceActivity
 import com.iprism.school.activities.CalenderActivity
+import com.iprism.school.activities.ClassesActivity
 import com.iprism.school.activities.ConsentsActivity
 import com.iprism.school.activities.FeedBackActivity
 import com.iprism.school.activities.GroupsActivity
@@ -62,7 +63,14 @@ class HomeFragment : Fragment() {
         hnaldestudentsLo()
         handleGroupsLo()
         handleSubjectsLo()
+        handleClassLo()
         return binding.root
+    }
+
+    private fun handleClassLo() {
+        binding.classesLo.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(context, ClassesActivity::class.java))
+        })
     }
 
     private fun handleSubjectsLo() {
