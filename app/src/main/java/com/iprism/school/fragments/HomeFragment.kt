@@ -15,6 +15,7 @@ import com.iprism.school.activities.AttendanceActivity
 import com.iprism.school.activities.CalenderActivity
 import com.iprism.school.activities.ClassesActivity
 import com.iprism.school.activities.ConsentsActivity
+import com.iprism.school.activities.ContentPagesActivity
 import com.iprism.school.activities.FeedBackActivity
 import com.iprism.school.activities.GroupsActivity
 import com.iprism.school.activities.HomeActivity
@@ -64,7 +65,14 @@ class HomeFragment : Fragment() {
         handleGroupsLo()
         handleSubjectsLo()
         handleClassLo()
+        handleAboutusLo()
         return binding.root
+    }
+
+    private fun handleAboutusLo() {
+        binding.aboutUsLo.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(context, ContentPagesActivity::class.java))
+        })
     }
 
     private fun handleClassLo() {
