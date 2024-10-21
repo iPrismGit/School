@@ -11,6 +11,7 @@ import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.iprism.school.R
+import com.iprism.school.activities.AlbumsActivity
 import com.iprism.school.activities.AttendanceActivity
 import com.iprism.school.activities.CalenderActivity
 import com.iprism.school.activities.ClassesActivity
@@ -19,6 +20,7 @@ import com.iprism.school.activities.ContentPagesActivity
 import com.iprism.school.activities.FeedBackActivity
 import com.iprism.school.activities.GroupsActivity
 import com.iprism.school.activities.HomeActivity
+import com.iprism.school.activities.InviteParentsActivity
 import com.iprism.school.activities.StaffActivity
 import com.iprism.school.activities.LoginActivity
 import com.iprism.school.activities.MealPlannerActivity
@@ -66,7 +68,21 @@ class HomeFragment : Fragment() {
         handleSubjectsLo()
         handleClassLo()
         handleAboutusLo()
+        handleInviteParentsLo()
+        hnaldeAlbumsViewAll()
         return binding.root
+    }
+
+    private fun hnaldeAlbumsViewAll() {
+        binding.albumsViewAllLo.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(context, AlbumsActivity::class.java))
+        })
+    }
+
+    private fun handleInviteParentsLo() {
+        binding.inviteParentsLo.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(context, InviteParentsActivity::class.java))
+        })
     }
 
     private fun handleAboutusLo() {
