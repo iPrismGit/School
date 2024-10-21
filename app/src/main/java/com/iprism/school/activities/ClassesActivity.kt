@@ -74,6 +74,11 @@ class ClassesActivity : AppCompatActivity() {
                     true
                 }
 
+                R.id.add_session_lo -> {
+                    startActivity(Intent(this, SessionsActivity::class.java))
+                    true
+                }
+
                 else -> false
             }
         }

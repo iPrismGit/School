@@ -142,7 +142,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="From(Session)"
+                    android:text="To(Session)"
                     android:textColor="@color/black" />
 
                 <LinearLayout
@@ -175,7 +175,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="From(Class)"
+                    android:text="To(Class)"
                     android:textColor="@color/black" />
 
                 <LinearLayout

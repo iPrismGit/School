@@ -20,6 +20,9 @@
         android:theme="@style/Theme.School"
         tools:targetApi="31">
         <activity
+            android:name=".activities.SessionsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.ClassTransferActivity"
             android:exported="false" />
         <activity
