@@ -1,19 +1,28 @@
 package com.iprism.school.fragments
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.iprism.school.R
 import com.iprism.school.activities.AlbumsActivity
 import com.iprism.school.activities.AttendanceActivity
 import com.iprism.school.activities.CalenderActivity
+import com.iprism.school.activities.ChildHandOverActivity
 import com.iprism.school.activities.ClassesActivity
 import com.iprism.school.activities.ConsentsActivity
 import com.iprism.school.activities.ContentPagesActivity
@@ -37,6 +46,15 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var yesBtn: Button
     private lateinit var noBtn: Button
+    private val CAMERA_REQUEST_CODE = 100
+    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val imageBitmap = result.data?.extras?.get("data") as Bitmap
+            openDisplayImageActivity(imageBitmap)
+        } else {
+            Toast.makeText(requireContext(), "Camera capture failed", Toast.LENGTH_SHORT).show()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,9 +88,52 @@ class HomeFragment : Fragment() {
         handleAboutusLo()
         handleInviteParentsLo()
         hnaldeAlbumsViewAll()
+        handleChildHandoverLo()
         return binding.root
     }
 
+    private fun handleChildHandoverLo() {
+        binding.childHandoverLo.setOnClickListener(View.OnClickListener {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                // Permission is granted, open the camera
+                openCamera()
+            } else {
+                // Request camera permission
+                requestCameraPermission()
+            }
+        })
+    }
+
+    private fun openCamera() {
+        val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (cameraIntent.resolveActivity(requireActivity().packageManager) != null) {
+            cameraLauncher.launch(cameraIntent)
+        } else {
+            Toast.makeText(requireContext(), "No Camera App Found", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Request camera permission
+    private fun requestCameraPermission() {
+        requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+    }
+
+    // Register a permission request launcher
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+        if (isGranted) {
+            // Permission is granted, open the camera
+            openCamera()
+        } else {
+            Toast.makeText(requireContext(), "Camera permission is required", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Method to open DisplayImageActivity and pass the image
+    private fun openDisplayImageActivity(imageBitmap: Bitmap) {
+        val intent = Intent(requireContext(), ChildHandOverActivity::class.java)
+        intent.putExtra("capturedImage", imageBitmap)
+        startActivity(intent)
+    }
     private fun hnaldeAlbumsViewAll() {
         binding.albumsViewAllLo.setOnClickListener(View.OnClickListener {
             startActivity(Intent(context, AlbumsActivity::class.java))

@@ -18,7 +18,7 @@ import com.iprism.school.utils.ToastUtils
 class CalenderDetailsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCalenderDetailsBinding
-    private var calenderId : String = ""
+    private var calenderId: String = ""
     private var isInfoVisible: Boolean = false
     private lateinit var crossImage: ImageView
     private lateinit var cancelBtn: Button
