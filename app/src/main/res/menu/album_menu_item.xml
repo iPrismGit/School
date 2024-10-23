@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/share_lo"
+        android:title="Share" />
+    <item
+        android:id="@+id/share_on_face_book_lo"
+        android:title="Share on Facebook" />
+
+    <item
+        android:id="@+id/download_all_images_lo"
+        android:title="Download All Images" />
+
+</menu>

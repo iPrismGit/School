@@ -20,6 +20,9 @@
         android:theme="@style/Theme.School"
         tools:targetApi="31">
         <activity
+            android:name=".activities.AlbumDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.HelpTutorialsActivity"
             android:exported="false" />
         <activity
