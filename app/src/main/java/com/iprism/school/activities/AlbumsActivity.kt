@@ -9,6 +9,7 @@ import com.iprism.school.R
 import com.iprism.school.adapters.AlbumsAdapter
 import com.iprism.school.databinding.ActivityAlbumsBinding
 import com.iprism.school.databinding.ActivityCreateAlbumsBinding
+import com.iprism.school.interfaces.OnAlbumClickListener
 
 class AlbumsActivity : AppCompatActivity() {
 
@@ -27,6 +28,13 @@ class AlbumsActivity : AppCompatActivity() {
         binding.albumsRv.adapter = albumsAdapter
         var linearLayoutManager = GridLayoutManager(this, 2)
         binding.albumsRv.layoutManager = linearLayoutManager
+        albumsAdapter.setListener(object : OnAlbumClickListener{
+            override fun onItemClick(albumId: String) {
+                var intent = Intent(this@AlbumsActivity, AlbumDetailsActivity::class.java)
+                intent.putExtra("albumId", albumId);
+                startActivity(intent)
+            }
+        })
     }
 
     private fun handleAddBtn() {

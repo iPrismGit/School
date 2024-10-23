@@ -12,6 +12,7 @@ import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.R
 import com.iprism.school.databinding.ActivityCalenderDetailsBinding
+import com.iprism.school.databinding.DeleteBottomSheetBinding
 import com.iprism.school.utils.ToastUtils
 
 class CalenderDetailsActivity : AppCompatActivity() {
@@ -75,26 +76,22 @@ class CalenderDetailsActivity : AppCompatActivity() {
 
     private fun showDeleteBottomSheet() {
         val bottomSheetDialog = BottomSheetDialog(this)
-        val bottomSheetView: View = LayoutInflater.from(this).inflate(R.layout.delete_bottom_sheet, null)
-        bottomSheetDialog.setContentView(bottomSheetView)
-        cancelBtn = bottomSheetDialog.findViewById<View>(R.id.cancel_btn) as Button
-        crossImage = bottomSheetDialog.findViewById<View>(R.id.cross_iv) as ImageView
-        deleteBtn = bottomSheetDialog.findViewById<View>(R.id.delete_button) as Button
+        val deleteBinding = DeleteBottomSheetBinding.inflate(layoutInflater)
+        bottomSheetDialog.setContentView(deleteBinding.root)
         bottomSheetDialog.setOnShowListener { dialog ->
             val bottomSheet =
                 (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
             bottomSheet?.setBackgroundResource(R.drawable.rounded_bottom_sheet_background)
         }
-
-        cancelBtn.setOnClickListener(View.OnClickListener {
+        deleteBinding.cancelBtn.setOnClickListener(View.OnClickListener {
             bottomSheetDialog.dismiss()
         })
 
-        crossImage.setOnClickListener(View.OnClickListener {
+        deleteBinding.crossIv.setOnClickListener(View.OnClickListener {
             bottomSheetDialog.dismiss()
         })
 
-        deleteBtn.setOnClickListener(View.OnClickListener {
+        deleteBinding.deleteButton.setOnClickListener(View.OnClickListener {
             bottomSheetDialog.dismiss()
             ToastUtils.showSuccessCustomToast(this, "Event Deleted Successfully")
             finish()
@@ -102,4 +99,5 @@ class CalenderDetailsActivity : AppCompatActivity() {
 
         bottomSheetDialog.show()
     }
+
 }
