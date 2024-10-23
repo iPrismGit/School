@@ -1,5 +1,6 @@
 package com.iprism.school.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -30,7 +31,7 @@ class HomeActivity : AppCompatActivity() {
             binding.bottomNavigationView.selectedItemId = R.id.childcare
             val childFragment = ChildCareFragment()
             val bundle = Bundle()
-            bundle.putString("tag", tag) // Pass your value here
+            bundle.putString("tag", tag)
             childFragment.arguments = bundle
             switchFragment(childFragment)
             true
@@ -68,6 +69,7 @@ class HomeActivity : AppCompatActivity() {
                 }
 
                 R.id.help -> {
+                    startActivity(Intent(this, HelpTutorialsActivity::class.java))
                     true
                 }
 
