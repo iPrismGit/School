@@ -6,7 +6,6 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import com.iprism.school.R
 import com.iprism.school.databinding.ActivityMessageBinding
-import com.iprism.school.databinding.ActivitySendMessageBinding
 import com.iprism.school.databinding.MessageCoonfirmationDialogBinding
 import com.iprism.school.utils.ToastUtils
 

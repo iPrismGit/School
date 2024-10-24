@@ -6,9 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.iprism.school.R
 import com.iprism.school.activities.MessageActivity
+import com.iprism.school.activities.MessageDetailsActivity
+import com.iprism.school.adapters.MessagesAdapter
 import com.iprism.school.databinding.FragmentMessagesBinding
+import com.iprism.school.interfaces.OnMessageClickListener
 
 class MessagesFragment : Fragment() {
 
@@ -24,7 +28,24 @@ class MessagesFragment : Fragment() {
         handleMessageBtn()
         tag = arguments?.getString("tag").toString()
         setupFragmentSettings(tag)
+        setupMessagesAdapter()
         return binding.root
+    }
+
+    private fun setupMessagesAdapter() {
+        var messagesAdapter = MessagesAdapter(requireContext())
+        binding.messagesRv.adapter = messagesAdapter
+        var linearLayoutManager = LinearLayoutManager(requireContext())
+        binding.messagesRv.layoutManager = linearLayoutManager
+        messagesAdapter.setupListener(object : OnMessageClickListener{
+            override fun onItemClick(messageId: String) {
+                var intent = Intent(requireContext(), MessageDetailsActivity::class.java)
+                intent.putExtra("messageId", messageId)
+                intent.putExtra("tag", tag)
+                startActivity(intent)
+            }
+
+        })
     }
 
     private fun setupFragmentSettings(tag: String) {
