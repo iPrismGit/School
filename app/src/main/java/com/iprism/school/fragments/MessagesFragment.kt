@@ -12,12 +12,31 @@ import com.iprism.school.databinding.FragmentMessagesBinding
 
 class MessagesFragment : Fragment() {
 
-    private lateinit var binding : FragmentMessagesBinding
+    private lateinit var binding: FragmentMessagesBinding
+    private var tag: String = ""
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentMessagesBinding.inflate(inflater)
         handleMessageBtn()
+        tag = arguments?.getString("tag").toString()
+        setupFragmentSettings(tag)
         return binding.root
+    }
+
+    private fun setupFragmentSettings(tag: String) {
+        if (tag.equals("msg", true)) {
+            binding.textView10.text = "Messages"
+        } else if (tag.equals("msgInbox", true)) {
+            binding.textView10.text = "Messages"
+        } else if (tag.equals("sent", true)) {
+            binding.textView10.text = "Sent Messages"
+        } else if (tag.equals("scheduled", true)) {
+            binding.textView10.text = " Scheduled Messages"
+        }
     }
 
     private fun handleMessageBtn() {

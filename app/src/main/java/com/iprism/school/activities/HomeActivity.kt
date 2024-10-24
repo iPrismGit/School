@@ -24,9 +24,13 @@ class HomeActivity : AppCompatActivity() {
         if (intent.hasExtra("tag")) {
             tag = intent.getStringExtra("tag").toString()
         }
-        if (tag.equals("msg", true)) {
+        if (tag.equals("msg", true) || tag.equals("msgInbox", true) || tag.equals("sent", true) || tag.equals("scheduled", true)) {
             binding.bottomNavigationView.selectedItemId = R.id.messages
-            switchFragment(MessagesFragment())
+            val messagesFragment = MessagesFragment()
+            val bundle = Bundle()
+            bundle.putString("tag", tag)
+            messagesFragment.arguments = bundle
+            switchFragment(messagesFragment)
         } else if (tag.equals("Dairy", true) || tag.equals("DayCare", true)) {
             binding.bottomNavigationView.selectedItemId = R.id.childcare
             val childFragment = ChildCareFragment()
@@ -50,7 +54,11 @@ class HomeActivity : AppCompatActivity() {
                 }
 
                 R.id.messages -> {
-                    switchFragment(MessagesFragment())
+                    val messagesFragment = MessagesFragment()
+                    val bundle = Bundle()
+                    bundle.putString("tag", "msgInbox") // Pass your value here
+                    messagesFragment.arguments = bundle
+                    switchFragment(messagesFragment)
                     true
                 }
 

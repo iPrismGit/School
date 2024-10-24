@@ -33,6 +33,7 @@ import com.iprism.school.activities.InviteParentsActivity
 import com.iprism.school.activities.StaffActivity
 import com.iprism.school.activities.LoginActivity
 import com.iprism.school.activities.MealPlannerActivity
+import com.iprism.school.activities.MessageActivity
 import com.iprism.school.activities.PromotionsActivity
 import com.iprism.school.activities.RatingsAndReviewsActivity
 import com.iprism.school.activities.StaffAttendanceActivity
@@ -64,6 +65,8 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(layoutInflater)
         handleStudentsLL()
         handleInboxLL()
+        handleSentLo()
+        handleScheduled()
         handleMenuImg()
         handleMealPlanningLo()
         handleMessageLl()
@@ -90,6 +93,22 @@ class HomeFragment : Fragment() {
         hnaldeAlbumsViewAll()
         handleChildHandoverLo()
         return binding.root
+    }
+
+    private fun handleSentLo() {
+        binding.sentLo.setOnClickListener(View.OnClickListener {
+            var intent = Intent(context, HomeActivity::class.java)
+            intent.putExtra("tag", "sent")
+            startActivity(intent)
+        })
+    }
+
+    private fun handleScheduled() {
+        binding.scheduledLo.setOnClickListener(View.OnClickListener {
+            var intent = Intent(context, HomeActivity::class.java)
+            intent.putExtra("tag", "scheduled")
+            startActivity(intent)
+        })
     }
 
     private fun handleChildHandoverLo() {
@@ -295,14 +314,14 @@ class HomeFragment : Fragment() {
     private fun handleInboxLL() {
         binding.inboxLl.setOnClickListener(View.OnClickListener {
             var intent = Intent(context, HomeActivity::class.java)
-            intent.putExtra("tag", "msg")
+            intent.putExtra("tag", "msgInbox")
             startActivity(intent)
         })
     }
 
     private fun handleMessageLl() {
         binding.messageLl.setOnClickListener(View.OnClickListener {
-            var intent = Intent(context, HomeActivity::class.java)
+            var intent = Intent(context, MessageActivity::class.java)
             intent.putExtra("tag", "msg")
             startActivity(intent)
         })

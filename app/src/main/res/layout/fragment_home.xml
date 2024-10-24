@@ -834,6 +834,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/sent_lo"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="40dp"
@@ -858,6 +859,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/scheduled_lo"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="40dp"
