@@ -40,6 +40,8 @@ import com.iprism.school.activities.StaffAttendanceActivity
 import com.iprism.school.activities.StudentsActivity
 import com.iprism.school.activities.SubjectsActivity
 import com.iprism.school.databinding.FragmentHomeBinding
+import com.iprism.school.databinding.MessageCoonfirmationDialogBinding
+import com.iprism.school.databinding.ViewMessagesAlertDialogBinding
 import com.iprism.school.utils.ToastUtils
 
 class HomeFragment : Fragment() {
@@ -65,6 +67,7 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(layoutInflater)
         handleStudentsLL()
         handleInboxLL()
+        handleViewAllMessagesLo()
         handleSentLo()
         handleScheduled()
         handleMenuImg()
@@ -95,6 +98,24 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    private fun handleViewAllMessagesLo() {
+        binding.viewAllMessageLo.setOnClickListener(View.OnClickListener {
+            showConfirmationDialog()
+
+        })
+    }
+
+
+    private fun showConfirmationDialog() {
+        val viewMessageBinding = ViewMessagesAlertDialogBinding.inflate(layoutInflater)
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+        dialogBuilder.setView(viewMessageBinding.root)
+        val dialog = dialogBuilder.create()
+        dialog.show()
+        viewMessageBinding.okBtn.setOnClickListener(View.OnClickListener {
+            dialog.dismiss()
+        })
+    }
     private fun handleSentLo() {
         binding.sentLo.setOnClickListener(View.OnClickListener {
             var intent = Intent(context, HomeActivity::class.java)

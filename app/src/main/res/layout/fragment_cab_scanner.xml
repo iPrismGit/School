@@ -20,9 +20,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#D9D9D9"
+        android:gravity="center"
         android:orientation="horizontal"
         android:padding="8dp"
-        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -32,9 +32,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="12dp"
-            android:textColor="@color/black"
             android:fontFamily="@font/inter_semibold"
-            android:text="Mark as" />
+            android:text="Mark as"
+            android:textColor="@color/black" />
 
         <ImageView
             android:id="@+id/imageView39"
@@ -48,15 +48,24 @@
         android:id="@+id/textView77"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_marginBottom="16dp"
-        android:textSize="12dp"
         android:fontFamily="@font/inter_semibold"
+        android:gravity="center"
         android:text="Place a barcode inside the viewfinder rectangle to scan it."
         android:textColor="@color/white"
+        android:textSize="12dp"
         app:layout_constraintBottom_toBottomOf="@+id/barcode_scanner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:gravity="center"
+        android:text="Scan QR code for Cab in/out"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toTopOf="@id/barcode_scanner" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

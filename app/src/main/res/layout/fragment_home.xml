@@ -743,6 +743,7 @@
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/view_all_message_lo"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
