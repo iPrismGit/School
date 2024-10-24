@@ -48,7 +48,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                android:padding="6dp"
+                android:padding="8dp"
                 android:src="@drawable/trash_iv"
                 android:visibility="visible" />
 
@@ -60,7 +60,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                android:padding="6dp"
+                android:padding="8dp"
                 android:src="@drawable/info_img"
                 android:visibility="visible" />
 
@@ -72,7 +72,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                android:padding="6dp"
+                android:padding="8dp"
                 android:src="@drawable/upload_iv"
                 android:visibility="gone" />
 
@@ -84,7 +84,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                android:padding="6dp"
+                android:padding="8dp"
                 android:src="@drawable/forword_img"
                 android:visibility="visible" />
 
