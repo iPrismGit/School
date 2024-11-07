@@ -23,4 +23,5 @@ class OtpVerificationActivity : AppCompatActivity() {
             startActivity(Intent(this, HomeActivity::class.java))
         })
     }
+
 }

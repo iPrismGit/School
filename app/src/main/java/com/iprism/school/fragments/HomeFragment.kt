@@ -34,6 +34,7 @@ import com.iprism.school.activities.StaffActivity
 import com.iprism.school.activities.LoginActivity
 import com.iprism.school.activities.MealPlannerActivity
 import com.iprism.school.activities.MessageActivity
+import com.iprism.school.activities.PendingRequestsActivity
 import com.iprism.school.activities.PromotionsActivity
 import com.iprism.school.activities.RatingsAndReviewsActivity
 import com.iprism.school.activities.StaffAttendanceActivity
@@ -95,16 +96,21 @@ class HomeFragment : Fragment() {
         handleInviteParentsLo()
         hnaldeAlbumsViewAll()
         handleChildHandoverLo()
+        handlePendingRequestsLo()
         return binding.root
+    }
+
+    private fun handlePendingRequestsLo() {
+        binding.pendingRequestsLo.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(requireContext(), PendingRequestsActivity::class.java))
+        })
     }
 
     private fun handleViewAllMessagesLo() {
         binding.viewAllMessageLo.setOnClickListener(View.OnClickListener {
             showConfirmationDialog()
-
         })
     }
-
 
     private fun showConfirmationDialog() {
         val viewMessageBinding = ViewMessagesAlertDialogBinding.inflate(layoutInflater)
