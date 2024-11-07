@@ -23,6 +23,8 @@ class PendingRequestsActivity : AppCompatActivity() {
         handleBack()
     }
 
+
+
     private fun handleBack() {
         binding.backIv.setOnClickListener(View.OnClickListener {
             finish()
