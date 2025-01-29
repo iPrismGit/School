@@ -26,7 +26,6 @@ class MessageActivity : AppCompatActivity() {
         })
     }
 
-
     private fun showConfirmationDialog() {
         val confirmationBinding = MessageCoonfirmationDialogBinding.inflate(layoutInflater)
         val dialogBuilder = AlertDialog.Builder(this)

@@ -55,7 +55,19 @@ dependencies {
     implementation("com.intuit.sdp:sdp-android:1.1.0")
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation("com.github.yuriy-budiyev:code-scanner:2.3.0")
+    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.9.2")
+
+    //update app
+    implementation ("com.google.android.play:app-update:2.1.0")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+
 }

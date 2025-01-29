@@ -20,9 +20,6 @@ class CalenderDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCalenderDetailsBinding
     private var calenderId: String = ""
     private var isInfoVisible: Boolean = false
-    private lateinit var crossImage: ImageView
-    private lateinit var cancelBtn: Button
-    private lateinit var deleteBtn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,6 +95,7 @@ class CalenderDetailsActivity : AppCompatActivity() {
         })
 
         bottomSheetDialog.show()
+
     }
 
 }
