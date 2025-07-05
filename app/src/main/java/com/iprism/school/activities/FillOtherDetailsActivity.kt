@@ -55,6 +55,7 @@ class FillOtherDetailsActivity : BaseActivity() {
     private lateinit var relationName: EditText
     private lateinit var relation: EditText
     private lateinit var rehlation: EditText
+    private lateinit var rehlajtion: EditText
 
     private var tag: String = ""
     private var teacherId: String = ""
