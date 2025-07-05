@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.SingleConsentActivity">
+    tools:context=".activities.circular.SingleConsentActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout9"
@@ -31,7 +31,7 @@
             android:fontFamily="@font/inter_bold"
             android:gravity="center_vertical"
             android:paddingStart="6dp"
-            android:text="Consent"
+            android:text="Circular"
             android:textColor="@color/black"
             android:textSize="18dp" />
 
@@ -134,20 +134,20 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView33"
+                    android:id="@+id/namesTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_semibold"
-                    android:text="Tayyaba Siddiui"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="16dp" />
 
                 <TextView
-                    android:id="@+id/textView36"
+                    android:id="@+id/dateandTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="28 Jun, 2024, 05:06 PM"
+                    android:text=""
                     android:textColor="@color/black" />
             </LinearLayout>
         </LinearLayout>
@@ -174,18 +174,18 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView40"
+                    android:id="@+id/studentsTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Students: Arya"
+                    android:text=""
                     android:textColor="@color/black" />
 
                 <TextView
-                    android:id="@+id/textView41"
+                    android:id="@+id/groupsTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="Groups   : Pebbles"
+                    android:text=""
                     android:textColor="@color/black" />
             </LinearLayout>
 
@@ -203,6 +203,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="@dimen/_20sdp"
             android:id="@+id/info_lo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -210,6 +211,20 @@
             android:visibility="gone">
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Attachments  "
+                android:fontFamily="@font/inter_bold"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_13sdp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rv_attachment"/>
+
+            <TextView
+                android:visibility="gone"
                 android:id="@+id/textView42"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -219,6 +234,7 @@
                 android:textColor="@color/black" />
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -240,6 +256,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -261,6 +278,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -282,6 +300,7 @@
             </LinearLayout>
 
             <ImageView
+                android:visibility="gone"
                 android:id="@+id/imageView23"
                 android:layout_width="101dp"
                 android:layout_height="101dp"

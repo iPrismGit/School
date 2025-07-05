@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ConsentInfoActivity">
+    tools:context=".activities.circular.ConsentInfoActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout9"
@@ -64,7 +64,7 @@
             android:textColor="@color/black" />
 
         <LinearLayout
-            android:id="@+id/from_date_lo"
+            android:id="@+id/from_date_ll"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:layout_marginTop="12dp"
@@ -98,7 +98,7 @@
             android:textColor="@color/black" />
 
         <LinearLayout
-            android:id="@+id/to_date_lo"
+            android:id="@+id/to_date_ll"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:layout_marginTop="12dp"

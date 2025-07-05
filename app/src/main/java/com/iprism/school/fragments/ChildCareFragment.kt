@@ -10,6 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.PopupMenu
+import android.widget.TextView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.iprism.school.R
@@ -18,20 +21,20 @@ import com.iprism.school.activities.DayCareReportsActivity
 import com.iprism.school.activities.DaycareEmailReportActivity
 import com.iprism.school.activities.DaycareReportActivity
 import com.iprism.school.activities.SetActivityIconActivity
+import com.iprism.school.adapters.DairiesNewAdapter
 import com.iprism.school.adapters.PagerAdapter
 import com.iprism.school.databinding.FragmentChildCareBinding
+import com.iprism.school.databinding.StudentRemarksBinding
 import com.iprism.school.utils.ToastUtils
+import com.iprism.school.viewModels.Scl_ViewModel
+import java.util.ArrayList
 
 class ChildCareFragment : Fragment() {
 
     private lateinit var binding: FragmentChildCareBinding
     private var tag: String = ""
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentChildCareBinding.inflate(layoutInflater)
         tag = arguments?.getString("tag").toString()
         Log.d("tagFragment", tag)
@@ -42,12 +45,13 @@ class ChildCareFragment : Fragment() {
         }
 
         if (tag.equals("Dairy", true)) {
-            binding.saveBtn.visibility = View.VISIBLE
+            binding.reportsBtn.visibility = View.VISIBLE
             binding.dayCareLo.visibility = View.GONE
         } else {
             binding.dayCareLo.visibility = View.VISIBLE
-            binding.saveBtn.visibility = View.GONE
+            binding.reportsBtn.visibility = View.GONE
         }
+
         hanldeSaveBtn()
         handleCalenderBtn()
         handleThreeDots()
@@ -82,7 +86,6 @@ class ChildCareFragment : Fragment() {
                     startActivity(Intent(context, SetActivityIconActivity::class.java))
                     true
                 }
-
                 else -> false
             }
         }
@@ -90,14 +93,14 @@ class ChildCareFragment : Fragment() {
     }
 
     private fun hanldeSaveBtn() {
-        binding.saveBtn.setOnClickListener(View.OnClickListener {
-            blinkButton(binding.saveBtn)
+        binding.reportsBtn.setOnClickListener(View.OnClickListener {
+            blinkButton(binding.reportsBtn)
             startActivity(Intent(context, CreatedDiaryActivity::class.java))
             ToastUtils.showSuccessCustomToast(requireContext(), "Daily Report Created Successfully")
         })
     }
 
-    private fun blinkButton(button: Button) {
+    private fun blinkButton(button: TextView) {
         val blinkAnimation = ObjectAnimator.ofFloat(button, "alpha", 0f, 1f)
         blinkAnimation.duration = 500 // 500ms for the blink
         blinkAnimation.repeatCount = 0 // Blink twice
@@ -107,9 +110,7 @@ class ChildCareFragment : Fragment() {
     private fun setupTabs() {
         val pagerAdapter = PagerAdapter(this)
         binding.viewPager.adapter = pagerAdapter
-
-        val tabLayoutMediator =
-            TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
+        val tabLayoutMediator = TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
                 when (position) {
                     0 -> tab.text = "Dairy"
                     1 -> tab.text = "Day Care"
@@ -122,12 +123,12 @@ class ChildCareFragment : Fragment() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when (tab.position) {
                     0 -> { // Dairy Tab
-                        binding.saveBtn.visibility = View.VISIBLE
+                        binding.reportsBtn.visibility = View.VISIBLE
                         binding.dayCareLo.visibility = View.GONE
                     }
 
                     1 -> { // Day Care Tab
-                        binding.saveBtn.visibility = View.GONE
+                        binding.reportsBtn.visibility = View.GONE
                         binding.dayCareLo.visibility = View.VISIBLE
                     }
                 }

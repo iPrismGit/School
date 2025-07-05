@@ -22,11 +22,11 @@
             android:orientation="horizontal"
             android:padding="16dp">
 
-            <ImageView
-                android:id="@+id/imageView34"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/proPic"
                 android:layout_width="65dp"
                 android:layout_height="65dp"
-                app:srcCompat="@drawable/activity_defualt_icon" />
+                android:src="@drawable/activity_defualt_icon" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -40,6 +40,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_semibold"
                     android:text="Dummy"
+                    android:id="@+id/nameTv"
                     android:textColor="@color/black" />
 
                 <TextView
@@ -50,6 +51,7 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/admissionTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="LPISBC/79"

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="@dimen/_5sdp"
+    android:layout_margin="@dimen/_5sdp"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_marginTop="@dimen/_5sdp"
+        android:id="@+id/nameTv"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:fontFamily="@font/inter_semibold"
+        android:textSize="@dimen/_12sdp"
+        android:textColor="@color/black"/>
+
+    <androidx.appcompat.widget.SearchView
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:background="@drawable/edit_text_bg"
+        android:id="@+id/searchView"
+        android:focusable="true"
+        android:clickable="true"
+        android:iconifiedByDefault="false"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:queryHint="Search class..." />
+
+    <ListView
+        android:layout_margin="@dimen/_5sdp"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:id="@+id/classListView"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:choiceMode="multipleChoice"/>
+
+</LinearLayout>

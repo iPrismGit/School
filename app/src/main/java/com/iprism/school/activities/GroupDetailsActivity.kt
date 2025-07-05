@@ -1,34 +1,69 @@
 package com.iprism.school.activities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.iprism.parentapp.base.BaseActivity
 import com.iprism.school.R
+import com.iprism.school.activities.GroupsActivity
 import com.iprism.school.adapters.GroupStudentsAdapter
+import com.iprism.school.adapters.GroupsAdapter
 import com.iprism.school.databinding.ActivityGroupDetailsBinding
 import com.iprism.school.databinding.ActivityGroupsBinding
 import com.iprism.school.databinding.DeleteBottomSheetBinding
 import com.iprism.school.databinding.GroupAdminsBottomSheetBinding
+import com.iprism.school.model.Request.GroupDetailsReq
+import com.iprism.school.model.Request.SchoolStaffReq
+import com.iprism.school.model.Response.GroupDetailsResponse
+import com.iprism.school.model.Response.GroupsListResponse
+import com.iprism.school.model.Response.SuccessResponsePojo
+import com.iprism.school.utils.Constants
 import com.iprism.school.utils.ToastUtils
+import com.iprism.school.utils.User
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class GroupDetailsActivity : AppCompatActivity() {
+class GroupDetailsActivity : BaseActivity() {
 
     private lateinit var binding: ActivityGroupDetailsBinding
     private var isInfoVisible: Boolean = false
+
+    private var tag: String = ""
+    private var teacherId: String = ""
+    private var auth_token: String = ""
+    private var scl_id: String = ""
+    private var groupId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGroupDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setupGroupDetailsAdapter()
+
+        teacherId = userDetails[User.Companion.ID].toString()
+        auth_token = userDetails[User.Companion.AUTH_TOKEN].toString()
+        scl_id = userDetails[User.Companion.SCHOOL_ID].toString()
+
+        groupId = intent.getStringExtra("groupId").toString()
+
         handleStudentsDropDown()
         handleBack()
         handleDeleteBtn()
+
+        groupDetails()
+
+        binding.deleteIv.setOnClickListener {
+            groupDelete()
+        }
+
     }
 
     private fun handleDeleteBtn() {
@@ -49,13 +84,6 @@ class GroupDetailsActivity : AppCompatActivity() {
         })
     }
 
-    private fun setupGroupDetailsAdapter() {
-        var groupStudentsAdapter = GroupStudentsAdapter(this)
-        binding.groupStudentsRv.adapter = groupStudentsAdapter
-        var  linearLayoutManager = LinearLayoutManager(this)
-        binding.groupStudentsRv.layoutManager = linearLayoutManager
-    }
-
     private fun toggleInformationVisibility() {
         if (isInfoVisible) {
             binding.studentsLo.visibility = View.GONE
@@ -72,8 +100,7 @@ class GroupDetailsActivity : AppCompatActivity() {
         val binding = DeleteBottomSheetBinding.inflate(layoutInflater)
         bottomSheetDialog.setContentView(binding.root)
         bottomSheetDialog.setOnShowListener { dialog ->
-            val bottomSheet =
-                (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            val bottomSheet = (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
             bottomSheet?.setBackgroundResource(R.drawable.rounded_bottom_sheet_background)
         }
 
@@ -92,6 +119,97 @@ class GroupDetailsActivity : AppCompatActivity() {
         })
 
         bottomSheetDialog.show()
+    }
+
+
+    private fun groupDetails() {
+        showProgress()
+        var apiRequest = GroupDetailsReq(auth_token,groupId,scl_id,teacherId)
+        Log.d("groupDetailsReq", apiRequest.toString())
+        val call: Call<GroupDetailsResponse> = parentApiService!!.groupDetails(apiRequest)
+        call.enqueue(object : Callback<GroupDetailsResponse> {
+            override fun onResponse(call: Call<GroupDetailsResponse>, response: Response<GroupDetailsResponse>) {
+                if (response.isSuccessful) {
+                    hideProgress()
+                    val loginApiResponse = response.body()
+                    if (loginApiResponse!!.status == true){
+
+                        Glide.with(this@GroupDetailsActivity)
+                            .load(Constants.IMAGES_URL+loginApiResponse.response.groups.attachment.toString())
+                            .into(binding.proPic)
+
+                        binding.groupNameTv.text = loginApiResponse.response.groups.group_name.toString()
+                        binding.adminsTv.text = loginApiResponse.response.groups.group_admins_names.toString()
+                        binding.schoolMembersTv.text = loginApiResponse.response.groups.school_members.toString()
+                        binding.groupStudentsTv.text = "Students : "+loginApiResponse.response.groups.student_names.toString()
+                        binding.groupDescriptionTv.text = loginApiResponse.response.groups.group_description.toString()
+
+                        val adap1 = GroupStudentsAdapter(this@GroupDetailsActivity, loginApiResponse.response.groups.students_details)
+                        binding.groupStudentsRv.layoutManager = LinearLayoutManager(this@GroupDetailsActivity, LinearLayoutManager.VERTICAL, false)
+                        binding.groupStudentsRv.adapter = adap1
+                        adap1.notifyDataSetChanged()
+
+
+                        binding.editIv.setOnClickListener {
+                            val intent = Intent(this@GroupDetailsActivity, CreateGroupActivity::class.java)
+                            intent.putExtra("groupId",groupId)
+                            intent.putExtra("groupImg",loginApiResponse.response.groups.attachment.toString())
+                            intent.putExtra("groupName",loginApiResponse.response.groups.group_name.toString())
+                            intent.putExtra("groupDescription",loginApiResponse.response.groups.group_description.toString())
+                            intent.putExtra("admins",loginApiResponse.response.groups.group_admins_names.toString())
+                            intent.putExtra("adminsId",loginApiResponse.response.groups.group_admins.toString())
+                            intent.putExtra("schoolmem",loginApiResponse.response.groups.school_members.toString())
+                            intent.putExtra("schoolmemId",loginApiResponse.response.groups.group_staff.toString())
+                            intent.putExtra("students",loginApiResponse.response.groups.student_names.toString())
+                            intent.putExtra("studentsId",loginApiResponse.response.groups.group_students.toString())
+                            intent.putExtra("tag","edit")
+                            startActivity(intent)
+                        }
+                    }else{
+
+                    }
+                } else {
+                    hideProgress()
+                    ToastUtils.showErrorCustomToast(this@GroupDetailsActivity, response.message())
+                }
+            }
+            override fun onFailure(call: Call<GroupDetailsResponse>, t: Throwable) {
+                hideProgress()
+                ToastUtils.showErrorCustomToast(this@GroupDetailsActivity, t.message.toString())
+            }
+        })
+    }
+
+
+    private fun groupDelete() {
+        showProgress()
+        var apiRequest = GroupDetailsReq(auth_token,groupId,scl_id,teacherId)
+        Log.d("groupDetailsReq", apiRequest.toString())
+        val call: Call<SuccessResponsePojo> = parentApiService!!.groupDelete(apiRequest)
+        call.enqueue(object : Callback<SuccessResponsePojo> {
+            override fun onResponse(call: Call<SuccessResponsePojo>, response: Response<SuccessResponsePojo>) {
+                if (response.isSuccessful) {
+                    hideProgress()
+                    val loginApiResponse = response.body()
+                    if (loginApiResponse!!.status == true){
+
+                        val intent = Intent(this@GroupDetailsActivity, GroupsActivity::class.java)
+                        startActivity(intent)
+                        finish()
+
+                    }else{
+
+                    }
+                } else {
+                    hideProgress()
+                    ToastUtils.showErrorCustomToast(this@GroupDetailsActivity, response.message())
+                }
+            }
+            override fun onFailure(call: Call<SuccessResponsePojo>, t: Throwable) {
+                hideProgress()
+                ToastUtils.showErrorCustomToast(this@GroupDetailsActivity, t.message.toString())
+            }
+        })
     }
 
 }

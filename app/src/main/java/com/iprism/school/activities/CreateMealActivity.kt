@@ -1,5 +1,7 @@
 package com.iprism.school.activities
 
+import android.app.AlertDialog
+import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import androidx.appcompat.app.AppCompatActivity
@@ -10,15 +12,40 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.iprism.parentapp.base.BaseActivity
 import com.iprism.school.R
+import com.iprism.school.activities.ClassesActivity
+import com.iprism.school.activities.StaffAttendanceActivity
+import com.iprism.school.activities.classes.CreateClassActivity
+import com.iprism.school.adapters.ClassesAdapter
+import com.iprism.school.adapters.StaffAttendancesAdapter
 import com.iprism.school.databinding.ActivityCreateMealBinding
+import com.iprism.school.model.Request.ClassListReq
+import com.iprism.school.model.Request.CreateMealReq
+import com.iprism.school.model.Request.MealPlanListReq
+import com.iprism.school.model.Request.StaffAttandanceReq
+import com.iprism.school.model.Response.ClassListResponse
+import com.iprism.school.model.Response.MealPlanListResponse
+import com.iprism.school.model.Response.StaffAttandanceResponse
+import com.iprism.school.model.Response.SuccessResponsePojo
 import com.iprism.school.utils.ToastUtils
+import com.iprism.school.utils.User
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.Locale
 
-class CreateMealActivity : AppCompatActivity() {
+class CreateMealActivity : BaseActivity() {
 
     private lateinit var binding: ActivityCreateMealBinding
+
+    private var tag: String = ""
+    private var teacherId: String = ""
+    private var auth_token: String = ""
+    private var scl_id: String = ""
+
     private val dateFormat = SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
     private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     private var calendar = Calendar.getInstance()
@@ -26,16 +53,52 @@ class CreateMealActivity : AppCompatActivity() {
     private lateinit var okBtn: Button
     private lateinit var cancelBtn: Button
 
+    private var selectedDate: String = ""
+    private var selected_Type: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateMealBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        teacherId = userDetails[User.Companion.ID].toString()
+        auth_token = userDetails[User.Companion.AUTH_TOKEN].toString()
+        scl_id = userDetails[User.Companion.SCHOOL_ID].toString()
+
         setDate()
         handleBack()
         handleSubmitBtn()
         handleFoodTypeLo()
         hanldeLeftBtn()
         handleRightBtn()
+
+
+        val genderoptions = arrayOf("Break fast", "Meal","Snacks","Lunch","Evening Snacks")
+        binding.foodTypeLo.setOnClickListener {
+            // Track the selected option
+            var selectedOption = ""
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle("Choose an Option")
+            builder.setSingleChoiceItems(genderoptions, -1) { dialog, which ->
+                selectedOption = genderoptions[which] // Capture the selected option
+            }
+            builder.setPositiveButton("OK") { dialog, _ ->
+                if (selectedOption.isNotEmpty()) {
+                    selected_Type = selectedOption.toString()
+                    binding.foodTypeTxt.text = selectedOption.toString()
+//                    Toast.makeText(this, "You selected: $selectedOption", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "No option selected", Toast.LENGTH_SHORT).show()
+                }
+                dialog.dismiss()
+            }
+            builder.setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            builder.create().show()
+        }
+
+
     }
 
     private fun setDate() {
@@ -46,6 +109,10 @@ class CreateMealActivity : AppCompatActivity() {
         val formattedDateString: String = sdfString.format(calendar.time)
         Log.d("dateFormatString", formattedDateString)
         binding.dateTxt.text = formattedDate
+
+        selectedDate = formattedDateString.toString()
+
+        Log.d("selectedDate", selectedDate)
     }
 
     private fun hanldeLeftBtn() {
@@ -67,16 +134,26 @@ class CreateMealActivity : AppCompatActivity() {
         Log.d("dateFormatString", dateFormatString)
     }
 
+
     private fun handleFoodTypeLo() {
         binding.foodTypeLo.setOnClickListener(View.OnClickListener {
-            showMealTypeBottomSheet()
+//            showMealTypeBottomSheet()
         })
     }
 
     private fun handleSubmitBtn() {
         binding.submitBtn.setOnClickListener(View.OnClickListener {
-            ToastUtils.showSuccessCustomToast(this, "Meal Created Successfully")
-            finish()
+            if (binding.etMealName.text.toString() == ""||binding.etMealName.text.toString() == null){
+                showToast("Enter Meal Name")
+            }else if (selectedDate == ""||selectedDate == null){
+                showToast("Select Date")
+            } else if (selected_Type == ""||selected_Type == null){
+                showToast("Select Type")
+            } else if (binding.remarksEt.text.toString() == ""||binding.remarksEt.text.toString() == null){
+                showToast("Enter Remarks")
+            }else{
+                createMeal()
+            }
         })
     }
 
@@ -86,33 +163,40 @@ class CreateMealActivity : AppCompatActivity() {
         })
     }
 
-    private fun showMealTypeBottomSheet() {
-        val bottomSheetDialog = BottomSheetDialog(this)
-        val bottomSheetView: View =
-            LayoutInflater.from(this).inflate(R.layout.meal_type_bottom_sheet_dialog, null)
-        bottomSheetDialog.setContentView(bottomSheetView)
-        cancelBtn = bottomSheetDialog.findViewById<View>(R.id.cancel_btn) as Button
-        crossImage = bottomSheetDialog.findViewById<View>(R.id.cross_iv) as ImageView
-        okBtn = bottomSheetDialog.findViewById<View>(R.id.ok_btn) as Button
-        bottomSheetDialog.setOnShowListener { dialog ->
-            val bottomSheet =
-                (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-            bottomSheet?.setBackgroundResource(R.drawable.rounded_bottom_sheet_background)
-        }
+    private fun createMeal() {
+        showProgress()
+        var apiRequest = CreateMealReq(auth_token,selectedDate,binding.etMealName.text.toString(),
+            selected_Type,binding.remarksEt.text.toString(),scl_id,teacherId)
+        Log.d("createMeal", apiRequest.toString())
+        val call: Call<SuccessResponsePojo> = parentApiService!!.createMeal(apiRequest)
+        call.enqueue(object : Callback<SuccessResponsePojo> {
+            override fun onResponse(call: Call<SuccessResponsePojo>, response: Response<SuccessResponsePojo>) {
+                if (response.isSuccessful) {
+                    hideProgress()
+                    val loginApiResponse = response.body()
+                    if (loginApiResponse!!.status == true){
+                        hideProgress()
 
-        cancelBtn.setOnClickListener(View.OnClickListener {
-            bottomSheetDialog.dismiss()
+                        val intent = Intent(this@CreateMealActivity,MealPlannerActivity::class.java)
+                        startActivity(intent)
+                        finish()
+
+                    }else{
+                        hideProgress()
+                    }
+                } else {
+                    hideProgress()
+                    ToastUtils.showErrorCustomToast(this@CreateMealActivity, response.message())
+                }
+            }
+            override fun onFailure(call: Call<SuccessResponsePojo>, t: Throwable) {
+                hideProgress()
+                ToastUtils.showErrorCustomToast(this@CreateMealActivity, t.message.toString())
+            }
         })
-
-        crossImage.setOnClickListener(View.OnClickListener {
-            bottomSheetDialog.dismiss()
-        })
-
-        okBtn.setOnClickListener(View.OnClickListener {
-            bottomSheetDialog.dismiss()
-        })
-
-        bottomSheetDialog.show()
     }
+
+
+
 
 }

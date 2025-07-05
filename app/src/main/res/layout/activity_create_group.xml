@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -25,6 +26,7 @@
             android:src="@drawable/back_img" />
 
         <TextView
+            android:id="@+id/titleTv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -54,7 +56,7 @@
             android:layout_margin="16dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/group_icon_iv"
+                android:id="@+id/pic_img"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/activity_defualt_icon"
@@ -79,6 +81,7 @@
             android:textColor="@color/black" />
 
         <EditText
+            android:id="@+id/name_et"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:layout_marginTop="6dp"
@@ -95,6 +98,7 @@
             android:textColor="@color/black" />
 
         <EditText
+            android:id="@+id/description_et"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:layout_marginTop="6dp"
@@ -110,33 +114,45 @@
             android:text="Choose Admins*"
             android:textColor="@color/black" />
 
-        <LinearLayout
-            android:id="@+id/admins_lo"
+        <RelativeLayout
+            android:id="@+id/admin_ll"
             android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/edit_text"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/edit_text_bg"
+            android:orientation="horizontal"
+            android:padding="5dp">
 
             <TextView
-                android:layout_width="match_parent"
+                android:padding="8dp"
+                android:id="@+id/selectedadmin"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
-                android:layout_weight="1"
-                android:hint="Choose"
-                android:paddingStart="12dp"
+                android:hint="Tap Here to Add Admin"
                 android:textColor="@color/black"
-                android:textColorHint="@color/light_gray1" />
+                android:textSize="14sp"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@id/img_admin"
+                android:textColorHint="@color/light_gray1"
+                android:layout_gravity="center" />
 
             <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginEnd="12dp"
+                android:id="@+id/img_admin"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="15dp"
                 android:gravity="center"
-                android:padding="10dp"
-                android:src="@drawable/down_arrow_img" />
-        </LinearLayout>
+                android:padding="5dp"
+                android:src="@drawable/down_arrow_img"
+                android:visibility="visible"
+                app:tint="@color/gray1">
+
+            </ImageView>
+
+        </RelativeLayout>
 
         <TextView
             android:layout_width="match_parent"
@@ -145,33 +161,45 @@
             android:text="Choose School Members"
             android:textColor="@color/black" />
 
-        <LinearLayout
-            android:id="@+id/school_members_lo"
+        <RelativeLayout
+            android:id="@+id/schoolmem_ll"
             android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/edit_text"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/edit_text_bg"
+            android:orientation="horizontal"
+            android:padding="5dp">
 
             <TextView
-                android:layout_width="match_parent"
+                android:padding="8dp"
+                android:id="@+id/selectedschoolmem"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
-                android:layout_weight="1"
-                android:hint="Choose"
-                android:paddingStart="12dp"
+                android:hint="Tap Here to Add School members"
                 android:textColor="@color/black"
-                android:textColorHint="@color/light_gray1" />
+                android:textSize="14sp"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@id/img_scc"
+                android:textColorHint="@color/light_gray1"
+                android:layout_gravity="center" />
 
             <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginEnd="12dp"
+                android:id="@+id/img_scc"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="15dp"
                 android:gravity="center"
-                android:padding="10dp"
-                android:src="@drawable/down_arrow_img" />
-        </LinearLayout>
+                android:padding="5dp"
+                android:src="@drawable/down_arrow_img"
+                android:visibility="visible"
+                app:tint="@color/gray1">
+
+            </ImageView>
+
+        </RelativeLayout>
 
         <TextView
             android:layout_width="match_parent"
@@ -180,33 +208,45 @@
             android:text="Select Students"
             android:textColor="@color/black" />
 
-        <LinearLayout
-            android:id="@+id/students_lo"
+        <RelativeLayout
+            android:id="@+id/student_ll"
             android:layout_width="match_parent"
-            android:layout_height="46dp"
-            android:layout_marginTop="6dp"
-            android:background="@drawable/edit_text"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/edit_text_bg"
+            android:orientation="horizontal"
+            android:padding="5dp">
 
             <TextView
-                android:layout_width="match_parent"
+                android:padding="8dp"
+                android:id="@+id/selectedstudent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="12dp"
-                android:layout_weight="1"
-                android:hint="Choose"
-                android:paddingStart="12dp"
+                android:hint="Tap Here to Add Students"
                 android:textColor="@color/black"
-                android:textColorHint="@color/light_gray1" />
+                android:textSize="14sp"
+                android:layout_alignParentStart="true"
+                android:layout_toStartOf="@id/img_students"
+                android:textColorHint="@color/light_gray1"
+                android:layout_gravity="center" />
 
             <ImageView
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginEnd="12dp"
+                android:id="@+id/img_students"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:layout_marginEnd="15dp"
                 android:gravity="center"
-                android:padding="10dp"
-                android:src="@drawable/down_arrow_img" />
-        </LinearLayout>
+                android:padding="5dp"
+                android:src="@drawable/down_arrow_img"
+                android:visibility="visible"
+                app:tint="@color/gray1">
+
+            </ImageView>
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

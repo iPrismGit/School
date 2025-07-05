@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.CreateAlbumsActivity">
+    tools:context=".activities.album.AlbumsActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout3"
@@ -26,7 +26,7 @@
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
             android:padding="4dp"
-            android:src="@drawable/menu_img" />
+            android:src="@drawable/back_img" />
 
         <TextView
             android:id="@+id/textView10"
@@ -50,21 +50,37 @@
 
         <TextView
             android:id="@+id/textView72"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="Images uploaded here are directly reflected in the parent’s account"
             android:textColor="@color/black"
-            android:textSize="10dp"
+            android:textSize="12dp"
+            android:layout_marginTop="@dimen/_10sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/nodataTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter"
+            android:text="No Data Found"
+            android:textColor="@color/gray"
+            android:textSize="14sp"
+            app:layout_constraintTop_toTopOf="@+id/albums_rv" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/albums_rv"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="20dp"
+            tools:itemCount="10"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

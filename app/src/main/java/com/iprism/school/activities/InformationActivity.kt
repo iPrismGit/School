@@ -11,13 +11,16 @@ class InformationActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityInformationBinding;
     private var type :String = ""
+    private var contentTv :String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityInformationBinding.inflate(layoutInflater)
         setContentView(binding.root)
         type = intent.getStringExtra("type").toString()
+        contentTv = intent.getStringExtra("contentTv").toString()
         binding.textView10.text = type
+        binding.aboutUsTxt.text = contentTv.toString()
         handleBack()
     }
 

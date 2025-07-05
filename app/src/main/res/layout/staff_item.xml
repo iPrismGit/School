@@ -23,12 +23,10 @@
             android:orientation="horizontal"
             android:padding="12dp">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:maxWidth="80dp"
-                android:maxHeight="80dp"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_pic"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
                 android:src="@drawable/message_profile" />
 
             <LinearLayout
@@ -39,6 +37,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/nameTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
@@ -48,12 +47,14 @@
                     android:textColor="@color/black" />
 
                 <TextView
+                    android:id="@+id/departmentTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Center Director"
                     android:textColor="@color/black" />
 
                 <TextView
+                    android:id="@+id/mobileTv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"

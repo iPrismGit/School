@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:orientation="vertical"
+    android:background="@color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.CreateConsentActivity">
+    tools:context=".activities.calender.EditCalenderActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout9"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,13 +28,14 @@
             android:src="@drawable/back_img" />
 
         <TextView
+            android:id="@+id/pageTv"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:fontFamily="@font/inter_bold"
             android:gravity="center_vertical"
             android:paddingStart="12dp"
-            android:text="@string/edit_calender"
+            android:text="Edit Calender"
             android:textColor="@color/black"
             android:textSize="18dp" />
 
@@ -79,8 +83,9 @@
     </LinearLayout>
 
     <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,133 +97,170 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RelativeLayout
+                android:id="@+id/class_ll"
                 android:layout_width="match_parent"
-                android:layout_height="46dp">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_bg"
+                android:orientation="horizontal"
+                android:padding="5dp">
 
                 <TextView
-                    android:id="@+id/classes_txt"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/edit_text"
-                    android:gravity="center_vertical"
+                    android:padding="8dp"
+                    android:id="@+id/selectedclass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:hint="Tap Here to Add Classes"
-                    android:paddingStart="12dp"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@id/img_class"
                     android:textColorHint="@color/light_gray1"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_gravity="center" />
 
                 <ImageView
+                    app:tint="@color/gray1"
+                    android:id="@+id/img_class"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:src="@drawable/down_arrow_img"
+                    android:visibility="visible">
+                </ImageView>
 
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginEnd="10dp"
-                    android:padding="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/down_arrow_img" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RelativeLayout
+                android:id="@+id/student_ll"
                 android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/edit_text">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_bg"
+                android:orientation="horizontal"
+                android:padding="5dp">
 
                 <TextView
-                    android:id="@+id/students_txt"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/edit_text"
-                    android:gravity="center_vertical"
+                    android:padding="8dp"
+                    android:id="@+id/selectedstudent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:hint="Tap Here to Add Students"
-                    android:paddingStart="12dp"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@id/img_students"
                     android:textColorHint="@color/light_gray1"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_gravity="center" />
 
                 <ImageView
+                    android:id="@+id/img_students"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:src="@drawable/down_arrow_img"
+                    android:visibility="visible"
+                    app:tint="@color/gray1">
 
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginEnd="10dp"
-                    android:padding="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/down_arrow_img" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                </ImageView>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/users_ll"
                 android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:layout_marginTop="16dp"
-                android:visibility="gone">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_bg"
+                android:orientation="horizontal"
+                android:padding="5dp">
 
                 <TextView
-                    android:id="@+id/users_txt"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/edit_text"
-                    android:gravity="center_vertical"
+                    android:padding="8dp"
+                    android:id="@+id/selectedusers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:hint="Tap Here to Add Users"
-                    android:paddingStart="12dp"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@id/img_users"
                     android:textColorHint="@color/light_gray1"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_gravity="center" />
 
                 <ImageView
+                    android:id="@+id/img_users"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:src="@drawable/down_arrow_img"
+                    android:visibility="visible"
+                    app:tint="@color/gray1">
 
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginEnd="10dp"
-                    android:padding="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/down_arrow_img" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                </ImageView>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/groups_ll"
                 android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:layout_marginTop="16dp"
-                android:visibility="gone">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_bg"
+                android:orientation="horizontal"
+                android:padding="5dp">
 
                 <TextView
-                    android:id="@+id/groups_txt"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/edit_text"
-                    android:gravity="center_vertical"
-                    android:hint="Tap Here to Add Groups"
-                    android:paddingStart="12dp"
+                    android:padding="8dp"
+                    android:id="@+id/selectedgroups"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Tap Here to Add Grops"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@id/img_groups"
                     android:textColorHint="@color/light_gray1"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_gravity="center" />
 
                 <ImageView
+                    android:id="@+id/img_groups"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:src="@drawable/down_arrow_img"
+                    android:visibility="visible"
+                    app:tint="@color/gray1">
 
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_marginEnd="10dp"
-                    android:padding="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/down_arrow_img" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                </ImageView>
+
+            </RelativeLayout>
+
+
 
             <EditText
+                android:id="@+id/subjects_Et"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:layout_marginTop="16dp"
@@ -317,37 +359,46 @@
                     android:layout_height="wrap_content"
                     android:text="Advanced Options" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/advanced_options_lo"
+                <RelativeLayout
+                    android:id="@+id/advanced_ll"
                     android:layout_width="match_parent"
-                    android:layout_height="46dp"
-                    android:layout_marginTop="16dp">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/edit_text_bg"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
 
                     <TextView
-                        android:id="@+id/advanced_options_txt"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/edit_text"
-                        android:gravity="center_vertical"
-                        android:hint="Tap Here to Add Advanced Options"
-                        android:paddingStart="12dp"
-                        android:textColorHint="@color/light_gray1"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:padding="8dp"
+                        android:id="@+id/advancedTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:hint=" select "
+                        android:fontFamily="@font/inter_medium"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@id/sp_gender"
+                        android:textColorHint="@color/gray"
+                        android:layout_gravity="center" />
 
                     <ImageView
-
+                        android:src="@drawable/arrow_down"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:theme="@style/ThemeOverlay.AppCompat.Light"
+                        android:id="@+id/sp_gender"
+                        android:fontFamily="@font/inter_medium"
+                        android:textColor="@color/black"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
-                        android:layout_marginEnd="10dp"
-                        android:padding="8dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:srcCompat="@drawable/down_arrow_img" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="5dp"
+                        android:padding="5dp"
+                        android:visibility="visible">
+                    </ImageView>
+
+                </RelativeLayout>
 
             </LinearLayout>
 
@@ -358,11 +409,11 @@
                 android:layout_marginTop="16dp"
                 android:background="@drawable/edit_text"
                 android:ems="10"
+                android:textSize="14dp"
                 android:hint="Add Details"
                 android:inputType="text"
                 android:paddingStart="12dp"
-                android:textColorHint="@color/light_gray1"
-                android:textSize="14dp" />
+                android:textColorHint="@color/light_gray1" />
 
             <EditText
                 android:id="@+id/location_txt"
@@ -371,11 +422,11 @@
                 android:layout_marginTop="16dp"
                 android:background="@drawable/edit_text"
                 android:ems="10"
+                android:visibility="gone"
                 android:hint="Location"
                 android:inputType="text"
                 android:paddingStart="12dp"
-                android:textColorHint="@color/light_gray1"
-                android:visibility="gone" />
+                android:textColorHint="@color/light_gray1" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/images_rv"
@@ -398,7 +449,7 @@
                     android:backgroundTint="@color/blue"
                     android:fontFamily="@font/inter"
                     android:padding="12dp"
-                    android:text="UPDATE"
+                    android:text="Update"
                     android:textAllCaps="false"
                     app:cornerRadius="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -409,4 +460,4 @@
         </LinearLayout>
     </ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

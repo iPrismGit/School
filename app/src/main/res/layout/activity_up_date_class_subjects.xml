@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.CreateClassSubjectsActivity">
+    tools:context=".activities.UpdateClassSubjectsActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout3"
@@ -51,6 +51,7 @@
 
 
         <TextView
+            android:id="@+id/subjectName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/inter_bold"
@@ -66,7 +67,7 @@
             android:textColor="@color/black" />
 
         <LinearLayout
-            android:id="@+id/teachers_lo"
+            android:id="@+id/teachers_ll"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:layout_marginTop="6dp"
@@ -74,7 +75,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/eacher_txt"
+                android:id="@+id/selectedteacherTv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

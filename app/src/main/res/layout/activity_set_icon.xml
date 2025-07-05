@@ -66,9 +66,27 @@
 
         </LinearLayout>
 
+        <TextView
+            android:visibility="gone"
+            android:layout_marginTop="@dimen/_100sdp"
+            android:layout_gravity="center"
+            android:singleLine="true"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_alignParentStart="true"
+            android:layout_centerInParent="true"
+            android:id="@+id/nodataTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:hint="No data found"
+            android:textSize="14sp"
+            android:padding="@dimen/_3sdp"
+            android:textColor="@color/black" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/activity_icons_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

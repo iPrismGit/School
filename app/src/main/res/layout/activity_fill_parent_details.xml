@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:orientation="vertical"
+    android:background="@color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -41,21 +44,16 @@
 
     </LinearLayout>
 
-
     <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
+            android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -68,16 +66,19 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center">
+
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/addfatherPic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="16dp">
 
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/parent_one_iv"
+                        android:id="@+id/fatherPic"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
+                        app:civ_border_width="1dp"
                         android:src="@drawable/activity_defualt_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -94,15 +95,18 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/addmotherPic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="16dp">
 
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/parent_two_iv"
+                        android:id="@+id/mother_Pic"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
+                        app:civ_border_width="1dp"
+
                         android:src="@drawable/activity_defualt_icon"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -117,6 +121,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:srcCompat="@drawable/white_cam" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
             </LinearLayout>
 
 
@@ -130,6 +135,7 @@
                 android:text="Father Name*" />
 
             <EditText
+                android:id="@+id/nameEt"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:textSize="14sp"
@@ -148,13 +154,14 @@
                 android:layout_marginTop="12dp"/>
 
                 <EditText
-                    android:id="@+id/date_of_birth_txt"
+                    android:id="@+id/f_mobileEt"
                     android:layout_width="match_parent"
                     android:layout_height="46dp"
                     android:background="@drawable/edit_text"
-                    android:hint="Enter"
+                    android:hint="Enter mobile"
                     android:inputType="number"
                     android:maxLength="10"
+                    android:singleLine="true"
                     android:textColor="@color/black"
                     android:textSize="14dp"
                     android:paddingStart="12dp"
@@ -169,11 +176,11 @@
                 android:layout_marginTop="12dp"/>
 
             <EditText
-                android:id="@+id/editTextTextEmailAddress2"
+                android:id="@+id/femailEt"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:ems="10"
-                android:hint="Enter"
+                android:hint="Enter email"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
                 android:textSize="14dp"
@@ -189,13 +196,14 @@
                 android:layout_marginTop="12dp"/>
 
             <EditText
+                android:id="@+id/f_occupation_et"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:textSize="14sp"
                 android:paddingStart="12dp"
                 android:background="@drawable/edit_text"
                 android:inputType="text"
-                android:hint="Enter" />
+                android:hint="Enter occupation" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -206,13 +214,14 @@
                 android:layout_marginTop="12dp"/>
 
             <EditText
+                android:id="@+id/motherName_et"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:textSize="14sp"
                 android:paddingStart="12dp"
                 android:background="@drawable/edit_text"
                 android:inputType="text"
-                android:hint="Enter" />
+                android:hint="Enter name" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -222,12 +231,13 @@
                 android:layout_marginTop="12dp"/>
 
             <EditText
-                android:id="@+id/cast_txt"
+                android:id="@+id/mothermobile_et"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:textSize="14sp"
                 android:paddingStart="12dp"
                 android:maxLength="10"
+                android:singleLine="true"
                 android:background="@drawable/edit_text"
                 android:inputType="number"
                 android:hint="Enter" />
@@ -241,10 +251,11 @@
                 android:layout_marginTop="12dp"/>
 
             <EditText
+                android:id="@+id/motheremailEt"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:ems="10"
-                android:hint="Enter"
+                android:hint="Enter email"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
                 android:textSize="14dp"
@@ -260,14 +271,14 @@
                 android:layout_marginTop="12dp"/>
 
             <EditText
-                android:id="@+id/nationality_txt"
+                android:id="@+id/motheroccupation_et"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:textSize="14sp"
                 android:paddingStart="12dp"
                 android:background="@drawable/edit_text"
                 android:inputType="text"
-                android:hint="Enter" />
+                android:hint="Enter mother occupation" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -278,13 +289,14 @@
                 android:layout_marginTop="12dp"/>
 
             <EditText
+                android:id="@+id/gurdname_et"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:textSize="14sp"
                 android:paddingStart="12dp"
                 android:background="@drawable/edit_text"
                 android:inputType="text"
-                android:hint="Enter" />
+                android:hint="Enter guardian name" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -294,14 +306,16 @@
                 android:layout_marginTop="12dp"/>
 
             <EditText
+                android:id="@+id/gurdmobile_et"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:textSize="14sp"
                 android:paddingStart="12dp"
                 android:maxLength="10"
+                android:singleLine="true"
                 android:background="@drawable/edit_text"
                 android:inputType="number"
-                android:hint="Enter" />
+                android:hint="Enter guardian mobile number" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -312,13 +326,14 @@
                 android:layout_marginTop="12dp"/>
 
             <EditText
+                android:id="@+id/addressEt"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:textSize="14sp"
                 android:paddingStart="12dp"
                 android:background="@drawable/edit_text"
                 android:inputType="text"
-                android:hint="Enter" />
+                android:hint="Enter Address" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -329,13 +344,16 @@
                 android:layout_marginTop="12dp"/>
 
             <EditText
+                android:id="@+id/pincodeEt"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:textSize="14sp"
                 android:paddingStart="12dp"
+                android:maxLength="6"
+                android:singleLine="true"
                 android:background="@drawable/edit_text"
                 android:inputType="number"
-                android:hint="Enter" />
+                android:hint="Enter pincode" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -384,4 +402,4 @@
 
         </LinearLayout>
     </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

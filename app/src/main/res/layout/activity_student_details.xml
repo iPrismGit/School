@@ -72,7 +72,7 @@
             android:orientation="vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imageView12"
+                android:id="@+id/pro_img"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
@@ -80,7 +80,7 @@
                 android:src="@drawable/message_profile" />
 
             <TextView
-                android:id="@+id/textView12"
+                android:id="@+id/nameTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -188,11 +188,12 @@
                                 android:textColor="@color/gray1" />
 
                             <TextView
+                                android:id="@+id/admissionIdTv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:fontFamily="@font/inter"
-                                android:text="LPIP/37"
+                                android:text=""
                                 android:textColor="@color/black" />
 
                         </LinearLayout>
@@ -233,11 +234,12 @@
                                 android:textColor="@color/gray1" />
 
                             <TextView
+                                android:id="@+id/classTv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:fontFamily="@font/inter"
-                                android:text="Pebble 3"
+                                android:text=""
                                 android:textColor="@color/black" />
 
                         </LinearLayout>
@@ -278,11 +280,12 @@
                                 android:textColor="@color/gray1" />
 
                             <TextView
+                                android:id="@+id/dobTv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:fontFamily="@font/inter"
-                                android:text="05 May 2017"
+                                android:text=""
                                 android:textColor="@color/black" />
 
                         </LinearLayout>
@@ -323,11 +326,12 @@
                                 android:textColor="@color/gray1" />
 
                             <TextView
+                                android:id="@+id/genderTv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:fontFamily="@font/inter"
-                                android:text="Male"
+                                android:text=""
                                 android:textColor="@color/black" />
 
                         </LinearLayout>
@@ -368,20 +372,21 @@
                                 android:textColor="@color/gray1" />
 
                             <TextView
+                                android:id="@+id/fatherNameTv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:fontFamily="@font/inter"
-                                android:text="Khurram Ahmed"
+                                android:text=""
                                 android:textColor="@color/black" />
 
                             <TextView
-                                android:id="@+id/textView20"
+                                android:id="@+id/fatherMobileTv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:fontFamily="@font/inter"
-                                android:text="947848489"
+                                android:text=""
                                 android:textColor="@color/black" />
 
                         </LinearLayout>
@@ -422,20 +427,21 @@
                                 android:textColor="@color/gray1" />
 
                             <TextView
+                                android:id="@+id/motherNameTv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:fontFamily="@font/inter"
-                                android:text="Asma"
+                                android:text=""
                                 android:textColor="@color/black" />
 
                             <TextView
-                                android:id="@+id/textView23"
+                                android:id="@+id/motherMobileTv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:fontFamily="@font/inter"
-                                android:text="947848489"
+                                android:text=""
                                 android:textColor="@color/black" />
 
                         </LinearLayout>
@@ -476,6 +482,7 @@
                                 android:textColor="@color/gray1" />
 
                             <TextView
+                                android:id="@+id/fatheroccupationTv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
@@ -514,6 +521,7 @@
                             android:paddingRight="8dp">
 
                             <TextView
+
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/inter"
@@ -521,6 +529,7 @@
                                 android:textColor="@color/gray1" />
 
                             <TextView
+                                android:id="@+id/emergencyNameTv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
@@ -529,7 +538,7 @@
                                 android:textColor="@color/black" />
 
                             <TextView
-                                android:id="@+id/textView24"
+                                android:id="@+id/emergencymobileTv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
@@ -575,11 +584,12 @@
                                 android:textColor="@color/gray1" />
 
                             <TextView
+                                android:id="@+id/auth_NameTv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:fontFamily="@font/inter"
-                                android:text="No Authorized Person"
+                                android:text=""
                                 android:textColor="@color/black" />
 
                         </LinearLayout>
@@ -620,6 +630,7 @@
                                 android:textColor="@color/gray1" />
 
                             <TextView
+                                android:id="@+id/dojTv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
@@ -665,6 +676,7 @@
                                 android:textColor="@color/gray1" />
 
                             <TextView
+                                android:id="@+id/addressTv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
@@ -710,11 +722,12 @@
                                 android:textColor="@color/gray1" />
 
                             <TextView
+                                android:id="@+id/castTv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
                                 android:fontFamily="@font/inter"
-                                android:text="Muslim"
+                                android:text=""
                                 android:textColor="@color/black" />
 
                         </LinearLayout>
@@ -755,6 +768,7 @@
                                 android:textColor="@color/gray1" />
 
                             <TextView
+                                android:id="@+id/securityAmountTv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
@@ -801,6 +815,7 @@
                                 android:textColor="@color/gray1" />
 
                             <TextView
+                                android:id="@+id/groupsTv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
@@ -846,6 +861,7 @@
                                 android:textColor="@color/gray1" />
 
                             <TextView
+                                android:id="@+id/cabsTv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
@@ -891,6 +907,7 @@
                                 android:textColor="@color/gray1" />
 
                             <TextView
+                                android:id="@+id/bloodGroupTv"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"

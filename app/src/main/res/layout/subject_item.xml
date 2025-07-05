@@ -30,7 +30,7 @@
                 app:srcCompat="@drawable/round_book_img" />
 
             <TextView
-                android:id="@+id/textView70"
+                android:id="@+id/subNameTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_semibold"

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ConsentsActivity">
+    tools:context=".activities.circular.ConsentsActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout7"
@@ -31,7 +31,7 @@
             android:fontFamily="@font/inter_bold"
             android:gravity="center_vertical"
             android:paddingStart="6dp"
-            android:text="Consents/Invite"
+            android:text="Circular/Invite"
             android:textColor="@color/black"
             android:textSize="18dp" />
     </LinearLayout>

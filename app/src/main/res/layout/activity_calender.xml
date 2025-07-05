@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.ConsentInfoActivity">
+    tools:context=".activities.calender.CalenderActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout9"
@@ -104,8 +105,41 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+                <LinearLayout
+                    android:visibility="gone"
+                    android:id="@+id/nodataTv"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_50sdp"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        app:tint="@color/gray"
+                        android:background="@color/white"
+                        android:backgroundTint="@color/white"
+                        android:layout_gravity="center"
+                        android:layout_width="@dimen/_80sdp"
+                        android:layout_height="@dimen/_80sdp"
+                        android:src="@drawable/no_event" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/inter_medium"
+                        android:gravity="center_vertical"
+                        android:paddingStart="6dp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_gravity="center"
+                        android:text="No Events "
+                        android:textColor="@color/gray1"
+                        android:textSize="@dimen/_13sdp" />
+
+                </LinearLayout>
+
+
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/calenders_iv"
+                    android:id="@+id/calenders_rv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layout_constraintBottom_toBottomOf="parent"

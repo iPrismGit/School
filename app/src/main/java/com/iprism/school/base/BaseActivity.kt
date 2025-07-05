@@ -1,13 +1,19 @@
 package com.iprism.parentapp.base
 
+import android.app.Activity
+import android.app.ProgressDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -29,6 +35,8 @@ open class BaseActivity : AppCompatActivity() {
     private var networkReceiver: BroadcastReceiver? = null
     private val handler = Handler()
     private var networkCheckRunnable: Runnable? = null
+
+    private var pDialog: ProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,5 +129,39 @@ open class BaseActivity : AppCompatActivity() {
         if (alertDialog != null && alertDialog!!.isShowing()) {
             alertDialog!!.dismiss()
         }
+    }
+
+
+    //handle the progressbar
+    fun showProgress() {
+        try {
+            pDialog = ProgressDialog(this,R.style.TransparentProgressDialog)
+            // pDialog = new ProgressDialog(context);
+            pDialog!!.getWindow()!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            pDialog!!.setIndeterminate(true)
+            pDialog!!.setCancelable(false)
+            pDialog!!.show()
+            pDialog!!.setContentView(R.layout.progressxml)
+            pDialog!!.setCanceledOnTouchOutside(false)
+            pDialog!!.show()
+        } catch (e: Exception) {
+            Log.d("AlertDialog", "Progress dialog can not be shown")
+        }
+    }
+
+    fun hideProgress() {
+        if(pDialog!=null&& pDialog!!.isShowing()){
+            pDialog!!.dismiss();
+        }
+    }
+
+
+    fun Activity.hideKeyboard() {
+        hideKeyboard(currentFocus ?: View(this))
+    }
+
+    fun Context.hideKeyboard(view: View) {
+        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.CalenderDetailsActivity">
+    tools:context=".activities.calender.CalenderDetailsActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout9"
@@ -73,6 +73,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
+        android:layout_marginHorizontal="@dimen/_10sdp"
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -107,7 +108,7 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
-                android:id="@+id/textView53"
+                android:id="@+id/toTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -131,11 +132,11 @@
                 android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/textView55"
+                android:id="@+id/classTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Arts"
+                android:text=""
                 android:textColor="@color/black" />
         </LinearLayout>
 
@@ -153,15 +154,16 @@
                 android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/textView57"
+                android:id="@+id/usersTv"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:text="Afreen jamsheed"
+                android:text=""
                 android:textColor="@color/black" />
 
             <ImageView
+                android:visibility="gone"
                 android:id="@+id/down_arrow"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
@@ -177,7 +179,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:visibility="gone"
+            android:visibility="visible"
             android:orientation="horizontal">
 
             <ImageView
@@ -197,19 +199,19 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView58"
-                    android:layout_width="match_parent"
+                    android:id="@+id/dateTv"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
-                    android:text="24 Sep, 2024"
+                    android:text=" "
                     android:textColor="@color/black" />
 
                 <TextView
-                    android:id="@+id/textView59"
-                    android:layout_width="match_parent"
+                    android:id="@+id/timeTv"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="09:30 AM"
+                    android:text=" "
                     android:textColor="@color/black" />
             </LinearLayout>
         </LinearLayout>

@@ -42,13 +42,14 @@
         </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/addPic_ll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="16dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/imageView28"
+                android:id="@+id/personPic"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:src="@drawable/activity_defualt_icon"
@@ -73,6 +74,7 @@
             android:textColor="@color/black" />
 
         <EditText
+            android:id="@+id/nameEt"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:layout_marginTop="6dp"
@@ -91,6 +93,7 @@
             android:textColor="@color/black" />
 
         <EditText
+            android:id="@+id/relationEt"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:background="@drawable/edit_text"

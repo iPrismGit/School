@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.AlbumDetailsActivity">
+    tools:context=".activities.album.AlbumDetailsActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout3"
@@ -46,7 +47,7 @@
                 android:layout_marginTop="4dp"
                 android:text="Album Details" />
             <TextView
-
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -70,6 +71,7 @@
             android:src="@drawable/trash_iv" />
 
         <ImageView
+            android:visibility="gone"
             android:id="@+id/more_iv"
             android:layout_width="32dp"
             android:layout_height="32dp"
@@ -83,8 +85,7 @@
 
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/scrollView2"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -94,126 +95,187 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-
-            <LinearLayout
+            <EditText
+                android:id="@+id/title_et"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_height="45dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/edit_text"
+                android:hint="Enter Title"
+                android:inputType="text"
+                android:padding="12dp"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/description_et"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text"
+                android:hint="Enter Desctription"
+                android:inputType="text"
+                android:padding="12dp"
+                android:textSize="14sp" />
+            <RelativeLayout
+                android:id="@+id/class_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_bg"
+                android:orientation="horizontal"
+                android:padding="5dp">
 
                 <TextView
-                    android:id="@+id/textView18"
-                    android:layout_width="match_parent"
+                    android:padding="8dp"
+                    android:id="@+id/selectedclass"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="6dp"
-                    android:text="Title*"
-                    android:textColor="@color/black" />
+                    android:hint="Tap Here to Add Classes"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@id/img_class"
+                    android:textColorHint="@color/light_gray1"
+                    android:layout_gravity="center" />
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="46dp"
-                    android:background="@drawable/edit_text"
-                    android:hint="Name"
-                    android:inputType="text"
-                    android:paddingStart="12dp"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginBottom="6dp"
-                    android:text="Description"
-                    android:textColor="@color/black" />
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="46dp"
-                    android:background="@drawable/edit_text"
-                    android:hint="Description"
-                    android:inputType="text"
-                    android:paddingStart="12dp"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="Classes"
-                    android:textColor="@color/black" />
-
-                <LinearLayout
-                    android:id="@+id/classes_lo"
-                    android:layout_width="match_parent"
-                    android:layout_height="46dp"
+                <ImageView
+                    app:tint="@color/gray1"
+                    android:id="@+id/img_class"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/edit_text"
-                    android:orientation="horizontal">
+                    android:layout_marginEnd="15dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:src="@drawable/down_arrow_img"
+                    android:visibility="visible">
+                </ImageView>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:hint="Enter"
-                        android:paddingStart="12dp"
-                        android:textColor="@color/black" />
+            </RelativeLayout>
 
-                    <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="8dp"
-                        android:padding="10dp"
-                        android:src="@drawable/down_arrow_img" />
-                </LinearLayout>
+            <RelativeLayout
+                android:visibility="visible"
+                android:id="@+id/groups_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_bg"
+                android:orientation="horizontal"
+                android:padding="5dp">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:padding="8dp"
+                    android:id="@+id/selectedgroups"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:text="Type*"
-                    android:textColor="@color/black" />
+                    android:hint="Tap Here to Add Grops"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@id/img_groups"
+                    android:textColorHint="@color/light_gray1"
+                    android:layout_gravity="center" />
 
-                <LinearLayout
-                    android:id="@+id/type_lo"
-                    android:layout_width="match_parent"
-                    android:layout_height="46dp"
+                <ImageView
+                    android:id="@+id/img_groups"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
                     android:layout_gravity="center"
-                    android:layout_marginTop="6dp"
-                    android:background="@drawable/edit_text"
-                    android:orientation="horizontal">
+                    android:layout_marginEnd="15dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:src="@drawable/down_arrow_img"
+                    android:visibility="visible"
+                    app:tint="@color/gray1">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:hint="Enter"
-                        android:paddingStart="12dp"
-                        android:textColor="@color/black" />
+                </ImageView>
 
-                    <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_gravity="center"
-                        android:layout_marginEnd="8dp"
-                        android:padding="10dp"
-                        android:src="@drawable/down_arrow_img" />
-                </LinearLayout>
-            </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/private_public_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_bg"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <TextView
+                    android:padding="8dp"
+                    android:id="@+id/selectedView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint=" Select Public or Private"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textColorHint="@color/light_gray1"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@id/sp_gender"
+                    android:layout_gravity="center" />
+
+                <ImageView
+                    android:id="@+id/sp_gender"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:src="@drawable/down_arrow_img"
+                    android:visibility="visible"
+                    app:tint="@color/gray1">
+                </ImageView>
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/face_tagging_btn"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:padding="12dp"
+                android:text="Face Tagging is not enabled"
+                android:textAllCaps="false"
+                android:textColor="#FF0004"
+                android:textSize="14dp"
+                android:visibility="gone"
+                app:cornerRadius="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:strokeColor="#FF0004" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/images_rv"
                 android:layout_width="match_parent"
-                android:layout_height="138dp" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/videos_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp" />
 
         </LinearLayout>
-    </ScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout16"
@@ -248,6 +310,50 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
     </LinearLayout>
+
+    <LinearLayout
+        app:layout_constraintBottom_toTopOf="@+id/add_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:id="@+id/options_lo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/videosImg"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:padding="4dp"
+                android:src="@drawable/video_img" />
+
+            <ImageView
+                android:id="@+id/imagesImg"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:padding="4dp"
+                android:layout_marginBottom="@dimen/_5sdp"
+                android:src="@drawable/image_img" />
+        </LinearLayout>
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            app:srcCompat="@drawable/baseline_add_24" />
+    </LinearLayout>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_btn"

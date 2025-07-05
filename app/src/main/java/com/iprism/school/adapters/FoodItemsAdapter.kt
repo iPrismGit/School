@@ -5,39 +5,53 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Adapter
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.iprism.school.databinding.ClassItemBinding
 import com.iprism.school.databinding.FoodItemBinding
 import com.iprism.school.interfaces.OnFoodClickListener
+import com.iprism.school.model.Response.ClasseListrr
+import com.iprism.school.model.Response.MealplannerList
 
-class FoodItemsAdapter(context: Context) :
-    RecyclerView.Adapter<FoodItemsAdapter.FoodItemViewHolder>() {
+class FoodItemsAdapter(
+    var activity: Context,
+    var response: List<MealplannerList>,
+    var OnItemCallBack: ((MealplannerList)  ->Unit )? = null,
+    var OnItemCallEdit: ((MealplannerList)  ->Unit )? = null)
+    : Adapter<FoodItemsAdapter.ViewHolders>() {
 
-    private lateinit var onFoodClickListener: OnFoodClickListener
+    var postionstaus = 1
 
-    fun setListener(listener: OnFoodClickListener) {
-        this.onFoodClickListener = listener
+    class ViewHolders(var binding: FoodItemBinding) : ViewHolder(binding.root) {
+
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodItemsAdapter.FoodItemViewHolder {
-        var binding: FoodItemBinding =
-            FoodItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return FoodItemViewHolder(binding)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolders {
+        val binding: FoodItemBinding = FoodItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolders(binding)
     }
 
-    override fun onBindViewHolder(holder: FoodItemsAdapter.FoodItemViewHolder, position: Int) {
-        holder.binding.root.setOnClickListener(View.OnClickListener {
-            onFoodClickListener.onFoodItemClick(position.toString(), "", "")
-        })
 
-        holder.binding.informationIv.setOnClickListener(View.OnClickListener {
-            onFoodClickListener.onFoodInfoClick(position.toString())
-        })
+    override fun onBindViewHolder(holder: ViewHolders, position: Int) {
+
+        holder.binding.mealNameTxt.text = response[position].meal_name.toString()
+        holder.binding.dateTxt.text = response[position].date.toString()
+        holder.binding.dayTxt.text = response[position].day.toString()
+
+//        Glide.with(activity)
+//            .load(Constants.IMAGES_URL+response[position].attachment)
+//            .into(holder.binding.priPic)
+
+//        holder.itemView.setOnClickListener{
+//            OnItemCallEdit!!.invoke(response[position])
+//        }
+
+        holder.itemView.setOnClickListener{
+            OnItemCallBack!!.invoke(response[position])
+        }
     }
 
     override fun getItemCount(): Int {
-        return 5
-    }
-
-    class FoodItemViewHolder(var binding: FoodItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
+        return response.size
     }
 }

@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -17,14 +18,15 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.iprism.parentapp.base.BaseFragment
 import com.iprism.school.R
-import com.iprism.school.activities.AlbumsActivity
 import com.iprism.school.activities.AttendanceActivity
-import com.iprism.school.activities.CalenderActivity
+import com.iprism.school.activities.CabsListActivity
+import com.iprism.school.activities.calender.CalenderActivity
 import com.iprism.school.activities.ChildHandOverActivity
 import com.iprism.school.activities.ClassesActivity
-import com.iprism.school.activities.ConsentsActivity
+import com.iprism.school.activities.circular.ConsentsActivity
 import com.iprism.school.activities.ContentPagesActivity
 import com.iprism.school.activities.FeedBackActivity
 import com.iprism.school.activities.GroupsActivity
@@ -33,19 +35,29 @@ import com.iprism.school.activities.InviteParentsActivity
 import com.iprism.school.activities.StaffActivity
 import com.iprism.school.activities.LoginActivity
 import com.iprism.school.activities.MealPlannerActivity
-import com.iprism.school.activities.MessageActivity
+import com.iprism.school.activities.Messages.MessageActivity
+import com.iprism.school.activities.Messages.SentMessagesActivity
 import com.iprism.school.activities.PendingRequestsActivity
 import com.iprism.school.activities.PromotionsActivity
 import com.iprism.school.activities.RatingsAndReviewsActivity
 import com.iprism.school.activities.StaffAttendanceActivity
 import com.iprism.school.activities.StudentsActivity
-import com.iprism.school.activities.SubjectsActivity
+import com.iprism.school.activities.subjects.SubjectsActivity
+import com.iprism.school.activities.album.AlbumDetailsActivity
+import com.iprism.school.activities.album.AlbumsActivity
+import com.iprism.school.activities.album.CreateAlbumsActivity
+import com.iprism.school.adapters.AlbumsAdapter
 import com.iprism.school.databinding.FragmentHomeBinding
-import com.iprism.school.databinding.MessageCoonfirmationDialogBinding
 import com.iprism.school.databinding.ViewMessagesAlertDialogBinding
+import com.iprism.school.model.Request.SchoolStaffReq
+import com.iprism.school.model.Response.AlbumsListResponse
 import com.iprism.school.utils.ToastUtils
+import com.iprism.school.utils.User
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var yesBtn: Button
@@ -60,12 +72,22 @@ class HomeFragment : Fragment() {
         }
     }
 
+    private var teacherId: String = ""
+    private var auth_token: String = ""
+    private var scl_id: String = ""
+
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHomeBinding.inflate(layoutInflater)
+
+        binding.nameTv.text = " Hello "+userDetails[User.EMP_NAME].toString()
+        binding.sideNameTv.text = userDetails[User.EMP_NAME].toString()
+        binding.sideGmailTv.text = userDetails[User.EMP_EMAIL].toString()
+
+        teacherId = userDetails[User.Companion.ID].toString()
+        auth_token = userDetails[User.Companion.AUTH_TOKEN].toString()
+        scl_id = userDetails[User.Companion.SCHOOL_ID].toString()
+
         handleStudentsLL()
         handleInboxLL()
         handleViewAllMessagesLo()
@@ -97,6 +119,20 @@ class HomeFragment : Fragment() {
         hnaldeAlbumsViewAll()
         handleChildHandoverLo()
         handlePendingRequestsLo()
+
+        binding.trackCabsLL.setOnClickListener {
+            val intent = Intent(requireActivity(), CabsListActivity::class.java)
+            startActivity(intent)
+
+        }
+
+        allAlbum()
+
+        binding.createLl.setOnClickListener {
+            if (isAdded){
+                startActivity(Intent(requireActivity(), CreateAlbumsActivity::class.java))
+            }
+        }
         return binding.root
     }
 
@@ -124,15 +160,15 @@ class HomeFragment : Fragment() {
     }
     private fun handleSentLo() {
         binding.sentLo.setOnClickListener(View.OnClickListener {
-            var intent = Intent(context, HomeActivity::class.java)
-            intent.putExtra("tag", "sent")
+            var intent = Intent(context, SentMessagesActivity::class.java)
+            intent.putExtra("tag", "")
             startActivity(intent)
         })
     }
 
     private fun handleScheduled() {
         binding.scheduledLo.setOnClickListener(View.OnClickListener {
-            var intent = Intent(context, HomeActivity::class.java)
+            var intent = Intent(context, SentMessagesActivity::class.java)
             intent.putExtra("tag", "scheduled")
             startActivity(intent)
         })
@@ -181,7 +217,7 @@ class HomeFragment : Fragment() {
         startActivity(intent)
     }
     private fun hnaldeAlbumsViewAll() {
-        binding.albumsViewAllLo.setOnClickListener(View.OnClickListener {
+        binding.viewAll.setOnClickListener(View.OnClickListener {
             startActivity(Intent(context, AlbumsActivity::class.java))
         })
     }
@@ -238,14 +274,20 @@ class HomeFragment : Fragment() {
         yesBtn = dialogView.findViewById(R.id.yes_btn) as Button
         noBtn = dialogView.findViewById(R.id.no_btn) as Button
         noBtn.setOnClickListener(View.OnClickListener {
-            ToastUtils.showSuccessCustomToast(requireContext(), "Clicked On No Button")
+//            ToastUtils.showSuccessCustomToast(requireContext(), "Clicked On No Button")
             dialog.dismiss()
         })
 
         yesBtn.setOnClickListener(View.OnClickListener {
-            ToastUtils.showSuccessCustomToast(requireContext(), "Clicked On Yes Button")
+            user!!.storeUserDetails("","","","","",""
+            ,"","","",""
+            ,"","","","",""
+            ,"","","")
+
+//            ToastUtils.showSuccessCustomToast(requireContext(), "Clicked On Yes Button")
             dialog.dismiss()
             startActivity(Intent(requireContext(), LoginActivity::class.java))
+            activity?.finish()
         })
         dialog.show()
     }
@@ -367,6 +409,64 @@ class HomeFragment : Fragment() {
                 binding.drawer.closeDrawer(Gravity.LEFT)
             } else {
                 binding.drawer.openDrawer(Gravity.LEFT)
+            }
+        })
+    }
+
+    private fun allAlbum() {
+        showProgress()
+        var apiRequest = SchoolStaffReq(auth_token,scl_id,teacherId)
+        Log.d("homeUploadAlbum_Req", apiRequest.toString())
+        val call: Call<AlbumsListResponse> = parentApiService!!.albumList(apiRequest)
+        call.enqueue(object : Callback<AlbumsListResponse> {
+            override fun onResponse(call: Call<AlbumsListResponse>, response: Response<AlbumsListResponse>) {
+                if (response.isSuccessful) {
+                    hideProgress()
+                    val loginApiResponse = response.body()
+
+                    if (loginApiResponse!!.status == true){
+//                        binding.nodataTv.visibility = View.GONE
+                        binding.albumsRv.visibility = View.VISIBLE
+
+
+                        if (isAdded){
+                            val linearLayoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+                            binding.albumsRv.layoutManager = linearLayoutManager
+                            val albumsAdapter = AlbumsAdapter(requireActivity(), loginApiResponse.response.album_details)
+                            binding.albumsRv.adapter = albumsAdapter
+
+                            albumsAdapter.OnItemBtn = {
+                                    mydata ->
+                                val studentId = mydata.id.toString()
+                                val intent = Intent(requireActivity(), AlbumDetailsActivity::class.java)
+                                intent.putExtra("studentId",studentId)
+                                intent.putExtra("albumId",studentId)
+                                startActivity(intent)
+                            }
+
+                        }
+
+//                        var albumsAdapter = AlbumsAdapter(requireContext(), loginApiResponse.response.album_details)
+//                        binding.albumsRv.adapter = albumsAdapter
+//                        var linearLayoutManager = GridLayoutManager(requireContext(), 2)
+//                        binding.albumsRv.layoutManager = linearLayoutManager
+
+
+                    }else{
+//                        binding.nodataTv.visibility = View.VISIBLE
+                        binding.albumsRv.visibility = View.GONE
+                    }
+                } else {
+//                    binding.nodataTv.visibility = View.VISIBLE
+                    binding.albumsRv.visibility = View.GONE
+
+                    hideProgress()
+                    ToastUtils.showErrorCustomToast(requireActivity(), response.message())
+                }
+            }
+            override fun onFailure(call: Call<AlbumsListResponse>, t: Throwable) {
+                hideProgress()
+                ToastUtils.showErrorCustomToast(requireActivity(), t.message.toString())
             }
         })
     }

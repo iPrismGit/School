@@ -2,11 +2,11 @@ package com.iprism.school.model.Response
 
 data class LoginResponse(
     val message: String,
-    val response: Response,
+    val response: Responselogin,
     val status: Boolean
 )
 
-data class Response(
+data class Responselogin(
     val teacher_details: List<TeacherDetail>
 )
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -59,7 +60,7 @@
             android:layout_marginStart="12dp"
             android:fontFamily="@font/inter_semibold"
             android:gravity="center_vertical"
-            android:text="Camera Recording"
+            android:text="Video Recording"
             android:textColor="@color/black" />
     </LinearLayout>
 
@@ -75,7 +76,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:adjustViewBounds="true"
-            android:src="@drawable/camera_option" />
+            android:src="@drawable/audio_option" />
 
         <TextView
             android:id="@+id/dialogMessage"

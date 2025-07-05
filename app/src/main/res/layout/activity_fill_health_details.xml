@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
     tools:context=".activities.FillOtherDetailsActivity">
 
     <LinearLayout
@@ -40,26 +42,16 @@
 
     </LinearLayout>
 
-
     <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
-
+            android:padding="16dp">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -75,6 +67,7 @@
                 android:textColor="@color/black" />
 
             <EditText
+                android:id="@+id/et_regular_medication"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:layout_marginTop="6dp"
@@ -93,6 +86,7 @@
                 android:textColor="@color/black" />
 
             <EditText
+                android:id="@+id/et_allergies"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:layout_marginTop="6dp"
@@ -111,6 +105,7 @@
                 android:textColor="@color/black" />
 
             <EditText
+                android:id="@+id/et_food_allergies"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:layout_marginTop="6dp"
@@ -129,11 +124,12 @@
                 android:textColor="@color/black" />
 
             <EditText
+                android:id="@+id/et_physician"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:layout_marginTop="6dp"
                 android:background="@drawable/edit_text"
-                android:hint="Enter"
+                android:hint="Enter "
                 android:inputType="text"
                 android:paddingStart="12dp"
                 android:textColor="@color/black"
@@ -143,15 +139,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Contact No."
+                android:text="Physician Contact No."
                 android:textColor="@color/black" />
 
             <EditText
+                android:id="@+id/et_physician_mobile"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:layout_marginTop="6dp"
                 android:background="@drawable/edit_text"
                 android:hint="Enter"
+                android:maxLength="10"
+                android:singleLine="true"
                 android:inputType="number"
                 android:paddingStart="12dp"
                 android:textColor="@color/black"
@@ -165,6 +164,7 @@
                 android:textColor="@color/black" />
 
             <EditText
+                android:id="@+id/et_pre_hospital"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:layout_marginTop="6dp"
@@ -183,11 +183,14 @@
                 android:textColor="@color/black" />
 
             <EditText
+                android:id="@+id/et_Hospital_contact"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:layout_marginTop="6dp"
                 android:background="@drawable/edit_text"
-                android:hint="Enter"
+                android:hint="Enter contact"
+                android:maxLength="10"
+                android:singleLine="true"
                 android:inputType="number"
                 android:paddingStart="12dp"
                 android:textColor="@color/black"
@@ -201,7 +204,7 @@
                 android:textColor="@color/black" />
 
             <LinearLayout
-                android:id="@+id/child_has_had_lo"
+                android:id="@+id/child_has_had_ll"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:layout_gravity="center"
@@ -210,11 +213,12 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/child_has_hadTv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:hint="Enter"
+                    android:hint="select"
                     android:paddingStart="12dp"
                     android:textColor="@color/black" />
 
@@ -235,7 +239,7 @@
                 android:textColor="@color/black" />
 
             <LinearLayout
-                android:id="@+id/child_suffers_from_lo"
+                android:id="@+id/child_suffers_ll"
                 android:layout_width="match_parent"
                 android:layout_height="46dp"
                 android:layout_gravity="center"
@@ -244,11 +248,12 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/child_suffer_fromTv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:hint="Enter"
+                    android:hint="select"
                     android:paddingStart="12dp"
                     android:textColor="@color/black" />
 
@@ -324,4 +329,4 @@
 
         </LinearLayout>
     </ScrollView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

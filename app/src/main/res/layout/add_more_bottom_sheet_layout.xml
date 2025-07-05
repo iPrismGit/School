@@ -53,6 +53,7 @@
             android:textColor="@color/black" />
 
         <EditText
+            android:id="@+id/child_dentist_nameEt"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:layout_marginTop="6dp"
@@ -71,11 +72,14 @@
             android:textColor="@color/black" />
 
         <EditText
+            android:id="@+id/child_dentist_mobileEt"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:layout_marginTop="6dp"
             android:background="@drawable/edit_text"
             android:hint="Enter"
+            android:maxLength="10"
+            android:singleLine="true"
             android:inputType="number"
             android:paddingStart="12dp"
             android:textColor="@color/black"
@@ -89,6 +93,7 @@
             android:textColor="@color/black" />
 
         <EditText
+            android:id="@+id/child_dentist_emailEt"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:layout_marginTop="6dp"
@@ -107,6 +112,7 @@
             android:textColor="@color/black" />
 
         <EditText
+            android:id="@+id/child_dentist_otherallergiesEt"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:layout_marginTop="6dp"
@@ -125,6 +131,7 @@
             android:textColor="@color/black" />
 
         <EditText
+            android:id="@+id/child_dentist_special_conditionEt"
             android:layout_width="match_parent"
             android:layout_height="46dp"
             android:layout_marginTop="6dp"

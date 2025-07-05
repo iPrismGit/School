@@ -85,10 +85,12 @@ class User(var context: Context) {
         mobile : String?,
         employee_id: String?,
         employee_name : String?,
+        employee_email : String?,
         employee_dob: String?,
         employee_gender : String?,
         employee_image : String?,
         employee_designation: String?,
+        employee_class: String?,
         employee_department : String?,
         employee_use_designation: String?,
         deleteStatus : String?,
@@ -101,10 +103,12 @@ class User(var context: Context) {
         editor.putString(MOBILE, mobile)
         editor.putString(EMP_ID, employee_id)
         editor.putString(EMP_NAME, employee_name)
+        editor.putString(EMP_EMAIL, employee_email)
         editor.putString(EMP_DOB, employee_dob)
         editor.putString(EMP_GENDER, employee_gender)
         editor.putString(EMP_IMG, employee_image)
         editor.putString(EMP_DESIGNATION, employee_designation)
+        editor.putString(EMP_CLASS, employee_class)
         editor.putString(EMP_DEPARTMENT, employee_department)
         editor.putString(EMP_USE_DESIGNATION, employee_use_designation)
 
@@ -172,10 +176,23 @@ class User(var context: Context) {
         val user = HashMap<String, String?>()
         user[ID] = sharedPreferences.getString(ID, null)
         user[AUTH_TOKEN] = sharedPreferences.getString(AUTH_TOKEN, null)
-        user[MOBILE] = sharedPreferences.getString(MOBILE, null)
         user[TOKEN] = sharedPreferences.getString(TOKEN, null)
+        user[MOBILE] = sharedPreferences.getString(MOBILE, null)
+
+        user[EMP_ID] = sharedPreferences.getString(EMP_ID, null)
+        user[EMP_NAME] = sharedPreferences.getString(EMP_NAME, null)
+        user[EMP_EMAIL] = sharedPreferences.getString(EMP_EMAIL, null)
+        user[EMP_DOB] = sharedPreferences.getString(EMP_DOB, null)
+        user[EMP_GENDER] = sharedPreferences.getString(EMP_GENDER, null)
+        user[EMP_IMG] = sharedPreferences.getString(EMP_IMG, null)
+        user[EMP_DESIGNATION] = sharedPreferences.getString(EMP_DESIGNATION, null)
+        user[EMP_CLASS] = sharedPreferences.getString(EMP_CLASS, null)
+        user[EMP_DEPARTMENT] = sharedPreferences.getString(EMP_DEPARTMENT, null)
+        user[EMP_USE_DESIGNATION] = sharedPreferences.getString(EMP_USE_DESIGNATION, null)
         user[DELETE_STATUS] = sharedPreferences.getString(DELETE_STATUS, null)
         user[CREATED_ON] = sharedPreferences.getString(CREATED_ON, null)
+        user[UPDATED_ON] = sharedPreferences.getString(UPDATED_ON, null)
+
         user[STUDENT_ID] = sharedPreferences.getString(STUDENT_ID, null)
         user[STUDENT_SCHOOL_ID] = sharedPreferences.getString(STUDENT_SCHOOL_ID, null)
         user[STUDENT_CLASS_ID] = sharedPreferences.getString(STUDENT_CLASS_ID, null)

@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    android:orientation="vertical"
+    android:background="@color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MessageDetailsActivity">
+    tools:context=".activities.Messages.MessageDetailsActivity">
 
     <LinearLayout
-        android:id="@+id/linearLayout9"
-        android:layout_width="0dp"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,8 +22,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_margin="12dp"
-            android:padding="4dp"
-            android:src="@drawable/menu_img" />
+            android:src="@drawable/back_img" />
 
         <TextView
             android:id="@+id/activity_title_txt"
@@ -41,7 +43,7 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/delete_iv"
+                android:id="@+id/archived_Img"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:layout_gravity="center_vertical"
@@ -49,20 +51,21 @@
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
                 android:padding="8dp"
-                android:src="@drawable/trash_iv"
+                android:src="@drawable/archived_icon"
                 android:visibility="visible" />
 
             <ImageView
+
                 android:id="@+id/info_iv"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="40dp"
+                android:layout_height="34dp"
                 android:layout_gravity="center_vertical"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
                 android:padding="8dp"
                 android:src="@drawable/info_img"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/upload_iv"
@@ -86,314 +89,356 @@
                 android:foreground="?attr/selectableItemBackground"
                 android:padding="8dp"
                 android:src="@drawable/forword_img"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
         </LinearLayout>
 
     </LinearLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="673dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
-
+    <ScrollView
+        android:layout_below="@id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/linearLayout19"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <LinearLayout
-                android:id="@+id/snd_message_lo"
+                android:id="@+id/linearLayout18"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="16dp"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+                android:orientation="vertical">
 
-                <com.google.android.material.card.MaterialCardView
+                <View
+                    android:id="@+id/divider24"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:strokeColor="@color/light_gray"
-                    app:strokeWidth="1dp">
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="12dp">
 
-                    <EditText
-                        android:id="@+id/editTextText9"
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/imgs"
+                        android:layout_width="@dimen/_70sdp"
+                        android:layout_height="@dimen/_70sdp"
+                        android:src="@drawable/message_profile" />
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:ems="10"
-                        android:hint="Message..."
-                        android:inputType="text"
-                        android:padding="12dp" />
-                </com.google.android.material.card.MaterialCardView>
+                        android:layout_marginLeft="8dp"
+                        android:orientation="vertical">
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:orientation="horizontal">
+                        </LinearLayout>
 
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="10dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:padding="6dp"
-                    android:src="@drawable/document_img"
-                    android:visibility="visible" />
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="10dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:padding="6dp"
-                    android:src="@drawable/add_person_outline"
-                    android:visibility="visible" />
+                            <TextView
+                                android:textSize="@dimen/_13sdp"
+                                android:id="@+id/subjectTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ellipsize="end"
+                                android:fontFamily="@font/inter_semibold"
+                                android:maxLines="1"
+                                android:text=""
+                                android:textColor="@color/black" />
 
-                <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="10dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:padding="6dp"
-                    android:src="@drawable/send_black"
-                    android:visibility="visible" />
+                            <ImageView
+                                android:id="@+id/startImg"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:adjustViewBounds="true"
+                                android:maxWidth="24dp"
+                                android:maxHeight="24dp"
+                                android:src="@drawable/star_img" />
 
-            </LinearLayout>
+                        </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/buttons_lo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:visibility="gone"
-                android:orientation="horizontal">
+                        <TextView
+                            android:textSize="@dimen/_13sdp"
+                            android:id="@+id/dateTv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/inter"
+                            android:maxLines="1"
+                            android:text=""
+                            android:textColor="@color/black" />
+                    </LinearLayout>
+                </LinearLayout>
 
-
-
-                <Button
-                    android:id="@+id/approve_btn"
+                <View
+                    android:id="@+id/divider"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/blue"
-                    android:fontFamily="@font/inter"
-                    android:padding="12dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_weight="1"
-                    android:text="Approve"
-                    android:textAllCaps="false"
-                    app:cornerRadius="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <Button
-                    android:id="@+id/reject_btn"
-                    style="@style/Widget.Material3.Button.OutlinedButton.Icon"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="12dp"
-                    android:layout_weight="1"
-                    android:text="Reject"
-                    android:layout_marginStart="10dp"
-                    android:textAllCaps="false"
-                    android:textColor="@color/blue"
-                    android:textSize="14dp"
-                    app:cornerRadius="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:strokeColor="@color/blue" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout18"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout19"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <View
-                android:id="@+id/divider24"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider" />
-
-            <LinearLayout
-                android:id="@+id/linearLayout4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="12dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:maxWidth="80dp"
-                    android:maxHeight="80dp"
-                    android:src="@drawable/message_profile" />
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/inter_bold"
-                            android:maxLines="1"
-                            android:text="Hello Parent"
-                            android:textColor="@color/black" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/inter"
-                            android:text="5 Jun"
-                            android:textColor="@color/black" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:ellipsize="end"
-                            android:fontFamily="@font/inter_semibold"
-                            android:maxLines="1"
-                            android:text="Staff Attendance Update"
-                            android:textColor="@color/black" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:adjustViewBounds="true"
-                            android:maxWidth="24dp"
-                            android:maxHeight="24dp"
-                            android:src="@drawable/star_img" />
-
-                    </LinearLayout>
+                    android:padding="16dp"
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="2dp"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/inter"
-                        android:maxLines="1"
-                        android:text="Dear User, the system has shown your..."
-                        android:textColor="@color/black" />
+                        android:text="From : "
+                        android:textSize="@dimen/_13sdp"
+                        android:fontFamily="@font/inter_semibold"
+                        android:textColor="@color/black"/>
+
+                    <TextView
+                        android:textSize="@dimen/_13sdp"
+                        android:id="@+id/fromTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/black"
+                        android:text="" />
                 </LinearLayout>
-            </LinearLayout>
 
-            <View
-                android:id="@+id/divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/textView14"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="From : "
-                    android:fontFamily="@font/inter_semibold"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:textSize="@dimen/_13sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Users : "
+                        android:fontFamily="@font/inter_semibold"
+                        android:textColor="@color/black"/>
+
+                    <TextView
+                        android:textSize="@dimen/_13sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:id="@+id/usersTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/black"/>
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:textSize="@dimen/_13sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:id="@+id/messageTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  "
                     android:textColor="@color/black"/>
 
+                <ImageView
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_50sdp"
+                    android:id="@+id/msg_images"
+                    android:layout_width="@dimen/_70sdp"
+                    android:layout_height="@dimen/_70sdp" />
+
                 <TextView
-                    android:id="@+id/textView15"
+                    android:textSize="@dimen/_13sdp"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/black"
-                    android:text="Hello Parent" />
+                    android:text="Regards\nTeam HelloParent,"
+                    android:textColor="@color/black"/>
+
             </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginHorizontal="@dimen/_8sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:layout_above="@id/snd_message_lo"
+        android:id="@+id/images_rv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="16dp"
-                android:text="Dear Users,"
-                android:textColor="@color/black"/>
+    <LinearLayout
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:id="@+id/snd_message_lo"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/edit_text_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!-- Emoji Icon -->
+        <ImageView
+            android:id="@+id/attachmentImg"
+            android:layout_gravity="center"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/document_img"
+            android:contentDescription="Emoji"
+            android:padding="8dp"
+            app:tint="@color/gray1"
+            android:layout_marginEnd="4dp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="16dp"
-                android:text="this system is detected the location of tayyaba as\noutside the system"
-                android:textColor="@color/black"/>
+        <!-- Message Input -->
+        <EditText
+            android:layout_gravity="center"
+            android:id="@+id/messageInput"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="40dp"
+            android:hint="Reply Message"
+            android:background="@android:color/transparent"
+            android:paddingHorizontal="8dp"
+            android:textSize="16sp"
+            android:maxLines="4"
+            android:scrollbars="vertical" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="16dp"
-                android:text="Regards\nTeam HelloParent,"
-                android:textColor="@color/black"/>
+        <!-- Attachment Icon -->
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/document_img"
+            android:contentDescription="Attachment"
+            android:padding="8dp"
+            app:tint="@color/gray"
+            android:visibility="gone"
+            android:layout_marginEnd="4dp" />
+
+        <!-- Camera Icon -->
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:visibility="gone"
+            android:src="@drawable/document_img"
+            android:contentDescription="Camera"
+            android:padding="8dp"
+            app:tint="@color/gray"
+            android:layout_marginEnd="4dp" />
+
+        <!-- Voice Message Button -->
+        <ImageView
+            android:id="@+id/sendImg"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:src="@drawable/send_black"
+            android:contentDescription="Voice Message"
+            android:padding="13dp"
+            android:scaleType="centerInside" />
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <EditText
+            android:layout_alignParentStart="true"
+            android:id="@+id/reply_et"
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:background="@drawable/edit_text"
+            android:hint="Enter Mobile Number"
+            android:inputType="number"
+            android:maxLength="10"
+            android:padding="10dp"
+            android:textSize="15sp" />
+
+
+        <LinearLayout
+            android:gravity="center"
+            android:id="@+id/send_ll"
+            android:layout_toStartOf="@id/reply_et"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true">
+
+            <ImageView
+                android:gravity="center"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="6dp"
+                android:src="@drawable/document_img"
+                android:visibility="visible" />
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:padding="6dp"
+                android:src="@drawable/add_person_outline"
+                android:visibility="gone" />
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:padding="6dp"
+                android:src="@drawable/send_black"
+                android:visibility="visible" />
+
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

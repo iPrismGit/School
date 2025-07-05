@@ -83,6 +83,20 @@ in the parent app." />
                 android:textColor="@color/black"/>
         </LinearLayout>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/images_rv"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"/>
+
+        <VideoView
+            android:visibility="gone"
+            android:id="@+id/videoView"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_marginTop="20dp" />
+
         <TextView
             android:id="@+id/textView61"
             android:layout_width="match_parent"
@@ -98,7 +112,7 @@ in the parent app." />
             android:layout_marginTop="8dp"
             app:strokeWidth="1dp">
             <EditText
-                android:id="@+id/editTextText7"
+                android:id="@+id/description_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -117,7 +131,7 @@ in the parent app." />
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:padding="12dp"
-            android:text="SAVE"
+            android:text=" Add "
             android:textAllCaps="false"
             android:textColor="@color/blue"
             android:textSize="14dp"
@@ -126,5 +140,13 @@ in the parent app." />
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:strokeColor="@color/blue" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/promotuons_rv"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"/>
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

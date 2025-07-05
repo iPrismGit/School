@@ -65,18 +65,38 @@
                     android:textColor="@color/black"
                     android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/mobile_number_et"
-                    android:layout_width="match_parent"
-                    android:layout_height="46dp"
+                <RelativeLayout
                     android:layout_marginTop="12dp"
-                    android:layout_weight="0.8"
-                    android:background="@drawable/edit_text"
-                    android:hint="Enter Mobile Number"
-                    android:inputType="number"
-                    android:maxLength="10"
-                    android:padding="12dp"
-                    android:textSize="14sp" />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:layout_alignParentStart="true"
+                        android:id="@+id/mobile_number_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+                        android:layout_weight="0.8"
+                        android:background="@drawable/edit_text"
+                        android:hint="Enter Mobile Number"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:padding="12dp"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:visibility="gone"
+                        android:id="@+id/resendTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerInParent="true"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:text="Resend Otp"
+                        android:fontFamily="@font/inter_semibold"
+                        android:textColor="@color/blue"
+                        android:textSize="@dimen/_11sdp" />
+
+                </RelativeLayout>
 
                 <Button
                     android:id="@+id/request_otp_btn"
@@ -91,6 +111,86 @@
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     app:cornerRadius="8dp" />
+
+
+                <LinearLayout
+                    android:id="@+id/otp_ll"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center">
+
+                        <TextView
+                            android:visibility="gone"
+                            android:id="@+id/textView2"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_bold"
+                            android:text="OTP"
+                            android:textColor="@color/black"
+                            app:layout_constraintBottom_toTopOf="@+id/otp_et"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.chaos.view.PinView
+                            android:id="@+id/otp_et"
+                            style="@style/PinWidget.PinView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="8dp"
+                            android:cursorVisible="true"
+                            android:focusable="auto"
+                            android:focusableInTouchMode="true"
+                            android:gravity="center"
+                            android:inputType="number"
+                            android:itemBackground="@color/white"
+                            app:hideLineWhenFilled="false"
+                            app:itemCount="4"
+                            app:itemHeight="50dp"
+                            app:itemRadius="10dp"
+                            app:itemSpacing="32dp"
+                            app:itemWidth="50dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/textView2"
+                            app:layout_constraintStart_toStartOf="@+id/textView2"
+                            app:layout_constraintTop_toBottomOf="@+id/textView2"
+                            app:lineColor="@color/black1" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="12dp"
+                        android:fontFamily="@font/inter"
+                        android:text="Please do not share OTP with anyone "
+                        android:textColor="@color/blue1" />
+
+                    <Button
+                        android:id="@+id/login_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:fontFamily="@font/source_sans_pro_semibold"
+                        android:gravity="center"
+                        android:padding="13dp"
+                        android:text="Login"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        app:cornerRadius="8dp" />
+
+                </LinearLayout>
+
 
             </LinearLayout>
 

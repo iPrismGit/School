@@ -1,70 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:orientation="vertical"
+    android:background="@color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
 
-    <com.budiyev.android.codescanner.CodeScannerView
-        android:id="@+id/barcode_scanner"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout17"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout17"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#D9D9D9"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/textView76"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:fontFamily="@font/inter_semibold"
-            android:text="Mark as"
-            android:textColor="@color/black" />
+            android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/imageView39"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:src="@drawable/in_out_img" />
-    </LinearLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/textView77"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:fontFamily="@font/inter_semibold"
-        android:gravity="center"
-        android:text="Place a barcode inside the viewfinder rectangle to scan it."
-        android:textColor="@color/white"
-        android:textSize="12dp"
-        app:layout_constraintBottom_toBottomOf="@+id/barcode_scanner"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+                <com.budiyev.android.codescanner.CodeScannerView
+                    android:id="@+id/barcode_scanner"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_400sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:gravity="center"
-        android:text="Scan QR code for Student in/out"
-        android:textColor="@color/white"
-        app:layout_constraintTop_toTopOf="@id/barcode_scanner" />
+            </RelativeLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/studentscannerID"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_centerInParent="true"
+                android:textSize="@dimen/_12sdp"
+                android:textColor="@color/green"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""/>
+
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:fontFamily="@font/inter_semibold"
+                    android:text="Mark as"
+                    android:textColor="@color/black" />
+
+
+                <LinearLayout
+                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:background="@drawable/left_grey"
+                        android:id="@+id/toggleIn"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="In"
+                        android:textSize="@dimen/_9sdp"
+                        android:textColor="@color/black"
+                        />
+
+                    <TextView
+                        android:background="@drawable/right_grey"
+                        android:id="@+id/toggleOut"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:textAllCaps="false"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Out"
+                        android:textSize="@dimen/_9sdp"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="12dp"
+                    android:fontFamily="@font/inter_semibold"
+                    android:text="Send Notifications"
+                    android:textColor="@color/black" />
+
+
+                <LinearLayout
+                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:background="@drawable/left_grey"
+                        android:id="@+id/yes"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="Yes"
+                        android:textSize="@dimen/_9sdp"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:background="@drawable/right_grey"
+                        android:id="@+id/no"
+                        android:text="No"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:textAllCaps="false"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textSize="@dimen/_9sdp"
+                        android:textColor="@color/black" />
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/submit_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/source_sans_pro_semibold"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="  Submit  "
+                android:layout_marginHorizontal="@dimen/_25sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:backgroundTint="@color/blue"
+                android:background="@drawable/btn_bg"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:cornerRadius="8dp" />
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+
+</LinearLayout>

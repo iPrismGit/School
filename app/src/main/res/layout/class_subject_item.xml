@@ -35,6 +35,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
+                    android:id="@+id/subjectTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/inter_semibold"
@@ -43,7 +44,7 @@
                     android:textColor="@color/black" />
 
                 <TextView
-                    android:id="@+id/textView70"
+                    android:id="@+id/teacherNameTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"

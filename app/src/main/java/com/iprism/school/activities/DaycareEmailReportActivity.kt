@@ -13,6 +13,10 @@ class DaycareEmailReportActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDaycareEmailReportBinding
 
+    private var teacherId: String = ""
+    private var auth_token: String = ""
+    private var scl_id: String = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDaycareEmailReportBinding.inflate(layoutInflater)

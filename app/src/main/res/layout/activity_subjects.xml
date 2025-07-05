@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.SubjectsActivity">
+    tools:context=".activities.subjects.SubjectsActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout3"
@@ -24,7 +24,7 @@
             android:adjustViewBounds="true"
             android:maxWidth="24dp"
             android:maxHeight="24dp"
-            android:src="@drawable/menu_img" />
+            android:src="@drawable/back_img" />
 
         <TextView
             android:id="@+id/textView10"
@@ -47,6 +47,23 @@
 
     </LinearLayout>
 
+
+    <TextView
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/_100sdp"
+        android:id="@+id/noDataTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="@font/inter_bold"
+        android:text="No Data Found"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
+
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -56,12 +73,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/subjects_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+
 
     </LinearLayout>
 
