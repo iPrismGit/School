@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.iprism.parentapp.base.BaseActivity
 import com.iprism.school.R
 import com.iprism.school.databinding.ActivityLoginBinding
@@ -79,7 +81,10 @@ class LoginActivity : BaseActivity() {
     private fun generateOtp(mobileNumber: String) {
         showProgress()
         var loginApiRequest = LoginReq(mobileNumber, "no", "token")
-        Log.d("otpApiRequest", loginApiRequest.toString())
+        val gson = Gson()
+        val json = gson.toJson(loginApiRequest)
+        Log.d("otpApiRequest", json)
+
         var call: Call<OtpResponse> = parentApiService!!.loginOTP(loginApiRequest)
         call.enqueue(object : Callback<OtpResponse> {
             override fun onResponse(call: Call<OtpResponse>, response: Response<OtpResponse>) {

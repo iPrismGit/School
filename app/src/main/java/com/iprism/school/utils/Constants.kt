@@ -2,8 +2,11 @@ package com.iprism.school.utils
 
 object Constants {
 
-    const val BASE_URL = "https://lpipreschool.com/schoolapp/api/api/"
-    const val IMAGES_URL = "https://lpipreschool.com/schoolapp/"
+    const val BASE_URL = "https://littlepebbles.co.in/schoolapp/"
+    const val IMAGES_URL = "https://littlepebbles.co.in/schoolapp/"
+
+//    const val BASE_URL = "https://lpipreschool.com/schoolapp/api/api/"
+//    const val IMAGES_URL = "https://lpipreschool.com/schoolapp/"
 
     const val LOGIN_ENDPOINT = "teacher_login"
     const val RESENDOTP_ENDPOINT = "teacher_resend_otp"
@@ -15,7 +18,6 @@ object Constants {
     const val TEACHER_ATTANDANCE_UPDATE = "teacher_updating_attendance"
     const val SCHOOL_STAFF = "school_staff_details"
     const val TEACHERVIEWGROUPS = "teacher_view_groups_details"
-
     const val TEACHERCREATECALENDER = "teacher_create_calender"
     const val TEACHERCALENDERLIST = "teacher_claender_list"
     const val TEACHERCALENDERDETAILS = "teacher_view_single_claender_details"

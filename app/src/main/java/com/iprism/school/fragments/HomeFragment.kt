@@ -466,7 +466,7 @@ class HomeFragment : BaseFragment() {
             }
             override fun onFailure(call: Call<AlbumsListResponse>, t: Throwable) {
                 hideProgress()
-                ToastUtils.showErrorCustomToast(requireActivity(), t.message.toString())
+//                ToastUtils.showErrorCustomToast(requireActivity(), t.message.toString())
             }
         })
     }
