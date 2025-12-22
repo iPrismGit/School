@@ -1,6 +1,5 @@
 package com.iprism.school.network
 
-import com.iprism.parentapp.network.StaffApiService
 import com.iprism.school.utils.Constants
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

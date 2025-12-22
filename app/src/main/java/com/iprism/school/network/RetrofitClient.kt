@@ -1,12 +1,11 @@
 package com.iprism.school.network
 
-import com.iprism.parentapp.network.StaffApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
 
-    private const val BASE_URL = "https://lpipreschool.com/schoolapp/api/api/"
+    private const val BASE_URL = ": https://littlepebbles.co.in/schoolapp/api/api/"
 
     val apiService: StaffApiService by lazy {
         Retrofit.Builder()

@@ -1,4 +1,4 @@
-package com.iprism.parentapp.network
+package com.iprism.school.network
 
 
 import com.iprism.school.model.Request.AddAuthorizedReq
@@ -96,7 +96,6 @@ import com.iprism.school.model.Response.ClassDetailsResponse
 import com.iprism.school.model.Response.ClassListResponse
 import com.iprism.school.model.Response.ClassResponse
 import com.iprism.school.model.Response.Class_studentResponse
-import com.iprism.school.model.Response.ClasseList
 import com.iprism.school.model.Response.ConsentsListResponse
 import com.iprism.school.model.Response.CreateCalenderResponse
 import com.iprism.school.model.Response.CreateStudentResponse

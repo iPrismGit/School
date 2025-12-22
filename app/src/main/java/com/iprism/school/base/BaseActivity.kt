@@ -18,7 +18,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.iprism.parentapp.network.StaffApiService
+import com.iprism.school.network.StaffApiService
 import com.iprism.school.R
 import com.iprism.school.network.StaffApi
 import com.iprism.school.utils.NetworkUtil

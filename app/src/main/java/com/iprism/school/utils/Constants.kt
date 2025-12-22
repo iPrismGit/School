@@ -2,7 +2,7 @@ package com.iprism.school.utils
 
 object Constants {
 
-    const val BASE_URL = "https://littlepebbles.co.in/schoolapp/"
+    const val BASE_URL = "https://littlepebbles.co.in/schoolapp/api/api/"
     const val IMAGES_URL = "https://littlepebbles.co.in/schoolapp/"
 
 //    const val BASE_URL = "https://lpipreschool.com/schoolapp/api/api/"
