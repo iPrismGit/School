@@ -53,7 +53,7 @@ class CalenderActivity : BaseActivity() {
 
     private fun setupListeners() {
         binding.backIv.setOnClickListener {
-            navigateToHome()
+            finish()
         }
 
         binding.leftArrowIv.setOnClickListener {
@@ -115,15 +115,5 @@ class CalenderActivity : BaseActivity() {
                 }
             }
         })
-    }
-
-    private fun navigateToHome() {
-        val intent = Intent(this, HomeActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
-    override fun onBackPressed() {
-        navigateToHome()
     }
 }
