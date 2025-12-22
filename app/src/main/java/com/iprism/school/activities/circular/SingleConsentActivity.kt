@@ -11,13 +11,12 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.iprism.parentapp.base.BaseActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
 import com.iprism.school.activities.LoginActivity
 import com.iprism.school.adapters.ConsentAttachmentsAdapter
 import com.iprism.school.databinding.ActivitySingleConsentBinding
 import com.iprism.school.model.Request.SingleConsentViewReq
-import com.iprism.school.utils.Constants
 import com.iprism.school.utils.User
 import com.iprism.school.viewModels.Scl_ViewModel
 

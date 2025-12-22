@@ -41,10 +41,9 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
-import com.iprism.parentapp.base.BaseActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
 import com.iprism.school.activities.LoginActivity
-import com.iprism.school.activities.circular.SingleConsentActivity
 import com.iprism.school.adapters.ConsentAttachmentsAdapter
 import com.iprism.school.adapters.ImageAdapter
 import com.iprism.school.databinding.ActivityEditConsentBinding

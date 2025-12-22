@@ -1,15 +1,12 @@
 package com.iprism.school.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.iprism.parentapp.base.BaseActivity
-import com.iprism.school.R
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityLoginBinding
 import com.iprism.school.model.Request.LoginReq
 import com.iprism.school.model.Request.OtpReq

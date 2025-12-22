@@ -10,7 +10,7 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
-import com.iprism.parentapp.base.BaseActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
 import com.iprism.school.activities.ClassesActivity
 import com.iprism.school.activities.LoginActivity

@@ -20,7 +20,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.GridLayoutManager
-import com.iprism.parentapp.base.BaseActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
 import com.iprism.school.activities.LoginActivity
 import com.iprism.school.adapters.AlbumsImageAdapter

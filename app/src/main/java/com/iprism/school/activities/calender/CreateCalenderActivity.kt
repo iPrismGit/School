@@ -19,7 +19,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.iprism.parentapp.base.BaseActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
 import com.iprism.school.databinding.ActivityCreateCalenderBinding
 import com.iprism.school.model.Request.CLass_StudentsReq

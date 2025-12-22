@@ -2,18 +2,12 @@ package com.iprism.school.activities
 
 import android.app.DatePickerDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.iprism.parentapp.base.BaseActivity
-import com.iprism.school.activities.StaffAttendanceActivity
-import com.iprism.school.adapters.StaffAttendancesAdapter
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityStaffAttendanceEmailReportBinding
 import com.iprism.school.model.Request.EmailReportReq
-import com.iprism.school.model.Request.StaffAttandanceReq
-import com.iprism.school.model.Response.StaffAttandanceResponse
 import com.iprism.school.model.Response.SuccessResponsePojo
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.User

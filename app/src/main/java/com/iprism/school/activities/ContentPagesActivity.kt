@@ -1,20 +1,15 @@
 package com.iprism.school.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import com.iprism.parentapp.base.BaseActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
-import com.iprism.school.activities.FeedBackActivity
 import com.iprism.school.databinding.ActivityContentPagesBinding
 import com.iprism.school.model.Request.SchoolStaffReq
-import com.iprism.school.model.Request.SendFeedBackReq
 import com.iprism.school.model.Response.AboutUsResponse
 import com.iprism.school.model.Response.PrivacyResponse
-import com.iprism.school.model.Response.SuccessResponsePojo
-import com.iprism.school.model.Response.TeacherAccessResponse
 import com.iprism.school.model.Response.TermsandConditionResponse
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.User

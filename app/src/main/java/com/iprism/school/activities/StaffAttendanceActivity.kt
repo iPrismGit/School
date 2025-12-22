@@ -1,24 +1,17 @@
 package com.iprism.school.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.RadioGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.iprism.parentapp.base.BaseActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
-import com.iprism.school.activities.ClassSubjectsActivity
-import com.iprism.school.adapters.ClassSubjectsAdapter
 import com.iprism.school.adapters.StaffAttendancesAdapter
-import com.iprism.school.databinding.ActivityEditMealPlannerBinding
 import com.iprism.school.databinding.ActivityStaffAttendanceBinding
-import com.iprism.school.model.Request.SUbjectsTeacherListReq
 import com.iprism.school.model.Request.StaffAttandanceReq
 import com.iprism.school.model.Response.StaffAttandanceResponse
-import com.iprism.school.model.Response.SubjectTeacherListResponse
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.User
 import retrofit2.Call

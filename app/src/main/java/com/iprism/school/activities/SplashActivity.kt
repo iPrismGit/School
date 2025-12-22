@@ -1,12 +1,10 @@
 package com.iprism.school.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import com.iprism.parentapp.base.BaseActivity
-import com.iprism.school.R
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivitySplashBinding
 import com.iprism.school.utils.User
 

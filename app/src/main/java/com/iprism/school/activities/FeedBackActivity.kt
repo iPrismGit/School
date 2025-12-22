@@ -6,10 +6,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.RadioButton
@@ -17,12 +15,8 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
-import com.iprism.parentapp.base.BaseActivity
-import com.iprism.school.R
-import com.iprism.school.activities.PromotionsActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityFeedBackBinding
-import com.iprism.school.model.Request.CreatePromotionsReq
 import com.iprism.school.model.Request.SendFeedBackReq
 import com.iprism.school.model.Response.SuccessResponsePojo
 import com.iprism.school.utils.ToastUtils
@@ -32,8 +26,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
-import java.io.FileNotFoundException
-import java.io.IOException
 import java.io.InputStream
 
 class FeedBackActivity : BaseActivity() {

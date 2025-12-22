@@ -1,7 +1,6 @@
 package com.iprism.school.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,24 +10,13 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.iprism.parentapp.base.BaseActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
-import com.iprism.school.activities.CreateGroupActivity
-import com.iprism.school.activities.subjects.AddSubjectActivity
-import com.iprism.school.activities.subjects.SubjectsActivity
-import com.iprism.school.databinding.ActivityClassSubjectsBinding
 import com.iprism.school.databinding.ActivityCreateClassSubjectsBinding
-import com.iprism.school.databinding.AddMoreBottomSheetLayoutBinding
-import com.iprism.school.databinding.SchoolMembersBottomSheetBinding
-import com.iprism.school.databinding.StudentsBottomSheetBinding
-import com.iprism.school.databinding.SubjectsBottomSheetBinding
 import com.iprism.school.model.Request.AddSubjectTeacherReq
-import com.iprism.school.model.Request.CreateSubjectReq
 import com.iprism.school.model.Request.SchoolStaffReq
 import com.iprism.school.model.Response.SchoolStaffResponse
 import com.iprism.school.model.Response.StaffDetailList
-import com.iprism.school.model.Response.StudentListt
 import com.iprism.school.model.Response.SubjectLsit
 import com.iprism.school.model.Response.SubjectsListResponse
 import com.iprism.school.model.Response.SuccessResponsePojo

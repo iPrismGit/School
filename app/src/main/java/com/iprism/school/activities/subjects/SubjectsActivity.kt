@@ -8,7 +8,7 @@ import android.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.iprism.parentapp.base.BaseActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.activities.ClassSubjectsActivity
 import com.iprism.school.activities.HomeActivity
 import com.iprism.school.adapters.SubjectsAdapter

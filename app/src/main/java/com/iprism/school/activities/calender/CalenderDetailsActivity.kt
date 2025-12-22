@@ -7,13 +7,12 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.iprism.parentapp.base.BaseActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
 import com.iprism.school.activities.LoginActivity
 import com.iprism.school.databinding.ActivityCalenderDetailsBinding
 import com.iprism.school.databinding.DeleteBottomSheetBinding
 import com.iprism.school.model.Request.CalenderDeleteReq
-import com.iprism.school.model.Request.CalenderImgDeleteReq
 import com.iprism.school.model.Request.TeacherCalederDetailsReq
 import com.iprism.school.utils.User
 import com.iprism.school.viewModels.Scl_ViewModel

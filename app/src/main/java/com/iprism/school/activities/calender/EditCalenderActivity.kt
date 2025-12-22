@@ -30,14 +30,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.iprism.parentapp.base.BaseActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
 import com.iprism.school.activities.LoginActivity
 import com.iprism.school.adapters.CalenderImagesAdapter
-import com.iprism.school.adapters.ConsentAttachmentsAdapter
 import com.iprism.school.databinding.ActivityEditCalenderBinding
 import com.iprism.school.databinding.FullViewImgBinding
 import com.iprism.school.model.Request.CLass_StudentsReq
@@ -47,7 +44,6 @@ import com.iprism.school.model.Request.CalenderUpdateReq
 import com.iprism.school.model.Request.SchoolStaffReq
 import com.iprism.school.model.Request.TeacherAccessReq
 import com.iprism.school.model.Request.TeacherCalederDetailsReq
-import com.iprism.school.model.Request.TeacherCreateCalenderReq
 import com.iprism.school.model.Response.ClassResponse
 import com.iprism.school.model.Response.Class_studentResponse
 import com.iprism.school.model.Response.ClasseList

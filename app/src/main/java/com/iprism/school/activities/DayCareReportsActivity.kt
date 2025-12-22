@@ -2,7 +2,6 @@ package com.iprism.school.activities
 
 import android.app.DatePickerDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,23 +11,16 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.iprism.parentapp.base.BaseActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
-import com.iprism.school.activities.DaycareReportActivity
-import com.iprism.school.activities.calender.CalenderActivity
-import com.iprism.school.activities.calender.CalenderDetailsActivity
 import com.iprism.school.adapters.DayCareReportsStudentsListAdapter
-import com.iprism.school.adapters.DayCareStudentsAdapter
 import com.iprism.school.databinding.ActivityDayCareReportsBinding
-import com.iprism.school.databinding.ActivityDaycareReportBinding
 import com.iprism.school.model.Request.SchoolStaffReq
 import com.iprism.school.model.Request.TeacherGroupStudentsReq
 import com.iprism.school.model.Response.DayCareReportsStudentsResponse
 import com.iprism.school.model.Response.GroupsResponse
 import com.iprism.school.model.Response.GroupsTeacher
-import com.iprism.school.model.Response.TeacherGroupStudentsResponse
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.User
 import retrofit2.Call

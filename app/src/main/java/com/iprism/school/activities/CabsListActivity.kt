@@ -1,24 +1,13 @@
 package com.iprism.school.activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.iprism.parentapp.base.BaseActivity
-import com.iprism.school.R
-import com.iprism.school.activities.StaffActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.adapters.CabsListAdapter
-import com.iprism.school.adapters.StaffListAdapter
 import com.iprism.school.databinding.ActivityCabsListBinding
-import com.iprism.school.databinding.ActivityFillOtherDetailsBinding
 import com.iprism.school.model.Request.SchoolStaffReq
-import com.iprism.school.model.Request.StaffListReq
-import com.iprism.school.model.Request.StaffListResponse
 import com.iprism.school.model.Response.AllCabsResponse
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.User

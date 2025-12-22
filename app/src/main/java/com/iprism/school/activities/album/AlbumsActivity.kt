@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
-import com.iprism.parentapp.base.BaseActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.activities.HomeActivity
 import com.iprism.school.adapters.AlbumsAdapter
 import com.iprism.school.databinding.ActivityAlbumsBinding

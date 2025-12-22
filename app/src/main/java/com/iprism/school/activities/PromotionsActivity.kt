@@ -1,15 +1,10 @@
 package com.iprism.school.activities
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.media.MediaMetadataRetriever
 import android.net.Uri
-import android.os.Binder
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Environment
 import android.provider.OpenableColumns
 import android.util.Base64
 import android.util.Log
@@ -18,16 +13,12 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.iprism.parentapp.base.BaseActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
-import com.iprism.school.activities.CreateGroupActivity
-import com.iprism.school.activities.calender.CreateCalenderActivity
 import com.iprism.school.adapters.ImageAdapter
 import com.iprism.school.databinding.ActivityPromotionsBinding
 import com.iprism.school.model.Request.CreatePromotionsReq
-import com.iprism.school.model.Request.UpdateGroupReq
 import com.iprism.school.model.Response.SuccessResponsePojo
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.User
@@ -36,7 +27,6 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.ByteArrayOutputStream
-import java.io.File
 import java.io.InputStream
 
 class PromotionsActivity : BaseActivity() {

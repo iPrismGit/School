@@ -1,26 +1,18 @@
 package com.iprism.school.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.iprism.parentapp.base.BaseActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
-import com.iprism.school.activities.FillOtherDetailsActivity
 import com.iprism.school.databinding.ActivityFillHealthDetailsBinding
-import com.iprism.school.databinding.ActivityFillOtherDetailsBinding
 import com.iprism.school.databinding.AddMoreBottomSheetLayoutBinding
 import com.iprism.school.databinding.ChildHasHadBottomSheetBinding
 import com.iprism.school.databinding.ChildSuffersFromBottomSheetBinding
-import com.iprism.school.model.Request.AddAuthorizedReq
 import com.iprism.school.model.Request.StudentDetailsReq
 import com.iprism.school.model.Request.StudentOtherDetailsReq
 import com.iprism.school.model.Response.StudentDetailsResponse

@@ -1,8 +1,6 @@
 package com.iprism.school.activities.calender
 
 import android.content.Intent
-import android.icu.text.SimpleDateFormat
-import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -11,7 +9,7 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.iprism.parentapp.base.BaseActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.activities.HomeActivity
 import com.iprism.school.activities.LoginActivity
 import com.iprism.school.adapters.CalenderAdapter
@@ -23,155 +21,109 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
+@RequiresApi(Build.VERSION_CODES.O)
 class CalenderActivity : BaseActivity() {
 
     private lateinit var binding: ActivityCalenderBinding
-
     private val viewModel: Scl_ViewModel by viewModels()
+
     private var teacherId: String = ""
     private var auth_token: String = ""
     private var scl_id: String = ""
-    private var formattedDateString: String = ""
 
-    private val dateFormat = SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
-    private val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-    private var calendar = Calendar.getInstance()
+    private var displayedDate: LocalDate = LocalDate.now()
     private lateinit var adapter: CalenderAdapter
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private var displayedDate = LocalDate.now() // e.g., 2025-02-23
-    @RequiresApi(Build.VERSION_CODES.O)
+    private val apiDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
+    private val displayDateFormatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.getDefault())
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCalenderBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // userDetails and user are inherited from BaseActivity
         teacherId = userDetails[User.ID].toString()
         auth_token = userDetails[User.AUTH_TOKEN].toString()
         scl_id = userDetails[User.SCHOOL_ID].toString()
 
-        setDate()
-        handleBack()
-        handleAddCalenderBtn()
-        handleRightBtn()
-        hanldeLeftBtn()
-        updateMonthYearText()
+        setupListeners()
+        updateUIAndFetch()
     }
 
-    private fun setDate() {
-        val calendar: java.util.Calendar = java.util.Calendar.getInstance()
-        val sdf = java.text.SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
-        val sdfString = java.text.SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val formattedDate: String = sdf.format(calendar.time)
-         formattedDateString  = sdfString.format(calendar.time)
-        Log.d("dateFormatString", formattedDateString)
-        binding.dateTxt.text = formattedDate
-        calenderList(formattedDateString)
-    }
+    private fun setupListeners() {
+        binding.backIv.setOnClickListener {
+            navigateToHome()
+        }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun hanldeLeftBtn() {
-        binding.leftArrowIv.setOnClickListener(View.OnClickListener {
-            changeDate(-1)
+        binding.leftArrowIv.setOnClickListener {
             displayedDate = displayedDate.minusMonths(1)
-            updateMonthYearText()
-        })
-    }
+            updateUIAndFetch()
+        }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun handleRightBtn() {
-        binding.rightArrowIv.setOnClickListener(View.OnClickListener {
-            changeDate(1)
+        binding.rightArrowIv.setOnClickListener {
             displayedDate = displayedDate.plusMonths(1)
-            updateMonthYearText()
-        })
-    }
+            updateUIAndFetch()
+        }
 
-    private fun changeDate(days: Int) {
-        calendar.add(Calendar.MONDAY, days)
-        var dateFormatString = simpleDateFormat.format(calendar.time)
-        Log.d("dateFormatString", dateFormatString)
-        calenderList(dateFormatString)
-    }
-
-
-    private fun handleAddCalenderBtn() {
-        binding.addCalenderBtn.setOnClickListener(View.OnClickListener {
-            val intent = Intent(this@CalenderActivity, CreateCalenderActivity::class.java)
-            intent.putExtra("tag","create")
+        binding.addCalenderBtn.setOnClickListener {
+            val intent = Intent(this, CreateCalenderActivity::class.java)
+            intent.putExtra("tag", "create")
             startActivity(intent)
-        })
+        }
     }
 
-    private fun handleBack() {
-        binding.backIv.setOnClickListener(View.OnClickListener {
-            val intent = Intent(this@CalenderActivity,HomeActivity::class.java)
-            startActivity(intent)
-            finish()
-        })
+    private fun updateUIAndFetch() {
+        // Update Month-Year display text (e.g., "February 2025")
+        binding.dateTxt.text = displayedDate.format(displayDateFormatter)
+
+        // Fetch data for the current displayed month.
+        // We use the first day of the month as the representative date for fetching the list.
+        val formattedDateString = displayedDate.withDayOfMonth(1).format(apiDateFormatter)
+        fetchCalenderList(formattedDateString)
     }
 
-    private fun calenderList(formattedDateString: String) {
+    private fun fetchCalenderList(dateString: String) {
         showProgress()
-        var apiRequest = TeacherCalenderlistReq(auth_token,formattedDateString,scl_id,teacherId)
-        Log.d("calenderListReq", apiRequest.toString())
-        viewModel.teacherCalenderList(apiRequest).observe(this@CalenderActivity, Observer { response ->
+        val apiRequest = TeacherCalenderlistReq(auth_token, dateString, scl_id, teacherId)
+        Log.d("CalenderActivity", "Request: $apiRequest")
 
+        viewModel.teacherCalenderList(apiRequest).observe(this, Observer { response ->
             hideProgress()
-
             if (response != null && response.status == true) {
-                hideProgress()
-                Log.d("calenderListResponse", response.toString())
-
                 binding.nodataTv.visibility = View.GONE
                 binding.calendersRv.visibility = View.VISIBLE
 
-
-
-
-                adapter = CalenderAdapter(this,response.response.calender_details ?: emptyList())
+                val calenderDetails = response.response.calender_details ?: emptyList()
+                adapter = CalenderAdapter(this, calenderDetails)
+                binding.calendersRv.layoutManager = LinearLayoutManager(this)
                 binding.calendersRv.adapter = adapter
-                var layoutManager = LinearLayoutManager(this)
-                binding.calendersRv.layoutManager = layoutManager
 
-                adapter.OnItemCallPic = {
-                        mydata ->
-                    val calenderId = mydata.id.toString()
-                    val intent = Intent(this@CalenderActivity, CalenderDetailsActivity::class.java)
-                    intent.putExtra("calenderId",calenderId)
+                adapter.OnItemCallPic = { data ->
+                    val intent = Intent(this, CalenderDetailsActivity::class.java)
+                    intent.putExtra("calenderId", data.id.toString())
                     startActivity(intent)
                 }
-
             } else {
-                hideProgress()
                 binding.nodataTv.visibility = View.VISIBLE
                 binding.calendersRv.visibility = View.GONE
-                if (response!!.message.toString() == "Authentication Token Expired"){
-                    user!!.storeUserDetails("","","","","",""
-                        ,"","","",""
-                        ,"","","","",""
-                        ,"","","")
-                    startActivity(Intent(this@CalenderActivity, LoginActivity::class.java))
-                    finish()
-                }else{
 
+                if (response?.message == "Authentication Token Expired") {
+                    user?.storeUserDetails("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
+                    startActivity(Intent(this, LoginActivity::class.java))
+                    finish()
                 }
             }
         })
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun updateMonthYearText() {
-        val formatter = DateTimeFormatter.ofPattern("MMMM yyyy")
-        binding.dateTxt.text = displayedDate.format(formatter)
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        val intent = Intent(this@CalenderActivity,HomeActivity::class.java)
+    private fun navigateToHome() {
+        val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
         finish()
     }
 
-
+    override fun onBackPressed() {
+        navigateToHome()
+    }
 }

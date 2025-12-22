@@ -1,17 +1,11 @@
 package com.iprism.school.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
-import com.iprism.parentapp.base.BaseActivity
-import com.iprism.school.R
-import com.iprism.school.activities.CreateMealActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityEditMealPlannerBinding
-import com.iprism.school.databinding.ActivityMealPlannerBinding
-import com.iprism.school.model.Request.CreateMealReq
 import com.iprism.school.model.Request.MealUpdateReq
 import com.iprism.school.model.Response.SuccessResponsePojo
 import com.iprism.school.utils.ToastUtils

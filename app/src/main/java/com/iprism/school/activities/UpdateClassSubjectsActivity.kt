@@ -1,7 +1,6 @@
 package com.iprism.school.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -12,14 +11,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.iprism.parentapp.base.BaseActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
-import com.iprism.school.activities.CreateClassSubjectsActivity
-import com.iprism.school.activities.classes.CreateClassActivity
-import com.iprism.school.databinding.ActivityCreateClassSubjectsBinding
 import com.iprism.school.databinding.ActivityUpDateClassSubjectsBinding
 import com.iprism.school.databinding.SchoolMembersBottomSheetBinding
-import com.iprism.school.model.Request.AddSubjectTeacherReq
 import com.iprism.school.model.Request.SchoolStaffReq
 import com.iprism.school.model.Request.TeacherSubjectReq
 import com.iprism.school.model.Response.SchoolStaffResponse

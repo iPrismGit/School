@@ -23,7 +23,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.FileProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.iprism.parentapp.base.BaseActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
 import com.iprism.school.activities.HomeActivity
 import com.iprism.school.activities.LoginActivity

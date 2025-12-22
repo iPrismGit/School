@@ -1,25 +1,11 @@
 package com.iprism.school.activities.Messages
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.bumptech.glide.Glide
-import com.iprism.parentapp.base.BaseActivity
-import com.iprism.school.R
-import com.iprism.school.activities.Messages.MessageDetailsActivity
-import com.iprism.school.databinding.ActivityMessageDetailsBinding
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityMsgDetailPageBinding
-import com.iprism.school.model.Request.InboxSingleMsgReq
-import com.iprism.school.model.Request.MessagesTypeResponse
 import com.iprism.school.model.Request.SingleMsgDetailsReq
-import com.iprism.school.model.Response.InboxSingleMsgResponse
 import com.iprism.school.model.Response.SingleMsgDetailsResponse
-import com.iprism.school.utils.Constants
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.User
 import retrofit2.Call

@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.iprism.parentapp.base.BaseActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.adapters.DayCareReportsDetailsListAdapter
 import com.iprism.school.databinding.ActivityDaycareReportDetailsBinding
 import com.iprism.school.model.Request.DeleteDaycareReportReq

@@ -6,16 +6,14 @@ import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.iprism.parentapp.base.BaseActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
 import com.iprism.school.adapters.StaffListAdapter
 import com.iprism.school.databinding.ActivityStaffBinding
-import com.iprism.school.model.Request.LoginReq
 import com.iprism.school.model.Request.StaffListReq
 import com.iprism.school.model.Request.StaffListResponse
 import com.iprism.school.model.Request.StaffStatusReq
 import com.iprism.school.model.Response.SuccessResponsePojo
-import com.iprism.school.utils.Constants
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.User
 import retrofit2.Call

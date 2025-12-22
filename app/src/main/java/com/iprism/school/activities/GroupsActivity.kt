@@ -1,23 +1,15 @@
 package com.iprism.school.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.iprism.parentapp.base.BaseActivity
-import com.iprism.school.R
-import com.iprism.school.activities.StudentsActivity
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.adapters.GroupsAdapter
-import com.iprism.school.adapters.StudentsListAdapter
 import com.iprism.school.databinding.ActivityGroupsBinding
-import com.iprism.school.databinding.AddMoreBottomSheetLayoutBinding
-import com.iprism.school.interfaces.OnGroupItemClickListener
 import com.iprism.school.model.Request.SchoolStaffReq
-import com.iprism.school.model.Request.StudentsListReq
 import com.iprism.school.model.Response.GroupsListResponse
-import com.iprism.school.model.Response.StudentListResponse
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.User
 import retrofit2.Call

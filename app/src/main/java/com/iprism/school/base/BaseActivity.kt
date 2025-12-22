@@ -1,4 +1,4 @@
-package com.iprism.parentapp.base
+package com.iprism.school.base
 
 import android.app.Activity
 import android.app.ProgressDialog
@@ -103,7 +103,11 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        unregisterReceiver(networkReceiver)
+        try {
+            unregisterReceiver(networkReceiver)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         networkCheckRunnable?.let { handler.removeCallbacks(it) }
     }
 
@@ -135,23 +139,24 @@ open class BaseActivity : AppCompatActivity() {
     //handle the progressbar
     fun showProgress() {
         try {
-            pDialog = ProgressDialog(this,R.style.TransparentProgressDialog)
-            // pDialog = new ProgressDialog(context);
-            pDialog!!.getWindow()!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            pDialog!!.setIndeterminate(true)
-            pDialog!!.setCancelable(false)
-            pDialog!!.show()
-            pDialog!!.setContentView(R.layout.progressxml)
-            pDialog!!.setCanceledOnTouchOutside(false)
-            pDialog!!.show()
+            if (pDialog == null) {
+                pDialog = ProgressDialog(this, R.style.TransparentProgressDialog)
+                pDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                pDialog!!.setIndeterminate(true)
+                pDialog!!.setCancelable(false)
+            }
+            if (!pDialog!!.isShowing) {
+                pDialog!!.show()
+                pDialog!!.setContentView(R.layout.progressxml)
+            }
         } catch (e: Exception) {
             Log.d("AlertDialog", "Progress dialog can not be shown")
         }
     }
 
     fun hideProgress() {
-        if(pDialog!=null&& pDialog!!.isShowing()){
-            pDialog!!.dismiss();
+        if (pDialog != null && pDialog!!.isShowing) {
+            pDialog!!.dismiss()
         }
     }
 
