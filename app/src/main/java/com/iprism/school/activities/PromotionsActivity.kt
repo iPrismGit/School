@@ -279,5 +279,4 @@ class PromotionsActivity : BaseActivity() {
             null
         }
     }
-
 }
