@@ -56,6 +56,7 @@ import com.iprism.school.utils.User
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import androidx.core.view.isVisible
 
 class HomeFragment : BaseFragment() {
 
@@ -340,19 +341,34 @@ class HomeFragment : BaseFragment() {
 
     private fun handleFeeLo() {
         binding.feeLo.setOnClickListener(View.OnClickListener {
-            binding.allFeesesLo.visibility = View.VISIBLE
+            binding.allFeesesLo.visibility =
+                if (binding.allFeesesLo.isVisible) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
         })
     }
 
     private fun handleDirectoriesLo() {
         binding.directoryLo.setOnClickListener(View.OnClickListener {
-            binding.allDirectoriesLo.visibility = View.VISIBLE
+            binding.allDirectoriesLo.visibility =
+                if (binding.allDirectoriesLo.isVisible) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
         })
     }
 
     private fun handleMessageLo() {
         binding.messagesLo.setOnClickListener(View.OnClickListener {
-            binding.allMessagesLo.visibility = View.VISIBLE
+            binding.allMessagesLo.visibility =
+                if (binding.allMessagesLo.isVisible) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
         })
     }
 

@@ -461,8 +461,9 @@
                             android:id="@+id/view_all"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center">
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -488,12 +489,12 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:layout_alignParentStart="true"
-                            android:layout_centerInParent="true"
                             android:id="@+id/create_ll"
-                            android:gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
                             android:orientation="horizontal">
 
                             <ImageView
@@ -518,14 +519,14 @@
                         </LinearLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:layout_toEndOf="@id/create_ll"
                             android:id="@+id/albums_rv"
-                            android:layout_centerInParent="true"
-                            android:layout_marginStart="@dimen/_5sdp"
-                            android:layout_gravity="center"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp" />
+                            android:layout_centerInParent="true"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginTop="20dp"
+                            android:layout_toEndOf="@id/create_ll" />
 
                     </RelativeLayout>
                 </LinearLayout>
