@@ -118,6 +118,7 @@ class StudentDetailsActivity : BaseActivity() {
 
                         binding.genderTv.text = loginApiResponse.response.student_details.student_gender.toString()
                         binding.fatherNameTv.text = loginApiResponse.response.student_details.father_name.toString()
+                        binding.fatherMobileTv.text = loginApiResponse.response.student_details.father_mobile.toString()
                         binding.motherNameTv.text = loginApiResponse.response.student_details.mother_name.toString()
                         binding.motherMobileTv.text = loginApiResponse.response.student_details.mother_mobile.toString()
                         binding.fatheroccupationTv.text = loginApiResponse.response.student_details.father_occupation.toString()
