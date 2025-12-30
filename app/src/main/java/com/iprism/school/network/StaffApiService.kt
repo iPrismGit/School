@@ -133,6 +133,10 @@ import com.iprism.school.model.Response.TeacherCalenderListResponse
 import com.iprism.school.model.Response.TeacherGroupStudentsResponse
 import com.iprism.school.model.Response.TermsandConditionResponse
 import com.iprism.school.model.Response.ViewDayCareResponse
+import com.iprism.school.model.authmodel.LoginApiRequest
+import com.iprism.school.model.authmodel.LoginApiResponse
+import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
+import com.iprism.school.model.classteachermodel.ClassTeacherApiResponse
 import com.iprism.school.utils.Constants
 import retrofit2.Call
 import retrofit2.http.Body
@@ -142,7 +146,7 @@ import retrofit2.http.POST
 interface StaffApiService {
 
     @POST(Constants.LOGIN_ENDPOINT)
-    fun loginOTP(@Body loginApiRequest: LoginReq) : Call<OtpResponse>
+    suspend fun userLogin(@Body loginApiRequest: LoginApiRequest) : LoginApiResponse
 
     @POST(Constants.RESENDOTP_ENDPOINT)
     fun reSendOtp(@Body resendOtpApiRequest: OtpReq) : Call<OtpResponse>
@@ -437,5 +441,8 @@ interface StaffApiService {
 
   @POST(Constants.ALLCABS)
   fun allCabsList(@Body schoolStaffReq: SchoolStaffReq) : Call<AllCabsResponse>
+
+  @POST(Constants.CLASS_TEACHER)
+  fun getYearClassAndSection(@Body request : ClassTeacherApiRequest) : ClassTeacherApiResponse
 
 }

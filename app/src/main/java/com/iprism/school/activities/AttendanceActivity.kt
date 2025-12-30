@@ -1,5 +1,6 @@
 package com.iprism.school.activities
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -11,6 +12,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.base.BaseActivity
@@ -24,9 +26,16 @@ import com.iprism.school.model.Response.AttandanceStudentResponse
 import com.iprism.school.model.Response.AttendanceUpdatedResponse
 import com.iprism.school.model.Response.ClassResponse
 import com.iprism.school.model.Response.ClasseList
+import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
+import com.iprism.school.repositories.AttendanceRepository
 import com.iprism.school.utils.DateTimeUtils
 import com.iprism.school.utils.ToastUtils
+import com.iprism.school.utils.UiState
 import com.iprism.school.utils.User
+import com.iprism.school.utils.hideProgress
+import com.iprism.school.utils.showProgress
+import com.iprism.school.viewModels.AttendanceViewModel
+import com.iprism.school.viewModels.ViewModelFactory
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,6 +46,7 @@ import java.util.Locale
 class AttendanceActivity : BaseActivity() {
 
     private lateinit var binding: ActivityAttendanceBinding
+    private lateinit var attendanceViewModel: AttendanceViewModel
     private var attendanceType: String = "pending"
     private var selectedDate = ""
     private lateinit var crossImage: ImageView
@@ -51,6 +61,8 @@ class AttendanceActivity : BaseActivity() {
     private var teacherId: String = ""
     private var auth_token: String = ""
     private var scl_id: String = ""
+    private var academicYear: String = ""
+    private var academicYearId: String = ""
 
     private val classNames = mutableListOf<String>()
     private val classIds = mutableListOf<String>()
@@ -82,29 +94,19 @@ class AttendanceActivity : BaseActivity() {
         teacherId = userDetails[User.ID].toString()
         auth_token = userDetails[User.AUTH_TOKEN].toString()
         scl_id = userDetails[User.SCHOOL_ID].toString()
-
+        initViewModel()
         handleBack()
-//        handlePendingLo()
-//        handleRejectedLo()
-        handleEditBtn()
+        handleDateLo()
         handleSaveAttendanceBtn()
-
+        observeAcademicYearsResponse()
+        var request = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "academic_year")
+        attendanceViewModel.fetchAcademicYears(request)
         callclasses()
-
-        binding.dateLl.setOnClickListener {
-            showDatePickerDialog()
-        }
-
-        binding.classLl.setOnClickListener {
-            showClasses()
-        }
-
         binding.parentNotificationCb.setOnCheckedChangeListener { _, isChecked ->
             notification_parent = if (isChecked) "yes" else "no"
             Log.d("NotifyValue", "Notify is: $notification_parent") // For debugging
         }
 
-        // Select All checkbox listener
         binding.checkBoxAll.setOnCheckedChangeListener { _, isChecked ->
             isAllSelected = isChecked
             studentsAdapter.toggleSelectAll(isAllSelected)
@@ -118,21 +120,50 @@ class AttendanceActivity : BaseActivity() {
             } else if (selectedStudentIds == ""||selectedStudentIds == null){
                 showToast("select students".toString())
             }else{
-                callStudentsAttandanceUpdate()
+//                callStudentsAttandanceUpdate()
             }
         }
 
     }
 
+    private fun observeAcademicYearsResponse() {
+        attendanceViewModel.academicYearsResponse.observe(this) { result ->
+            when (result) {
+                is UiState.Loading -> {
+                    binding.progress.showProgress()
+                }
+
+                is UiState.Success -> {
+                    binding.progress.hideProgress()
+                    academicYear = result.data[0].name
+                    academicYearId = result.data[0].id
+                    Log.d("AcademicYear", academicYear + ", " + academicYearId)
+                }
+
+                is UiState.Error -> {
+
+                    ToastUtils.showErrorCustomToast(this, result.message)
+                    binding.progress.hideProgress()
+                }
+            }
+        }
+    }
+
+    private fun initViewModel() {
+        val repository = AttendanceRepository()
+        val factory = ViewModelFactory { AttendanceViewModel(repository) }
+        attendanceViewModel = ViewModelProvider(this, factory)[AttendanceViewModel::class.java]
+    }
+
+    private fun handleDateLo() {
+        binding.dateLo.setOnClickListener { view ->
+            DateTimeUtils.getDate(binding.dateTxt, true)
+        }
+    }
+
     private fun handleSaveAttendanceBtn() {
         binding.saveAttendanceBtn.setOnClickListener(View.OnClickListener {
             showAttendanceConformationBottomSheet()
-        })
-    }
-
-    private fun handleEditBtn() {
-        binding.editIv.setOnClickListener(View.OnClickListener {
-            showClassesBottomSheet()
         })
     }
 
@@ -192,78 +223,6 @@ class AttendanceActivity : BaseActivity() {
         bottomSheetDialog.show()
     }
 
-    private fun showClassesBottomSheet() {
-        val bottomSheetDialog = BottomSheetDialog(this)
-        val bottomSheetView: View = LayoutInflater.from(this).inflate(R.layout.switch_user_bottom_sheet, null)
-        bottomSheetDialog.setContentView(bottomSheetView)
-        cancelBtn = bottomSheetDialog.findViewById<View>(R.id.cancel_btn) as Button
-        crossImage = bottomSheetDialog.findViewById<View>(R.id.cross_iv) as ImageView
-        applyBtn = bottomSheetDialog.findViewById<View>(R.id.apply_button) as Button
-        dateLo = bottomSheetDialog.findViewById<View>(R.id.date_lo) as ConstraintLayout
-        dateTxt = bottomSheetDialog.findViewById<View>(R.id.date_txt) as TextView
-        bottomSheetDialog.setOnShowListener { dialog ->
-            val bottomSheet = (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-            bottomSheet?.setBackgroundResource(R.drawable.rounded_bottom_sheet_background)
-        }
-
-        dateLo.setOnClickListener(View.OnClickListener {
-            DateTimeUtils.getDate(dateTxt, false)
-        })
-
-        cancelBtn.setOnClickListener(View.OnClickListener {
-            bottomSheetDialog.dismiss()
-        })
-
-        crossImage.setOnClickListener(View.OnClickListener {
-            bottomSheetDialog.dismiss()
-        })
-
-        applyBtn.setOnClickListener(View.OnClickListener {
-            selectedDate = dateTxt.text.toString()
-
-
-            bottomSheetDialog.dismiss()
-            binding.dateTxt.text = selectedDate
-            Log.d("SelectedDate", selectedDate)
-        })
-
-        bottomSheetDialog.show()
-    }
-
-    private fun showDatePickerDialog() {
-        // Get the current date
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-        val datePickerDialog = DatePickerDialog(
-            this,
-            { _, selectedYear, selectedMonth, selectedDay ->
-                // Format and display the selected date in the EditText
-                val formattedDate = formatDate(selectedDay, selectedMonth + 1, selectedYear)
-                binding.selecteddate.text = formattedDate
-                callStudents()
-            },
-            year,
-            month,
-            day
-        )
-
-        // Restrict the calendar to prevent future dates
-        datePickerDialog.datePicker.maxDate = calendar.timeInMillis
-
-        datePickerDialog.show()
-    }
-
-    private fun formatDate(day: Int, month: Int, year: Int): String {
-        val date = Calendar.getInstance()
-        date.set(year, month - 1, day)  // month is zero-based in Calendar
-
-        val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        return format.format(date.time)
-    }
-
     private fun callclasses() {
         showProgress()
         var loginApiRequest = TeacherAccessReq( teacherId,auth_token)
@@ -307,141 +266,142 @@ class AttendanceActivity : BaseActivity() {
         })
     }
 
-    private fun showClasses() {
-        val classNam = classList.map { it.class_name }.toTypedArray()
-
-        val selectedSectionIndex = classList.indexOfFirst { classIds.contains(it.id) }
-
-        val dialog = AlertDialog.Builder(this)
-            .setTitle("Select Class")
-            .setSingleChoiceItems(classNam, selectedSectionIndex) { _, which ->
-                // Update the selected section based on user choice
-                classIds.clear()
-                classNames.clear()
-                classIds.add(classList[which].id)
-                classNames.add(classList[which].class_name)
-            }
-            .setPositiveButton("OK") { _, _ ->
-                // Update UI and log the selection
-                selected_class_ids = classIds.joinToString("")
-                selected_class_names = classNames.joinToString("")
-                binding.selectedclass.text = selected_class_names.toString()
-            }
-            .setNegativeButton("Cancel") { _, _ ->
-                // Handle cancel action if needed
-                selected_class_ids = ""
-                selected_class_names = ""
-                Log.d("SelectedSection", "Selection cancelled")
-            }
-            .create()
-        dialog.show()
-
-    }
-
-    private fun callStudents() {
-        showProgress()
-        var loginApiRequest = ClassStudentsReq(auth_token,selected_class_ids.toString(),binding.selecteddate.text.toString(),scl_id,teacherId)
-        Log.d("class_students_Req", loginApiRequest.toString())
-        val call: Call<AttandanceStudentResponse> = parentApiService!!.attandanceStudents(loginApiRequest)
-        call.enqueue(object : Callback<AttandanceStudentResponse> {
-            override fun onResponse(call: Call<AttandanceStudentResponse>, response: Response<AttandanceStudentResponse>) {
-                if (response.isSuccessful) {
-                    hideProgress()
-                    val loginApiResponse = response.body()
-                    Log.d("studentsResponseList", loginApiResponse.toString())
-
-                    if (loginApiResponse != null && loginApiResponse.status) {
-                        if (loginApiResponse.response.attendance.isEmpty()) {
-                            binding.nodataTv.visibility = View.VISIBLE
-                            binding.studentAttendanceRv.visibility = View.GONE
-                        } else {
-                            binding.nodataTv.visibility = View.GONE
-                            binding.studentAttendanceRv.visibility = View.VISIBLE
-
-//                            total_present_students = loginApiResponse.response.attendance[0].total_present_students.toString()
-//                            total_absent_students = loginApiResponse.response.attendance[0].total_absent_students.toString()
+//    private fun showClasses() {
+//        val classNam = classList.map { it.class_name }.toTypedArray()
 //
-                            studentsAdapter = AttandanceStudentsAdapter(this@AttendanceActivity,
-                                loginApiResponse.response.attendance,
-                                { selectedIdsList, unselectedIdsList,selectedSize, unselectedSize ->
-                                    selectedStudentIds = selectedIdsList.joinToString(",")
-                                    unselectedStudentIds = unselectedIdsList.joinToString(",")
+//        val selectedSectionIndex = classList.indexOfFirst { classIds.contains(it.id) }
+//
+//        val dialog = AlertDialog.Builder(this)
+//            .setTitle("Select Class")
+//            .setSingleChoiceItems(classNam, selectedSectionIndex) { _, which ->
+//                // Update the selected section based on user choice
+//                classIds.clear()
+//                classNames.clear()
+//                classIds.add(classList[which].id)
+//                classNames.add(classList[which].class_name)
+//            }
+//            .setPositiveButton("OK") { _, _ ->
+//                // Update UI and log the selection
+//                selected_class_ids = classIds.joinToString("")
+//                selected_class_names = classNames.joinToString("")
+//                binding.selectedclass.text = selected_class_names.toString()
+//            }
+//            .setNegativeButton("Cancel") { _, _ ->
+//                // Handle cancel action if needed
+//                selected_class_ids = ""
+//                selected_class_names = ""
+//                Log.d("SelectedSection", "Selection cancelled")
+//            }
+//            .create()
+//        dialog.show()
+//
+//    }
+//
+//    private fun callStudents() {
+//        showProgress()
+//        var loginApiRequest = ClassStudentsReq(auth_token,selected_class_ids.toString(),binding.selecteddate.text.toString(),scl_id,teacherId)
+//        Log.d("class_students_Req", loginApiRequest.toString())
+//        val call: Call<AttandanceStudentResponse> = parentApiService!!.attandanceStudents(loginApiRequest)
+//        call.enqueue(object : Callback<AttandanceStudentResponse> {
+//            override fun onResponse(call: Call<AttandanceStudentResponse>, response: Response<AttandanceStudentResponse>) {
+//                if (response.isSuccessful) {
+//                    hideProgress()
+//                    val loginApiResponse = response.body()
+//                    Log.d("studentsResponseList", loginApiResponse.toString())
+//
+//                    if (loginApiResponse != null && loginApiResponse.status) {
+//                        if (loginApiResponse.response.attendance.isEmpty()) {
+//                            binding.nodataTv.visibility = View.VISIBLE
+//                            binding.studentAttendanceRv.visibility = View.GONE
+//                        } else {
+//                            binding.nodataTv.visibility = View.GONE
+//                            binding.studentAttendanceRv.visibility = View.VISIBLE
+//
+////                            total_present_students = loginApiResponse.response.attendance[0].total_present_students.toString()
+////                            total_absent_students = loginApiResponse.response.attendance[0].total_absent_students.toString()
+////
+//                            studentsAdapter = AttandanceStudentsAdapter(this@AttendanceActivity,
+//                                loginApiResponse.response.attendance,
+//                                { selectedIdsList, unselectedIdsList,selectedSize, unselectedSize ->
+//                                    selectedStudentIds = selectedIdsList.joinToString(",")
+//                                    unselectedStudentIds = unselectedIdsList.joinToString(",")
+//
+//                                    selectedCount = selectedSize
+//                                    unselectedCount = unselectedSize
+//
+//                                    binding.presentCountTxt.text = selectedCount.toString()
+//                                    binding.absentCountTxt.text = unselectedCount.toString()
+//
+//                                    Log.d("Selected_IDs", selectedStudentIds)
+//                                    Log.d("Unselected_IDs", unselectedStudentIds)
+//                                },
+//                                selectAll = false
+//                            )
+//                            binding.studentAttendanceRv.adapter = studentsAdapter
+//                            var layoutManager = LinearLayoutManager(this@AttendanceActivity)
+//                            binding.studentAttendanceRv.layoutManager = layoutManager
+//                        }
+//                    } else {
+//                        hideProgress()
+//                        binding.nodataTv.visibility = View.VISIBLE
+//                        binding.studentAttendanceRv.visibility = View.GONE
+//                        ToastUtils.showSuccessCustomToast(this@AttendanceActivity, loginApiResponse?.message ?: "Error")
+//                    }
+//                } else {
+//                    hideProgress()
+//                    ToastUtils.showErrorCustomToast(this@AttendanceActivity, response.message())
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<AttandanceStudentResponse>, t: Throwable) {
+//                hideProgress()
+//                ToastUtils.showErrorCustomToast(this@AttendanceActivity, t.message.toString())
+//            }
+//        })
+//    }
+//
+//
+//    private fun callStudentsAttandanceUpdate() {
+//        showProgress()
+//        var loginApiRequest = AttandanceUpdateReq(unselectedStudentIds,auth_token,selected_class_ids.toString()
+//            ,binding.selecteddate.text.toString(),selectedStudentIds,scl_id,notification_parent.toString(),
+//            teacherId,unselectedCount.toString(),selectedCount.toString())
+//        Log.d("update_attendance_Req", loginApiRequest.toString())
+//        val call: Call<AttendanceUpdatedResponse> = parentApiService!!.updateAttandanceStudents(loginApiRequest)
+//        call.enqueue(object : Callback<AttendanceUpdatedResponse> {
+//            override fun onResponse(call: Call<AttendanceUpdatedResponse>, response: Response<AttendanceUpdatedResponse>) {
+//                if (response.isSuccessful) {
+//                    hideProgress()
+//                    val loginApiResponse = response.body()
+//                    if (loginApiResponse != null && loginApiResponse.status) {
+//
+////                        showToast(loginApiResponse.message.toString())
+//
+//                         val intent = Intent(this@AttendanceActivity, AttendanceActivity::class.java)
+//                        startActivity(intent)
+//                        finish()
+//
+////                        callStudents()
+//
+//                    } else {
+//                        hideProgress()
+//                        ToastUtils.showSuccessCustomToast(this@AttendanceActivity, loginApiResponse?.message ?: "Error")
+//                    }
+//                } else {
+//                    hideProgress()
+//                    ToastUtils.showErrorCustomToast(this@AttendanceActivity, response.message())
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<AttendanceUpdatedResponse>, t: Throwable) {
+//                hideProgress()
+//                ToastUtils.showErrorCustomToast(this@AttendanceActivity, t.message.toString())
+//            }
+//        })
+//    }
 
-                                    selectedCount = selectedSize
-                                    unselectedCount = unselectedSize
 
-                                    binding.presentCountTxt.text = selectedCount.toString()
-                                    binding.absentCountTxt.text = unselectedCount.toString()
-
-                                    Log.d("Selected_IDs", selectedStudentIds)
-                                    Log.d("Unselected_IDs", unselectedStudentIds)
-                                },
-                                selectAll = false
-                            )
-                            binding.studentAttendanceRv.adapter = studentsAdapter
-                            var layoutManager = LinearLayoutManager(this@AttendanceActivity)
-                            binding.studentAttendanceRv.layoutManager = layoutManager
-                        }
-                    } else {
-                        hideProgress()
-                        binding.nodataTv.visibility = View.VISIBLE
-                        binding.studentAttendanceRv.visibility = View.GONE
-                        ToastUtils.showSuccessCustomToast(this@AttendanceActivity, loginApiResponse?.message ?: "Error")
-                    }
-                } else {
-                    hideProgress()
-                    ToastUtils.showErrorCustomToast(this@AttendanceActivity, response.message())
-                }
-            }
-
-            override fun onFailure(call: Call<AttandanceStudentResponse>, t: Throwable) {
-                hideProgress()
-                ToastUtils.showErrorCustomToast(this@AttendanceActivity, t.message.toString())
-            }
-        })
-    }
-
-
-    private fun callStudentsAttandanceUpdate() {
-        showProgress()
-        var loginApiRequest = AttandanceUpdateReq(unselectedStudentIds,auth_token,selected_class_ids.toString()
-            ,binding.selecteddate.text.toString(),selectedStudentIds,scl_id,notification_parent.toString(),
-            teacherId,unselectedCount.toString(),selectedCount.toString())
-        Log.d("update_attendance_Req", loginApiRequest.toString())
-        val call: Call<AttendanceUpdatedResponse> = parentApiService!!.updateAttandanceStudents(loginApiRequest)
-        call.enqueue(object : Callback<AttendanceUpdatedResponse> {
-            override fun onResponse(call: Call<AttendanceUpdatedResponse>, response: Response<AttendanceUpdatedResponse>) {
-                if (response.isSuccessful) {
-                    hideProgress()
-                    val loginApiResponse = response.body()
-                    if (loginApiResponse != null && loginApiResponse.status) {
-
-//                        showToast(loginApiResponse.message.toString())
-
-                         val intent = Intent(this@AttendanceActivity, AttendanceActivity::class.java)
-                        startActivity(intent)
-                        finish()
-
-//                        callStudents()
-
-                    } else {
-                        hideProgress()
-                        ToastUtils.showSuccessCustomToast(this@AttendanceActivity, loginApiResponse?.message ?: "Error")
-                    }
-                } else {
-                    hideProgress()
-                    ToastUtils.showErrorCustomToast(this@AttendanceActivity, response.message())
-                }
-            }
-
-            override fun onFailure(call: Call<AttendanceUpdatedResponse>, t: Throwable) {
-                hideProgress()
-                ToastUtils.showErrorCustomToast(this@AttendanceActivity, t.message.toString())
-            }
-        })
-    }
-
-
+    @SuppressLint("GestureBackNavigation")
     override fun onBackPressed() {
         super.onBackPressed()
         val intent = Intent(this@AttendanceActivity, HomeActivity::class.java)

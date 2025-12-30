@@ -21,6 +21,8 @@ class SplashActivity : BaseActivity() {
        val userId = userDetails[User.ID].toString()
 
         Log.d("userDetails", user!!.getUserDetails().toString())
+        Log.d("newUserDetails", user!!.getNewUserDetails().toString())
+        SchoolApi.setAuthToken(userDetails[User.AUTH_TOKEN].toString())
         val handler = Handler()
         handler.postDelayed({
             if (userId == ""||userId == null) {

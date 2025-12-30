@@ -23,9 +23,6 @@ import com.iprism.school.R
 import com.iprism.school.network.StaffApi
 import com.iprism.school.utils.NetworkUtil
 import com.iprism.school.utils.User
-import com.tuyenmonkey.mkloader.MKLoader
-
-
 open class BaseActivity : AppCompatActivity() {
 
     protected var parentApiService: StaffApiService? = null
@@ -91,14 +88,6 @@ open class BaseActivity : AppCompatActivity() {
         val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
         val networkInfo = connectivityManager.activeNetworkInfo
         return networkInfo != null && networkInfo.isConnectedOrConnecting
-    }
-
-    protected fun showProgress(progress: MKLoader) {
-        progress.visibility = View.VISIBLE
-    }
-
-    protected fun hideProgress(progress: MKLoader) {
-        progress.visibility = View.GONE
     }
 
     override fun onDestroy() {

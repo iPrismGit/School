@@ -2,13 +2,13 @@ package com.iprism.school.utils
 
 object Constants {
 
-    const val BASE_URL = "https://littlepebbles.co.in/schoolapp/api/api/"
-    const val IMAGES_URL = "https://littlepebbles.co.in/schoolapp/"
+    const val BASE_URL = "https://littlepebbles.co.in/schoolappnew/teacher_app/ws/"
+    const val IMAGES_URL = "https://littlepebbles.co.in/schoolappnew/"
 
 //    const val BASE_URL = "https://lpipreschool.com/schoolapp/api/api/"
 //    const val IMAGES_URL = "https://lpipreschool.com/schoolapp/"
 
-    const val LOGIN_ENDPOINT = "teacher_login"
+    const val LOGIN_ENDPOINT = "login"
     const val RESENDOTP_ENDPOINT = "teacher_resend_otp"
     const val TEACHER_ACCESS = "teacher_view_access_details"
     const val CLASSES = "teacher_view_classes_details"
@@ -130,5 +130,8 @@ object Constants {
     const val PRIVACY= "teacher_view_privacy_policy"
 
 
+    //new Apis
+
+    const val CLASS_TEACHER = "class_teacher"
 
 }

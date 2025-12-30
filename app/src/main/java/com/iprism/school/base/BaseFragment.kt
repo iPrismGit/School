@@ -21,7 +21,6 @@ import com.iprism.school.R
 import com.iprism.school.network.StaffApi
 import com.iprism.school.utils.NetworkUtil
 import com.iprism.school.utils.User
-import com.tuyenmonkey.mkloader.MKLoader
 
 open class BaseFragment : Fragment() {
 
@@ -116,17 +115,6 @@ open class BaseFragment : Fragment() {
         parentApiService = parentApi.createParentApiService()
     }
 
-
-    protected fun showProgress(progress: MKLoader) {
-        progress.visibility = View.VISIBLE
-    }
-
-    protected fun hideProgress(progress: MKLoader) {
-        progress.visibility = View.GONE
-    }
-
-
-    //handle the progressbar
     fun showProgress() {
         try {
             pDialog = ProgressDialog(activity,R.style.TransparentProgressDialog)

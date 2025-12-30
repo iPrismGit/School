@@ -20,6 +20,9 @@ class User(var context: Context) {
         const val TOKEN = "token"
         const val AUTH_TOKEN = "auth_token"
         const val SCHOOL_ID = "school_id"
+        const val FIRST_NAME = "first_name"
+        const val LAST_NAME = "last_name"
+        const val MIDDLE_NAME = "middle_name"
         const val EMP_ID = "employee_id"
         const val EMP_NAME = "employee_name"
         const val EMP_EMAIL = "employee_email"
@@ -79,23 +82,24 @@ class User(var context: Context) {
 
     fun storeUserDetails(
         id: String?,
-        school_id : String?,
+        school_id: String?,
         authToken: String?,
-        token : String?,
-        mobile : String?,
+        token: String?,
+        mobile: String?,
         employee_id: String?,
-        employee_name : String?,
-        employee_email : String?,
+        employee_name: String?,
+        employee_email: String?,
         employee_dob: String?,
-        employee_gender : String?,
-        employee_image : String?,
+        employee_gender: String?,
+        employee_image: String?,
         employee_designation: String?,
         employee_class: String?,
-        employee_department : String?,
+        employee_department: String?,
         employee_use_designation: String?,
-        deleteStatus : String?,
-        createdOn : String?,
-        updated_on : String?) {
+        deleteStatus: String?,
+        createdOn: String?,
+        updated_on: String?
+    ) {
         editor.putString(ID, id)
         editor.putString(SCHOOL_ID, school_id)
         editor.putString(AUTH_TOKEN, authToken)
@@ -119,56 +123,26 @@ class User(var context: Context) {
         editor.commit()
     }
 
-    fun storeStudentDetails(id: String?, school_id : String?, class_id : String?, sessionId : String?,
-                            admission_id : String?, joining_date : String?, student_name : String?, student_dob : String?,
-                            student_gender : String?, student_blood_group : String?, student_image : String?, father_name : String?,
-                            father_mobile : String?, father_email : String?, father_image : String?, mother_name : String?,
-                            mother_mobile : String?, mother_email : String?, mother_image : String?, guardian_name : String?,
-                            guardian_mobile : String?, guardian_email : String?, guardian_image : String?, address : String?,
-                            city : String?, pincode : String?, father_occupation : String?, father_office_designation : String?,
-                            father_office_address : String?, father_annual_income : String?, mother_occupation : String?, mother_office_designation : String?,
-                            mother_office_address : String?, mother_annual_income : String?, qrcode : String?, qrcode_id : String?,
-                            status : String?, delete_status : String?, created_on : String?, updated_on : String?) {
-        editor.putString(STUDENT_ID, id)
-        editor.putString(STUDENT_SCHOOL_ID, school_id)
-        editor.putString(STUDENT_CLASS_ID, class_id)
-        editor.putString(STUDENT_SESSION_ID, sessionId)
-        editor.putString(STUDENT_ADMISSION_ID, admission_id)
-        editor.putString(STUDENT_JOINING_DATE, joining_date)
-        editor.putString(STUDENT_NAME, student_name)
-        editor.putString(STUDENT_DOB, student_dob)
-        editor.putString(STUDENT_GENDER, student_gender)
-        editor.putString(STUDENT_B_G, student_blood_group)
-        editor.putString(STUDENT_IMAGE, student_image)
-        editor.putString(FATHER_NAME, father_name)
-        editor.putString(FATHER_MOBILE, father_mobile)
-        editor.putString(FATHER_EMAIL, father_email)
-        editor.putString(FATHER_IMAGE, father_image)
-        editor.putString(MOTHER_NAME, mother_name)
-        editor.putString(MOTHER_MOBILE, mother_mobile)
-        editor.putString(MOTHER_EMAIL, mother_email)
-        editor.putString(MOTHER_IMAGE, mother_image)
-        editor.putString(GUARDIAN_NAME, guardian_name)
-        editor.putString(GUARDIAN_MOBILE, guardian_mobile)
-        editor.putString(GUARDIAN_EMAIL, guardian_email)
-        editor.putString(GUARDIAN_IMAGE, guardian_image)
-        editor.putString(ADDRESS, address)
-        editor.putString(CITY, city)
-        editor.putString(PINCODE, pincode)
-        editor.putString(FATHER_OCCUPATION, father_occupation)
-        editor.putString(FATHER_OFFICE_DESIGNATION, father_office_designation)
-        editor.putString(FATHER_OFFICE_ADDRESS, father_office_address)
-        editor.putString(FATHER_ANNUAL_INCOME, father_annual_income)
-        editor.putString(MOTHER_OCCUPATION, mother_occupation)
-        editor.putString(MOTHER_OFFICE_DESIGNATION, mother_office_designation)
-        editor.putString(MOTHER_OFFICE_ADDRESS, mother_office_address)
-        editor.putString(MOTHER_ANNUAL_INCOME, mother_annual_income)
-        editor.putString(QRCODE, qrcode)
-        editor.putString(QRCODE_ID, qrcode_id)
-        editor.putString(STATUS, status)
-        editor.putString(STUDENT_DELETE_STATUS, delete_status)
-        editor.putString(STUDENT_CREATED_ON, created_on)
-        editor.putString(STUDENT_UPDATED_ON, updated_on)
+    fun storeNewUserDetails(
+        id: String?,
+        first_name: String?,
+        middle_name: String?,
+        last_name: String?,
+        school_id: String?,
+        mobile: String?
+    ) {
+        editor.putString(ID, id)
+        editor.putString(FIRST_NAME, first_name)
+        editor.putString(MIDDLE_NAME, middle_name)
+        editor.putString(LAST_NAME, last_name)
+        editor.putString(SCHOOL_ID, school_id)
+        editor.putString(MOBILE, mobile)
+        editor.putBoolean(IS_USER_LOGIN, true)
+        editor.commit()
+    }
+
+    fun storeNewUserAuthToken(auth_token: String?) {
+        editor.putString(AUTH_TOKEN, auth_token)
         editor.commit()
     }
 
@@ -220,11 +194,13 @@ class User(var context: Context) {
         user[CITY] = sharedPreferences.getString(CITY, null)
         user[PINCODE] = sharedPreferences.getString(PINCODE, null)
         user[FATHER_OCCUPATION] = sharedPreferences.getString(FATHER_OCCUPATION, null)
-        user[FATHER_OFFICE_DESIGNATION] = sharedPreferences.getString(FATHER_OFFICE_DESIGNATION, null)
+        user[FATHER_OFFICE_DESIGNATION] =
+            sharedPreferences.getString(FATHER_OFFICE_DESIGNATION, null)
         user[FATHER_OFFICE_ADDRESS] = sharedPreferences.getString(FATHER_OFFICE_ADDRESS, null)
         user[FATHER_ANNUAL_INCOME] = sharedPreferences.getString(FATHER_ANNUAL_INCOME, null)
         user[MOTHER_OCCUPATION] = sharedPreferences.getString(MOTHER_OCCUPATION, null)
-        user[MOTHER_OFFICE_DESIGNATION] = sharedPreferences.getString(MOTHER_OFFICE_DESIGNATION, null)
+        user[MOTHER_OFFICE_DESIGNATION] =
+            sharedPreferences.getString(MOTHER_OFFICE_DESIGNATION, null)
         user[MOTHER_OFFICE_ADDRESS] = sharedPreferences.getString(MOTHER_OFFICE_ADDRESS, null)
         user[MOTHER_ANNUAL_INCOME] = sharedPreferences.getString(MOTHER_ANNUAL_INCOME, null)
         user[QRCODE] = sharedPreferences.getString(QRCODE, null)
@@ -236,6 +212,17 @@ class User(var context: Context) {
         return user
     }
 
+    fun getNewUserDetails(): HashMap<String, String?> {
+        val user = HashMap<String, String?>()
+        user[ID] = sharedPreferences.getString(ID, null)
+        user[AUTH_TOKEN] = sharedPreferences.getString(AUTH_TOKEN, null)
+        user[MOBILE] = sharedPreferences.getString(MOBILE, null)
+        user[FIRST_NAME] = sharedPreferences.getString(FIRST_NAME, null)
+        user[MIDDLE_NAME] = sharedPreferences.getString(MIDDLE_NAME, null)
+        user[LAST_NAME] = sharedPreferences.getString(LAST_NAME, null)
+        return user
+    }
+
     fun isUserLoggedIn(): Boolean {
         return sharedPreferences.getBoolean(IS_USER_LOGIN, false)
     }
@@ -244,7 +231,4 @@ class User(var context: Context) {
         editor.clear()
         editor.apply()
     }
-
-
-
 }
