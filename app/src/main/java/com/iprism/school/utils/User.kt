@@ -220,6 +220,7 @@ class User(var context: Context) {
         user[FIRST_NAME] = sharedPreferences.getString(FIRST_NAME, null)
         user[MIDDLE_NAME] = sharedPreferences.getString(MIDDLE_NAME, null)
         user[LAST_NAME] = sharedPreferences.getString(LAST_NAME, null)
+        user[SCHOOL_ID] = sharedPreferences.getString(SCHOOL_ID, null)
         return user
     }
 

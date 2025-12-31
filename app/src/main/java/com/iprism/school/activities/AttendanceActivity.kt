@@ -2,6 +2,7 @@ package com.iprism.school.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,19 +12,27 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
 import com.iprism.school.adapters.AttandanceStudentsAdapter
+import com.iprism.school.adapters.StudentsAttendanceAdapter
 import com.iprism.school.databinding.ActivityAttendanceBinding
 import com.iprism.school.model.Response.ClasseList
+import com.iprism.school.model.classteachermodel.AttendanceStudent
+import com.iprism.school.model.classteachermodel.AttendanceStudentsApiRequest
 import com.iprism.school.model.classteachermodel.Class
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.classteachermodel.ClassesResponse
 import com.iprism.school.model.classteachermodel.Section
 import com.iprism.school.model.classteachermodel.SectionsResponse
+import com.iprism.school.model.classteachermodel.Student
 import com.iprism.school.repositories.AttendanceRepository
 import com.iprism.school.utils.DateTimeUtils
 import com.iprism.school.utils.ToastUtils
@@ -33,12 +42,21 @@ import com.iprism.school.utils.hideProgress
 import com.iprism.school.utils.showProgress
 import com.iprism.school.viewModels.AttendanceViewModel
 import com.iprism.school.viewModels.ViewModelFactory
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class AttendanceActivity : BaseActivity() {
 
     private lateinit var binding: ActivityAttendanceBinding
     private lateinit var attendanceViewModel: AttendanceViewModel
     private var attendanceType: String = "pending"
+    private lateinit var studentsAdapter: AttandanceStudentsAdapter
+    private var studentsList = mutableListOf<Student>()
+    private var selectedStudentsList = mutableListOf<AttendanceStudent>()
+    private var isLoading = false
+    private var isLastPage = false
+    private var currentPage = 1
+    private val limit = 10
     private var classId: String = "-1"
     private var sectionId: String = "-1"
     private var selectedDate = ""
@@ -50,17 +68,13 @@ class AttendanceActivity : BaseActivity() {
     private lateinit var attendanceCancelBtn: Button
     private lateinit var dateLo: ConstraintLayout
     private lateinit var dateTxt: TextView
-
     private var teacherId: String = ""
     private var auth_token: String = ""
     private var scl_id: String = ""
+    private var  currentDate: String = ""
+    private var  backendDate: String = ""
     private var academicYear: String = ""
     private var academicYearId: String = ""
-
-    private val classNames = mutableListOf<String>()
-    private val classIds = mutableListOf<String>()
-    private val classList = mutableListOf<ClasseList>()
-
     private var selected_class_ids : String? = ""
     private var selected_class_names : String? = ""
 
@@ -72,12 +86,7 @@ class AttendanceActivity : BaseActivity() {
     private var selectedCount: Int = 0
     private var unselectedCount: Int = 0
 
-    private lateinit var studentsAdapter: AttandanceStudentsAdapter
-
     private var selectedStudentIds: String = ""
-    private var unselectedStudentIds: String = ""
-    private var isAllSelected = false // Track select all state
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,6 +95,12 @@ class AttendanceActivity : BaseActivity() {
         teacherId = userDetails[User.ID].toString()
         auth_token = userDetails[User.AUTH_TOKEN].toString()
         scl_id = userDetails[User.SCHOOL_ID].toString()
+        val formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy")
+        currentDate = LocalDate.now().format(formatter)
+
+        val formatterBackend = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        backendDate = LocalDate.now().format(formatterBackend)
+        binding.dateTxt.text = currentDate
         initViewModel()
         handleBack()
         handleDateLo()
@@ -93,23 +108,18 @@ class AttendanceActivity : BaseActivity() {
         observeAcademicYearsResponse()
         observeClassesResponse()
         observeSectionsResponse()
-      //  observeStudentsResponse()
+        setupRecyclerView()
+        observeStudentsResponse()
+        handleRefreshLo()
         var request = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "academic_year")
         attendanceViewModel.fetchAcademicYears(request)
         var requestClasses = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "classes")
         attendanceViewModel.fetchClasses(requestClasses)
         Log.d("ClassRequest", request.toString())
-       // callclasses()
         binding.parentNotificationCb.setOnCheckedChangeListener { _, isChecked ->
             notification_parent = if (isChecked) "yes" else "no"
-            Log.d("NotifyValue", "Notify is: $notification_parent") // For debugging
+            Log.d("NotifyValue", "Notify is: $notification_parent")
         }
-
-        binding.checkBoxAll.setOnCheckedChangeListener { _, isChecked ->
-            isAllSelected = isChecked
-            studentsAdapter.toggleSelectAll(isAllSelected)
-        }
-
         binding.saveAttendanceBtn.setOnClickListener {
             if (selected_class_ids == ""||selected_class_ids ==  null){
                 showToast("select class".toString())
@@ -118,13 +128,156 @@ class AttendanceActivity : BaseActivity() {
             } else if (selectedStudentIds == ""||selectedStudentIds == null){
                 showToast("select students".toString())
             }else{
-//                callStudentsAttandanceUpdate()
             }
         }
 
     }
 
+    private fun loadStudents() {
+        var request = AttendanceStudentsApiRequest(academicYearId, "", "",
+            userDetails[User.SCHOOL_ID].toString(), classId, backendDate, sectionId,
+            selectedStudentsList, userDetails[User.ID].toString(), "view", currentPage)
+        attendanceViewModel.fetchStudents(request)
+        Log.d("StudentsFetchRequest", request.toString())
+    }
 
+    private fun refreshLeads() {
+        currentPage = 1
+        isLastPage = false
+        studentsList.clear()
+        studentsAdapter.notifyDataSetChanged()
+        var request = AttendanceStudentsApiRequest(academicYearId, "", "",
+            userDetails[User.SCHOOL_ID].toString(), classId, backendDate, sectionId,
+            selectedStudentsList, userDetails[User.ID].toString(), "view", currentPage)
+        attendanceViewModel.fetchStudents(request)
+        Log.d("StudentsFetchRequest", request.toString())
+    }
+
+    private fun loadMoreItems() {
+        isLoading = true
+        currentPage += 1
+        loadStudents()
+    }
+
+    private fun handleRefreshLo() {
+        binding.refreshLayout.setOnRefreshListener(
+            SwipeRefreshLayout.OnRefreshListener {
+                refreshLeads()
+                binding.refreshLayout.isRefreshing = false
+            }
+        )
+    }
+
+    private fun setupRecyclerView() {
+        studentsAdapter = AttandanceStudentsAdapter(this, studentsList)
+        val linearLayoutManager = LinearLayoutManager(this)
+
+        binding.studentAttendanceRv.apply {
+            layoutManager = linearLayoutManager
+            adapter = studentsAdapter
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    binding.refreshLayout.isEnabled = !binding.studentAttendanceRv.canScrollVertically(-1)
+                    val visibleItemCount = linearLayoutManager.childCount
+                    val totalItemCount = linearLayoutManager.itemCount
+                    val firstVisibleItemPosition =
+                        linearLayoutManager.findFirstVisibleItemPosition()
+
+                    if (!isLoading && !isLastPage) {
+                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
+                            loadMoreItems()
+                        }
+                    }
+                }
+            })
+        }
+//        leadsAdapter.setupListener(object : OnSingleItemClickListener {
+//            override fun onCallNowClick(doctorId: String, mobile: String) {
+//                this@MyLeadsCashActivity.mobileNumber = mobile
+//                if (mobileNumber.isNotEmpty()){
+//                    makePhoneCall(this@MyLeadsCashActivity.mobileNumber)
+//                }
+//            }
+//
+//            override fun onSmsClick(doctorId: String, mobile: String) {
+//                this@MyLeadsCashActivity.mobileNumber = mobile
+//                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("sms:$mobileNumber"))
+//                startActivity(intent)
+//            }
+//
+//            override fun onWhatsappClick(doctorId: String, mobile: String) {
+//                this@MyLeadsCashActivity.mobileNumber = mobile
+//                val url = "https://wa.me/+91 $mobileNumber"
+//                val intent = Intent(Intent.ACTION_VIEW)
+//                intent.data = Uri.parse(url)
+//
+//                try {
+//                    intent.setPackage("com.whatsapp")
+//                    startActivity(intent)
+//                } catch (e1: Exception) {
+//                    try {
+//
+//                        intent.setPackage("com.whatsapp.w4b")
+//                        startActivity(intent)
+//                    } catch (e2: Exception) {
+//                        Toast.makeText(this@MyLeadsCashActivity, "WhatsApp not installed", Toast.LENGTH_SHORT).show()
+//                    }
+//                }
+//            }
+//
+//        })
+
+    }
+
+    private fun observeStudentsResponse() {
+        attendanceViewModel.studentsResponse.observe(this) { result ->
+
+            when (result) {
+                is UiState.Loading -> {
+                    if (currentPage == 1) {
+                        binding.progress.showProgress()
+                    }
+                }
+
+                is UiState.Success -> {
+                    binding.progress.hideProgress()
+                    isLoading = false
+
+                    val newBookings = result.data.students
+                    if (newBookings.isNotEmpty()) {
+                        studentsList.addAll(newBookings)
+                        studentsAdapter.notifyDataSetChanged()
+                        isLastPage = newBookings.size < limit
+                        binding.studentAttendanceRv.visibility = View.VISIBLE
+                        binding.noDataTxt.visibility = View.GONE
+                    } else {
+                        isLastPage = true
+                        if (currentPage == 1) {
+                            binding.studentAttendanceRv.visibility = View.GONE
+                            binding.noDataTxt.visibility = View.VISIBLE
+                            ToastUtils.showErrorCustomToast(this, "No Data Found!")
+                        }
+                    }
+                }
+
+                is UiState.Error -> {
+                    isLoading = false
+                    binding.progress.hideProgress()
+                    if (studentsList.isEmpty()) {
+                        binding.studentAttendanceRv.visibility = View.GONE
+                        binding.noDataTxt.visibility = View.VISIBLE
+                        ToastUtils.showErrorCustomToast(this, result.message)
+                    } else {
+                        binding.studentAttendanceRv.visibility = View.VISIBLE
+                        binding.noDataTxt.visibility = View.GONE
+                        ToastUtils.showErrorCustomToast(this, "There is no more data")
+                    }
+                }
+            }
+        }
+    }
 
     private fun observeAcademicYearsResponse() {
         attendanceViewModel.academicYearsResponse.observe(this) { result ->
@@ -241,6 +394,10 @@ class AttendanceActivity : BaseActivity() {
                     id: Long
                 ) {
                     sectionId = genderTypes[position].section_id.toString()
+                    if (!sectionId.equals("-1", true)){
+                        loadStudents()
+                    }
+
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
@@ -396,71 +553,7 @@ class AttendanceActivity : BaseActivity() {
 //        dialog.show()
 //
 //    }
-//
-//    private fun callStudents() {
-//        showProgress()
-//        var loginApiRequest = ClassStudentsReq(auth_token,selected_class_ids.toString(),binding.selecteddate.text.toString(),scl_id,teacherId)
-//        Log.d("class_students_Req", loginApiRequest.toString())
-//        val call: Call<AttandanceStudentResponse> = parentApiService!!.attandanceStudents(loginApiRequest)
-//        call.enqueue(object : Callback<AttandanceStudentResponse> {
-//            override fun onResponse(call: Call<AttandanceStudentResponse>, response: Response<AttandanceStudentResponse>) {
-//                if (response.isSuccessful) {
-//                    hideProgress()
-//                    val loginApiResponse = response.body()
-//                    Log.d("studentsResponseList", loginApiResponse.toString())
-//
-//                    if (loginApiResponse != null && loginApiResponse.status) {
-//                        if (loginApiResponse.response.attendance.isEmpty()) {
-//                            binding.nodataTv.visibility = View.VISIBLE
-//                            binding.studentAttendanceRv.visibility = View.GONE
-//                        } else {
-//                            binding.nodataTv.visibility = View.GONE
-//                            binding.studentAttendanceRv.visibility = View.VISIBLE
-//
-////                            total_present_students = loginApiResponse.response.attendance[0].total_present_students.toString()
-////                            total_absent_students = loginApiResponse.response.attendance[0].total_absent_students.toString()
-////
-//                            studentsAdapter = AttandanceStudentsAdapter(this@AttendanceActivity,
-//                                loginApiResponse.response.attendance,
-//                                { selectedIdsList, unselectedIdsList,selectedSize, unselectedSize ->
-//                                    selectedStudentIds = selectedIdsList.joinToString(",")
-//                                    unselectedStudentIds = unselectedIdsList.joinToString(",")
-//
-//                                    selectedCount = selectedSize
-//                                    unselectedCount = unselectedSize
-//
-//                                    binding.presentCountTxt.text = selectedCount.toString()
-//                                    binding.absentCountTxt.text = unselectedCount.toString()
-//
-//                                    Log.d("Selected_IDs", selectedStudentIds)
-//                                    Log.d("Unselected_IDs", unselectedStudentIds)
-//                                },
-//                                selectAll = false
-//                            )
-//                            binding.studentAttendanceRv.adapter = studentsAdapter
-//                            var layoutManager = LinearLayoutManager(this@AttendanceActivity)
-//                            binding.studentAttendanceRv.layoutManager = layoutManager
-//                        }
-//                    } else {
-//                        hideProgress()
-//                        binding.nodataTv.visibility = View.VISIBLE
-//                        binding.studentAttendanceRv.visibility = View.GONE
-//                        ToastUtils.showSuccessCustomToast(this@AttendanceActivity, loginApiResponse?.message ?: "Error")
-//                    }
-//                } else {
-//                    hideProgress()
-//                    ToastUtils.showErrorCustomToast(this@AttendanceActivity, response.message())
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<AttandanceStudentResponse>, t: Throwable) {
-//                hideProgress()
-//                ToastUtils.showErrorCustomToast(this@AttendanceActivity, t.message.toString())
-//            }
-//        })
-//    }
-//
-//
+
 //    private fun callStudentsAttandanceUpdate() {
 //        showProgress()
 //        var loginApiRequest = AttandanceUpdateReq(unselectedStudentIds,auth_token,selected_class_ids.toString()

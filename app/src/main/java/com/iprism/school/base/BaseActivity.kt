@@ -40,7 +40,8 @@ open class BaseActivity : AppCompatActivity() {
         setupIGienApiService()
         if (user == null) {
             user = User(this)
-            userDetails = user!!.getUserDetails()
+           // userDetails = user!!.getUserDetails()
+            userDetails = user!!.getNewUserDetails()
         }
 
         networkReceiver = object : BroadcastReceiver() {

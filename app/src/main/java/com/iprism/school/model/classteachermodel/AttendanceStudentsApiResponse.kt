@@ -6,20 +6,29 @@ data class AttendanceStudentsApiResponse(
     val response: AttendanceStudentsResponse,
     val status: Boolean
 
+
 )
 
 data class AttendanceStudentsResponse(
 
     val attendance_status: String,
+    val pagination: Pagination,
     val students: List<Student>
 
 )
 
-data class Student(
+data class Pagination(
 
-    val academic_year: Int,
-    val attendance_id: Int,
-    val attendance_status: String,
+    val current_page: Int,
+    val limit: Int,
+    val total_pages: List<TotalPage>
+
+)
+
+data class Student(
+    val academic_year: String,
+    val attendance_id: String,
+    var attendance_status: String,
     val child_image: String,
     val class_id: Int,
     val first_name: String,
@@ -27,5 +36,8 @@ data class Student(
     val last_name: String,
     val middle_name: String,
     val section_id: Int
+)
 
+data class TotalPage(
+    val page: Int
 )

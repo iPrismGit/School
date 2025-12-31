@@ -8,80 +8,67 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.iprism.school.R
-import com.iprism.school.databinding.CareStudentItemBinding
-import com.iprism.school.databinding.DairyItemBinding
 import com.iprism.school.databinding.StudentAttandanceItemBinding
-import com.iprism.school.model.Response.AttendanceStudents
-import com.iprism.school.model.Response.GroupStudents
-import com.iprism.school.model.Response.StudentList
+import com.iprism.school.model.classteachermodel.Student
 import com.iprism.school.utils.Constants
 import kotlin.collections.map
 
-class AttandanceStudentsAdapter(
-    private val context: Context,
-    private val studentList: List<AttendanceStudents>,
-    private val onSelectionChanged: (List<String>, List<String>, Int, Int) -> Unit, // Callback for counts
-    private var selectAll: Boolean
-) : RecyclerView.Adapter<AttandanceStudentsAdapter.ViewHolder>() {
-
-    private val selectedIds = mutableSetOf<String>()
-
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val studentName: TextView = view.findViewById(R.id.stu_name)
-        val checkBox: CheckBox = view.findViewById(R.id.stu_checkBox)
-        val imageView: ImageView = view.findViewById(R.id.imageView)
-
-        fun bind(student: AttendanceStudents) {
-
-            Glide.with(context)
-            .load(Constants.IMAGES_URL+student.student_image)
-            .into(imageView)
-
-            studentName.text = student.student_name
-            checkBox.isChecked = selectedIds.contains(student.student_id)
-
-            checkBox.setOnCheckedChangeListener(null) // Prevent unwanted triggers during binding
-            checkBox.isChecked = selectedIds.contains(student.student_id)
-
-            checkBox.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    selectedIds.add(student.student_id)
-                } else {
-                    selectedIds.remove(student.student_id)
-                }
-                updateSelection()
-            }
-        }
+class AttandanceStudentsAdapter(private val context: Context, private val studentList: List<Student>) : RecyclerView.Adapter<AttandanceStudentsAdapter.StudentsAttendanceViewHolder>() {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): AttandanceStudentsAdapter.StudentsAttendanceViewHolder {
+        var binding = StudentAttandanceItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return StudentsAttendanceViewHolder(binding)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.student_attandance_item, parent, false)
-        return ViewHolder(view)
-    }
+    override fun onBindViewHolder(
+        holder: StudentsAttendanceViewHolder,
+        position: Int
+    ) {
+        val student = studentList[position]
+        val binding = holder.binding
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(studentList[position])
-    }
+        binding.stuName.text = "${student.first_name} ${student.middle_name} ${student.last_name}"
 
-    override fun getItemCount(): Int = studentList.size
-
-    fun toggleSelectAll(selectAll: Boolean) {
-        if (selectAll) {
-            selectedIds.clear()
-            selectedIds.addAll(studentList.map { it.student_id }) // Select all
+        if (!student.child_image.isNullOrEmpty()) {
+            Glide.with(context).load(Constants.IMAGES_URL + student.child_image).error(ContextCompat.getDrawable(context, R.drawable.cartoon_img)).into(binding.imageView)
         } else {
-            selectedIds.clear() // Deselect all
+            binding.imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.cartoon_img))
         }
-        notifyDataSetChanged()
-        updateSelection()
+
+        val checkBox = holder.binding.attendanceCb
+
+        checkBox.setOnCheckedChangeListener(null)
+
+        val isPresent = student.attendance_status == "present"
+
+        checkBox.isChecked = isPresent
+        checkBox.isEnabled = !isPresent
+
+        binding.root.setOnClickListener {
+
+            if (isPresent) {
+                Log.d("Attendance", "Already Present, click ignored")
+                return@setOnClickListener
+            }
+            val newState = !checkBox.isChecked
+            checkBox.isChecked = newState
+            student.attendance_status = if (newState) "present" else "absent"
+
+           // listener.onStudentSelected(student, newState)
+        }
     }
 
-    private fun updateSelection() {
-        val selectedList = selectedIds.toList()
-        val unselectedList = studentList.map { it.student_id }.filter { it !in selectedIds }
-        onSelectionChanged(selectedList, unselectedList, selectedList.size, unselectedList.size)
+
+    override fun getItemCount(): Int {
+        return studentList.size
     }
+
+    class StudentsAttendanceViewHolder(var binding: StudentAttandanceItemBinding) : RecyclerView.ViewHolder(binding.root)
+
 }
