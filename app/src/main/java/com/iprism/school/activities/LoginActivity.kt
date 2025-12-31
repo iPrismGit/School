@@ -80,7 +80,15 @@ class LoginActivity : BaseActivity() {
                     var user = User(this)
                     binding.progress.hideProgress()
                     binding.loginBtn.isEnabled = true
-                    user.storeNewUserDetails(result.data.id, result.data.first_name, result.data.middle_name, result.data.last_name, result.data.branch_id, result.data.mobile)
+                    user.storeNewUserDetails(
+                        result.data.id,
+                        result.data.first_name,
+                        result.data.middle_name,
+                        result.data.last_name,
+                        result.data.branch_id,
+                        result.data.mobile
+                    )
+                    SchoolApi.setAuthToken(result.data.auth_token)
                     user.storeNewUserAuthToken(result.data.auth_token)
                     ToastUtils.showSuccessCustomToast(this, "Teacher Logged in Successfully!")
                     var intent = Intent(this, HomeActivity::class.java)

@@ -9,34 +9,32 @@ import java.util.concurrent.TimeUnit
 object SchoolApi {
 
     private const val TIMEOUT = 30L
-    private var authToken: String? = null
+
+    private val authInterceptor = AuthInterceptor()
 
     fun setAuthToken(token: String) {
-        authToken = token
+        authInterceptor.token = token
     }
 
-    private val okHttpClient: OkHttpClient
-        get() {
-            val builder = OkHttpClient.Builder()
-                .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
-                .readTimeout(TIMEOUT, TimeUnit.SECONDS)
-                .writeTimeout(TIMEOUT, TimeUnit.SECONDS)
+    private val okHttpClient: OkHttpClient by lazy {
+        OkHttpClient.Builder()
+            .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
+            .readTimeout(TIMEOUT, TimeUnit.SECONDS)
+            .writeTimeout(TIMEOUT, TimeUnit.SECONDS)
+            .addInterceptor(authInterceptor)
+            .build()
+    }
 
-            authToken?.let {
-                builder.addInterceptor(AuthInterceptor(it))
-            }
-
-            return builder.build()
-        }
-
-    private val retrofit: Retrofit
-        get() = Retrofit.Builder()
+    private val retrofit: Retrofit by lazy {
+        Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
 
-    val schoolApiService: StaffApiService
-        get() = retrofit.create(StaffApiService::class.java)
+    val schoolApiService: StaffApiService by lazy {
+        retrofit.create(StaffApiService::class.java)
+    }
 
 }

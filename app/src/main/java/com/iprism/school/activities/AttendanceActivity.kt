@@ -90,7 +90,6 @@ class AttendanceActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAttendanceBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         teacherId = userDetails[User.ID].toString()
         auth_token = userDetails[User.AUTH_TOKEN].toString()
         scl_id = userDetails[User.SCHOOL_ID].toString()
@@ -101,7 +100,8 @@ class AttendanceActivity : BaseActivity() {
         observeAcademicYearsResponse()
         var request = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "academic_year")
         attendanceViewModel.fetchAcademicYears(request)
-        callclasses()
+        Log.d("ClassRequest", request.toString())
+       // callclasses()
         binding.parentNotificationCb.setOnCheckedChangeListener { _, isChecked ->
             notification_parent = if (isChecked) "yes" else "no"
             Log.d("NotifyValue", "Notify is: $notification_parent") // For debugging
@@ -141,8 +141,8 @@ class AttendanceActivity : BaseActivity() {
                 }
 
                 is UiState.Error -> {
-
                     ToastUtils.showErrorCustomToast(this, result.message)
+                    Log.d("Message", result.message)
                     binding.progress.hideProgress()
                 }
             }

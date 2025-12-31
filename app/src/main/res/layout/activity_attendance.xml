@@ -8,7 +8,6 @@
     android:background="@color/white"
     tools:context=".activities.AttendanceActivity">
 
-    <!-- Top Bar -->
     <LinearLayout
         android:id="@+id/linearLayout9"
         android:layout_width="0dp"
@@ -40,7 +39,6 @@
             android:fontFamily="@font/inter_bold"/>
     </LinearLayout>
 
-    <!-- Save Button -->
     <Button
         android:id="@+id/save_attendance_btn"
         android:layout_width="0dp"

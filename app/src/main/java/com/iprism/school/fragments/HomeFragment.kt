@@ -127,7 +127,7 @@ class HomeFragment : BaseFragment() {
 
         }
 
-        allAlbum()
+   //     allAlbum()
 
         binding.createLl.setOnClickListener {
             if (isAdded){
@@ -429,62 +429,62 @@ class HomeFragment : BaseFragment() {
         })
     }
 
-    private fun allAlbum() {
-        showProgress()
-        var apiRequest = SchoolStaffReq(auth_token,scl_id,teacherId)
-        Log.d("homeUploadAlbum_Req", apiRequest.toString())
-        val call: Call<AlbumsListResponse> = parentApiService!!.albumList(apiRequest)
-        call.enqueue(object : Callback<AlbumsListResponse> {
-            override fun onResponse(call: Call<AlbumsListResponse>, response: Response<AlbumsListResponse>) {
-                if (response.isSuccessful) {
-                    hideProgress()
-                    val loginApiResponse = response.body()
-
-                    if (loginApiResponse!!.status == true){
-//                        binding.nodataTv.visibility = View.GONE
-                        binding.albumsRv.visibility = View.VISIBLE
-
-
-                        if (isAdded){
-                            val linearLayoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
-                            binding.albumsRv.layoutManager = linearLayoutManager
-                            val albumsAdapter = AlbumsAdapter(requireActivity(), loginApiResponse.response.album_details)
-                            binding.albumsRv.adapter = albumsAdapter
-
-                            albumsAdapter.OnItemBtn = {
-                                    mydata ->
-                                val studentId = mydata.id.toString()
-                                val intent = Intent(requireActivity(), AlbumDetailsActivity::class.java)
-                                intent.putExtra("studentId",studentId)
-                                intent.putExtra("albumId",studentId)
-                                startActivity(intent)
-                            }
-
-                        }
-
-//                        var albumsAdapter = AlbumsAdapter(requireContext(), loginApiResponse.response.album_details)
-//                        binding.albumsRv.adapter = albumsAdapter
-//                        var linearLayoutManager = GridLayoutManager(requireContext(), 2)
-//                        binding.albumsRv.layoutManager = linearLayoutManager
-
-
-                    }else{
-//                        binding.nodataTv.visibility = View.VISIBLE
-                        binding.albumsRv.visibility = View.GONE
-                    }
-                } else {
-//                    binding.nodataTv.visibility = View.VISIBLE
-                    binding.albumsRv.visibility = View.GONE
-
-                    hideProgress()
-                    ToastUtils.showErrorCustomToast(requireActivity(), response.message())
-                }
-            }
-            override fun onFailure(call: Call<AlbumsListResponse>, t: Throwable) {
-                hideProgress()
-//                ToastUtils.showErrorCustomToast(requireActivity(), t.message.toString())
-            }
-        })
-    }
+//    private fun allAlbum() {
+//        showProgress()
+//        var apiRequest = SchoolStaffReq(auth_token,scl_id,teacherId)
+//        Log.d("homeUploadAlbum_Req", apiRequest.toString())
+//        val call: Call<AlbumsListResponse> = parentApiService!!.albumList(apiRequest)
+//        call.enqueue(object : Callback<AlbumsListResponse> {
+//            override fun onResponse(call: Call<AlbumsListResponse>, response: Response<AlbumsListResponse>) {
+//                if (response.isSuccessful) {
+//                    hideProgress()
+//                    val loginApiResponse = response.body()
+//
+//                    if (loginApiResponse!!.status == true){
+////                        binding.nodataTv.visibility = View.GONE
+//                        binding.albumsRv.visibility = View.VISIBLE
+//
+//
+//                        if (isAdded){
+//                            val linearLayoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+//                            binding.albumsRv.layoutManager = linearLayoutManager
+//                            val albumsAdapter = AlbumsAdapter(requireActivity(), loginApiResponse.response.album_details)
+//                            binding.albumsRv.adapter = albumsAdapter
+//
+//                            albumsAdapter.OnItemBtn = {
+//                                    mydata ->
+//                                val studentId = mydata.id.toString()
+//                                val intent = Intent(requireActivity(), AlbumDetailsActivity::class.java)
+//                                intent.putExtra("studentId",studentId)
+//                                intent.putExtra("albumId",studentId)
+//                                startActivity(intent)
+//                            }
+//
+//                        }
+//
+////                        var albumsAdapter = AlbumsAdapter(requireContext(), loginApiResponse.response.album_details)
+////                        binding.albumsRv.adapter = albumsAdapter
+////                        var linearLayoutManager = GridLayoutManager(requireContext(), 2)
+////                        binding.albumsRv.layoutManager = linearLayoutManager
+//
+//
+//                    }else{
+////                        binding.nodataTv.visibility = View.VISIBLE
+//                        binding.albumsRv.visibility = View.GONE
+//                    }
+//                } else {
+////                    binding.nodataTv.visibility = View.VISIBLE
+//                    binding.albumsRv.visibility = View.GONE
+//
+//                    hideProgress()
+//                    ToastUtils.showErrorCustomToast(requireActivity(), response.message())
+//                }
+//            }
+//            override fun onFailure(call: Call<AlbumsListResponse>, t: Throwable) {
+//                hideProgress()
+////                ToastUtils.showErrorCustomToast(requireActivity(), t.message.toString())
+//            }
+//        })
+//    }
 
 }

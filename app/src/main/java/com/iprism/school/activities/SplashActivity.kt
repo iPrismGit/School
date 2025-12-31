@@ -18,14 +18,16 @@ class SplashActivity : BaseActivity() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-       val userId = userDetails[User.ID].toString()
+        val userId = userDetails[User.ID].toString()
 
         Log.d("userDetails", user!!.getUserDetails().toString())
         Log.d("newUserDetails", user!!.getNewUserDetails().toString())
         SchoolApi.setAuthToken(userDetails[User.AUTH_TOKEN].toString())
+        Log.d("authToken", userDetails[User.AUTH_TOKEN].toString())
+
         val handler = Handler()
         handler.postDelayed({
-            if (userId == ""||userId == null) {
+            if (userId == "" || userId == null) {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
