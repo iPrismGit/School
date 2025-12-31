@@ -1,5 +1,7 @@
 package com.iprism.school.repositories
 
+import com.iprism.school.model.classteachermodel.AttendanceStudentsApiRequest
+import com.iprism.school.model.classteachermodel.AttendanceStudentsApiResponse
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.classteachermodel.ClassTeacherApiResponse
 import com.iprism.school.model.classteachermodel.ClassesApiResponse
@@ -13,12 +15,8 @@ class AttendanceRepository {
         return apiService.getYearClassAndSection(request)
     }
 
-    suspend fun getClasses(request: ClassTeacherApiRequest): ClassesApiResponse {
-        return apiService.getClasses(request)
-    }
-
-    suspend fun getSections(request: ClassTeacherApiRequest): SectionsApiResponse {
-        return apiService.getSections(request)
+    suspend fun getStudents(request: AttendanceStudentsApiRequest): AttendanceStudentsApiResponse {
+        return apiService.getStudents(request)
     }
 
 }

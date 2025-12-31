@@ -136,6 +136,8 @@ import com.iprism.school.model.Response.ViewDayCareResponse
 import com.iprism.school.model.classteachermodel.ClassesApiResponse
 import com.iprism.school.model.authmodel.LoginApiRequest
 import com.iprism.school.model.authmodel.LoginApiResponse
+import com.iprism.school.model.classteachermodel.AttendanceStudentsApiRequest
+import com.iprism.school.model.classteachermodel.AttendanceStudentsApiResponse
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.classteachermodel.ClassTeacherApiResponse
 import com.iprism.school.model.classteachermodel.SectionsApiResponse
@@ -446,13 +448,10 @@ interface StaffApiService {
 
     //New Apis
 
-    @POST(Constants.CLASS_TEACHER)
+    @POST(Constants.CLASS_TEACHER_ENDPOINT)
     suspend fun getYearClassAndSection(@Body request: ClassTeacherApiRequest): ClassTeacherApiResponse
 
-    @POST(Constants.CLASS_TEACHER)
-    suspend fun getClasses(@Body request: ClassTeacherApiRequest): ClassesApiResponse
-
-    @POST(Constants.CLASS_TEACHER)
-    suspend fun getSections(@Body request: ClassTeacherApiRequest): SectionsApiResponse
+    @POST(Constants.ATTENDANCE_ENDPOINT)
+    suspend fun getStudents(@Body request: AttendanceStudentsApiRequest): AttendanceStudentsApiResponse
 
 }

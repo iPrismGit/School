@@ -4,24 +4,27 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.iprism.school.model.classteachermodel.AcademicYearResponse
+import com.iprism.school.model.classteachermodel.AttendanceStudentsApiRequest
+import com.iprism.school.model.classteachermodel.AttendanceStudentsResponse
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
-import com.iprism.school.model.classteachermodel.ClassesResponse
-import com.iprism.school.model.classteachermodel.SectionsResponse
+import com.iprism.school.model.classteachermodel.ClassTeacherResponse
 import com.iprism.school.repositories.AttendanceRepository
 import com.iprism.school.utils.UiState
 import kotlinx.coroutines.launch
 
 class AttendanceViewModel(private var repository: AttendanceRepository) : ViewModel() {
 
-    private val _academicYearsResponse = MutableLiveData<UiState<List<AcademicYearResponse>>>()
-    val academicYearsResponse: LiveData<UiState<List<AcademicYearResponse>>> = _academicYearsResponse
+    private val _academicYearsResponse = MutableLiveData<UiState<ClassTeacherResponse>>()
+    val academicYearsResponse: LiveData<UiState<ClassTeacherResponse>> = _academicYearsResponse
 
-    private val _classesResponse = MutableLiveData<UiState<List<ClassesResponse>>>()
-    val classesResponse: LiveData<UiState<List<ClassesResponse>>> = _classesResponse
+    private val _classesResponse = MutableLiveData<UiState<ClassTeacherResponse>>()
+    val classesResponse: LiveData<UiState<ClassTeacherResponse>> = _classesResponse
 
-    private val _sectionsResponse = MutableLiveData<UiState<List<SectionsResponse>>>()
-    val sectionsResponse: LiveData<UiState<List<SectionsResponse>>> = _sectionsResponse
+    private val _sectionsResponse = MutableLiveData<UiState<ClassTeacherResponse>>()
+    val sectionsResponse: LiveData<UiState<ClassTeacherResponse>> = _sectionsResponse
+
+    private val _studentsResponse = MutableLiveData<UiState<AttendanceStudentsResponse>>()
+    val studentsResponse: LiveData<UiState<AttendanceStudentsResponse>> = _studentsResponse
 
     fun fetchAcademicYears(request : ClassTeacherApiRequest) {
         viewModelScope.launch {
@@ -43,7 +46,7 @@ class AttendanceViewModel(private var repository: AttendanceRepository) : ViewMo
         viewModelScope.launch {
             _classesResponse.value = UiState.Loading
             try {
-                val response = repository.getClasses(request)
+                val response = repository.getYearClassAndSection(request)
                 if (response.status) {
                     _classesResponse.value = UiState.Success(response.response)
                 } else {
@@ -59,7 +62,7 @@ class AttendanceViewModel(private var repository: AttendanceRepository) : ViewMo
         viewModelScope.launch {
             _sectionsResponse.value = UiState.Loading
             try {
-                val response = repository.getSections(request)
+                val response = repository.getYearClassAndSection(request)
                 if (response.status) {
                     _sectionsResponse.value = UiState.Success(response.response)
                 } else {
@@ -67,6 +70,22 @@ class AttendanceViewModel(private var repository: AttendanceRepository) : ViewMo
                 }
             } catch (e: Exception) {
                 _sectionsResponse.value = UiState.Error(e.localizedMessage ?: "Unknown error")
+            }
+        }
+    }
+
+    fun fetchStudents(request : AttendanceStudentsApiRequest) {
+        viewModelScope.launch {
+            _studentsResponse.value = UiState.Loading
+            try {
+                val response = repository.getStudents(request)
+                if (response.status) {
+                    _studentsResponse.value = UiState.Success(response.response)
+                } else {
+                    _studentsResponse.value = UiState.Error(response.message ?: "Something went wrong")
+                }
+            } catch (e: Exception) {
+                _studentsResponse.value = UiState.Error(e.localizedMessage ?: "Unknown error")
             }
         }
     }

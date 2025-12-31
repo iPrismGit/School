@@ -19,8 +19,10 @@ import com.iprism.school.R
 import com.iprism.school.adapters.AttandanceStudentsAdapter
 import com.iprism.school.databinding.ActivityAttendanceBinding
 import com.iprism.school.model.Response.ClasseList
+import com.iprism.school.model.classteachermodel.Class
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.classteachermodel.ClassesResponse
+import com.iprism.school.model.classteachermodel.Section
 import com.iprism.school.model.classteachermodel.SectionsResponse
 import com.iprism.school.repositories.AttendanceRepository
 import com.iprism.school.utils.DateTimeUtils
@@ -91,6 +93,7 @@ class AttendanceActivity : BaseActivity() {
         observeAcademicYearsResponse()
         observeClassesResponse()
         observeSectionsResponse()
+      //  observeStudentsResponse()
         var request = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "academic_year")
         attendanceViewModel.fetchAcademicYears(request)
         var requestClasses = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "classes")
@@ -121,6 +124,8 @@ class AttendanceActivity : BaseActivity() {
 
     }
 
+
+
     private fun observeAcademicYearsResponse() {
         attendanceViewModel.academicYearsResponse.observe(this) { result ->
             when (result) {
@@ -130,8 +135,8 @@ class AttendanceActivity : BaseActivity() {
 
                 is UiState.Success -> {
                     binding.progress.hideProgress()
-                    academicYear = result.data[0].name
-                    academicYearId = result.data[0].id
+                    academicYear = result.data.name
+                    academicYearId = result.data.id
                     Log.d("AcademicYear", academicYear + ", " + academicYearId)
                 }
 
@@ -153,9 +158,9 @@ class AttendanceActivity : BaseActivity() {
 
                 is UiState.Success -> {
                     binding.progress.hideProgress()
-                    if (result.data.isNotEmpty()) {
-                        var updatedList = result.data.toMutableList()
-                        updatedList.add(0, ClassesResponse("-1", "Select Class"))
+                    if (result.data.classes.isNotEmpty()) {
+                        var updatedList = result.data.classes.toMutableList()
+                        updatedList.add(0, Class("-1", "Select Class"))
                         setupClassesAdapter(updatedList)
                     } else {
                         ToastUtils.showErrorCustomToast(this, "No Classes Found..!")
@@ -179,9 +184,9 @@ class AttendanceActivity : BaseActivity() {
 
                 is UiState.Success -> {
                     binding.progress.hideProgress()
-                    if (result.data.isNotEmpty()) {
-                        var updatedList = result.data.toMutableList()
-                        updatedList.add(0, SectionsResponse("-1", "Select Section"))
+                    if (result.data.sections.isNotEmpty()) {
+                        var updatedList = result.data.sections.toMutableList()
+                        updatedList.add(0, Section("-1", "Select Section"))
                         setupSectionsAdapter(updatedList)
                     } else {
                         ToastUtils.showErrorCustomToast(this, "No Classes Found..!")
@@ -196,8 +201,7 @@ class AttendanceActivity : BaseActivity() {
         }
     }
 
-
-    private fun setupClassesAdapter(genderTypes: List<ClassesResponse>) {
+    private fun setupClassesAdapter(genderTypes: List<Class>) {
         var namesList = genderTypes.map { it.class_name }
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, namesList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -223,7 +227,7 @@ class AttendanceActivity : BaseActivity() {
             }
     }
 
-    private fun setupSectionsAdapter(genderTypes: List<SectionsResponse>) {
+    private fun setupSectionsAdapter(genderTypes: List<Section>) {
         var namesList = genderTypes.map { it.section_name }
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, namesList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

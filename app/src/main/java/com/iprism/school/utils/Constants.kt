@@ -132,6 +132,7 @@ object Constants {
 
     //new Apis
 
-    const val CLASS_TEACHER = "class_teacher"
+    const val CLASS_TEACHER_ENDPOINT = "class_teacher"
+    const val ATTENDANCE_ENDPOINT = "attendance"
 
 }
