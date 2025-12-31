@@ -131,15 +131,15 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
                         android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:gravity="center">
 
                         <LinearLayout
                             android:id="@+id/classes_lo"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
                             android:layout_marginEnd="8dp"
                             android:layout_weight="1"
                             android:background="@drawable/edit_text_bg"
@@ -169,18 +169,17 @@
 
                         </LinearLayout>
 
-                        <RelativeLayout
-                            android:id="@+id/date_ll"
-                            android:layout_width="0dp"
+                        <LinearLayout
+                            android:id="@+id/sections_lo"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
-                            android:layout_marginTop="5dp"
                             android:layout_weight="1"
                             android:background="@drawable/edit_text_bg"
                             android:orientation="horizontal">
 
                             <Spinner
-                                android:id="@+id/Sections_sp"
+                                android:id="@+id/sections_sp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -202,7 +201,7 @@
 
                             </ImageView>
 
-                        </RelativeLayout>
+                        </LinearLayout>
 
                     </LinearLayout>
 

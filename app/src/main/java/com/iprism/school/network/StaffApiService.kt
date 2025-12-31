@@ -133,10 +133,12 @@ import com.iprism.school.model.Response.TeacherCalenderListResponse
 import com.iprism.school.model.Response.TeacherGroupStudentsResponse
 import com.iprism.school.model.Response.TermsandConditionResponse
 import com.iprism.school.model.Response.ViewDayCareResponse
+import com.iprism.school.model.classteachermodel.ClassesApiResponse
 import com.iprism.school.model.authmodel.LoginApiRequest
 import com.iprism.school.model.authmodel.LoginApiResponse
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.classteachermodel.ClassTeacherApiResponse
+import com.iprism.school.model.classteachermodel.SectionsApiResponse
 import com.iprism.school.utils.Constants
 import retrofit2.Call
 import retrofit2.http.Body
@@ -442,7 +444,15 @@ interface StaffApiService {
     @POST(Constants.ALLCABS)
     fun allCabsList(@Body schoolStaffReq: SchoolStaffReq): Call<AllCabsResponse>
 
+    //New Apis
+
     @POST(Constants.CLASS_TEACHER)
     suspend fun getYearClassAndSection(@Body request: ClassTeacherApiRequest): ClassTeacherApiResponse
+
+    @POST(Constants.CLASS_TEACHER)
+    suspend fun getClasses(@Body request: ClassTeacherApiRequest): ClassesApiResponse
+
+    @POST(Constants.CLASS_TEACHER)
+    suspend fun getSections(@Body request: ClassTeacherApiRequest): SectionsApiResponse
 
 }

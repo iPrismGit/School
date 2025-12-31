@@ -1,6 +1,4 @@
 package com.iprism.school.model.classteachermodel
-
-import com.google.gson.annotations.SerializedName
  data class ClassTeacherApiResponse(
 
     val message: String,

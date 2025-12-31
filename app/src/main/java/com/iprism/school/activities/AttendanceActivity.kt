@@ -1,32 +1,27 @@
 package com.iprism.school.activities
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
 import com.iprism.school.adapters.AttandanceStudentsAdapter
 import com.iprism.school.databinding.ActivityAttendanceBinding
-import com.iprism.school.model.Request.AttandanceUpdateReq
-import com.iprism.school.model.Request.ClassStudentsReq
-import com.iprism.school.model.Request.TeacherAccessReq
-import com.iprism.school.model.Response.AttandanceStudentResponse
-import com.iprism.school.model.Response.AttendanceUpdatedResponse
-import com.iprism.school.model.Response.ClassResponse
 import com.iprism.school.model.Response.ClasseList
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
+import com.iprism.school.model.classteachermodel.ClassesResponse
+import com.iprism.school.model.classteachermodel.SectionsResponse
 import com.iprism.school.repositories.AttendanceRepository
 import com.iprism.school.utils.DateTimeUtils
 import com.iprism.school.utils.ToastUtils
@@ -36,18 +31,14 @@ import com.iprism.school.utils.hideProgress
 import com.iprism.school.utils.showProgress
 import com.iprism.school.viewModels.AttendanceViewModel
 import com.iprism.school.viewModels.ViewModelFactory
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 
 class AttendanceActivity : BaseActivity() {
 
     private lateinit var binding: ActivityAttendanceBinding
     private lateinit var attendanceViewModel: AttendanceViewModel
     private var attendanceType: String = "pending"
+    private var classId: String = "-1"
+    private var sectionId: String = "-1"
     private var selectedDate = ""
     private lateinit var crossImage: ImageView
     private lateinit var attendanceCrossImage: ImageView
@@ -98,8 +89,12 @@ class AttendanceActivity : BaseActivity() {
         handleDateLo()
         handleSaveAttendanceBtn()
         observeAcademicYearsResponse()
+        observeClassesResponse()
+        observeSectionsResponse()
         var request = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "academic_year")
         attendanceViewModel.fetchAcademicYears(request)
+        var requestClasses = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "classes")
+        attendanceViewModel.fetchClasses(requestClasses)
         Log.d("ClassRequest", request.toString())
        // callclasses()
         binding.parentNotificationCb.setOnCheckedChangeListener { _, isChecked ->
@@ -147,6 +142,107 @@ class AttendanceActivity : BaseActivity() {
                 }
             }
         }
+    }
+
+    private fun observeClassesResponse() {
+        attendanceViewModel.classesResponse.observe(this) { result ->
+            when (result) {
+                is UiState.Loading -> {
+                    binding.progress.showProgress()
+                }
+
+                is UiState.Success -> {
+                    binding.progress.hideProgress()
+                    if (result.data.isNotEmpty()) {
+                        var updatedList = result.data.toMutableList()
+                        updatedList.add(0, ClassesResponse("-1", "Select Class"))
+                        setupClassesAdapter(updatedList)
+                    } else {
+                        ToastUtils.showErrorCustomToast(this, "No Classes Found..!")
+                    }
+                }
+
+                is UiState.Error -> {
+                    ToastUtils.showErrorCustomToast(this, result.message)
+                    binding.progress.hideProgress()
+                }
+            }
+        }
+    }
+
+    private fun observeSectionsResponse() {
+        attendanceViewModel.sectionsResponse.observe(this) { result ->
+            when (result) {
+                is UiState.Loading -> {
+                    binding.progress.showProgress()
+                }
+
+                is UiState.Success -> {
+                    binding.progress.hideProgress()
+                    if (result.data.isNotEmpty()) {
+                        var updatedList = result.data.toMutableList()
+                        updatedList.add(0, SectionsResponse("-1", "Select Section"))
+                        setupSectionsAdapter(updatedList)
+                    } else {
+                        ToastUtils.showErrorCustomToast(this, "No Classes Found..!")
+                    }
+                }
+
+                is UiState.Error -> {
+                    ToastUtils.showErrorCustomToast(this, result.message)
+                    binding.progress.hideProgress()
+                }
+            }
+        }
+    }
+
+
+    private fun setupClassesAdapter(genderTypes: List<ClassesResponse>) {
+        var namesList = genderTypes.map { it.class_name }
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, namesList)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.classesSp.adapter = adapter
+        binding.classesSp.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    classId = genderTypes[position].class_id.toString()
+                    if (!classId.equals("-1", true)){
+                        var requestClasses = ClassTeacherApiRequest(classId, userDetails[User.ID].toString(), "sections")
+                        attendanceViewModel.fetchSections(requestClasses)
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+
+                }
+            }
+    }
+
+    private fun setupSectionsAdapter(genderTypes: List<SectionsResponse>) {
+        var namesList = genderTypes.map { it.section_name }
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, namesList)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.sectionsSp.adapter = adapter
+        binding.sectionsSp.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    sectionId = genderTypes[position].section_id.toString()
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+
+                }
+            }
     }
 
     private fun initViewModel() {
@@ -223,48 +319,48 @@ class AttendanceActivity : BaseActivity() {
         bottomSheetDialog.show()
     }
 
-    private fun callclasses() {
-        showProgress()
-        var loginApiRequest = TeacherAccessReq( teacherId,auth_token)
-        Log.d("class_Req_2025", loginApiRequest.toString())
-        var call: Call<ClassResponse> = parentApiService!!.classes(loginApiRequest)
-        call.enqueue(object : Callback<ClassResponse> {
-            override fun onResponse(call: Call<ClassResponse>, response: Response<ClassResponse>) {
-                if (response.isSuccessful) {
-                    hideProgress()
-                    response.body()?.response?.classes?.let {
-                        hideProgress()
-                        classList.clear()
-                        classList.addAll(it)
-                    }
-
-                    hideProgress()
-                    var loginApiResponse = response.body()
-                    if (loginApiResponse!!.status) {
-                        hideProgress()
-                    } else {
-                        hideProgress()
-                        ToastUtils.showSuccessCustomToast(this@AttendanceActivity, loginApiResponse.message.toString())
-                        if (loginApiResponse.message.toString() == "Authentication Token Expired"){
-                            user!!.storeUserDetails("","","","","","","","","","","","","","","","","","")
-                            startActivity(Intent(this@AttendanceActivity, LoginActivity::class.java))
-                            finish()
-                        }else{
-
-                        }
-                    }
-                } else {
-                    hideProgress()
-                    ToastUtils.showErrorCustomToast(this@AttendanceActivity, response.message())
-                }
-            }
-
-            override fun onFailure(call: Call<ClassResponse>, t: Throwable) {
-                hideProgress()
-                ToastUtils.showErrorCustomToast(this@AttendanceActivity, t.message.toString())
-            }
-        })
-    }
+//    private fun callclasses() {
+//        showProgress()
+//        var loginApiRequest = TeacherAccessReq( teacherId,auth_token)
+//        Log.d("class_Req_2025", loginApiRequest.toString())
+//        var call: Call<ClassResponse> = parentApiService!!.classes(loginApiRequest)
+//        call.enqueue(object : Callback<ClassResponse> {
+//            override fun onResponse(call: Call<ClassResponse>, response: Response<ClassResponse>) {
+//                if (response.isSuccessful) {
+//                    hideProgress()
+//                    response.body()?.response?.classes?.let {
+//                        hideProgress()
+//                        classList.clear()
+//                        classList.addAll(it)
+//                    }
+//
+//                    hideProgress()
+//                    var loginApiResponse = response.body()
+//                    if (loginApiResponse!!.status) {
+//                        hideProgress()
+//                    } else {
+//                        hideProgress()
+//                        ToastUtils.showSuccessCustomToast(this@AttendanceActivity, loginApiResponse.message.toString())
+//                        if (loginApiResponse.message.toString() == "Authentication Token Expired"){
+//                            user!!.storeUserDetails("","","","","","","","","","","","","","","","","","")
+//                            startActivity(Intent(this@AttendanceActivity, LoginActivity::class.java))
+//                            finish()
+//                        }else{
+//
+//                        }
+//                    }
+//                } else {
+//                    hideProgress()
+//                    ToastUtils.showErrorCustomToast(this@AttendanceActivity, response.message())
+//                }
+//            }
+//
+//            override fun onFailure(call: Call<ClassResponse>, t: Throwable) {
+//                hideProgress()
+//                ToastUtils.showErrorCustomToast(this@AttendanceActivity, t.message.toString())
+//            }
+//        })
+//    }
 
 //    private fun showClasses() {
 //        val classNam = classList.map { it.class_name }.toTypedArray()
