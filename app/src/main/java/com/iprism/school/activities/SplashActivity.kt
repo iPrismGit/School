@@ -22,7 +22,7 @@ class SplashActivity : BaseActivity() {
 
         Log.d("userDetails", user!!.getUserDetails().toString())
         Log.d("newUserDetails", user!!.getNewUserDetails().toString())
-        SchoolApi.setAuthToken(userDetails[User.AUTH_TOKEN].toString())
+
         Log.d("authToken", userDetails[User.AUTH_TOKEN].toString())
 
         val handler = Handler()

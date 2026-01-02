@@ -134,5 +134,6 @@ object Constants {
 
     const val CLASS_TEACHER_ENDPOINT = "class_teacher"
     const val ATTENDANCE_ENDPOINT = "attendance"
+    const val REFRESH_TOKEN_ENDPOINT = "refresh_token"
 
 }

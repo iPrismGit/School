@@ -1,5 +1,6 @@
 package com.iprism.school.viewModels
 
+import com.iprism.school.repositories.AttendanceRepository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +9,6 @@ import com.iprism.school.model.classteachermodel.AttendanceStudentsApiRequest
 import com.iprism.school.model.classteachermodel.AttendanceStudentsResponse
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.classteachermodel.ClassTeacherResponse
-import com.iprism.school.repositories.AttendanceRepository
 import com.iprism.school.utils.UiState
 import kotlinx.coroutines.launch
 

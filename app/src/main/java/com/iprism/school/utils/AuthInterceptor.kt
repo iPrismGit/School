@@ -1,29 +1,23 @@
 package com.iprism.school.utils
 
-import android.util.Log
+import android.content.Context
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class AuthInterceptor : Interceptor {
-
-    @Volatile
-    var token: String? = null
+class AuthInterceptor(private val context: Context) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val originalRequest = chain.request()
+        val user = User(context)
+        val token = user.getUserDetails()[User.AUTH_TOKEN]
 
-        val builder = originalRequest.newBuilder()
+        val request = chain.request().newBuilder()
             .addHeader("Accept", "application/json")
+            .apply {
+                if (!token.isNullOrEmpty()) addHeader("Authorization", "Bearer $token")
+            }
+            .build()
 
-        token?.let {
-            val authHeader = "Bearer $it"
-            builder.addHeader("Authorization", authHeader)
-
-            Log.d("AuthInterceptor", "Authorization Header: $authHeader")
-        } ?: run {
-            Log.w("AuthInterceptor", "Authorization token is NULL")
-        }
-
-        return chain.proceed(builder.build())
+        return chain.proceed(request)
     }
+
 }

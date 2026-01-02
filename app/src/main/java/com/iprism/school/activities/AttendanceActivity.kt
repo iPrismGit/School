@@ -1,22 +1,16 @@
 package com.iprism.school.activities
 
+import com.iprism.school.repositories.AttendanceRepository
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.CompoundButton
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,20 +19,15 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
 import com.iprism.school.adapters.AttandanceStudentsAdapter
-import com.iprism.school.adapters.StudentsAttendanceAdapter
 import com.iprism.school.databinding.ActivityAttendanceBinding
 import com.iprism.school.databinding.AllStudentsPresentBottomSheetBinding
 import com.iprism.school.interfaces.OnAttendanceClickListener
-import com.iprism.school.model.Response.ClasseList
 import com.iprism.school.model.classteachermodel.AttendanceStudent
 import com.iprism.school.model.classteachermodel.AttendanceStudentsApiRequest
 import com.iprism.school.model.classteachermodel.Class
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
-import com.iprism.school.model.classteachermodel.ClassesResponse
 import com.iprism.school.model.classteachermodel.Section
-import com.iprism.school.model.classteachermodel.SectionsResponse
 import com.iprism.school.model.classteachermodel.Student
-import com.iprism.school.repositories.AttendanceRepository
 import com.iprism.school.utils.DateTimeUtils
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.UiState
@@ -455,7 +444,7 @@ class AttendanceActivity : BaseActivity() {
     }
 
     private fun initViewModel() {
-        val repository = AttendanceRepository()
+        val repository = AttendanceRepository(this)
         val factory = ViewModelFactory { AttendanceViewModel(repository) }
         attendanceViewModel = ViewModelProvider(this, factory)[AttendanceViewModel::class.java]
     }

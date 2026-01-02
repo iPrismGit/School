@@ -17,7 +17,6 @@ import com.iprism.school.model.Request.OtpReq
 import com.iprism.school.model.Response.LoginResponse
 import com.iprism.school.model.Response.OtpResponse
 import com.iprism.school.model.authmodel.LoginApiRequest
-import com.iprism.school.repositories.AttendanceRepository
 import com.iprism.school.repositories.AuthenticationRepository
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.UiState
@@ -88,7 +87,7 @@ class LoginActivity : BaseActivity() {
                         result.data.branch_id,
                         result.data.mobile
                     )
-                    SchoolApi.setAuthToken(result.data.auth_token)
+//                    SchoolApi.setAuthToken(result.data.auth_token)
                     user.storeNewUserAuthToken(result.data.auth_token)
                     ToastUtils.showSuccessCustomToast(this, "Teacher Logged in Successfully!")
                     var intent = Intent(this, HomeActivity::class.java)
@@ -107,7 +106,7 @@ class LoginActivity : BaseActivity() {
     }
 
     private fun initViewModel() {
-        val repository = AuthenticationRepository()
+        val repository = AuthenticationRepository(this)
         val factory = ViewModelFactory { AuthViewModel(repository) }
         viewModel = ViewModelProvider(this, factory)[AuthViewModel::class.java]
     }

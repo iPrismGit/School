@@ -1,5 +1,7 @@
-import com.iprism.school.network.StaffApiService
+package com.iprism.school.network
+
 import com.iprism.school.utils.AuthInterceptor
+import android.content.Context
 import com.iprism.school.utils.Constants
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -10,31 +12,22 @@ object SchoolApi {
 
     private const val TIMEOUT = 30L
 
-    private val authInterceptor = AuthInterceptor()
+    fun create(context: Context): StaffApiService {
 
-    fun setAuthToken(token: String) {
-        authInterceptor.token = token
-    }
-
-    private val okHttpClient: OkHttpClient by lazy {
-        OkHttpClient.Builder()
+        val okHttpClient = OkHttpClient.Builder()
             .connectTimeout(TIMEOUT, TimeUnit.SECONDS)
             .readTimeout(TIMEOUT, TimeUnit.SECONDS)
             .writeTimeout(TIMEOUT, TimeUnit.SECONDS)
-            .addInterceptor(authInterceptor)
+            .addInterceptor(AuthInterceptor(context))
             .build()
-    }
 
-    private val retrofit: Retrofit by lazy {
-        Retrofit.Builder()
+        val retrofit = Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-    }
 
-    val schoolApiService: StaffApiService by lazy {
-        retrofit.create(StaffApiService::class.java)
+        return retrofit.create(StaffApiService::class.java)
     }
 
 }

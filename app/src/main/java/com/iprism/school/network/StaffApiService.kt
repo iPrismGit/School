@@ -141,6 +141,8 @@ import com.iprism.school.model.classteachermodel.AttendanceStudentsApiResponse
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.classteachermodel.ClassTeacherApiResponse
 import com.iprism.school.model.classteachermodel.SectionsApiResponse
+import com.iprism.school.model.refreshtokenmodel.RefreshTokenApiRequest
+import com.iprism.school.model.refreshtokenmodel.RefreshTokenApiResponse
 import com.iprism.school.utils.Constants
 import retrofit2.Call
 import retrofit2.http.Body
@@ -453,5 +455,8 @@ interface StaffApiService {
 
     @POST(Constants.ATTENDANCE_ENDPOINT)
     suspend fun getStudents(@Body request: AttendanceStudentsApiRequest): AttendanceStudentsApiResponse
+
+    @POST(Constants.REFRESH_TOKEN_ENDPOINT)
+    suspend fun refreshToken(@Body request: RefreshTokenApiRequest): RefreshTokenApiResponse
 
 }
