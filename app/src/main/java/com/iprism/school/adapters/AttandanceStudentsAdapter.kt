@@ -62,7 +62,6 @@ class AttandanceStudentsAdapter(
         )
     }
 
-    /** 🔥 CORE METHOD */
     private fun notifySelectionChanged() {
         val selectedIds = studentList
             .filter { it.isSelected }
@@ -90,6 +89,11 @@ class AttandanceStudentsAdapter(
         binding: StudentAttandanceItemBinding,
         student: Student
     ) {
+
+        student.isSelected = student.attendance_status.equals("present", true)
+
+        updateCheckIcon(binding, student.isSelected)
+
         binding.stuName.text =
             "${student.first_name} ${student.middle_name} ${student.last_name}"
 
@@ -104,6 +108,7 @@ class AttandanceStudentsAdapter(
             )
         }
     }
+
 }
 
 

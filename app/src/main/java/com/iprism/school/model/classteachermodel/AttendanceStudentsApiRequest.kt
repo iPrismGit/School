@@ -12,6 +12,7 @@ data class AttendanceStudentsApiRequest(
     val students: List<AttendanceStudent>,
     val user_id: String,
     val view_type: String,
+    val student_type: String,
     val page : Int
 )
 

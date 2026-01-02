@@ -27,6 +27,7 @@ import com.iprism.school.R
 import com.iprism.school.adapters.AttandanceStudentsAdapter
 import com.iprism.school.adapters.StudentsAttendanceAdapter
 import com.iprism.school.databinding.ActivityAttendanceBinding
+import com.iprism.school.databinding.AllStudentsPresentBottomSheetBinding
 import com.iprism.school.interfaces.OnAttendanceClickListener
 import com.iprism.school.model.Response.ClasseList
 import com.iprism.school.model.classteachermodel.AttendanceStudent
@@ -54,46 +55,36 @@ class AttendanceActivity : BaseActivity() {
     private lateinit var binding: ActivityAttendanceBinding
     private lateinit var attendanceViewModel: AttendanceViewModel
     private var attendanceStatus: String = ""
+    private var selectValue: String = "single"
     private val selectedStudentIds = mutableSetOf<String>()
     private var isSelectAllChecked = false
     private var selectedAttendanceList = mutableListOf<AttendanceStudent>()
-
     private lateinit var studentsAdapter: AttandanceStudentsAdapter
     private var studentsList = mutableListOf<Student>()
     private var selectedStudentsList = mutableListOf<AttendanceStudent>()
     private var isLoading = false
     private var isLastPage = false
     private var currentPage = 1
-    private val limit = 5
+    private val limit = 10
     private var classId: String = "-1"
     private var sectionId: String = "-1"
-    private lateinit var attendanceCrossImage: ImageView
-    private lateinit var markBtn: Button
-    private lateinit var attendanceCancelBtn: Button
-    private var teacherId: String = ""
-    private var auth_token: String = ""
-    private var scl_id: String = ""
     private var currentDate: String = ""
     private var backendDate: String = ""
     private var academicYear: String = ""
     private var academicYearId: String = ""
-    private var selected_class_ids: String? = ""
     private var notification_parent: String? = ""
+    private lateinit var bottomSheetDialog : BottomSheetDialog
+    private lateinit var markAttendanceBinding : AllStudentsPresentBottomSheetBinding
     private val selectAllListener =
         CompoundButton.OnCheckedChangeListener { _, isChecked ->
             studentsAdapter.selectAll(isChecked)
         }
-
-
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAttendanceBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        teacherId = userDetails[User.ID].toString()
-        auth_token = userDetails[User.AUTH_TOKEN].toString()
-        scl_id = userDetails[User.SCHOOL_ID].toString()
         val formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy")
         currentDate = LocalDate.now().format(formatter)
 
@@ -110,6 +101,7 @@ class AttendanceActivity : BaseActivity() {
         setupRecyclerView()
         observeStudentsResponse()
         handleRefreshLo()
+        observeAttendanceResponse()
         binding.checkBoxAll.setOnCheckedChangeListener(selectAllListener)
         var request = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "academic_year")
         attendanceViewModel.fetchAcademicYears(request)
@@ -121,13 +113,44 @@ class AttendanceActivity : BaseActivity() {
             Log.d("NotifyValue", "Notify is: $notification_parent")
         }
 
+        binding.checkBoxAll.setOnCheckedChangeListener { _, isChecked ->
+
+            if (attendanceStatus != "attendance_not_given") {
+                ToastUtils.showErrorCustomToast(
+                    this,
+                    "Attendance already given, please select students manually to update"
+                )
+                binding.checkBoxAll.isChecked = false
+                return@setOnCheckedChangeListener
+            }
+
+            isSelectAllChecked = isChecked
+
+            studentsList.forEach { it.isSelected = isChecked }
+            studentsAdapter.notifyDataSetChanged()
+            selectedAttendanceList.clear()
+            if (isChecked) {
+
+                studentsList.forEach {
+                    selectedAttendanceList.add(AttendanceStudent(it.id))
+                }
+                selectValue = "all"
+            } else {
+                selectValue = "single"
+            }
+
+            Log.d("SelectedAttendance", selectedAttendanceList.toString())
+            Log.d("SelectValue", selectValue)
+        }
+
+
     }
 
     private fun loadStudents() {
         var request = AttendanceStudentsApiRequest(
             academicYearId, "", "",
             userDetails[User.SCHOOL_ID].toString(), classId, backendDate, sectionId,
-            selectedStudentsList, userDetails[User.ID].toString(), "view", currentPage
+            selectedStudentsList, userDetails[User.ID].toString(), "view", "" , currentPage
         )
         attendanceViewModel.fetchStudents(request)
         Log.d("StudentsFetchRequest", request.toString())
@@ -198,12 +221,11 @@ class AttendanceActivity : BaseActivity() {
                     binding.checkBoxAll.isChecked = isAllSelected
                     binding.checkBoxAll.setOnCheckedChangeListener(selectAllListener)
 
-                    // store selected ids
                     selectedAttendanceList.clear()
                     selectedIds.forEach {
                         selectedAttendanceList.add(AttendanceStudent(it))
                     }
-
+                    selectValue = "single"
                     Log.d("SelectedIdsList", selectedAttendanceList.toString())
                 }
 
@@ -346,6 +368,36 @@ class AttendanceActivity : BaseActivity() {
         }
     }
 
+    private fun observeAttendanceResponse() {
+        attendanceViewModel.updateStudentsAttendanceResponse.observe(this) { result ->
+            when (result) {
+                is UiState.Loading -> {
+                    markAttendanceBinding.progress.showProgress()
+                    markAttendanceBinding.markBtn.isEnabled = false
+                    markAttendanceBinding.cancelBtn.isEnabled = false
+                    markAttendanceBinding.crossIv.isEnabled = false
+
+                }
+
+                is UiState.Success -> {
+                    markAttendanceBinding.progress.hideProgress()
+                    ToastUtils.showSuccessCustomToast(this, "Attendance Marked Successfully..!")
+                    refreshItems()
+                    bottomSheetDialog.dismiss()
+
+                }
+
+                is UiState.Error -> {
+                    ToastUtils.showErrorCustomToast(this, result.message)
+                    markAttendanceBinding.progress.hideProgress()
+                    markAttendanceBinding.markBtn.isEnabled = true
+                    markAttendanceBinding.cancelBtn.isEnabled = true
+                    markAttendanceBinding.crossIv.isEnabled = true
+                }
+            }
+        }
+    }
+
     private fun setupClassesAdapter(genderTypes: List<Class>) {
         var namesList = genderTypes.map { it.class_name }
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, namesList)
@@ -421,7 +473,15 @@ class AttendanceActivity : BaseActivity() {
                 AttendanceStudent(id = it)
             }.toMutableList()
 
-            //showAttendanceConformationBottomSheet()
+            if (classId.equals("-1", true)){
+                ToastUtils.showErrorCustomToast(this, "Please Select Class..!")
+            } else if (sectionId.equals("-1", true)){
+                ToastUtils.showErrorCustomToast(this, "Please Select Section..!")
+            } else if (selectValue.equals("single", true)  && selectedAttendanceList.isEmpty()) {
+                ToastUtils.showErrorCustomToast(this, "Please Select Students..!")
+            } else{
+                showAttendanceConformationBottomSheet()
+            }
         })
     }
 
@@ -434,34 +494,40 @@ class AttendanceActivity : BaseActivity() {
     }
 
     private fun showAttendanceConformationBottomSheet() {
-        val bottomSheetDialog = BottomSheetDialog(this)
-        val bottomSheetView: View =
-            LayoutInflater.from(this).inflate(R.layout.all_students_present_bottom_sheet, null)
-        bottomSheetDialog.setContentView(bottomSheetView)
-        attendanceCancelBtn = bottomSheetDialog.findViewById<View>(R.id.cancel_btn) as Button
-        attendanceCrossImage = bottomSheetDialog.findViewById<View>(R.id.cross_iv) as ImageView
-        markBtn = bottomSheetDialog.findViewById<View>(R.id.mark_button) as Button
+        bottomSheetDialog = BottomSheetDialog(this)
+        markAttendanceBinding = AllStudentsPresentBottomSheetBinding.inflate(layoutInflater)
+        bottomSheetDialog.setContentView(markAttendanceBinding.root)
+        bottomSheetDialog.setCanceledOnTouchOutside(false)
+
         bottomSheetDialog.setOnShowListener { dialog ->
             val bottomSheet =
                 (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
             bottomSheet?.setBackgroundResource(R.drawable.rounded_bottom_sheet_background)
         }
 
-        attendanceCancelBtn.setOnClickListener(View.OnClickListener {
+        markAttendanceBinding.cancelBtn.setOnClickListener {
+            if (!markAttendanceBinding.markBtn.isEnabled) return@setOnClickListener
             bottomSheetDialog.dismiss()
-        })
+        }
 
-        attendanceCrossImage.setOnClickListener(View.OnClickListener {
+        markAttendanceBinding.crossIv.setOnClickListener {
+            if (!markAttendanceBinding.markBtn.isEnabled) return@setOnClickListener
             bottomSheetDialog.dismiss()
-        })
+        }
 
-        markBtn.setOnClickListener(View.OnClickListener {
-            bottomSheetDialog.dismiss()
-            ToastUtils.showSuccessCustomToast(this, "Attendance Marked Successfully")
-        })
+        markAttendanceBinding.markBtn.setOnClickListener {
+            var markAttendanceRequest = AttendanceStudentsApiRequest(academicYearId,
+                "", "", userDetails[User.SCHOOL_ID].toString(),
+                classId, backendDate, sectionId, selectedAttendanceList,
+                userDetails[User.ID].toString(), "insert", selectValue, 1)
+            attendanceViewModel.updateStudentsAttendance(markAttendanceRequest)
+            Log.d("MarkAttendanceRequest", markAttendanceRequest.toString())
+        }
 
         bottomSheetDialog.show()
     }
+
+
 
     @SuppressLint("GestureBackNavigation")
     override fun onBackPressed() {
