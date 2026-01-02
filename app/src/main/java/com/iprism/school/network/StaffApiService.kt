@@ -141,6 +141,8 @@ import com.iprism.school.model.classteachermodel.AttendanceStudentsApiResponse
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.classteachermodel.ClassTeacherApiResponse
 import com.iprism.school.model.classteachermodel.SectionsApiResponse
+import com.iprism.school.model.eventsmodel.EventsApiRequest
+import com.iprism.school.model.eventsmodel.EventsApiResponse
 import com.iprism.school.model.refreshtokenmodel.RefreshTokenApiRequest
 import com.iprism.school.model.refreshtokenmodel.RefreshTokenApiResponse
 import com.iprism.school.utils.Constants
@@ -448,8 +450,6 @@ interface StaffApiService {
     @POST(Constants.ALLCABS)
     fun allCabsList(@Body schoolStaffReq: SchoolStaffReq): Call<AllCabsResponse>
 
-    //New Apis
-
     @POST(Constants.CLASS_TEACHER_ENDPOINT)
     suspend fun getYearClassAndSection(@Body request: ClassTeacherApiRequest): ClassTeacherApiResponse
 
@@ -458,5 +458,8 @@ interface StaffApiService {
 
     @POST(Constants.REFRESH_TOKEN_ENDPOINT)
     suspend fun refreshToken(@Body request: RefreshTokenApiRequest): RefreshTokenApiResponse
+
+    @POST(Constants.EVENTS_ENDPOINT)
+    suspend fun fetchEvents(@Body request: EventsApiRequest): EventsApiResponse
 
 }

@@ -49,6 +49,84 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:gravity="center">
+
+            <LinearLayout
+                android:id="@+id/classes_lo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text_bg"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/classes_sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:padding="12dp" />
+
+                <ImageView
+                    android:id="@+id/img_class"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:src="@drawable/down_arrow_img"
+                    android:visibility="visible"
+                    app:tint="@color/gray1"></ImageView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/sections_lo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/edit_text_bg"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/sections_sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:padding="12dp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:src="@drawable/down_arrow_img"
+                    android:visibility="visible"
+                    app:tint="@color/black">
+
+                </ImageView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="45dp"
             android:background="@color/date_bg_color"
             android:gravity="center"
@@ -88,6 +166,8 @@
                 app:srcCompat="@drawable/right_arrow_image" />
 
         </LinearLayout>
+
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -152,6 +232,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
+                android:visibility="gone"
                 android:layout_marginBottom="120dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintBottom_toBottomOf="@+id/linearLayout13"

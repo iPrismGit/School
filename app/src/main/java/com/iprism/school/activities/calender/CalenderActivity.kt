@@ -35,14 +35,13 @@ class CalenderActivity : BaseActivity() {
     private lateinit var adapter: CalenderAdapter
 
     private val apiDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
-    private val displayDateFormatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.getDefault())
+    private val displayDateFormatter = DateTimeFormatter.ofPattern("MMM yyyy", Locale.getDefault())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCalenderBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // userDetails and user are inherited from BaseActivity
         teacherId = userDetails[User.ID].toString()
         auth_token = userDetails[User.AUTH_TOKEN].toString()
         scl_id = userDetails[User.SCHOOL_ID].toString()
@@ -74,11 +73,7 @@ class CalenderActivity : BaseActivity() {
     }
 
     private fun updateUIAndFetch() {
-        // Update Month-Year display text (e.g., "February 2025")
         binding.dateTxt.text = displayedDate.format(displayDateFormatter)
-
-        // Fetch data for the current displayed month.
-        // We use the first day of the month as the representative date for fetching the list.
         val formattedDateString = displayedDate.withDayOfMonth(1).format(apiDateFormatter)
         fetchCalenderList(formattedDateString)
     }

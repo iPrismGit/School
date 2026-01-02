@@ -16,12 +16,7 @@ import com.iprism.school.model.Response.CalenderDetailListnn
 import com.iprism.school.model.Response.StudentList
 import com.iprism.school.utils.Constants
 
-class CalenderAdapter(
-    var activity: Context,
-    private val studentList: List<CalenderDetailListnn>,
-    var OnItemCallPic: ((CalenderDetailListnn)  ->Unit )? = null
-) :
-    RecyclerView.Adapter<CalenderAdapter.ViewHolders>() {
+class CalenderAdapter(var context : Context, private val studentList: List<CalenderDetailListnn>, var OnItemCallPic: ((CalenderDetailListnn)  ->Unit )? = null) : RecyclerView.Adapter<CalenderAdapter.ViewHolders>() {
 
     class ViewHolders(var binding: CalenderItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
