@@ -17,10 +17,6 @@ data class AttendanceStudentsApiRequest(
 
 data class AttendanceStudent(
 
-    val academic_year: String,
-    val attendance_status: String,
-    val class_id: String,
-    val id: String,
-    val section_id: String
+    val id: String
 
 )

@@ -32,10 +32,12 @@ data class Student(
     val child_image: String,
     val class_id: Int,
     val first_name: String,
-    val id: Int,
+    val id: String,
     val last_name: String,
     val middle_name: String,
-    val section_id: Int
+    val section_id: String,
+    var isSelected: Boolean = false
+
 )
 
 data class TotalPage(
