@@ -136,6 +136,8 @@ import com.iprism.school.model.Response.ViewDayCareResponse
 import com.iprism.school.model.classteachermodel.ClassesApiResponse
 import com.iprism.school.model.authmodel.LoginApiRequest
 import com.iprism.school.model.authmodel.LoginApiResponse
+import com.iprism.school.model.circularmodels.CircularApiRequest
+import com.iprism.school.model.circularmodels.CircularApiResponse
 import com.iprism.school.model.classteachermodel.AttendanceStudentsApiRequest
 import com.iprism.school.model.classteachermodel.AttendanceStudentsApiResponse
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
@@ -461,5 +463,8 @@ interface StaffApiService {
 
     @POST(Constants.EVENTS_ENDPOINT)
     suspend fun fetchEvents(@Body request: EventsApiRequest): EventsApiResponse
+
+    @POST(Constants.CIRCULARS_ENDPOINT)
+    suspend fun fetchCirculars(@Body request: CircularApiRequest): CircularApiResponse
 
 }

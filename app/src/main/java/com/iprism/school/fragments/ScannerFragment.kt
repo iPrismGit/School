@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.tabs.TabLayoutMediator
 import com.iprism.school.R
-import com.iprism.school.adapters.ConsentsTabsAdapter
 import com.iprism.school.adapters.ScannerTabsAdapter
 import com.iprism.school.databinding.FragmentCabScannerBinding
 import com.iprism.school.databinding.FragmentScannerBinding

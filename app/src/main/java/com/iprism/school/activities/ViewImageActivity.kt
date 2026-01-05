@@ -1,6 +1,7 @@
 package com.iprism.school.activities
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -31,7 +32,33 @@ class ViewImageActivity : AppCompatActivity() {
         }
         handleBack()
         binding.titleTxt.text = eventName
-        Glide.with(this).load(Constants.IMAGES_URL + eventImage).error(ContextCompat.getDrawable(this, R.drawable.dummy_logo)).into(binding.imageIv)
+        Glide.with(this)
+            .load(Constants.IMAGES_URL + eventImage)
+            .error(R.drawable.dummy_logo)
+            .listener(object : com.bumptech.glide.request.RequestListener<android.graphics.drawable.Drawable> {
+
+                override fun onLoadFailed(
+                    e: com.bumptech.glide.load.engine.GlideException?,
+                    model: Any?,
+                    target: com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    binding.progress.visibility = View.GONE
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: android.graphics.drawable.Drawable?,
+                    model: Any?,
+                    target: com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable>?,
+                    dataSource: com.bumptech.glide.load.DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    binding.progress.visibility = View.GONE
+                    return false
+                }
+            })
+            .into(binding.imageIv)
     }
 
     private fun handleBack() {

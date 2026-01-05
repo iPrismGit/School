@@ -3,8 +3,6 @@ package com.iprism.school.adapters
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.iprism.school.fragments.ActiveConsentsFragment
-import com.iprism.school.fragments.InactiveConsentsFragment
 import com.iprism.school.fragments.StaffActiveFragment
 import com.iprism.school.fragments.StaffInActiveFragment
 
