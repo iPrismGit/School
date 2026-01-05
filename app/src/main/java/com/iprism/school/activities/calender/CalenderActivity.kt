@@ -126,7 +126,6 @@ class CalenderActivity : BaseActivity() {
         eventsViewModel.fetchEvents(request)
     }
 
-
     private fun refreshItems() {
         currentPage = 1
         isLastPage = false

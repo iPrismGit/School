@@ -132,7 +132,6 @@ class AttendanceActivity : BaseActivity() {
             Log.d("SelectValue", selectValue)
         }
 
-
     }
 
     private fun loadStudents() {

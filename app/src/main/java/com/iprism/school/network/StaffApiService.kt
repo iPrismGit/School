@@ -147,6 +147,8 @@ import com.iprism.school.model.eventsmodel.EventsApiRequest
 import com.iprism.school.model.eventsmodel.EventsApiResponse
 import com.iprism.school.model.refreshtokenmodel.RefreshTokenApiRequest
 import com.iprism.school.model.refreshtokenmodel.RefreshTokenApiResponse
+import com.iprism.school.model.studentsmodel.StudentsApiRequest
+import com.iprism.school.model.studentsmodel.StudentsApiResponse
 import com.iprism.school.utils.Constants
 import retrofit2.Call
 import retrofit2.http.Body
@@ -466,5 +468,11 @@ interface StaffApiService {
 
     @POST(Constants.CIRCULARS_ENDPOINT)
     suspend fun fetchCirculars(@Body request: CircularApiRequest): CircularApiResponse
+
+    @POST(Constants.ACTIVE_STUDENTS_ENDPOINT)
+    suspend fun fetchActiveStudents(@Body request: StudentsApiRequest): StudentsApiResponse
+
+    @POST(Constants.INACTIVE_STUDENTS_ENDPOINT)
+    suspend fun fetchInActiveStudents(@Body request: StudentsApiRequest): StudentsApiResponse
 
 }

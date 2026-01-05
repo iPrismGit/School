@@ -17,12 +17,7 @@ import com.iprism.school.model.Response.StudentListt
 import com.iprism.school.utils.Constants
 
 
-class StudentsListAdapter(
-    var activity: Context,
-    var response: List<StudentListt>,
-    var OnItemCallBack: ((StudentListt)  ->Unit )? = null,
-    var OnItemCallEdit: ((StudentListt)  ->Unit )? = null)
-    : RecyclerView.Adapter<StudentsListAdapter.ViewHolders>() {
+class StudentsListAdapter(var activity: Context, var response: List<StudentListt>, var OnItemCallBack: ((StudentListt)  ->Unit )? = null, var OnItemCallEdit: ((StudentListt)  ->Unit )? = null) : RecyclerView.Adapter<StudentsListAdapter.ViewHolders>() {
 
         var postionstaus = 1
 

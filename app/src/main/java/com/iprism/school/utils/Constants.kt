@@ -137,5 +137,7 @@ object Constants {
     const val REFRESH_TOKEN_ENDPOINT = "refresh_token"
     const val EVENTS_ENDPOINT = "events"
     const val CIRCULARS_ENDPOINT = "circulars"
+    const val ACTIVE_STUDENTS_ENDPOINT = "fetch_active_students"
+    const val INACTIVE_STUDENTS_ENDPOINT = "fetch_inactive_students"
 
 }

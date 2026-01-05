@@ -1,216 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:background="@color/white"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.StudentsActivity">
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/titlebar"
-        android:layout_alignParentTop="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <RelativeLayout
-            android:padding="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:layout_centerInParent="true"
-                android:layout_alignParentStart="true"
-                android:id="@+id/back_btn"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:padding="5dp"
-                app:tint="@color/black"
-                android:src="@drawable/back_img"/>
-
-            <TextView
-                android:id="@+id/proType_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:fontFamily="@font/inter_semibold"
-                android:letterSpacing="0.01"
-                android:text="Students "
-                android:textColor="@color/black"
-                android:textSize="16dp" />
-
-            <ImageView
-                android:id="@+id/search_btn"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentEnd="true"
-                android:layout_centerInParent="true"
-                android:padding="5dp"
-                android:src="@drawable/search_img"
-                app:tint="@color/black" />
-
-        </RelativeLayout>
-
-    </androidx.cardview.widget.CardView>
+    android:fitsSystemWindows="true">
 
     <LinearLayout
-        android:id="@+id/types_ll"
-        android:layout_below="@id/titlebar"
-        android:visibility="visible"
-        android:layout_marginTop="1dp"
-        android:background="@drawable/bg_item"
-        android:layout_width="match_parent"
+        android:id="@+id/linearLayout3"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:weightSum="2">
-
-        <TextView
-            android:id="@+id/activeDetails_ll"
-            android:layout_margin="1dp"
-            android:padding="8dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:background="@color/blue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:fontFamily="@font/inter_medium"
-            android:letterSpacing="0.01"
-            android:text="Active"
-            android:textColor="@color/white"
-            android:textSize="14dp" />
-
-        <TextView
-            android:id="@+id/inactiveDetails_ll"
-            android:layout_margin="1dp"
-            android:padding="8dp"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_weight="1"
-            android:background="@color/white"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:fontFamily="@font/inter_medium"
-            android:letterSpacing="0.01"
-            android:text="InActive"
-            android:textColor="@color/black"
-            android:textSize="14dp" />
-
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_below="@id/types_ll"
-        android:id="@+id/searchrl"
-        android:visibility="gone"
-        android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@id/search_btn1"
-            android:visibility="visible"
-            android:id="@+id/et_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textSize="14sp"
-            android:inputType="text"
-            android:letterSpacing="0.01"
-            android:layout_marginEnd="5dp"
-            android:hint="Search with Name"
-            android:fontFamily="@font/inter_medium"
-            android:textColorHint="@color/gray"
-            android:textColor="@color/black"
-            android:background="@drawable/bgedittext"/>
+        android:gravity="center_vertical"
+        android:padding="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/search_btn1"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true"
-            android:background="@drawable/edit_text"
-            android:padding="8dp"
-            android:src="@drawable/search_img"
+            android:id="@+id/back_img"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="12dp"
+            app:srcCompat="@drawable/back_img"
             app:tint="@color/black" />
 
-    </RelativeLayout>
-
-    <ScrollView
-        android:layout_above="@id/bottom_lay"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/searchrl"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <RelativeLayout
-            android:layout_marginHorizontal="10dp"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_marginTop="100dp"
-                android:visibility="gone"
-                android:id="@+id/nodata"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:fontFamily="@font/inter_semibold"
-                android:text=" No Data Found "
-                android:layout_gravity="center"
-                android:textColor="@color/black"
-                android:textSize="14dp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_list"
-                android:layout_below="@id/nodata"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </RelativeLayout>
-
-    </ScrollView>
-
-    <LinearLayout
-        android:id="@+id/bottom_lay"
-        android:weightSum="2"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginHorizontal="10dp"
-            android:id="@+id/rv_pages"
-            android:layout_gravity="start"
-            android:layout_weight="1.9"
-            android:layout_alignParentStart="true"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            />
-
-
-        <ImageView
-            android:layout_weight="0.1"
-            android:layout_gravity="end|bottom"
-            android:id="@+id/plus_btn"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:padding="5dp"
-            android:src="@drawable/plus_icon" />
-
+            android:layout_marginStart="6dp"
+            android:fontFamily="@font/inter_bold"
+            android:text="@string/students"
+            android:textColor="@color/black"
+            android:textSize="18dp" />
     </LinearLayout>
 
-</RelativeLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/light_gray1"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/active_students_lo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/active_students"
+                android:gravity="center"
+                android:fontFamily="@font/inter_semibold"
+                android:textColor="@color/white"
+                android:background="@color/blue"/>
+
+
+            <TextView
+                android:id="@+id/inactive_students_lo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/inactive_students"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:fontFamily="@font/inter_semibold"
+                android:textColor="@color/black"
+                android:background="@color/white"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/light_gray1"/>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
