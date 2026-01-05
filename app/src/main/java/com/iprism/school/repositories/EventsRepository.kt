@@ -1,8 +1,7 @@
 package com.iprism.school.repositories
 
 import android.content.Context
-import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
-import com.iprism.school.model.classteachermodel.ClassTeacherApiResponse
+
 import com.iprism.school.model.eventsmodel.EventsApiRequest
 import com.iprism.school.model.eventsmodel.EventsApiResponse
 import com.iprism.school.network.SchoolApi

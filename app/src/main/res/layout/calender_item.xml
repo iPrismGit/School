@@ -29,6 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="100dp"
+                android:visibility="gone"
                 app:strokeColor="@color/black"
                 app:strokeWidth="1dp">
 
@@ -71,19 +72,70 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Red Day Celebrations"
-                    android:paddingStart="12dp"
                     android:layout_marginBottom="2dp"
                     android:textColor="@color/black"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/timeTv"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingStart="12dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/time_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:layout_weight="1"
+                        android:textColor="@color/black"
+                        android:text="09:00 AM" />
+
+                    <ImageView
+                        android:id="@+id/image_view_iv"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        app:tint="@color/black"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:padding="4dp"
+                        android:src="@drawable/eye_img"/>
+
+                </LinearLayout>
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/start_date_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:layout_weight="1"
+                        android:textColor="@color/black"
+                        android:text="Start Date : " />
+
+                    <TextView
+                        android:id="@+id/end_date_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:layout_weight="1"
+                        android:textColor="@color/black"
+                        android:text="End Date : " />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/details_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
                     android:textColor="@color/black"
-                    android:text="09:00 AM" />
+                    android:text="Details : " />
             </LinearLayout>
 
         </LinearLayout>

@@ -23,7 +23,7 @@ class StudentsAdapter(var context: Context) : Adapter<StudentsAdapter.StudentVie
 
     override fun onBindViewHolder(holder: StudentsAdapter.StudentViewHolder, position: Int) {
         holder.binding.root.setOnClickListener(View.OnClickListener {
-            listener.onItemClick(position.toString())
+           // listener.onItemClick(position.toString())
         })
     }
 

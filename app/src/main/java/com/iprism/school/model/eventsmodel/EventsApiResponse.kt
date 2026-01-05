@@ -19,16 +19,16 @@ data class EventsResponse(
 
 data class Event(
 
-    val cat_id: Int,
+    val cat_id: String,
     val category: String,
     val description: String,
     val end_date: String,
     val hour: String,
-    val id: Int,
+    val id: String,
     val image: String,
     val minute: String,
     val reminder_date: String,
-    val start_end: String,
+    val start_date: String,
     val time_zone: String,
     val title: String
 

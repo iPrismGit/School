@@ -10,13 +10,13 @@ import com.iprism.school.repositories.EventsRepository
 import com.iprism.school.utils.UiState
 import kotlinx.coroutines.launch
 
-class EventsApiResponse(private var repository: EventsRepository) : ViewModel() {
+class EventsViewModel(private var repository: EventsRepository) : ViewModel() {
 
     private val _eventsResponse = MutableLiveData<UiState<EventsResponse>>()
     val eventsResponse: LiveData<UiState<EventsResponse>> = _eventsResponse
 
 
-    fun fetchClasses(request : EventsApiRequest) {
+    fun fetchEvents(request : EventsApiRequest) {
         viewModelScope.launch {
             _eventsResponse.value = UiState.Loading
             try {
