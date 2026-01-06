@@ -1,5 +1,6 @@
 package com.iprism.school.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,8 +10,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.iprism.school.R
 import com.iprism.school.adapters.CircularsAdapter
+import com.iprism.school.adapters.PlannerCategoriesAdapter
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityConsentsBinding
 import com.iprism.school.databinding.ActivityPlannerCategoriesBinding
@@ -55,8 +58,28 @@ class PlannerCategoriesActivity : BaseActivity() {
         handleBack()
         observeAcademicYearsResponse()
         observePlannerCategoriesResponse()
+        handleRefreshLo()
         var request = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "academic_year")
         attendanceViewModel.fetchAcademicYears(request)
+    }
+
+    private fun handleRefreshLo() {
+        binding.refreshLayout.setOnRefreshListener(
+            SwipeRefreshLayout.OnRefreshListener {
+                val request = PlannersAndResourcesApiRequest(
+                    academicYearId,
+                    userDetails[User.SCHOOL_ID].toString(),
+                    "",
+                    1,
+                    "",
+                    userDetails[User.ID].toString(),
+                    "categories")
+
+                Log.d("PlannersRequest", request.toString())
+                plannersViewModel.fetchPlannerCategories(request)
+                binding.refreshLayout.isRefreshing = false
+            }
+        )
     }
 
     private fun handleBack() {
@@ -145,8 +168,12 @@ class PlannerCategoriesActivity : BaseActivity() {
         var linearLayoutManager = LinearLayoutManager(this)
         binding.categoriesRv.layoutManager = linearLayoutManager
         categoriesAdapter.setupListener(object  : OnPlannerClickListener{
-            override fun onCategoryClick(id: String) {
-                ToastUtils.showErrorCustomToast(this@PlannerCategoriesActivity, "ID: " + id)
+            override fun onCategoryClick(id: String, catName : String) {
+                var intent = Intent(this@PlannerCategoriesActivity, PlannersActivity::class.java)
+                intent.putExtra("catId", id)
+                intent.putExtra("catName", catName)
+                intent.putExtra("academicYearId", academicYearId)
+                startActivity(intent)
             }
 
         })

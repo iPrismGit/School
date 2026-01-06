@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.PlannerCategoriesActivity">
+    tools:context=".activities.PlannersActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout9"
@@ -26,6 +26,7 @@
             android:src="@drawable/back_img" />
 
         <TextView
+            android:id="@+id/title_txt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -59,7 +60,7 @@
             android:layout_height="match_parent">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/categories_rv"
+                android:id="@+id/planners_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

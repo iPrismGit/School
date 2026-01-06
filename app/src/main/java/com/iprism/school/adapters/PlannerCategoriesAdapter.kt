@@ -1,4 +1,4 @@
-package com.iprism.school.activities
+package com.iprism.school.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -19,13 +19,13 @@ class PlannerCategoriesAdapter(private var context: Context, private var categor
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): PlannerCategoriesAdapter.PlannerCategoryViewHolder {
+    ): PlannerCategoryViewHolder {
         var binding = PlannerCategoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PlannerCategoryViewHolder(binding)
     }
 
     override fun onBindViewHolder(
-        holder: PlannerCategoriesAdapter.PlannerCategoryViewHolder,
+        holder: PlannerCategoryViewHolder,
         position: Int
     ) {
         var category = categories[position]
@@ -38,7 +38,7 @@ class PlannerCategoriesAdapter(private var context: Context, private var categor
         holder.binding.idTxt.text = id
         holder.binding.nameTxt.text = category.name
         holder.binding.root.setOnClickListener { view ->
-            listener.onCategoryClick(category.id)
+            listener.onCategoryClick(category.id, category.name)
         }
     }
 

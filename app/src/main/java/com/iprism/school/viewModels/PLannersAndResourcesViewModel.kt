@@ -18,6 +18,9 @@ class PLannersAndResourcesViewModel(private val repository: PlannersRepository) 
     private val _plannerCategoriesResponse = MutableLiveData<UiState<PlannersAndResourcesResponse>>()
     val plannerCategoriesResponse: LiveData<UiState<PlannersAndResourcesResponse>> = _plannerCategoriesResponse
 
+    private val _plannersResponse = MutableLiveData<UiState<PlannersAndResourcesResponse>>()
+    val plannersResponse: LiveData<UiState<PlannersAndResourcesResponse>> = _plannersResponse
+
     fun fetchPlannerCategories(request : PlannersAndResourcesApiRequest) {
         viewModelScope.launch {
             _plannerCategoriesResponse.value = UiState.Loading
@@ -30,6 +33,22 @@ class PLannersAndResourcesViewModel(private val repository: PlannersRepository) 
                 }
             } catch (e: Exception) {
                 _plannerCategoriesResponse.value = UiState.Error(e.localizedMessage ?: "Unknown error")
+            }
+        }
+    }
+
+    fun fetchPlanners(request : PlannersAndResourcesApiRequest) {
+        viewModelScope.launch {
+            _plannersResponse.value = UiState.Loading
+            try {
+                val response = repository.fetchPlannersAndResources(request)
+                if (response.status) {
+                    _plannersResponse.value = UiState.Success(response.response)
+                } else {
+                    _plannersResponse.value = UiState.Error(response.message ?: "Something went wrong")
+                }
+            } catch (e: Exception) {
+                _plannersResponse.value = UiState.Error(e.localizedMessage ?: "Unknown error")
             }
         }
     }

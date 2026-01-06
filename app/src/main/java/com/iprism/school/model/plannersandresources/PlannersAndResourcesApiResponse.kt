@@ -43,6 +43,7 @@ data class Planner(
 data class PlannerInner(
 
     val category: String,
+    val cat_id: String,
     val created_date: String,
     val created_on: String,
     val description: String,
