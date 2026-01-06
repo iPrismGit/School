@@ -145,6 +145,8 @@ import com.iprism.school.model.classteachermodel.ClassTeacherApiResponse
 import com.iprism.school.model.classteachermodel.SectionsApiResponse
 import com.iprism.school.model.eventsmodel.EventsApiRequest
 import com.iprism.school.model.eventsmodel.EventsApiResponse
+import com.iprism.school.model.plannersandresources.PlannersAndResourcesApiRequest
+import com.iprism.school.model.plannersandresources.PlannersAndResourcesApiResponse
 import com.iprism.school.model.refreshtokenmodel.RefreshTokenApiRequest
 import com.iprism.school.model.refreshtokenmodel.RefreshTokenApiResponse
 import com.iprism.school.model.studentsmodel.StudentsApiRequest
@@ -474,5 +476,8 @@ interface StaffApiService {
 
     @POST(Constants.INACTIVE_STUDENTS_ENDPOINT)
     suspend fun fetchInActiveStudents(@Body request: StudentsApiRequest): StudentsApiResponse
+
+    @POST(Constants.PLANNERS_AND_RESOURCES_ENDPOINT)
+    suspend fun fetchPlannersAndResources(@Body request: PlannersAndResourcesApiRequest): PlannersAndResourcesApiResponse
 
 }

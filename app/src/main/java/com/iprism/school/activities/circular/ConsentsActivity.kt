@@ -32,7 +32,6 @@ import com.iprism.school.utils.hideProgress
 import com.iprism.school.utils.showProgress
 import com.iprism.school.viewModels.AttendanceViewModel
 import com.iprism.school.viewModels.CircularViewModel
-import com.iprism.school.viewModels.EventsViewModel
 import com.iprism.school.viewModels.ViewModelFactory
 
 class ConsentsActivity : BaseActivity() {
