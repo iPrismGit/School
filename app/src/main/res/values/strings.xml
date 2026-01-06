@@ -44,4 +44,6 @@
     <string name="students">Students</string>
     <string name="active_students">Active Students</string>
     <string name="inactive_students">In-Active Students</string>
+    <string name="underlined_text"><u>Underlined Text</u></string>
+
 </resources>
