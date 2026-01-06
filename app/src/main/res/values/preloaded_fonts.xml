@@ -5,6 +5,10 @@
         <item>@font/inter_bold</item>
         <item>@font/inter_medium</item>
         <item>@font/inter_semibold</item>
+        <item>@font/lato</item>
+        <item>@font/lato_black</item>
+        <item>@font/lato_bold</item>
+        <item>@font/lato_light</item>
         <item>@font/source_sans_pro</item>
         <item>@font/source_sans_pro_bold</item>
         <item>@font/source_sans_pro_semibold</item>

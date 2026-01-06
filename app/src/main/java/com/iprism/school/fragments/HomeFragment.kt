@@ -57,6 +57,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import androidx.core.view.isVisible
+import com.bumptech.glide.Glide
+import com.iprism.school.activities.PlannerCategoriesActivity
 
 class HomeFragment : BaseFragment() {
 
@@ -64,31 +66,37 @@ class HomeFragment : BaseFragment() {
     private lateinit var yesBtn: Button
     private lateinit var noBtn: Button
     private val CAMERA_REQUEST_CODE = 100
-    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val imageBitmap = result.data?.extras?.get("data") as Bitmap
-            openDisplayImageActivity(imageBitmap)
-        } else {
-            Toast.makeText(requireContext(), "Camera capture failed", Toast.LENGTH_SHORT).show()
+    private val cameraLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val imageBitmap = result.data?.extras?.get("data") as Bitmap
+                openDisplayImageActivity(imageBitmap)
+            } else {
+                Toast.makeText(requireContext(), "Camera capture failed", Toast.LENGTH_SHORT).show()
+            }
         }
-    }
 
     private var teacherId: String = ""
     private var auth_token: String = ""
     private var scl_id: String = ""
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentHomeBinding.inflate(layoutInflater)
+        Glide.with(this)
+            .asGif()
+            .load(R.drawable.planner_gif)
+            .into(binding.plannerImf)
 
-        binding.nameTv.text = " Hello "+userDetails[User.EMP_NAME].toString()
+        binding.nameTv.text = " Hello " + userDetails[User.EMP_NAME].toString()
         binding.sideNameTv.text = userDetails[User.EMP_NAME].toString()
         binding.sideGmailTv.text = userDetails[User.EMP_EMAIL].toString()
 
         teacherId = userDetails[User.Companion.ID].toString()
         auth_token = userDetails[User.Companion.AUTH_TOKEN].toString()
         scl_id = userDetails[User.Companion.SCHOOL_ID].toString()
-
+        handlePlannersAndResorcesLo()
         handleStudentsLL()
         handleInboxLL()
         handleViewAllMessagesLo()
@@ -127,14 +135,20 @@ class HomeFragment : BaseFragment() {
 
         }
 
-   //     allAlbum()
+        //     allAlbum()
 
         binding.createLl.setOnClickListener {
-            if (isAdded){
+            if (isAdded) {
                 startActivity(Intent(requireActivity(), CreateAlbumsActivity::class.java))
             }
         }
         return binding.root
+    }
+
+    private fun handlePlannersAndResorcesLo() {
+        binding.plannersAndResourcesLo.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(requireContext(), PlannerCategoriesActivity::class.java))
+        })
     }
 
     private fun handlePendingRequestsLo() {
@@ -159,6 +173,7 @@ class HomeFragment : BaseFragment() {
             dialog.dismiss()
         })
     }
+
     private fun handleSentLo() {
         binding.sentLo.setOnClickListener(View.OnClickListener {
             var intent = Intent(context, SentMessagesActivity::class.java)
@@ -177,7 +192,11 @@ class HomeFragment : BaseFragment() {
 
     private fun handleChildHandoverLo() {
         binding.childHandoverLo.setOnClickListener(View.OnClickListener {
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
                 // Permission is granted, open the camera
                 openCamera()
             } else {
@@ -202,14 +221,19 @@ class HomeFragment : BaseFragment() {
     }
 
     // Register a permission request launcher
-    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
-        if (isGranted) {
-            // Permission is granted, open the camera
-            openCamera()
-        } else {
-            Toast.makeText(requireContext(), "Camera permission is required", Toast.LENGTH_SHORT).show()
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+            if (isGranted) {
+                // Permission is granted, open the camera
+                openCamera()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Camera permission is required",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
-    }
 
     // Method to open DisplayImageActivity and pass the image
     private fun openDisplayImageActivity(imageBitmap: Bitmap) {
@@ -217,6 +241,7 @@ class HomeFragment : BaseFragment() {
         intent.putExtra("capturedImage", imageBitmap)
         startActivity(intent)
     }
+
     private fun hnaldeAlbumsViewAll() {
         binding.viewAll.setOnClickListener(View.OnClickListener {
             startActivity(Intent(context, AlbumsActivity::class.java))
@@ -280,10 +305,9 @@ class HomeFragment : BaseFragment() {
         })
 
         yesBtn.setOnClickListener(View.OnClickListener {
-            user!!.storeUserDetails("","","","","",""
-            ,"","","",""
-            ,"","","","",""
-            ,"","","")
+            user!!.storeUserDetails(
+                "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+            )
 
 //            ToastUtils.showSuccessCustomToast(requireContext(), "Clicked On Yes Button")
             dialog.dismiss()
