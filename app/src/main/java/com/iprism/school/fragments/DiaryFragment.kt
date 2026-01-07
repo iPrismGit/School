@@ -35,7 +35,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.iprism.parentapp.base.BaseFragment
+import com.iprism.school.base.BaseFragment
 import com.iprism.school.activities.LoginActivity
 import com.iprism.school.adapters.DairiesAdapter
 import com.iprism.school.adapters.DairiesNewAdapter

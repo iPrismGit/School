@@ -19,7 +19,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.iprism.parentapp.base.BaseFragment
+import com.iprism.school.base.BaseFragment
 import com.iprism.school.adapters.StudentsAdapter
 import com.iprism.school.databinding.FragmentActiveStudentsBinding
 import com.iprism.school.interfaces.OnStudentClickListener
@@ -55,8 +55,6 @@ class ActiveStudentsFragment : BaseFragment() {
     private val limit = 10
     private var classId: String = "-1"
     private var sectionId: String = "-1"
-    private var academicYear: String = ""
-    private var academicYearId: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,41 +62,14 @@ class ActiveStudentsFragment : BaseFragment() {
     ): View? {
         binding = FragmentActiveStudentsBinding.inflate(inflater, container, false)
         initViewModel()
-        observeAcademicYearsResponse()
         observeClassesResponse()
         observeSectionsResponse()
         setupRecyclerView()
         observeEventsResponse()
         handleRefreshLo()
-        var request = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "academic_year")
-        attendanceViewModel.fetchAcademicYears(request)
         var requestClasses = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "classes")
         attendanceViewModel.fetchClasses(requestClasses)
-        Log.d("ClassRequest", request.toString())
         return binding.root
-    }
-
-    private fun observeAcademicYearsResponse() {
-        attendanceViewModel.academicYearsResponse.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is UiState.Loading -> {
-                    binding.progress.showProgress()
-                }
-
-                is UiState.Success -> {
-                    binding.progress.hideProgress()
-                    academicYear = result.data.name
-                    academicYearId = result.data.id
-                    Log.d("AcademicYear", academicYear + ", " + academicYearId)
-                }
-
-                is UiState.Error -> {
-                    ToastUtils.showErrorCustomToast(requireContext(), result.message)
-                    Log.d("Message", result.message)
-                    binding.progress.hideProgress()
-                }
-            }
-        }
     }
 
     private fun observeClassesResponse() {
@@ -239,7 +210,7 @@ class ActiveStudentsFragment : BaseFragment() {
         isLoading = true
 
         val request = StudentsApiRequest(
-            academicYearId,
+            userDetails[User.ACADEMIC_YEAR_ID].toString(),
             userDetails[User.SCHOOL_ID].toString(),
             classId,
             currentPage,

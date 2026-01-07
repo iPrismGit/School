@@ -1,4 +1,4 @@
-package com.iprism.parentapp.base
+package com.iprism.school.base
 
 import android.app.ProgressDialog
 import android.content.BroadcastReceiver
@@ -12,7 +12,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -40,7 +39,7 @@ open class BaseFragment : Fragment() {
         setupIGienApiService()
         if (user == null) {
             user = User(requireContext())
-            userDetails = user!!.getUserDetails()
+            userDetails = user!!.getNewUserDetails()
         }
         // Network receiver to listen for changes in connectivity
         networkReceiver = object : BroadcastReceiver() {

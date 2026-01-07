@@ -10,7 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
-import com.iprism.parentapp.base.BaseFragment
+import com.iprism.school.base.BaseFragment
 import com.iprism.school.R
 import com.iprism.school.activities.Messages.MessageActivity
 import com.iprism.school.activities.Messages.MessageDetailsActivity

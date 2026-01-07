@@ -11,7 +11,6 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.util.Log
 import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,16 +25,11 @@ import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ErrorCallback
 import com.budiyev.android.codescanner.ScanMode
-import com.iprism.parentapp.base.BaseFragment
+import com.iprism.school.base.BaseFragment
 import com.iprism.school.R
-import com.iprism.school.activities.HelpTutorialsActivity
 import com.iprism.school.activities.HomeActivity
-import com.iprism.school.databinding.FragmentStaffScannerBinding
 import com.iprism.school.databinding.FragmentStudentScannerBinding
-import com.iprism.school.databinding.StudentRemarksBinding
 import com.iprism.school.databinding.SuccessitemBinding
-import com.iprism.school.model.Request.DairyStudentUpdateReq
-import com.iprism.school.model.Request.DairyStudentsReq
 import com.iprism.school.model.Request.StudentAttandanceUpdateReq
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.User

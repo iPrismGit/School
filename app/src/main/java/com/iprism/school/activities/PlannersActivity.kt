@@ -41,7 +41,6 @@ class PlannersActivity : BaseActivity() {
     private var catId = ""
     private var catName = ""
     private lateinit var plannersViewModel: PLannersAndResourcesViewModel
-    private var academicYearId: String = ""
     private lateinit var plannersAdapter: PlannersAdapter
     private var plannersList = mutableListOf<Planner>()
     private var isFreshLoad = false
@@ -62,7 +61,6 @@ class PlannersActivity : BaseActivity() {
         }
         catId = intent.getStringExtra("catId").toString()
         catName = intent.getStringExtra("catName").toString()
-        academicYearId = intent.getStringExtra("academicYearId").toString()
         binding.titleTxt.text = catName
         initViewModel()
         setupRecyclerView()
@@ -103,7 +101,7 @@ class PlannersActivity : BaseActivity() {
         isLoading = true
 
         val request = PlannersAndResourcesApiRequest(
-            academicYearId,
+            userDetails[User.ACADEMIC_YEAR_ID].toString(),
             userDetails[User.SCHOOL_ID].toString(),
             catId,
             currentPage,
@@ -197,7 +195,6 @@ class PlannersActivity : BaseActivity() {
                     intent.putExtra("description", description)
                     intent.putExtra("category", category)
                     intent.putExtra("subCategory", subCategory)
-                    intent.putExtra("academicYearId", academicYearId)
                     startActivity(intent)
                 }
 

@@ -58,8 +58,6 @@ class CalenderActivity : BaseActivity() {
     private val limit = 10
     private var classId: String = "-1"
     private var sectionId: String = "-1"
-    private var academicYear: String = ""
-    private var academicYearId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,14 +71,10 @@ class CalenderActivity : BaseActivity() {
         setupRecyclerView()
         observeEventsResponse()
         handleRefreshLo()
-        observeAcademicYearsResponse()
         observeClassesResponse()
         observeSectionsResponse()
-        var request = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "academic_year")
-        attendanceViewModel.fetchAcademicYears(request)
         var requestClasses = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "classes")
         attendanceViewModel.fetchClasses(requestClasses)
-        Log.d("ClassRequest", request.toString())
     }
 
     private fun initViewModel() {
@@ -112,7 +106,7 @@ class CalenderActivity : BaseActivity() {
         isLoading = true
 
         val request = EventsApiRequest(
-            academicYearId,
+            userDetails[User.ACADEMIC_YEAR_ID].toString(),
             userDetails[User.SCHOOL_ID].toString(),
             classId,
             selectedMonth,
@@ -269,29 +263,6 @@ class CalenderActivity : BaseActivity() {
                         binding.noDataFoundLo.visibility = View.GONE
                         ToastUtils.showErrorCustomToast(this, "There is no more data")
                     }
-                }
-            }
-        }
-    }
-
-    private fun observeAcademicYearsResponse() {
-        attendanceViewModel.academicYearsResponse.observe(this) { result ->
-            when (result) {
-                is UiState.Loading -> {
-                    binding.progress.showProgress()
-                }
-
-                is UiState.Success -> {
-                    binding.progress.hideProgress()
-                    academicYear = result.data.name
-                    academicYearId = result.data.id
-                    Log.d("AcademicYear", academicYear + ", " + academicYearId)
-                }
-
-                is UiState.Error -> {
-                    ToastUtils.showErrorCustomToast(this, result.message)
-                    Log.d("Message", result.message)
-                    binding.progress.hideProgress()
                 }
             }
         }

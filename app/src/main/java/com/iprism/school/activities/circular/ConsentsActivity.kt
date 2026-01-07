@@ -39,8 +39,6 @@ class ConsentsActivity : BaseActivity() {
     private lateinit var binding: ActivityConsentsBinding
     private lateinit var attendanceViewModel: AttendanceViewModel
     private lateinit var circularViewModel: CircularViewModel
-    private var academicYear: String = ""
-    private var academicYearId: String = ""
     private lateinit var circularsAdapter: CircularsAdapter
     private var circularList = mutableListOf<Circular>()
     private var isFreshLoad = false
@@ -55,12 +53,17 @@ class ConsentsActivity : BaseActivity() {
         setContentView(binding.root)
         handleBack()
         initViewModel()
-        observeAcademicYearsResponse()
         setupRecyclerView()
         observeCircularsResponse()
         handleRefreshLo()
-        var request = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "academic_year")
-        attendanceViewModel.fetchAcademicYears(request)
+        val request = CircularApiRequest(
+            userDetails[User.ACADEMIC_YEAR_ID].toString(),
+            userDetails[User.SCHOOL_ID].toString(),
+            currentPage,
+            userDetails[User.ID].toString())
+
+        Log.d("CircularApiRequest", request.toString())
+        circularViewModel.fetchCirculars(request)
     }
 
     private fun loadEvents(isFromFilterChange: Boolean = false) {
@@ -82,7 +85,7 @@ class ConsentsActivity : BaseActivity() {
         isLoading = true
 
         val request = CircularApiRequest(
-            academicYearId,
+            userDetails[User.ACADEMIC_YEAR_ID].toString(),
             userDetails[User.SCHOOL_ID].toString(),
             currentPage,
             userDetails[User.ID].toString())
@@ -234,37 +237,6 @@ class ConsentsActivity : BaseActivity() {
                         binding.noDataFoundTxt.visibility = View.GONE
                         ToastUtils.showErrorCustomToast(this, "There is no more data")
                     }
-                }
-            }
-        }
-    }
-
-    private fun observeAcademicYearsResponse() {
-        attendanceViewModel.academicYearsResponse.observe(this) { result ->
-            when (result) {
-                is UiState.Loading -> {
-                    binding.progress.showProgress()
-                }
-
-                is UiState.Success -> {
-                    binding.progress.hideProgress()
-                    academicYear = result.data.name
-                    academicYearId = result.data.id
-                    val request = CircularApiRequest(
-                        academicYearId,
-                        userDetails[User.SCHOOL_ID].toString(),
-                        currentPage,
-                        userDetails[User.ID].toString())
-
-                    Log.d("CircularApiRequest", request.toString())
-                    circularViewModel.fetchCirculars(request)
-                    Log.d("AcademicYear", academicYear + ", " + academicYearId)
-                }
-
-                is UiState.Error -> {
-                    ToastUtils.showErrorCustomToast(this, result.message)
-                    Log.d("Message", result.message)
-                    binding.progress.hideProgress()
                 }
             }
         }

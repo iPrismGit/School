@@ -41,8 +41,6 @@ class PlannerCategoriesActivity : BaseActivity() {
     private lateinit var binding: ActivityPlannerCategoriesBinding
     private lateinit var attendanceViewModel: AttendanceViewModel
     private lateinit var plannersViewModel: PLannersAndResourcesViewModel
-    private var academicYear: String = ""
-    private var academicYearId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,18 +54,26 @@ class PlannerCategoriesActivity : BaseActivity() {
         }
         initViewModel()
         handleBack()
-        observeAcademicYearsResponse()
         observePlannerCategoriesResponse()
         handleRefreshLo()
-        var request = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "academic_year")
-        attendanceViewModel.fetchAcademicYears(request)
+        val request = PlannersAndResourcesApiRequest(
+            userDetails[User.ACADEMIC_YEAR_ID].toString(),
+            userDetails[User.SCHOOL_ID].toString(),
+            "",
+            1,
+            "",
+            userDetails[User.ID].toString(),
+            "categories")
+
+        Log.d("PlannersRequest", request.toString())
+        plannersViewModel.fetchPlannerCategories(request)
     }
 
     private fun handleRefreshLo() {
         binding.refreshLayout.setOnRefreshListener(
             SwipeRefreshLayout.OnRefreshListener {
                 val request = PlannersAndResourcesApiRequest(
-                    academicYearId,
+                    userDetails[User.ACADEMIC_YEAR_ID].toString(),
                     userDetails[User.SCHOOL_ID].toString(),
                     "",
                     1,
@@ -89,47 +95,9 @@ class PlannerCategoriesActivity : BaseActivity() {
     }
 
     private fun initViewModel() {
-        val repository = AttendanceRepository(this)
-        val factory = ViewModelFactory { AttendanceViewModel(repository) }
-        attendanceViewModel = ViewModelProvider(this, factory)[AttendanceViewModel::class.java]
-
         val plannersRepository = PlannersRepository(this)
         val plannersFactory = ViewModelFactory { PLannersAndResourcesViewModel(plannersRepository) }
         plannersViewModel = ViewModelProvider(this, plannersFactory)[PLannersAndResourcesViewModel::class.java]
-    }
-
-    private fun observeAcademicYearsResponse() {
-        attendanceViewModel.academicYearsResponse.observe(this) { result ->
-            when (result) {
-                is UiState.Loading -> {
-                    binding.progress.showProgress()
-                }
-
-                is UiState.Success -> {
-                    binding.progress.hideProgress()
-                    academicYear = result.data.name
-                    academicYearId = result.data.id
-                    val request = PlannersAndResourcesApiRequest(
-                        academicYearId,
-                        userDetails[User.SCHOOL_ID].toString(),
-                        "",
-                        1,
-                        "",
-                        userDetails[User.ID].toString(),
-                        "categories")
-
-                    Log.d("PlannersRequest", request.toString())
-                    plannersViewModel.fetchPlannerCategories(request)
-                    Log.d("AcademicYear", academicYear + ", " + academicYearId)
-                }
-
-                is UiState.Error -> {
-                    ToastUtils.showErrorCustomToast(this, result.message)
-                    Log.d("Message", result.message)
-                    binding.progress.hideProgress()
-                }
-            }
-        }
     }
 
     private fun observePlannerCategoriesResponse() {
@@ -172,7 +140,6 @@ class PlannerCategoriesActivity : BaseActivity() {
                 var intent = Intent(this@PlannerCategoriesActivity, PlannersActivity::class.java)
                 intent.putExtra("catId", id)
                 intent.putExtra("catName", catName)
-                intent.putExtra("academicYearId", academicYearId)
                 startActivity(intent)
             }
 

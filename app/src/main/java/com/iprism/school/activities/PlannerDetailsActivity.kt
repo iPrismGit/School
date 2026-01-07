@@ -40,7 +40,6 @@ class PlannerDetailsActivity : BaseActivity() {
     private var subject = ""
     private var subCategory = ""
     private var description = ""
-    private var academicYearId = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,13 +57,12 @@ class PlannerDetailsActivity : BaseActivity() {
         subject = intent.getStringExtra("subject").toString()
         subCategory = intent.getStringExtra("subCategory").toString()
         description = intent.getStringExtra("description").toString()
-        academicYearId = intent.getStringExtra("academicYearId").toString()
         setupData()
         handleBack()
         initViewModel()
         observePlannerDetailsResponse()
         var request = PlannersAndResourcesApiRequest(
-            academicYearId,
+            userDetails[User.ACADEMIC_YEAR_ID].toString(),
             userDetails[User.SCHOOL_ID].toString(),
             catId,
             1,

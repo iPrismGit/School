@@ -3,36 +3,28 @@ package com.iprism.school.fragments
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.iprism.parentapp.base.BaseFragment
-import com.iprism.school.R
+import com.iprism.school.base.BaseFragment
 import com.iprism.school.activities.DaycareReportActivity
 import com.iprism.school.activities.EditStaffDetailsActivity
 import com.iprism.school.activities.LoginActivity
 import com.iprism.school.adapters.DayCareViewListAdapter
 import com.iprism.school.adapters.StaffAdapter
-import com.iprism.school.databinding.ActivityCreateStaffBinding
 import com.iprism.school.databinding.DeactivateStaffDialogBinding
-import com.iprism.school.databinding.FragmentDayCareBinding
 import com.iprism.school.databinding.FragmentStaffActiveBinding
 import com.iprism.school.interfaces.OnStaffClickListener
 import com.iprism.school.model.Request.SchoolStaffReq
 import com.iprism.school.model.Response.DayCareViewListResponse
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.User
-import com.iprism.school.viewModels.Scl_ViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.getValue
 
 class StaffActiveFragment : BaseFragment() {
 
