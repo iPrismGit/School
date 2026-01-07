@@ -10,6 +10,18 @@ import com.iprism.school.model.plannersandresources.PlannerInner
 
 class PlannersInnerAdapter(var context: Context, var innerPlanners : List<PlannerInner>) : RecyclerView.Adapter<PlannersInnerAdapter.PlannerInnerViewHolder>() {
 
+    private lateinit var listener : OnPlannerInnerClickListener
+
+    fun setupListener(listener: OnPlannerInnerClickListener){
+        this.listener = listener
+    }
+
+    interface OnPlannerInnerClickListener {
+
+        fun onItemClick(id : String, catId : String, subject : String, description : String, category : String, subCategory : String)
+
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -26,15 +38,23 @@ class PlannersInnerAdapter(var context: Context, var innerPlanners : List<Planne
        var innerPlanner = innerPlanners[position]
         holder.binding.plannerNameTxt.text = innerPlanner.subject
         holder.binding.categoryTxt.text = "Category : " + innerPlanner.category
-        holder.binding.subCategoryTxt.text = "Sub Category : " + innerPlanner.sub_category
+        if (innerPlanner.sub_category.isEmpty()) {
+            holder.binding.subCategoryTxt.text = "Sub Category : N/A"
+        } else{
+            holder.binding.subCategoryTxt.text = "Sub Category : " + innerPlanner.sub_category
+        }
         holder.binding.dateTxt.text = "Date : " + innerPlanner.created_date
         var id = ""
         if (innerPlanner.cat_id.length == 1){
             id = "0" + innerPlanner.cat_id
-        }else{
+        } else{
             id = innerPlanner.cat_id
         }
         holder.binding.idTxt.text = id
+
+        holder.binding.root.setOnClickListener { view ->
+            listener.onItemClick(innerPlanner.id, innerPlanner.cat_id, innerPlanner.subject, innerPlanner.description, innerPlanner.category, innerPlanner.sub_category)
+        }
     }
 
     override fun getItemCount(): Int {

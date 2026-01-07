@@ -8,15 +8,24 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.iprism.school.databinding.PlannerViewItemBinding
+import com.iprism.school.interfaces.OnPlannerClickListener
 import com.iprism.school.model.plannersandresources.Pdf
 
-class PlannerDetailsAdapter(var context: Context, var pdfs : List<Pdf>) : RecyclerView.Adapter<PlannerDetailsAdapter.PlannerDetailsVideHolder>() {
+class PlannerDetailsAdapter(var context: Context, var pdfs: List<Pdf>) :
+    RecyclerView.Adapter<PlannerDetailsAdapter.PlannerDetailsVideHolder>() {
+
+    private lateinit var listener: OnPlannerClickListener
+
+    fun setupListener(listener: OnPlannerClickListener) {
+        this.listener = listener
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): PlannerDetailsAdapter.PlannerDetailsVideHolder {
-        var binding = PlannerViewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        var binding =
+            PlannerViewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PlannerDetailsVideHolder(binding)
     }
 
@@ -35,14 +44,16 @@ class PlannerDetailsAdapter(var context: Context, var pdfs : List<Pdf>) : Recycl
         )
         holder.binding.linkTxt.text = spannable
         holder.binding.viewIv.setOnClickListener {
-
+            listener.onViewClick(pdf.image)
         }
+
     }
 
     override fun getItemCount(): Int {
         return pdfs.size
     }
 
-    class PlannerDetailsVideHolder(var binding: PlannerViewItemBinding) : RecyclerView.ViewHolder(binding.root)
+    class PlannerDetailsVideHolder(var binding: PlannerViewItemBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
 }

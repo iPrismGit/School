@@ -176,6 +176,10 @@ class PlannerCategoriesActivity : BaseActivity() {
                 startActivity(intent)
             }
 
+            override fun onViewClick(pdfUrl: String) {
+
+            }
+
         })
     }
 

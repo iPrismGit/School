@@ -33,6 +33,9 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 app:tint="@color/blue1"
+                android:clickable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:focusable="true"
                 android:src="@drawable/eye_img"/>
 
         </LinearLayout>

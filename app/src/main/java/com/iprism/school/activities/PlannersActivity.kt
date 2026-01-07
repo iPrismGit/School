@@ -174,6 +174,28 @@ class PlannersActivity : BaseActivity() {
                 }
             })
 
+            plannersAdapter.setupListener(object : PlannersAdapter.OnPlannerOuterClickListener{
+                override fun onItemClick(
+                    id: String,
+                    catId: String,
+                    subject: String,
+                    description: String,
+                    category: String,
+                    subCategory: String
+                ) {
+                    var intent = Intent(this@PlannersActivity, PlannerDetailsActivity::class.java)
+                    intent.putExtra("id", id)
+                    intent.putExtra("catId", catId)
+                    intent.putExtra("subject", subject)
+                    intent.putExtra("description", description)
+                    intent.putExtra("category", category)
+                    intent.putExtra("subCategory", subCategory)
+                    intent.putExtra("academicYearId", academicYearId)
+                    startActivity(intent)
+                }
+
+            })
+
         }
 
     }
