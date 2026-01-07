@@ -19,6 +19,8 @@ class User(var context: Context) {
         const val MOBILE = "mobile"
         const val TOKEN = "token"
         const val AUTH_TOKEN = "auth_token"
+        const val ACADEMIC_YEAR_ID = "academic_year_id"
+        const val ACADEMIC_YEAR = "academic_year"
         const val SCHOOL_ID = "school_id"
         const val FIRST_NAME = "first_name"
         const val LAST_NAME = "last_name"
@@ -146,6 +148,12 @@ class User(var context: Context) {
         editor.commit()
     }
 
+    fun storeAcademicYear(academic_year_id: String?, academic_year: String?) {
+        editor.putString(ACADEMIC_YEAR_ID, academic_year_id)
+        editor.putString(ACADEMIC_YEAR, academic_year)
+        editor.commit()
+    }
+
     fun getUserDetails(): HashMap<String, String?> {
         val user = HashMap<String, String?>()
         user[ID] = sharedPreferences.getString(ID, null)
@@ -218,6 +226,8 @@ class User(var context: Context) {
         val user = HashMap<String, String?>()
         user[ID] = sharedPreferences.getString(ID, null)
         user[AUTH_TOKEN] = sharedPreferences.getString(AUTH_TOKEN, null)
+        user[ACADEMIC_YEAR] = sharedPreferences.getString(ACADEMIC_YEAR, null)
+        user[ACADEMIC_YEAR_ID] = sharedPreferences.getString(ACADEMIC_YEAR_ID, null)
         user[MOBILE] = sharedPreferences.getString(MOBILE, null)
         user[FIRST_NAME] = sharedPreferences.getString(FIRST_NAME, null)
         user[MIDDLE_NAME] = sharedPreferences.getString(MIDDLE_NAME, null)

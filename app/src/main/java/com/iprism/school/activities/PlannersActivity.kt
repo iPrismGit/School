@@ -69,6 +69,13 @@ class PlannersActivity : BaseActivity() {
         loadPlanners()
         observePlannersResponse()
         handleRefreshLo()
+        handleBack()
+    }
+
+    private fun handleBack(){
+        binding.backIv.setOnClickListener(View.OnClickListener {
+            finish()
+        })
     }
 
     private fun initViewModel() {

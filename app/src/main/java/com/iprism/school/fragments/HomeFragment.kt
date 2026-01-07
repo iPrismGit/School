@@ -57,12 +57,21 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.iprism.school.activities.PlannerCategoriesActivity
+import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
+import com.iprism.school.repositories.AttendanceRepository
+import com.iprism.school.utils.UiState
+import com.iprism.school.utils.hideProgress
+import com.iprism.school.utils.showProgress
+import com.iprism.school.viewModels.AttendanceViewModel
+import com.iprism.school.viewModels.ViewModelFactory
 
 class HomeFragment : BaseFragment() {
 
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var attendanceViewModel: AttendanceViewModel
     private lateinit var yesBtn: Button
     private lateinit var noBtn: Button
     private val CAMERA_REQUEST_CODE = 100
@@ -96,6 +105,10 @@ class HomeFragment : BaseFragment() {
         teacherId = userDetails[User.Companion.ID].toString()
         auth_token = userDetails[User.Companion.AUTH_TOKEN].toString()
         scl_id = userDetails[User.Companion.SCHOOL_ID].toString()
+        initViewModel()
+        observeAcademicYearsResponse()
+        var request = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "academic_year")
+        attendanceViewModel.fetchAcademicYears(request)
         handlePlannersAndResorcesLo()
         handleStudentsLL()
         handleInboxLL()
@@ -143,6 +156,33 @@ class HomeFragment : BaseFragment() {
             }
         }
         return binding.root
+    }
+
+    private fun initViewModel() {
+        val repository = AttendanceRepository(requireContext())
+        val factory = ViewModelFactory { AttendanceViewModel(repository) }
+        attendanceViewModel = ViewModelProvider(this, factory)[AttendanceViewModel::class.java]
+    }
+
+    private fun observeAcademicYearsResponse() {
+        attendanceViewModel.academicYearsResponse.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is UiState.Loading -> {
+                    binding.progress.showProgress()
+                }
+
+                is UiState.Success -> {
+                    binding.progress.hideProgress()
+                    user!!.storeAcademicYear(result.data.id, result.data.name)
+                }
+
+                is UiState.Error -> {
+                    ToastUtils.showErrorCustomToast(requireContext(), result.message)
+                    Log.d("Message", result.message)
+                    binding.progress.hideProgress()
+                }
+            }
+        }
     }
 
     private fun handlePlannersAndResorcesLo() {

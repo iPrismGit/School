@@ -140,5 +140,6 @@ object Constants {
     const val ACTIVE_STUDENTS_ENDPOINT = "fetch_active_students"
     const val INACTIVE_STUDENTS_ENDPOINT = "fetch_inactive_students"
     const val PLANNERS_AND_RESOURCES_ENDPOINT = "planners_resources"
+    const val ALBUM_COVERS_ENDPOINT = "album_covers"
 
 }

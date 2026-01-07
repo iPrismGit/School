@@ -59,8 +59,6 @@ class AttendanceActivity : BaseActivity() {
     private var sectionId: String = "-1"
     private var currentDate: String = ""
     private var backendDate: String = ""
-    private var academicYear: String = ""
-    private var academicYearId: String = ""
     private var notification_parent: String? = ""
     private lateinit var bottomSheetDialog : BottomSheetDialog
     private lateinit var markAttendanceBinding : AllStudentsPresentBottomSheetBinding
@@ -84,7 +82,6 @@ class AttendanceActivity : BaseActivity() {
         handleBack()
         handleDateLo()
         handleSaveAttendanceBtn()
-        observeAcademicYearsResponse()
         observeClassesResponse()
         observeSectionsResponse()
         setupRecyclerView()
@@ -92,11 +89,8 @@ class AttendanceActivity : BaseActivity() {
         handleRefreshLo()
         observeAttendanceResponse()
         binding.checkBoxAll.setOnCheckedChangeListener(selectAllListener)
-        var request = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "academic_year")
-        attendanceViewModel.fetchAcademicYears(request)
         var requestClasses = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "classes")
         attendanceViewModel.fetchClasses(requestClasses)
-        Log.d("ClassRequest", request.toString())
         binding.parentNotificationCb.setOnCheckedChangeListener { _, isChecked ->
             notification_parent = if (isChecked) "yes" else "no"
             Log.d("NotifyValue", "Notify is: $notification_parent")
@@ -136,7 +130,7 @@ class AttendanceActivity : BaseActivity() {
 
     private fun loadStudents() {
         var request = AttendanceStudentsApiRequest(
-            academicYearId, "", "",
+            userDetails[User.ACADEMIC_YEAR_ID].toString(), "", "",
             userDetails[User.SCHOOL_ID].toString(), classId, backendDate, sectionId,
             selectedStudentsList, userDetails[User.ID].toString(), "view", "" , currentPage
         )
@@ -276,29 +270,6 @@ class AttendanceActivity : BaseActivity() {
                         binding.noDataTxt.visibility = View.GONE
                         ToastUtils.showErrorCustomToast(this, "There is no more data")
                     }
-                }
-            }
-        }
-    }
-
-    private fun observeAcademicYearsResponse() {
-        attendanceViewModel.academicYearsResponse.observe(this) { result ->
-            when (result) {
-                is UiState.Loading -> {
-                    binding.progress.showProgress()
-                }
-
-                is UiState.Success -> {
-                    binding.progress.hideProgress()
-                    academicYear = result.data.name
-                    academicYearId = result.data.id
-                    Log.d("AcademicYear", academicYear + ", " + academicYearId)
-                }
-
-                is UiState.Error -> {
-                    ToastUtils.showErrorCustomToast(this, result.message)
-                    Log.d("Message", result.message)
-                    binding.progress.hideProgress()
                 }
             }
         }
@@ -504,7 +475,7 @@ class AttendanceActivity : BaseActivity() {
         }
 
         markAttendanceBinding.markBtn.setOnClickListener {
-            var markAttendanceRequest = AttendanceStudentsApiRequest(academicYearId,
+            var markAttendanceRequest = AttendanceStudentsApiRequest(userDetails[User.ACADEMIC_YEAR_ID].toString(),
                 "", "", userDetails[User.SCHOOL_ID].toString(),
                 classId, backendDate, sectionId, selectedAttendanceList,
                 userDetails[User.ID].toString(), "insert", selectValue, 1)

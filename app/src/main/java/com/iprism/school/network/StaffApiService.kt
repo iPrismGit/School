@@ -133,6 +133,8 @@ import com.iprism.school.model.Response.TeacherCalenderListResponse
 import com.iprism.school.model.Response.TeacherGroupStudentsResponse
 import com.iprism.school.model.Response.TermsandConditionResponse
 import com.iprism.school.model.Response.ViewDayCareResponse
+import com.iprism.school.model.albums.AlbumCoverImagesApiRequest
+import com.iprism.school.model.albums.AlbumCoverImagesApiResponse
 import com.iprism.school.model.classteachermodel.ClassesApiResponse
 import com.iprism.school.model.authmodel.LoginApiRequest
 import com.iprism.school.model.authmodel.LoginApiResponse
@@ -479,5 +481,8 @@ interface StaffApiService {
 
     @POST(Constants.PLANNERS_AND_RESOURCES_ENDPOINT)
     suspend fun fetchPlannersAndResources(@Body request: PlannersAndResourcesApiRequest): PlannersAndResourcesApiResponse
+
+    @POST(Constants.ALBUM_COVERS_ENDPOINT)
+    suspend fun fetchAndInsertAlbumCovers(@Body request: AlbumCoverImagesApiRequest): AlbumCoverImagesApiResponse
 
 }
