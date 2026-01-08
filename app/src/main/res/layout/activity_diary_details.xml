@@ -2,9 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/main"
     tools:context=".activities.DiaryDetailsActivity">
 
     <LinearLayout
@@ -62,52 +62,52 @@
                     android:id="@+id/sent_to_txt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato_bold"
                     android:text="Sent to : "
                     android:textColor="@color/black"
-                    android:textSize="16dp"
-                    android:fontFamily="@font/lato_bold"/>
+                    android:textSize="16dp" />
 
                 <TextView
                     android:id="@+id/diary_type_txt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Diary Type : "
                     android:layout_marginTop="12dp"
+                    android:fontFamily="@font/lato"
+                    android:text="Diary Type : "
                     android:textColor="@color/black"
-                    android:textSize="14dp"
-                    android:fontFamily="@font/lato"/>
+                    android:textSize="14dp" />
 
                 <TextView
                     android:id="@+id/details_txt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Details : "
                     android:layout_marginTop="12dp"
+                    android:fontFamily="@font/lato"
+                    android:text="Details : "
                     android:textColor="@color/gray1"
-                    android:textSize="14dp"
-                    android:fontFamily="@font/lato"/>
+                    android:textSize="14dp" />
 
                 <com.github.chrisbanes.photoview.PhotoView
                     android:id="@+id/diary_img"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
                     android:layout_marginTop="16dp"
-                    app:srcCompat="@drawable/cartoon_img"
-                    android:src="@drawable/cartoon_img"/>
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/cartoon_img"
+                    app:srcCompat="@drawable/cartoon_img" />
 
                 <TextView
                     android:id="@+id/no_img_txt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="No Image Uploaded..!"
                     android:layout_marginTop="12dp"
-                    android:padding="24dp"
+                    android:fontFamily="@font/lato"
                     android:gravity="center"
-                    android:visibility="gone"
+                    android:padding="24dp"
+                    android:text="No Image Uploaded..!"
                     android:textColor="@color/gray1"
                     android:textSize="14dp"
-                    android:fontFamily="@font/lato"/>
+                    android:visibility="gone" />
 
             </LinearLayout>
 
