@@ -99,7 +99,7 @@ class HomeFragment : BaseFragment() {
         scl_id = userDetails[User.Companion.SCHOOL_ID].toString()
         initViewModel()
         observeAcademicYearsResponse()
-        var request = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "academic_year")
+        var request = ClassTeacherApiRequest("", userDetails[User.ID].toString(), userDetails[User.SCHOOL_ID].toString(), "","academic_year")
         attendanceViewModel.fetchAcademicYears(request)
         handlePlannersAndResorcesLo()
         handleStudentsLL()

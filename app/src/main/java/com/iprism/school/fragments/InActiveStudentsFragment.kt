@@ -67,7 +67,7 @@ class InActiveStudentsFragment : BaseFragment() {
         setupRecyclerView()
         observeEventsResponse()
         handleRefreshLo()
-        var requestClasses = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "classes")
+        var requestClasses = ClassTeacherApiRequest("", userDetails[User.ID].toString(),userDetails[User.SCHOOL_ID].toString(),  userDetails[User.ACADEMIC_YEAR_ID].toString(),"classes")
         attendanceViewModel.fetchClasses(requestClasses)
         return binding.root
     }
@@ -142,6 +142,8 @@ class InActiveStudentsFragment : BaseFragment() {
                         var requestClasses = ClassTeacherApiRequest(
                             classId,
                             userDetails[User.ID].toString(),
+                            userDetails[User.SCHOOL_ID].toString(),
+                            userDetails[User.ACADEMIC_YEAR_ID].toString(),
                             "sections"
                         )
                         attendanceViewModel.fetchSections(requestClasses)

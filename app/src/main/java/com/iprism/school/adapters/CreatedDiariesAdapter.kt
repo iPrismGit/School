@@ -46,6 +46,14 @@ class CreatedDiariesAdapter(var context: Context, var diaries: List<Diary>) : Ad
             holder.binding.typeTxt.text = "Home Work"
         }
 
+        holder.binding.deleteIv.setOnClickListener { view ->
+            listener.onDeleteClickListener(diary.id)
+        }
+
+        holder.binding.infoIv.setOnClickListener { view ->
+            listener.onInformationClickListener(diary.student_id, diary.image, diary.type, diary.details, diary.first_name, diary.middle_name, diary.last_name)
+        }
+
     }
 
     override fun getItemCount(): Int {

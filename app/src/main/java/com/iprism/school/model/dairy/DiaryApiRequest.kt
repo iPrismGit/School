@@ -12,13 +12,9 @@ data class DiaryApiRequest(
     val page: Int,
     val section_id: String,
     val student_type: String,
-    val students: List<Student>,
+    val student_id: String,
     val type: String,
     val user_id: String,
     val view_type: String
 
-)
-
-data class Student(
-    val id: Int
 )

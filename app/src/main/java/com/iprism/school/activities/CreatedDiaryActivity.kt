@@ -3,38 +3,29 @@ package com.iprism.school.activities
 import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.ImageView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.R
-import com.iprism.school.adapters.CalenderAdapter
 import com.iprism.school.adapters.CreatedDiariesAdapter
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityCreatedDiaryBinding
-import com.iprism.school.interfaces.OnCalenderClickListener
+import com.iprism.school.databinding.DeleteBottomSheetBinding
 import com.iprism.school.interfaces.OnCreatedDiariesClickListener
 import com.iprism.school.model.classteachermodel.Class
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.classteachermodel.Section
 import com.iprism.school.model.dairy.Diary
 import com.iprism.school.model.dairy.DiaryApiRequest
-import com.iprism.school.model.dairy.Student
-import com.iprism.school.model.eventsmodel.Event
-import com.iprism.school.model.eventsmodel.EventsApiRequest
 import com.iprism.school.repositories.AttendanceRepository
 import com.iprism.school.repositories.DiaryRepository
-import com.iprism.school.repositories.EventsRepository
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.UiState
 import com.iprism.school.utils.User
@@ -42,7 +33,6 @@ import com.iprism.school.utils.hideProgress
 import com.iprism.school.utils.showProgress
 import com.iprism.school.viewModels.AttendanceViewModel
 import com.iprism.school.viewModels.DiaryViewModel
-import com.iprism.school.viewModels.EventsViewModel
 import com.iprism.school.viewModels.ViewModelFactory
 import java.util.Locale
 
@@ -60,7 +50,6 @@ class CreatedDiaryActivity : BaseActivity() {
     private lateinit var attendanceViewModel: AttendanceViewModel
     private lateinit var diariesAdapter: CreatedDiariesAdapter
     private var diariesList = mutableListOf<Diary>()
-    private var students = mutableListOf<Student>()
     private var isFreshLoad = false
     private var backendDate = ""
     private var isLoading = false
@@ -69,6 +58,8 @@ class CreatedDiaryActivity : BaseActivity() {
     private val limit = 10
     private var classId: String = "-1"
     private var sectionId: String = "-1"
+    private lateinit var bottomSheetDialog : BottomSheetDialog
+    private lateinit var deleteBinding : DeleteBottomSheetBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,7 +74,8 @@ class CreatedDiaryActivity : BaseActivity() {
         handleRefreshLo()
         observeClassesResponse()
         observeSectionsResponse()
-        var requestClasses = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "classes")
+        observeDeleteDiaryResponse()
+        var requestClasses = ClassTeacherApiRequest("", userDetails[User.ID].toString(),userDetails[User.SCHOOL_ID].toString(),userDetails[User.ACADEMIC_YEAR_ID].toString(), "classes")
         attendanceViewModel.fetchClasses(requestClasses)
     }
 
@@ -126,13 +118,13 @@ class CreatedDiaryActivity : BaseActivity() {
             currentPage,
             sectionId,
             "",
-            students,
+            "",
             "",
             userDetails[User.ID].toString(),
             "view"
         )
 
-        Log.d("EventsApiRequest", request.toString())
+        Log.d("DiariesApiRequest", request.toString())
         diariesViewModel.fetchDiaries(request)
     }
 
@@ -156,10 +148,8 @@ class CreatedDiaryActivity : BaseActivity() {
         currentPage = 1
         isLastPage = false
         isLoading = false
-
         diariesList.clear()
         diariesAdapter.notifyDataSetChanged()
-
         binding.diariesRv.visibility = View.GONE
         binding.noDataFoundLo.visibility = View.VISIBLE
     }
@@ -202,6 +192,32 @@ class CreatedDiaryActivity : BaseActivity() {
                 }
             })
 
+            diariesAdapter.setListener(object  : OnCreatedDiariesClickListener{
+                override fun onDeleteClickListener(dairyId: String) {
+                    showDeleteBottomSheet(dairyId)
+                }
+
+                override fun onInformationClickListener(
+                    studentId: String,
+                    image: String,
+                    type: String,
+                    details: String,
+                    firstName: String,
+                    middleName: String,
+                    lastName: String
+                ) {
+                    var intent = Intent(this@CreatedDiaryActivity, DiaryDetailsActivity::class.java)
+                    intent.putExtra("StudentId", studentId)
+                    intent.putExtra("image", image)
+                    intent.putExtra("type", type)
+                    intent.putExtra("details", details)
+                    intent.putExtra("firstName", firstName)
+                    intent.putExtra("middleName", middleName)
+                    intent.putExtra("lastName", lastName)
+                    startActivity(intent)
+                }
+
+            })
         }
 
     }
@@ -261,6 +277,36 @@ class CreatedDiaryActivity : BaseActivity() {
                         binding.noDataFoundLo.visibility = View.GONE
                         ToastUtils.showErrorCustomToast(this, "There is no more data")
                     }
+                }
+            }
+        }
+    }
+
+    private fun observeDeleteDiaryResponse() {
+        diariesViewModel.deleteDiaryResponse.observe(this) { result ->
+            when (result) {
+                is UiState.Loading -> {
+                    deleteBinding.progress.showProgress()
+                    deleteBinding.deleteButton.isEnabled = false
+                    deleteBinding.cancelBtn.isEnabled = false
+                    deleteBinding.crossIv.isEnabled = false
+
+                }
+
+                is UiState.Success -> {
+                    deleteBinding.progress.hideProgress()
+                    ToastUtils.showSuccessCustomToast(this, "Diary Deleted Successfully..!")
+                    refreshItems()
+                    bottomSheetDialog.dismiss()
+
+                }
+
+                is UiState.Error -> {
+                    ToastUtils.showErrorCustomToast(this, result.message)
+                    deleteBinding.progress.hideProgress()
+                    deleteBinding.deleteButton.isEnabled = true
+                    deleteBinding.cancelBtn.isEnabled = true
+                    deleteBinding.crossIv.isEnabled = true
                 }
             }
         }
@@ -336,6 +382,8 @@ class CreatedDiaryActivity : BaseActivity() {
                         var requestClasses = ClassTeacherApiRequest(
                             classId,
                             userDetails[User.ID].toString(),
+                            userDetails[User.SCHOOL_ID].toString(),
+                            userDetails[User.ACADEMIC_YEAR_ID].toString(),
                             "sections"
                         )
                         attendanceViewModel.fetchSections(requestClasses)
@@ -374,54 +422,51 @@ class CreatedDiaryActivity : BaseActivity() {
             }
     }
 
-//    private fun setupCreatedDiariesAdapter() {
-//        var createdDiariesAdapter = CreatedDiariesAdapter(this)
-//        binding.diariesRv.adapter = createdDiariesAdapter
-//        var  linearLayoutManager = LinearLayoutManager(this)
-//        binding.diariesRv.layoutManager = linearLayoutManager
-//        createdDiariesAdapter.setListener(object : OnCreatedDiariesClickListener{
-//                override fun onDeleteClickListener(diaryId: Int) {
-//                   // showDeleteBottomSheet(diaryId)
-//                }
-//
-//                override fun onInformationClickListener(diaryId: Int) {
-//                    var intent = Intent(this@CreatedDiaryActivity, DiaryDeliveryReportsActivity::class.java)
-//                    intent.putExtra("diaryId", diaryId)
-//                    startActivity(intent)
-//                }
-//
-//            }
-//        )
-//    }
 
-//    private fun showDeleteBottomSheet(diaryId : Int) {
-//        val bottomSheetDialog = BottomSheetDialog(this)
-//        val bottomSheetView: View = LayoutInflater.from(this).inflate(R.layout.delete_bottom_sheet, null)
-//        bottomSheetDialog.setContentView(bottomSheetView)
-//        cancelBtn = bottomSheetDialog.findViewById<View>(R.id.cancel_btn) as Button
-//        crossImage = bottomSheetDialog.findViewById<View>(R.id.cross_iv) as ImageView
-//        deleteBtn = bottomSheetDialog.findViewById<View>(R.id.delete_button) as Button
-//        bottomSheetDialog.setOnShowListener { dialog ->
-//            val bottomSheet =
-//                (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-//            bottomSheet?.setBackgroundResource(R.drawable.rounded_bottom_sheet_background)
-//        }
-//
-//        cancelBtn.setOnClickListener(View.OnClickListener {
-//            bottomSheetDialog.dismiss()
-//        })
-//
-//        crossImage.setOnClickListener(View.OnClickListener {
-//            bottomSheetDialog.dismiss()
-//        })
-//
-//        deleteBtn.setOnClickListener(View.OnClickListener {
-//            bottomSheetDialog.dismiss()
-//            ToastUtils.showSuccessCustomToast(this, "Diary Deleted Successfully")
-//        })
-//
-//        bottomSheetDialog.show()
-//    }
+    private fun showDeleteBottomSheet(diaryId : String) {
+        bottomSheetDialog = BottomSheetDialog(this)
+        deleteBinding = DeleteBottomSheetBinding.inflate(layoutInflater)
+        bottomSheetDialog.setContentView(deleteBinding.root)
+        bottomSheetDialog.setCanceledOnTouchOutside(false)
+
+        bottomSheetDialog.setOnShowListener { dialog ->
+            val bottomSheet =
+                (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            bottomSheet?.setBackgroundResource(R.drawable.rounded_bottom_sheet_background)
+        }
+
+        deleteBinding.crossIv.setOnClickListener(View.OnClickListener {
+            bottomSheetDialog.dismiss()
+        })
+
+        deleteBinding.cancelBtn.setOnClickListener(View.OnClickListener {
+            bottomSheetDialog.dismiss()
+        })
+
+        deleteBinding.deleteButton.setOnClickListener(View.OnClickListener {
+            val request = DiaryApiRequest(
+                userDetails[User.ACADEMIC_YEAR_ID].toString(),
+                userDetails[User.SCHOOL_ID].toString(),
+                classId,
+                backendDate,
+                "",
+                diaryId,
+                "",
+                currentPage,
+                sectionId,
+                "",
+                "",
+                "",
+                userDetails[User.ID].toString(),
+                "delete"
+            )
+
+            Log.d("DeleteDiaryApiRequest", request.toString())
+            diariesViewModel.deleteDiary(request)
+        })
+
+        bottomSheetDialog.show()
+    }
 
     private fun handleBack() {
         binding.backIv.setOnClickListener(View.OnClickListener {

@@ -73,7 +73,7 @@ class CalenderActivity : BaseActivity() {
         handleRefreshLo()
         observeClassesResponse()
         observeSectionsResponse()
-        var requestClasses = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "classes")
+        var requestClasses = ClassTeacherApiRequest("", userDetails[User.ID].toString(),userDetails[User.SCHOOL_ID].toString(),userDetails[User.ACADEMIC_YEAR_ID].toString(), "classes")
         attendanceViewModel.fetchClasses(requestClasses)
     }
 
@@ -338,6 +338,8 @@ class CalenderActivity : BaseActivity() {
                         var requestClasses = ClassTeacherApiRequest(
                             classId,
                             userDetails[User.ID].toString(),
+                            userDetails[User.SCHOOL_ID].toString(),
+                            userDetails[User.ACADEMIC_YEAR_ID].toString(),
                             "sections"
                         )
                         attendanceViewModel.fetchSections(requestClasses)

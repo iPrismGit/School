@@ -15,6 +15,9 @@ class DiaryViewModel(private var repository: DiaryRepository) : ViewModel() {
     private val _diaryResponse = MutableLiveData<UiState<DiaryResponse>>()
     val diaryResponse: LiveData<UiState<DiaryResponse>> = _diaryResponse
 
+    private val _deleteDiaryResponse = MutableLiveData<UiState<DiaryResponse>>()
+    val deleteDiaryResponse: LiveData<UiState<DiaryResponse>> = _deleteDiaryResponse
+
     fun fetchDiaries(request : DiaryApiRequest) {
         viewModelScope.launch {
             _diaryResponse.value = UiState.Loading
@@ -27,6 +30,22 @@ class DiaryViewModel(private var repository: DiaryRepository) : ViewModel() {
                 }
             } catch (e: Exception) {
                 _diaryResponse.value = UiState.Error(e.localizedMessage ?: "Unknown error")
+            }
+        }
+    }
+
+    fun deleteDiary(request : DiaryApiRequest) {
+        viewModelScope.launch {
+            _deleteDiaryResponse.value = UiState.Loading
+            try {
+                val response = repository.fetchAndInsertDiaries(request)
+                if (response.status) {
+                    _deleteDiaryResponse.value = UiState.Success(response.response)
+                } else {
+                    _deleteDiaryResponse.value = UiState.Error(response.message ?: "Something went wrong")
+                }
+            } catch (e: Exception) {
+                _deleteDiaryResponse.value = UiState.Error(e.localizedMessage ?: "Unknown error")
             }
         }
     }

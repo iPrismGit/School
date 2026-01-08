@@ -89,7 +89,7 @@ class AttendanceActivity : BaseActivity() {
         handleRefreshLo()
         observeAttendanceResponse()
         binding.checkBoxAll.setOnCheckedChangeListener(selectAllListener)
-        var requestClasses = ClassTeacherApiRequest("", userDetails[User.ID].toString(), "classes")
+        var requestClasses = ClassTeacherApiRequest("", userDetails[User.ID].toString(), userDetails[User.SCHOOL_ID].toString(), userDetails[User.ACADEMIC_YEAR_ID].toString(),"classes")
         attendanceViewModel.fetchClasses(requestClasses)
         binding.parentNotificationCb.setOnCheckedChangeListener { _, isChecked ->
             notification_parent = if (isChecked) "yes" else "no"
@@ -375,6 +375,8 @@ class AttendanceActivity : BaseActivity() {
                         var requestClasses = ClassTeacherApiRequest(
                             classId,
                             userDetails[User.ID].toString(),
+                            userDetails[User.SCHOOL_ID].toString(),
+                            userDetails[User.ACADEMIC_YEAR_ID].toString(),
                             "sections"
                         )
                         attendanceViewModel.fetchSections(requestClasses)
@@ -485,7 +487,6 @@ class AttendanceActivity : BaseActivity() {
 
         bottomSheetDialog.show()
     }
-
 
 
     @SuppressLint("GestureBackNavigation")

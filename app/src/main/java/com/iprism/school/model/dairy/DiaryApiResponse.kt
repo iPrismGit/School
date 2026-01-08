@@ -21,7 +21,7 @@ data class Diary(
 
     val details: String,
     val first_name: String,
-    val id: Int,
+    val id: String,
     val image: String,
     val last_name: String,
     val middle_name: String,
