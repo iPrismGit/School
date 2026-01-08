@@ -145,6 +145,8 @@ import com.iprism.school.model.classteachermodel.AttendanceStudentsApiResponse
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.classteachermodel.ClassTeacherApiResponse
 import com.iprism.school.model.classteachermodel.SectionsApiResponse
+import com.iprism.school.model.dairy.DiaryApiRequest
+import com.iprism.school.model.dairy.DiaryApiResponse
 import com.iprism.school.model.eventsmodel.EventsApiRequest
 import com.iprism.school.model.eventsmodel.EventsApiResponse
 import com.iprism.school.model.plannersandresources.PlannersAndResourcesApiRequest
@@ -481,6 +483,9 @@ interface StaffApiService {
 
     @POST(Constants.PLANNERS_AND_RESOURCES_ENDPOINT)
     suspend fun fetchPlannersAndResources(@Body request: PlannersAndResourcesApiRequest): PlannersAndResourcesApiResponse
+
+    @POST(Constants.DIARY_ENDPOINT)
+    suspend fun fetchDiaryAndInsert(@Body request: DiaryApiRequest): DiaryApiResponse
 
     @POST(Constants.ALBUM_COVERS_ENDPOINT)
     suspend fun fetchAndInsertAlbumCovers(@Body request: AlbumCoverImagesApiRequest): AlbumCoverImagesApiResponse

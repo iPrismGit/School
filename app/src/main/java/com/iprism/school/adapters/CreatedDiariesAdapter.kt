@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.iprism.school.databinding.ActivityDaycareEmailReportBinding
 import com.iprism.school.databinding.CreatedDiaryItemBinding
 import com.iprism.school.interfaces.OnCreatedDiariesClickListener
+import com.iprism.school.model.dairy.Diary
 
-class CreatedDiariesAdapter(var context: Context) :
-    Adapter<CreatedDiariesAdapter.CreatedDairyViewHolder>() {
+class CreatedDiariesAdapter(var context: Context, var diaries: List<Diary>) : Adapter<CreatedDiariesAdapter.CreatedDairyViewHolder>() {
 
     private lateinit var listener: OnCreatedDiariesClickListener
 
@@ -33,19 +33,23 @@ class CreatedDiariesAdapter(var context: Context) :
         holder: CreatedDiariesAdapter.CreatedDairyViewHolder,
         position: Int
     ) {
-        holder.binding.subjectTxt.text = "Maths $position"
-        holder.binding.workTypeTxt.text = "Class Work $position"
-        holder.binding.deleteIv.setOnClickListener(View.OnClickListener {
-            listener.onDeleteClickListener(position)
-        })
+        var diary = diaries[position]
+        if (diary.student_id.equals("all", true)) {
+            holder.binding.sentNameTxt.text = "Sent to All Students"
+        } else {
+            holder.binding.sentNameTxt.text = "Sent to " + diary.first_name + " " + diary.middle_name + " " + diary.last_name
+        }
+        holder.binding.detailsTxt.text = diary.details
+        if (diary.type.equals("cw", true)) {
+            holder.binding.typeTxt.text = "Class Work"
+        } else {
+            holder.binding.typeTxt.text = "Home Work"
+        }
 
-        holder.binding.infoIv.setOnClickListener(View.OnClickListener {
-            listener.onInformationClickListener(position)
-        })
     }
 
     override fun getItemCount(): Int {
-        return 10
+        return diaries.size
     }
 
     class CreatedDairyViewHolder(var binding: CreatedDiaryItemBinding) : ViewHolder(binding.root) {
