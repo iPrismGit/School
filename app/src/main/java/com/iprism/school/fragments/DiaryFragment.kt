@@ -341,10 +341,15 @@ class DiaryFragment : BaseFragment() {
                 override fun onItemClick(studentId: String) {
 
                     // CASE 1: Select All is active
+                    // CASE 1: Select All is active
                     if (binding.selectAllCb.isChecked) {
 
                         // Unselect all items
                         studentsList.forEach { it.isSelected = false }
+
+                        // ✅ SELECT CLICKED ITEM
+                        studentsList.find { it.id == studentId }?.isSelected = true
+
                         studentsAdapter.notifyDataSetChanged()
 
                         // Uncheck Select All safely
@@ -355,9 +360,10 @@ class DiaryFragment : BaseFragment() {
                         studentType = "single"
                         binding.detailsLl.visibility = View.GONE
 
-                        Log.d("StudentDetails", "Select all broken by click: $studentId")
+                        Log.d("StudentDetails", "Select all broken & selected: $studentId")
                         return
                     }
+
 
                     // CASE 2: Normal single selection
                     studentsList.forEach { it.isSelected = false }

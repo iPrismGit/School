@@ -11,7 +11,7 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:padding="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/save_attendance_btn"
+        app:layout_constraintBottom_toTopOf="@+id/save_diary_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
