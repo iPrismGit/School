@@ -38,6 +38,10 @@
         <activity
             android:name=".activities.DiaryDetailsActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".activities.SuccessActivity"
+            android:exported="false" />
         <activity
             android:name=".activities.PdfViewActivity"
             android:exported="false" />

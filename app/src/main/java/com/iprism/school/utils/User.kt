@@ -220,8 +220,6 @@ class User(var context: Context) {
         return user
     }
 
-
-
     fun getNewUserDetails(): HashMap<String, String?> {
         val user = HashMap<String, String?>()
         user[ID] = sharedPreferences.getString(ID, null)

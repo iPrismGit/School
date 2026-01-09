@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.iprism.school.R
+import com.iprism.school.activities.SuccessActivity
 import com.iprism.school.base.BaseFragment
 import com.iprism.school.adapters.DiaryStudentsAdapter
 import com.iprism.school.databinding.FragmentDiaryBinding
@@ -94,8 +95,6 @@ class DiaryFragment : BaseFragment() {
             }
         }
 
-
-
     @SuppressLint("SuspiciousIndentation")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -149,11 +148,9 @@ class DiaryFragment : BaseFragment() {
                 }
 
                 is UiState.Success -> {
-                    ToastUtils.showSuccessCustomToast(
-                        requireContext(),
-                        "Diary Inserted Successfully..!"
-                    )
-                    refreshItems()
+                    var intent = Intent(requireContext(), SuccessActivity::class.java)
+                    intent.putExtra("tag", "Diary Inserted")
+                    startActivity(intent)
                     binding.saveDiaryBtn.isEnabled = true
                 }
 
@@ -374,9 +371,9 @@ class DiaryFragment : BaseFragment() {
                     binding.detailsLl.visibility = View.GONE
 
                     Log.d("StudentDetails", "Single selected: $studentId")
+                    val bottomSheet = SingleDiaryIBottomSheetFragment.newInstance(studentId, classId, sectionId, backendDate)
+                    bottomSheet.show(parentFragmentManager, "SingleDiaryIBottomSheetFragment")
                 }
-
-
             })
         }
 
