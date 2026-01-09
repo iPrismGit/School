@@ -56,13 +56,44 @@ class DiaryDetailsActivity : AppCompatActivity() {
         } else{
             binding.diaryTypeTxt.text = "Diary Type :Home Work"
         }
-        binding.detailsTxt.text = "Details : " + details
+
+        if (details.isEmpty()){
+            binding.detailsTxt.text = "Details : Not Given"
+        } else{
+            binding.detailsTxt.text = "Details : " + details
+        }
         Log.d("Image", image)
         if (image.equals("", true)){
             binding.noImgTxt.visibility = View.VISIBLE
             binding.diaryImg.visibility = View.GONE
         }
-        Glide.with(this).load(Constants.IMAGES_URL+image).error(ContextCompat.getDrawable(this,R.drawable.dummy_logo)).into(binding.diaryImg)
+        Glide.with(this)
+            .load(Constants.IMAGES_URL + image)
+            .error(R.drawable.dummy_logo)
+            .listener(object : com.bumptech.glide.request.RequestListener<android.graphics.drawable.Drawable> {
+
+                override fun onLoadFailed(
+                    e: com.bumptech.glide.load.engine.GlideException?,
+                    model: Any?,
+                    target: com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    binding.progress.visibility = View.GONE
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: android.graphics.drawable.Drawable?,
+                    model: Any?,
+                    target: com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable>?,
+                    dataSource: com.bumptech.glide.load.DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    binding.progress.visibility = View.GONE
+                    return false
+                }
+            })
+            .into(binding.diaryImg)
 
     }
 

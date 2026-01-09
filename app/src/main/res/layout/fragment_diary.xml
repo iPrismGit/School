@@ -292,7 +292,6 @@
         android:layout_margin="10dp"
         android:text="SAVE DIARY"
         android:textAllCaps="true"
-        android:backgroundTint="@color/blue"
         android:fontFamily="@font/inter"
         app:cornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"

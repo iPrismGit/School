@@ -46,7 +46,6 @@
         android:layout_margin="10dp"
         android:text="@string/save_attendance"
         android:textAllCaps="true"
-        android:backgroundTint="@color/blue"
         android:fontFamily="@font/inter"
         app:cornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
