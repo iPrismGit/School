@@ -43,7 +43,7 @@
                     android:layout_marginBottom="6dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:srcCompat="@drawable/present_img" />
+                    app:srcCompat="@drawable/attendance_un_select_img" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView

@@ -1,562 +1,594 @@
 package com.iprism.school.fragments
 
-import android.Manifest
-import android.R
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.DatePickerDialog
-import android.app.Dialog
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.OpenableColumns
+import android.util.Base64
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.iprism.school.R
 import com.iprism.school.base.BaseFragment
-import com.iprism.school.activities.LoginActivity
-import com.iprism.school.adapters.DairiesAdapter
-import com.iprism.school.adapters.DairiesNewAdapter
+import com.iprism.school.adapters.DiaryStudentsAdapter
 import com.iprism.school.databinding.FragmentDiaryBinding
-import com.iprism.school.databinding.StudentRemarksBinding
-import com.iprism.school.model.Request.DairyStudentUpdateReq
-import com.iprism.school.model.Request.DairyStudentsReq
-import com.iprism.school.model.Request.TeacherAccessReq
-import com.iprism.school.model.Response.ClassResponse
-import com.iprism.school.model.Response.Class_studentResponse
+import com.iprism.school.model.classteachermodel.Class
+import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
+import com.iprism.school.model.classteachermodel.Section
+import com.iprism.school.model.dairy.DiaryApiRequest
+import com.iprism.school.model.studentsmodel.Student
+import com.iprism.school.model.studentsmodel.StudentsApiRequest
+import com.iprism.school.repositories.AttendanceRepository
+import com.iprism.school.repositories.DiaryRepository
+import com.iprism.school.repositories.StudentsRepository
 import com.iprism.school.utils.ToastUtils
+import com.iprism.school.utils.UiState
 import com.iprism.school.utils.User
 import com.iprism.school.utils.Utility
-import com.iprism.school.viewModels.Scl_ViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.iprism.school.utils.hideProgress
+import com.iprism.school.utils.showProgress
+import com.iprism.school.viewModels.AttendanceViewModel
+import com.iprism.school.viewModels.DiaryViewModel
+import com.iprism.school.viewModels.StudentsViewModel
+import com.iprism.school.viewModels.ViewModelFactory
 import java.io.ByteArrayOutputStream
-import java.io.InputStream
-import java.text.SimpleDateFormat
+import java.io.IOException
 import java.time.LocalDate
-import java.util.ArrayList
-import java.util.Base64
-import java.util.Calendar
-import java.util.Locale
+import java.time.format.DateTimeFormatter
 
 class DiaryFragment : BaseFragment() {
 
-    private lateinit var binding : FragmentDiaryBinding
-    private lateinit var binding1 : StudentRemarksBinding
-
-    private val viewModel: Scl_ViewModel by viewModels()
-    private lateinit var adapter: DairiesNewAdapter
-
-    private var classId : String? = ""
-    private val class_names: ArrayList<String> = ArrayList<String>()
-    private val class_ids: ArrayList<String> = ArrayList<String>()
-
-    private var teacherId: String = ""
-    private var auth_token: String = ""
-    private var checkType: String = "class_work"
-    private var studentId: String = ""
-    private var oldRemarks: String = ""
-
+    private lateinit var binding: FragmentDiaryBinding
+    private lateinit var attendanceViewModel: AttendanceViewModel
+    private lateinit var studentsViewModel: StudentsViewModel
+    private lateinit var diariesViewModel: DiaryViewModel
+    private var studentsList = mutableListOf<Student>()
+    private lateinit var studentsAdapter: DiaryStudentsAdapter
+    private var isFreshLoad = false
+    private var isLoading = false
+    private var isLastPage = false
+    private var currentPage = 1
+    private val limit = 10
+    private var classId: String = "-1"
+    private var sectionId: String = "-1"
+    private var studentType: String = ""
+    private var currentDate: String = ""
+    private var diaryType: String = ""
+    private var selectedImageUri: Uri? = null
+    private var backendDate: String = ""
     lateinit var resultLauncher: ActivityResultLauncher<Intent>
     lateinit var resultLaunchergallery: ActivityResultLauncher<Intent>
-    private var encodedPic: String? = ""
-
-    private var currentDate: String? = ""
-    private var picType: String? = ""
-    private var studentsCount: String? = ""
-    private val CAMERA_PERMISSION_CODE = 100
 
     @SuppressLint("SuspiciousIndentation")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentDiaryBinding.inflate(inflater, container, false)
+        val formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy")
+        currentDate = LocalDate.now().format(formatter)
+        val formatterBackend = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        backendDate = LocalDate.now().format(formatterBackend)
+        binding.dateTxt.text = currentDate
+        binding.diaryTypeRg.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.class_work_rb -> {
+                    diaryType = "cw"
+                }
 
-        teacherId = userDetails[User.ID].toString()
-        auth_token = userDetails[User.AUTH_TOKEN].toString()
-
-        currentDate = LocalDate.now().toString()
-        binding.etDob.text = currentDate.toString()
-        Log.d("today_Date",currentDate.toString())
-
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
-            != PackageManager.PERMISSION_GRANTED) {
-            // Camera permission has not been granted, therefore request it
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CAMERA), CAMERA_PERMISSION_CODE)
-        } else {
-            // Permission has already been granted
-            // Proceed with your logic here
-        }
-
-        binding.allPicImg.setOnClickListener {
-            binding.detailsLl.visibility = View.VISIBLE
-            if (studentsCount == ""||studentsCount == null||studentsCount.toString() <= "0"){
-                ToastUtils.showSuccessCustomToast(requireContext(), "Select Students")
-            }else if (binding.etDetails.text.toString() == null||binding.etDetails.text.toString() == ""){
-                ToastUtils.showSuccessCustomToast(requireContext(), "Enter Details")
-            }else if (binding.checkBoxall.isChecked  == true){
-                selectImage()
-            }else{
-                ToastUtils.showSuccessCustomToast(requireContext(), "Select All Check box")
-            }
-        }
-
-        resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                // There are no request codes
-                val data: Intent? = result.data
-                val bitmap = data?.extras?.get("data") as Bitmap
-                val baos = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
-                val b = baos.toByteArray()
-                val encoder: Base64.Encoder = Base64.getEncoder()
-                encodedPic = encoder.encodeToString(b)
-
-                if (picType == "all"){
-                    val updateReq = DairyStudentUpdateReq(encodedPic.toString(),"image",auth_token,
-                        classId.toString(),currentDate.toString(),binding.etDetails.text.toString(),"",
-                        "all",teacherId,checkType)
-                    callUpdatePic(updateReq)
-                }else{
-
-                    val updateReq = DairyStudentUpdateReq(encodedPic.toString(),"image",auth_token,
-                        classId.toString(),currentDate.toString(),binding.etDetails.text.toString(),oldRemarks,
-                        studentId,teacherId,checkType)
-                        callUpdatePic(updateReq)
+                R.id.home_work_rb -> {
+                    diaryType = "hw"
                 }
             }
         }
 
-        resultLaunchergallery = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                // There are no request codes
-                val data: Intent? = result.data
-                val uri = data?.data
-                val imagestrem : InputStream? = activity?.contentResolver?.openInputStream(uri!!)
-                val selectedImage  : Bitmap = BitmapFactory.decodeStream(imagestrem)
-                encodedPic = encodeImage(selectedImage)
+        binding.selectAllCb.setOnCheckedChangeListener { _, isChecked ->
+            studentsAdapter.selectAll(isChecked)
 
-                if (picType == "all"){
-                    val updateReq = DairyStudentUpdateReq(encodedPic.toString(),"image",auth_token,
-                        classId.toString(),currentDate.toString(),binding.etDetails.text.toString(),"",
-                        "all",teacherId,checkType)
-                    callUpdatePic(updateReq)
-                }else{
-                    val updateReq = DairyStudentUpdateReq(encodedPic.toString(),"image",auth_token,
-                        classId.toString(),currentDate.toString(),binding.etDetails.text.toString(),oldRemarks,
-                        studentId,teacherId,checkType)
-                    callUpdatePic(updateReq)
-                }
-            }
-        }
-
-        callclasses()
-
-        binding.dateLl.setOnClickListener {
-            showDatePickerDialog()
-        }
-
-        binding.checkBox1.isChecked = true
-
-        binding.spClass.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                (view as TextView).setTextColor(Color.BLACK)
-                (parent!!.getChildAt(0) as TextView).textSize = 14f
-                classId = class_ids[position]
-//                callStudents()
-                var loginApiRequest = DairyStudentsReq( auth_token,classId.toString(),binding.etDob.text.toString(),teacherId,checkType)
-                callMVVM(loginApiRequest)
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-        }
-
-        binding.checkBoxall.setOnCheckedChangeListener { _, isChecked ->
-            if (binding.checkBoxall.isChecked){
+            if (isChecked) {
+                studentType = "all"
                 binding.detailsLl.visibility = View.VISIBLE
-            }else{
+            } else {
+                studentType = "single"
                 binding.detailsLl.visibility = View.GONE
             }
         }
 
-        // Ensure only one checkbox is selected at a time
-        binding.checkBox1.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) binding.checkBox2.isChecked = false
-            if (binding.checkBox1.isChecked){
-                checkType = "class_work"
-                var loginApiRequest = DairyStudentsReq( auth_token,classId.toString(),binding.etDob.text.toString(),teacherId,checkType)
-                callMVVM(loginApiRequest)
-            }
-        }
-
-        binding.checkBox2.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) binding.checkBox1.isChecked = false
-            if (binding.checkBox2.isChecked){
-                checkType = "home_work"
-                var loginApiRequest = DairyStudentsReq( auth_token,classId.toString(),binding.etDob.text.toString(),teacherId,checkType)
-                callMVVM(loginApiRequest)
-            }
-        }
-
-        binding.classLl.setOnClickListener {
-            binding.spClass.performClick()
-            callclasses()
-        }
-
+        initViewModel()
+        observeClassesResponse()
+        observeSectionsResponse()
+        setupRecyclerView()
+        observeStudentsResponse()
+        handleRefreshLo()
+        handleAllImagesLo()
+        handleSaveBtn()
+        observeInsertDiaryResponse()
+        var requestClasses = ClassTeacherApiRequest(
+            "",
+            userDetails[User.ID].toString(),
+            userDetails[User.SCHOOL_ID].toString(),
+            userDetails[User.ACADEMIC_YEAR_ID].toString(),
+            "classes"
+        )
+        attendanceViewModel.fetchClasses(requestClasses)
         return binding.root
     }
 
-    private fun callUpdatePic(updateReq: DairyStudentUpdateReq) {
-        showProgress()
-        Log.d("updateReq",updateReq.toString())
-        viewModel.dairyStudentUpdate(updateReq).observe(requireActivity(), Observer { response ->
-            if (response != null && response.status == true ) {
-                hideProgress()
-                studentId = ""
-                Log.d("updatePic",response.toString())
-                Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show()
-                binding.etDetails.text.clear()
-                var loginApiRequest = DairyStudentsReq( auth_token,classId.toString(),binding.etDob.text.toString(),teacherId,checkType)
-                callMVVM(loginApiRequest)
+    private fun observeInsertDiaryResponse() {
+        diariesViewModel.insertDiaryResponse.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is UiState.Loading -> {
+                    binding.progress.showProgress()
+                    binding.saveDiaryBtn.isEnabled = false
+                }
+
+                is UiState.Success -> {
+                    ToastUtils.showSuccessCustomToast(
+                        requireContext(),
+                        "Diary Inserted Successfully..!"
+                    )
+                    refreshItems()
+                    binding.saveDiaryBtn.isEnabled = true
+                }
+
+                is UiState.Error -> {
+                    ToastUtils.showErrorCustomToast(requireContext(), result.message)
+                    binding.progress.hideProgress()
+                    binding.saveDiaryBtn.isEnabled = true
+
+                }
+            }
+        }
+    }
+
+    private fun handleSaveBtn() {
+        binding.saveDiaryBtn.setOnClickListener { view ->
+            if (classId.equals("-1", true)) {
+                ToastUtils.showErrorCustomToast(requireContext(), "Please Select Class..!")
+            } else if (sectionId.equals("-1", true)) {
+                ToastUtils.showErrorCustomToast(requireContext(), "Please Select Section..!")
+            } else if (diaryType.isEmpty()) {
+                ToastUtils.showErrorCustomToast(
+                    requireContext(),
+                    "Please Select Class Work or Home Work..!"
+                )
+            } else if (studentType.isEmpty()) {
+                ToastUtils.showErrorCustomToast(
+                    requireContext(),
+                    "Please Select Students to give Diary..!"
+                )
+            } else if (studentType.equals(
+                    "all",
+                    true
+                ) && getDetails().isEmpty() && selectedImageUri == null
+            ) {
+                ToastUtils.showErrorCustomToast(
+                    requireContext(),
+                    "Please Enter Details or Select Image.."
+                )
             } else {
-                hideProgress()
-                Toast.makeText(requireContext(), response!!.message, Toast.LENGTH_SHORT).show()
+                var request = DiaryApiRequest(
+                    userDetails[User.ACADEMIC_YEAR_ID].toString(),
+                    userDetails[User.SCHOOL_ID].toString(), classId, backendDate, getDetails(), "",
+                    convertUriToBase64Image(selectedImageUri), currentPage, sectionId, studentType,
+                    "", diaryType, userDetails[User.ID].toString(), "insert"
+                )
+                diariesViewModel.insertDiary(request)
             }
-        })
+        }
     }
 
+    private fun convertUriToBase64Image(imageUri: Uri?): String {
+        if (imageUri == null) return ""
 
-    private fun callStudents() {
-        showProgress()
-        var loginApiRequest = DairyStudentsReq( auth_token,classId.toString(),binding.etDob.text.toString(),teacherId,checkType)
-//        var loginApiRequest = StudentsNewReq( auth_token,classId.toString(),binding.etDob.text.toString(),teacherId,checkType)
-        Log.d("class_Students_Req", loginApiRequest.toString())
-        var call: Call<Class_studentResponse> = parentApiService!!.class_studentsnew(loginApiRequest)
-        call.enqueue(object : Callback<Class_studentResponse> {
-            override fun onResponse(call: Call<Class_studentResponse>, response: Response<Class_studentResponse>) {
-                if (response.isSuccessful) {
-                    hideProgress()
-                    var loginApiResponse = response.body()
-                    Log.d("class_Students_Response", loginApiResponse.toString())
-                    if (loginApiResponse!!.status) {
-                        hideProgress()
-                        if (loginApiResponse.response.students.isEmpty()){
-                            binding.nodataTv.visibility = View.VISIBLE
-                            binding.dairyRv.visibility = View.GONE
-                        }else{
-                            binding.nodataTv.visibility = View.GONE
-                            binding.dairyRv.visibility = View.VISIBLE
-                            var dairiesAdapter = DairiesAdapter(requireContext(),loginApiResponse.response.students)
-                            binding.dairyRv.adapter = dairiesAdapter
-                            var layoutManager = LinearLayoutManager(requireContext())
-                            binding.dairyRv.layoutManager = layoutManager
+        return try {
+            val inputStream = requireContext().contentResolver.openInputStream(imageUri)
+            val bitmap = BitmapFactory.decodeStream(inputStream)
+            inputStream?.close()
 
-                            dairiesAdapter.OnItemBtn = {
-                                    mydata ->
-                                val et_details = binding.etDetails.text.toString()
-                                if (checkType == ""|| checkType == null){
-                                    ToastUtils.showSuccessCustomToast(requireContext(), "Select Work Type")
-                                }else if (binding.etDetails.text.toString() == ""||binding.etDetails.text.toString() == null){
-                                    ToastUtils.showSuccessCustomToast(requireContext(), "Enter Details")
-                                }else {
-                                    val studentId = mydata.id.toString()
-//                                    val oldremark = mydata.remarks.toString()
-                                     oldRemarks = mydata.remarks.toString()
-                                    callBottomSheet1(studentId,oldRemarks)
-                                }
-                            }
-                        }
-
-                    } else {
-                        hideProgress()
-                        binding.nodataTv.visibility = View.VISIBLE
-                        binding.dairyRv.visibility = View.GONE
-
-//                        ToastUtils.showSuccessCustomToast(requireContext(), loginApiResponse.message.toString())
-                        if (loginApiResponse.message.toString() == "Authentication Token Expired"){
-                            user!!.storeUserDetails("","","","","","","","","","","","","","","","","","")
-                            startActivity(Intent(requireContext(), LoginActivity::class.java))
-                            activity!!.finish()
-                        }
-                    }
-                } else {
-                    hideProgress()
-                    ToastUtils.showErrorCustomToast(requireContext(), "Failed")
-                }
+            if (bitmap != null) {
+                val byteArrayOutputStream = ByteArrayOutputStream()
+                bitmap.compress(
+                    Bitmap.CompressFormat.JPEG,
+                    100,
+                    byteArrayOutputStream
+                ) // Use PNG if you prefer lossless
+                val imageBytes = byteArrayOutputStream.toByteArray()
+                Base64.encodeToString(imageBytes, Base64.DEFAULT)
+            } else {
+                ""
             }
-            override fun onFailure(call: Call<Class_studentResponse>, t: Throwable) {
-                hideProgress()
-//                ToastUtils.showErrorCustomToast(requireContext(), "Response Failed")
-            }
-        })
+        } catch (e: IOException) {
+            e.printStackTrace()
+            ""
+        }
     }
 
-    private fun callclasses() {
-//        showProgress()
-        var loginApiRequest = TeacherAccessReq( teacherId,auth_token )
-        Log.d("classReq", loginApiRequest.toString())
-        var call: Call<ClassResponse> = parentApiService!!.classes(loginApiRequest)
-        call.enqueue(object : Callback<ClassResponse> {
-            override fun onResponse(call: Call<ClassResponse>, response: Response<ClassResponse>) {
-                if (response.isSuccessful) {
-                    hideProgress()
-                    var loginApiResponse = response.body()
-                    if (loginApiResponse!!.status) {
-                        hideProgress()
-
-                        class_names.clear()
-                        class_ids.clear()
-//                        class_names.add("Select Class")
-//                        class_ids.add("0")
-
-                        for(data in loginApiResponse.response.classes){
-                            class_names.add(data.class_name)
-                            class_ids.add(data.id.toString())
-                        }
-
-                        val adapter1 = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, class_names)
-                        binding.spClass.adapter = adapter1
-
-                    } else {
-                        hideProgress()
-//                        ToastUtils.showSuccessCustomToast(requireContext(), loginApiResponse.message.toString())
-                        if (loginApiResponse.message.toString() == "Authentication Token Expired"){
-                            user!!.storeUserDetails("","","","","","","","","","","","","","","","","","")
-                            startActivity(Intent(requireContext(), LoginActivity::class.java))
-                            activity!!.finish()
-                        }else{
-
-                        }
-                    }
-                } else {
-                    hideProgress()
-                    ToastUtils.showErrorCustomToast(requireContext(), "Failed")
-                }
-            }
-
-            override fun onFailure(call: Call<ClassResponse>, t: Throwable) {
-                hideProgress()
-                ToastUtils.showErrorCustomToast(requireContext(), t.message.toString())
-            }
-        })
+    private fun getDetails(): String {
+        return binding.etDetails.text.toString().trim()
     }
 
-    private fun showDatePickerDialog() {
-        // Get the current date
-        val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
+    private fun handleAllImagesLo() {
+        binding.allPicImg.setOnClickListener { view ->
+            selectImage()
+        }
+    }
 
-        val datePickerDialog = DatePickerDialog(
-            requireContext(),
-            { _, selectedYear, selectedMonth, selectedDay ->
-                // Format and display the selected date in the EditText
-                val formattedDate = formatDate(selectedDay, selectedMonth + 1, selectedYear)
-                binding.etDob.text = formattedDate
-            },
-            year,
-            month,
-            day
+    private fun loadStudents(isFromFilterChange: Boolean = false) {
+
+        if (isLoading) return
+
+        if (isFromFilterChange) {
+            currentPage = 1
+            isLastPage = false
+            isFreshLoad = true
+
+            studentsList.clear()
+            studentsAdapter.notifyDataSetChanged()
+
+            binding.studentsRv.visibility = View.GONE
+            binding.noDataFoundTxt.visibility = View.VISIBLE
+        }
+
+        isLoading = true
+        resetStudents()
+
+        val request = StudentsApiRequest(
+            userDetails[User.ACADEMIC_YEAR_ID].toString(),
+            userDetails[User.SCHOOL_ID].toString(),
+            classId,
+            currentPage,
+            sectionId,
+            userDetails[User.ID].toString()
         )
 
-        // Restrict the calendar to prevent future dates
-        datePickerDialog.datePicker.maxDate = calendar.timeInMillis
-
-        datePickerDialog.show()
+        Log.d("StudentsApiRequest", request.toString())
+        studentsViewModel.fetchActiveStudents(request)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun encodeImage(selectedImage: Bitmap): String? {
-        val baos = ByteArrayOutputStream()
-        selectedImage.compress(Bitmap.CompressFormat.JPEG, 25, baos)
-        val b = baos.toByteArray()
-        val encoder: Base64.Encoder = Base64.getEncoder()
-        encodedPic = encoder.encodeToString(b)
-
-        return encodedPic
+    private fun refreshItems() {
+        currentPage = 1
+        isLastPage = false
+        isLoading = false
+        studentsList.clear()
+        studentsAdapter.notifyDataSetChanged()
+        loadStudents(isFromFilterChange = true)
     }
+
+    private fun loadMoreItems() {
+        if (isLastPage || isLoading) return
+        isLoading = true
+        currentPage++
+        loadStudents()
+    }
+
+    private fun resetStudents() {
+        currentPage = 1
+        isLastPage = false
+        isLoading = false
+
+        studentsList.clear()
+        studentsAdapter.notifyDataSetChanged()
+
+        binding.studentsRv.visibility = View.GONE
+        binding.noDataFoundTxt.visibility = View.VISIBLE
+    }
+
+    private fun handleRefreshLo() {
+        binding.refreshLayout.setOnRefreshListener(
+            SwipeRefreshLayout.OnRefreshListener {
+                refreshItems()
+                binding.refreshLayout.isRefreshing = false
+            }
+        )
+    }
+
+    private fun setupRecyclerView() {
+        studentsAdapter = DiaryStudentsAdapter(requireContext(), studentsList)
+        val linearLayoutManager = LinearLayoutManager(requireContext())
+
+        binding.studentsRv.apply {
+            layoutManager = linearLayoutManager
+            adapter = studentsAdapter
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    binding.refreshLayout.isEnabled =
+                        !binding.studentsRv.canScrollVertically(-1)
+                    val visibleItemCount = linearLayoutManager.childCount
+                    val totalItemCount = linearLayoutManager.itemCount
+                    val firstVisibleItemPosition =
+                        linearLayoutManager.findFirstVisibleItemPosition()
+
+                    if (!isLoading && !isLastPage && studentsList.isNotEmpty()) {
+                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                            && firstVisibleItemPosition >= 0
+                        ) {
+                            loadMoreItems()
+                        }
+                    }
+
+                }
+            })
+        }
+
+    }
+
+    private fun observeStudentsResponse() {
+        studentsViewModel.activeStudentsResponse.observe(viewLifecycleOwner) { result ->
+
+            when (result) {
+                is UiState.Loading -> {
+                    if (currentPage == 1) {
+                        binding.progress.showProgress()
+                    }
+                }
+
+                is UiState.Success -> {
+                    binding.progress.hideProgress()
+                    isLoading = false
+
+                    val newEvents = result.data.students
+
+                    if (newEvents.isNotEmpty()) {
+
+                        if (isFreshLoad) {
+                            studentsList.clear()
+                            isFreshLoad = false
+                        }
+
+                        studentsList.addAll(newEvents)
+                        studentsAdapter.notifyDataSetChanged()
+
+                        binding.studentsRv.visibility = View.VISIBLE
+                        binding.noDataFoundTxt.visibility = View.GONE
+
+                        isLastPage = newEvents.size < limit
+                    } else {
+                        isLastPage = true
+
+                        if (currentPage == 1) {
+                            studentsList.clear()
+                            studentsAdapter.notifyDataSetChanged()
+                            binding.studentsRv.visibility = View.GONE
+                            binding.noDataFoundTxt.visibility = View.VISIBLE
+                        }
+                    }
+
+                }
+
+                is UiState.Error -> {
+                    isLoading = false
+                    binding.progress.hideProgress()
+                    if (studentsList.isEmpty()) {
+                        binding.studentsRv.visibility = View.GONE
+                        binding.noDataFoundTxt.visibility = View.VISIBLE
+                        ToastUtils.showErrorCustomToast(requireContext(), result.message)
+                    } else {
+                        binding.studentsRv.visibility = View.VISIBLE
+                        binding.noDataFoundTxt.visibility = View.GONE
+                        ToastUtils.showErrorCustomToast(requireContext(), "There is no more data")
+                    }
+                }
+            }
+        }
+    }
+
+    private fun observeClassesResponse() {
+        attendanceViewModel.classesResponse.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is UiState.Loading -> {
+                    binding.progress.showProgress()
+                }
+
+                is UiState.Success -> {
+                    binding.progress.hideProgress()
+                    if (result.data.classes.isNotEmpty()) {
+                        var updatedList = result.data.classes.toMutableList()
+                        updatedList.add(0, Class("-1", "Select Class"))
+                        setupClassesAdapter(updatedList)
+                    } else {
+                        ToastUtils.showErrorCustomToast(requireContext(), "No Classes Found..!")
+                    }
+                }
+
+                is UiState.Error -> {
+                    ToastUtils.showErrorCustomToast(requireContext(), result.message)
+                    binding.progress.hideProgress()
+                }
+            }
+        }
+    }
+
+    private fun observeSectionsResponse() {
+        attendanceViewModel.sectionsResponse.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is UiState.Loading -> {
+                    binding.progress.showProgress()
+                }
+
+                is UiState.Success -> {
+                    binding.progress.hideProgress()
+                    if (result.data.sections.isNotEmpty()) {
+                        var updatedList = result.data.sections.toMutableList()
+                        updatedList.add(0, Section("-1", "Select Section"))
+                        setupSectionsAdapter(updatedList)
+                    } else {
+                        ToastUtils.showErrorCustomToast(requireContext(), "No Classes Found..!")
+                    }
+                }
+
+                is UiState.Error -> {
+                    ToastUtils.showErrorCustomToast(requireContext(), result.message)
+                    binding.progress.hideProgress()
+                }
+            }
+        }
+    }
+
+    private fun setupClassesAdapter(genderTypes: List<Class>) {
+        var namesList = genderTypes.map { it.class_name }
+        val adapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, namesList)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.classesSp.adapter = adapter
+        binding.classesSp.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    classId = genderTypes[position].class_id.toString()
+                    if (!classId.equals("-1", true)) {
+                        var requestClasses = ClassTeacherApiRequest(
+                            classId,
+                            userDetails[User.ID].toString(),
+                            userDetails[User.SCHOOL_ID].toString(),
+                            userDetails[User.ACADEMIC_YEAR_ID].toString(),
+                            "sections"
+                        )
+                        attendanceViewModel.fetchSections(requestClasses)
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+
+                }
+            }
+    }
+
+    private fun setupSectionsAdapter(genderTypes: List<Section>) {
+        var namesList = genderTypes.map { it.section_name }
+        val adapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, namesList)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.sectionsSp.adapter = adapter
+        binding.sectionsSp.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    sectionId = genderTypes[position].section_id.toString()
+                    if (!sectionId.equals("-1", true)) {
+                        loadStudents()
+                    }
+
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+
+                }
+            }
+    }
+
+    private fun initViewModel() {
+        val repository = AttendanceRepository(requireContext())
+        val factory = ViewModelFactory { AttendanceViewModel(repository) }
+        attendanceViewModel = ViewModelProvider(this, factory)[AttendanceViewModel::class.java]
+
+        val studentsRepository = StudentsRepository(requireContext())
+        val studentsFactory = ViewModelFactory { StudentsViewModel(studentsRepository) }
+        studentsViewModel = ViewModelProvider(this, studentsFactory)[StudentsViewModel::class.java]
+
+        val diaryRepository = DiaryRepository(requireContext())
+        val diaryFactory = ViewModelFactory { DiaryViewModel(diaryRepository) }
+        diariesViewModel = ViewModelProvider(this, diaryFactory)[DiaryViewModel::class.java]
+    }
+
     private fun selectImage() {
-        val items = arrayOf<CharSequence>("Take Photo", "Choose from Gallery", "Cancel")
-        val builder = AlertDialog.Builder(requireActivity(), android.R.style.Theme_DeviceDefault_Light_Dialog_Alert)
-        builder.setTitle("Add Photo!")
-        builder.setItems(items) { dialog, item ->
-            val result: Boolean = Utility.checkPermission(context)
-            if (items[item] == "Take Photo") {
-                // userChoosenTask = "Take Photo"
-                openCamera()
-            } else if (items[item] == "Choose from Gallery") {
-                //userChoosenTask = "Choose from Gallery"
-                openGallery()
-            } else if (items[item] == "Cancel") {
-                dialog.dismiss()
+        val items = arrayOf("Take Photo", "Choose from Gallery", "Cancel")
+
+        AlertDialog.Builder(
+            requireContext(),
+            android.R.style.Theme_DeviceDefault_Light_Dialog_Alert
+        )
+            .setTitle("Add Photo!")
+            .setItems(items) { dialog, which ->
+                when (items[which]) {
+                    "Take Photo" -> openCamera()
+                    "Choose from Gallery" -> openGallery()
+                    "Cancel" -> dialog.dismiss()
+                }
             }
-        }
-        builder.show()
+            .show()
     }
+
     private fun openCamera() {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { intent ->
-            this?.let {
-                intent.resolveActivity(requireActivity().packageManager)?.also {
-                    resultLauncher.launch(intent)
-                }
-            }
-        }
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        cameraLauncher.launch(intent)
     }
+
     private fun openGallery() {
-        Intent(Intent.ACTION_GET_CONTENT).also { intent ->
-            intent.type = "image/*"
-            this?.let {
-                intent.resolveActivity(requireActivity().packageManager)?.also {
-                    resultLaunchergallery.launch(intent)
-                }
+        galleryLauncher.launch("image/*")
+    }
+
+    private fun setFileName(uri: Uri?) {
+        uri ?: return
+        var fileName = ""
+
+        requireContext().contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+            val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            if (cursor.moveToFirst()) {
+                fileName = cursor.getString(nameIndex)
             }
         }
+
+        binding.fileNameTxt.text = fileName
     }
-    private fun formatDate(day: Int, month: Int, year: Int): String {
-        val date = Calendar.getInstance()
-        date.set(year, month - 1, day)  // month is zero-based in Calendar
 
-        val format = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        return format.format(date.time)
-    }
-    private fun callBottomSheet1(studentId: String, oldRemarks: String,) {
-        val dialog = Dialog(requireActivity(), R.style.Theme_Material_Dialog_Alert)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        binding1 = StudentRemarksBinding.inflate(layoutInflater)
-        dialog.setContentView(binding1.root)
-        dialog.setCancelable(true)
-        dialog.setCanceledOnTouchOutside(true)
-        val lp = WindowManager.LayoutParams()
-        lp.copyFrom(dialog.window!!.attributes)
-        dialog.window!!.setBackgroundDrawable( ColorDrawable(Color.TRANSPARENT))
-        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
-        lp.gravity = Gravity.BOTTOM
-        dialog.show()
-        dialog.window!!.attributes = lp
-
-        binding1.etRemark.setText(oldRemarks)
-
-        binding1.cancelBtn.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        binding1.crossIv.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        binding1.saveBtn.setOnClickListener {
-            if (binding1.etRemark.text.toString() == ""){
-                ToastUtils.showSuccessCustomToast(requireContext(), "Enter Remark")
-            }else {
-                val updateReq = DairyStudentUpdateReq("","",auth_token,
-                    classId.toString(),currentDate.toString(),binding.etDetails.text.toString(),
-                    binding1.etRemark.text.toString(),studentId,teacherId,checkType)
-                    callUpdateReparks(updateReq,dialog)
+    private val cameraLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val bitmap = result.data?.extras?.get("data") as Bitmap
+                selectedImageUri = getImageUriFromBitmap(bitmap)
+                setFileName(selectedImageUri)
             }
         }
-    }
-    private fun callMVVM(request: DairyStudentsReq) {
-        showProgress()
-        Log.d("request_2024",request.toString())
-        viewModel.fetchStudentRemarks(request).observe(requireActivity(), Observer { response ->
-            if (response != null && response.status == true ) {
-                hideProgress()
 
-              studentsCount =  response.response.students.size.toString()
 
-                binding.dairyRv.visibility = View.VISIBLE
-                binding.nodataTv.visibility = View.GONE
-                adapter = DairiesNewAdapter(requireActivity(),response.response.students ?: emptyList())
-                binding.dairyRv.adapter = adapter
-                var layoutManager = LinearLayoutManager(requireContext())
-                binding.dairyRv.layoutManager = layoutManager
-
-                adapter.OnItemBtn = {
-                        mydata ->
-                    val et_details = binding.etDetails.text.toString()
-                    if (checkType == ""|| checkType == null){
-                        ToastUtils.showSuccessCustomToast(requireContext(), "Select Work Type")
-                    }
-//                    else if (binding.etDetails.text.toString() == ""||binding.etDetails.text.toString() == null){
-//                        ToastUtils.showSuccessCustomToast(requireContext(), "Enter Details")
-//                    }
-                    else {
-                         studentId = mydata.id.toString()
-                        val oldremark = mydata.remarks.toString()
-                        callBottomSheet1(studentId,oldremark)
-                    }
-                }
-
-                adapter.OnItemCallPic = {
-                        mydata ->
-                    val et_details = binding.etDetails.text.toString()
-                    if (checkType == ""|| checkType == null){
-                        ToastUtils.showSuccessCustomToast(requireContext(), "Select Work Type")
-                    }else if (binding.etDetails.text.toString() == ""||binding.etDetails.text.toString() == null){
-                        ToastUtils.showSuccessCustomToast(requireContext(), "Enter Details")
-                    }else {
-                         studentId = mydata.id.toString()
-                          oldRemarks = mydata.remarks.toString()
-                        selectImage()
-//                        callBottomSheet2(studentId,et_details)
-                    }
-                }
-
-            } else {
-                hideProgress()
-                binding.dairyRv.visibility = View.GONE
-                binding.nodataTv.visibility = View.VISIBLE
-                Toast.makeText(requireContext(), response!!.message, Toast.LENGTH_SHORT).show()
+    private val galleryLauncher =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+            uri?.let {
+                selectedImageUri = it
+                setFileName(it)
             }
-        })
+        }
+
+    private fun getImageUriFromBitmap(bitmap: Bitmap): Uri {
+        val bytes = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+
+        val path = MediaStore.Images.Media.insertImage(
+            requireContext().contentResolver,
+            bitmap,
+            "IMG_${System.currentTimeMillis()}",
+            null
+        )
+
+        return Uri.parse(path)
     }
-
-    private fun callUpdateReparks(updateReq: DairyStudentUpdateReq, dialog: Dialog) {
-        showProgress()
-        Log.d("updateReq",updateReq.toString())
-        viewModel.dairyStudentUpdate(updateReq).observe(requireActivity(), Observer { response ->
-            if (response != null && response.status == true ) {
-                hideProgress()
-                studentId = ""
-                Log.d("updateResponse_2025",response.toString())
-                Toast.makeText(requireContext(), response.message, Toast.LENGTH_SHORT).show()
-                binding.etDetails.setText("")
-                var loginApiRequest = DairyStudentsReq( auth_token,classId.toString(),binding.etDob.text.toString(),teacherId,checkType)
-                callMVVM(loginApiRequest)
-                dialog.dismiss()
-            } else {
-                hideProgress()
-                Toast.makeText(requireContext(), response!!.message, Toast.LENGTH_SHORT).show()
-            }
-        })
-    }
-
-
 
 }

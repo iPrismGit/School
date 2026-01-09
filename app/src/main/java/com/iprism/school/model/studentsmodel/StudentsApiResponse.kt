@@ -28,6 +28,7 @@ data class Student(
     val middle_name: String,
     val primary_mobile: String,
     val section_name: String,
-    val section_id: String
+    val section_id: String,
+    var isSelected: Boolean = false
 
 )

@@ -80,7 +80,7 @@ class AttendanceActivity : BaseActivity() {
         binding.dateTxt.text = currentDate
         initViewModel()
         handleBack()
-        handleDateLo()
+       // handleDateLo()
         handleSaveAttendanceBtn()
         observeClassesResponse()
         observeSectionsResponse()

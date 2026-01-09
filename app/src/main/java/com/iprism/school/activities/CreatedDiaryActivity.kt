@@ -422,7 +422,6 @@ class CreatedDiaryActivity : BaseActivity() {
             }
     }
 
-
     private fun showDeleteBottomSheet(diaryId : String) {
         bottomSheetDialog = BottomSheetDialog(this)
         deleteBinding = DeleteBottomSheetBinding.inflate(layoutInflater)
