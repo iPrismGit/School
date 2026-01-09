@@ -8,13 +8,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.iprism.school.R
 import com.iprism.school.databinding.AttendanceItemBinding
+import com.iprism.school.interfaces.OnDiaryStudentsClickListener
 import com.iprism.school.model.studentsmodel.Student
 import com.iprism.school.utils.Constants
 
-class DiaryStudentsAdapter(
-    var context: Context,
-    var students: MutableList<Student>
-) : RecyclerView.Adapter<DiaryStudentsAdapter.DiaryStudentViewHolder>() {
+class DiaryStudentsAdapter(var context: Context, var students: MutableList<Student>) :
+    RecyclerView.Adapter<DiaryStudentsAdapter.DiaryStudentViewHolder>() {
+
+    private lateinit var listener: OnDiaryStudentsClickListener
+
+    fun setupListener(listener: OnDiaryStudentsClickListener) {
+        this.listener = listener
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -35,7 +40,6 @@ class DiaryStudentsAdapter(
         holder.binding.textView49.text =
             "${student.first_name} ${student.middle_name} ${student.last_name}"
 
-        // Load image
         if (student.child_image.isNotEmpty()) {
             Glide.with(context)
                 .load(Constants.IMAGES_URL + student.child_image)
@@ -53,8 +57,16 @@ class DiaryStudentsAdapter(
         )
 
         holder.binding.root.setOnClickListener {
-            student.isSelected = !student.isSelected
-            notifyItemChanged(position)
+
+
+
+          //  if (isSelectAllEnabled()) return@setOnClickListener
+
+//            students.forEach { it.isSelected = false }
+//            student.isSelected = true
+
+            notifyDataSetChanged()
+            listener.onItemClick(student.id)
         }
     }
 
@@ -67,4 +79,5 @@ class DiaryStudentsAdapter(
 
     class DiaryStudentViewHolder(var binding: AttendanceItemBinding) :
         RecyclerView.ViewHolder(binding.root)
+
 }

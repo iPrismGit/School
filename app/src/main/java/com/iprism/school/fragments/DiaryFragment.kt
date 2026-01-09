@@ -18,6 +18,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.CompoundButton
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -29,6 +30,7 @@ import com.iprism.school.R
 import com.iprism.school.base.BaseFragment
 import com.iprism.school.adapters.DiaryStudentsAdapter
 import com.iprism.school.databinding.FragmentDiaryBinding
+import com.iprism.school.interfaces.OnDiaryStudentsClickListener
 import com.iprism.school.model.classteachermodel.Class
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.classteachermodel.Section
@@ -73,8 +75,26 @@ class DiaryFragment : BaseFragment() {
     private var diaryType: String = ""
     private var selectedImageUri: Uri? = null
     private var backendDate: String = ""
+    private var isSelectAllActive = false
+
     lateinit var resultLauncher: ActivityResultLauncher<Intent>
     lateinit var resultLaunchergallery: ActivityResultLauncher<Intent>
+
+    private val selectAllListener =
+        CompoundButton.OnCheckedChangeListener { _, isChecked ->
+
+            studentsAdapter.selectAll(isChecked)
+
+            if (isChecked) {
+                studentType = "all"
+                binding.detailsLl.visibility = View.VISIBLE
+            } else {
+                studentType = "single"
+                binding.detailsLl.visibility = View.GONE
+            }
+        }
+
+
 
     @SuppressLint("SuspiciousIndentation")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -99,23 +119,12 @@ class DiaryFragment : BaseFragment() {
             }
         }
 
-        binding.selectAllCb.setOnCheckedChangeListener { _, isChecked ->
-            studentsAdapter.selectAll(isChecked)
-
-            if (isChecked) {
-                studentType = "all"
-                binding.detailsLl.visibility = View.VISIBLE
-            } else {
-                studentType = "single"
-                binding.detailsLl.visibility = View.GONE
-            }
-        }
-
         initViewModel()
         observeClassesResponse()
         observeSectionsResponse()
         setupRecyclerView()
         observeStudentsResponse()
+        binding.selectAllCb.setOnCheckedChangeListener(selectAllListener)
         handleRefreshLo()
         handleAllImagesLo()
         handleSaveBtn()
@@ -328,6 +337,41 @@ class DiaryFragment : BaseFragment() {
 
                 }
             })
+            studentsAdapter.setupListener(object : OnDiaryStudentsClickListener{
+                override fun onItemClick(studentId: String) {
+
+                    // CASE 1: Select All is active
+                    if (binding.selectAllCb.isChecked) {
+
+                        // Unselect all items
+                        studentsList.forEach { it.isSelected = false }
+                        studentsAdapter.notifyDataSetChanged()
+
+                        // Uncheck Select All safely
+                        binding.selectAllCb.setOnCheckedChangeListener(null)
+                        binding.selectAllCb.isChecked = false
+                        binding.selectAllCb.setOnCheckedChangeListener(selectAllListener)
+
+                        studentType = "single"
+                        binding.detailsLl.visibility = View.GONE
+
+                        Log.d("StudentDetails", "Select all broken by click: $studentId")
+                        return
+                    }
+
+                    // CASE 2: Normal single selection
+                    studentsList.forEach { it.isSelected = false }
+                    studentsList.find { it.id == studentId }?.isSelected = true
+                    studentsAdapter.notifyDataSetChanged()
+
+                    studentType = "single"
+                    binding.detailsLl.visibility = View.GONE
+
+                    Log.d("StudentDetails", "Single selected: $studentId")
+                }
+
+
+            })
         }
 
     }
@@ -345,7 +389,12 @@ class DiaryFragment : BaseFragment() {
                 is UiState.Success -> {
                     binding.progress.hideProgress()
                     isLoading = false
+                    binding.selectAllCb.setOnCheckedChangeListener(null)
+                    binding.selectAllCb.isChecked = false
+                    binding.selectAllCb.setOnCheckedChangeListener(selectAllListener)
 
+                    studentType = ""
+                    binding.detailsLl.visibility = View.GONE
                     val newEvents = result.data.students
 
                     if (newEvents.isNotEmpty()) {
