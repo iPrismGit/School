@@ -30,6 +30,42 @@ class DaycareActivitiesActivity : AppCompatActivity() {
         handleBack()
         handleActivitiesLo()
         handleNapLo()
+        handleMedicationLo()
+        handleNotesLo()
+        handleMoodLo()
+    }
+
+    private fun handleMoodLo() {
+        binding.moodLo.setOnClickListener { view ->
+            var intent = Intent(this, MoodActivity::class.java)
+            intent.putExtra("planId", planId)
+            intent.putExtra("studentId", studentId)
+            intent.putExtra("type", "Mood")
+            intent.putExtra("id", "3")
+            startActivity(intent)
+        }
+    }
+
+    private fun handleMedicationLo() {
+        binding.medicationLo.setOnClickListener { view ->
+            var intent = Intent(this, MedicationAndNotesActivity::class.java)
+            intent.putExtra("planId", planId)
+            intent.putExtra("studentId", studentId)
+            intent.putExtra("type", "Medication")
+            intent.putExtra("id", "6")
+            startActivity(intent)
+        }
+    }
+
+    private fun handleNotesLo() {
+        binding.notesLo.setOnClickListener { view ->
+            var intent = Intent(this, MedicationAndNotesActivity::class.java)
+            intent.putExtra("planId", planId)
+            intent.putExtra("studentId", studentId)
+            intent.putExtra("type", "Notes")
+            intent.putExtra("id", "4")
+            startActivity(intent)
+        }
     }
 
     private fun handleNapLo() {

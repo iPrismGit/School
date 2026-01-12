@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.MoodActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout9"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/back_iv"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_margin="12dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@drawable/back_img" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter_bold"
+            android:gravity="center_vertical"
+            android:paddingStart="6dp"
+            android:text="Naps"
+            android:textColor="@color/black"
+            android:textSize="18dp" />
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout9" >
+
+        <LinearLayout
+            android:id="@+id/linearLayout8"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:padding="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/submit_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_black"
+                            android:text="Adjust Time to Update"
+                            android:textColor="@color/black"
+                            android:textSize="16dp" />
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            app:cardCornerRadius="8dp"
+                            app:strokeColor="@color/light_blue1"
+                            app:strokeWidth="0.5dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/light_blue1"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lato"
+                                    android:text="Select Time"
+                                    android:textColor="@color/black"
+                                    android:textSize="14dp" />
+
+                                <LinearLayout
+                                    android:id="@+id/start_time_lo"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="12dp"
+                                    android:background="@drawable/edit_text_bg"
+                                    android:gravity="center"
+                                    android:orientation="horizontal"
+                                    android:padding="12dp">
+
+                                    <TextView
+                                        android:id="@+id/time_txt"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:fontFamily="@font/lato"
+                                        android:hint="Select Time"
+                                        android:textColor="@color/black"
+                                        android:textSize="14dp" />
+
+                                    <ImageView
+                                        android:layout_width="18dp"
+                                        android:layout_height="wrap_content"
+                                        android:adjustViewBounds="true"
+                                        android:src="@drawable/down_arrow_img" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/lato_black"
+                            android:text="Select Type"
+                            android:textColor="@color/black"
+                            android:textSize="16dp" />
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            app:cardCornerRadius="8dp"
+                            app:strokeColor="@color/light_blue1"
+                            app:strokeWidth="0.5dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/light_blue1"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <RadioGroup
+                                    android:id="@+id/moods_rg"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical">
+
+                                    <RadioButton
+                                        android:id="@+id/fussy_rb"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Fussy"
+                                        android:textColor="@color/black" />
+
+                                    <RadioButton
+                                        android:id="@+id/giggly_rb"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Giggly"
+                                        android:textColor="@color/black" />
+
+                                    <RadioButton
+                                        android:id="@+id/happy_rb"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Happy"
+                                        android:textColor="@color/black" />
+
+                                    <RadioButton
+                                        android:id="@+id/silly_rb"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Silly"
+                                        android:textColor="@color/black" />
+
+                                    <RadioButton
+                                        android:id="@+id/sleepy_rb"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Sleepy"
+                                        android:textColor="@color/black" />
+
+                                    <RadioButton
+                                        android:id="@+id/smiley_rb"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Smiley"
+                                        android:textColor="@color/black" />
+
+                                    <RadioButton
+                                        android:id="@+id/others_rb"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Others"
+                                        android:textColor="@color/black" />
+
+                                </RadioGroup>
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            app:cardCornerRadius="8dp"
+                            app:strokeColor="@color/light_blue1"
+                            app:strokeWidth="0.5dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/light_blue1"
+                                android:orientation="vertical"
+                                android:padding="12dp">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/lato"
+                                    android:text="Message"
+                                    android:textColor="@color/black"
+                                    android:textSize="14dp" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="12dp"
+                                    android:background="@drawable/edit_text_bg"
+                                    android:gravity="center"
+                                    android:orientation="horizontal"
+                                    android:padding="12dp">
+
+                                    <EditText
+                                        android:id="@+id/message_txt"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:background="@android:color/transparent"
+                                        android:fontFamily="@font/lato"
+                                        android:hint="Enter Message"
+                                        android:inputType="textImeMultiLine"
+                                        android:maxLength="400"
+                                        android:textColor="@color/black"
+                                        android:textSize="14dp" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/submit_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:textColor="@color/white"
+            android:text="Submit"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.wang.avi.AVLoadingIndicatorView
+            android:id="@+id/progress"
+            style="@style/AVLoadingIndicatorView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:indicatorColor="@color/blue1"
+            app:indicatorName="LineSpinFadeLoaderIndicator"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

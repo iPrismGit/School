@@ -30,6 +30,12 @@
         android:theme="@style/Theme.School"
         tools:targetApi="31">
         <activity
+            android:name=".activities.MoodActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.MedicationAndNotesActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.NapActivity"
             android:exported="false" />
         <activity
