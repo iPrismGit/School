@@ -51,6 +51,7 @@ import com.iprism.school.utils.User
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.iprism.school.activities.DayCarePlansActivity
 import com.iprism.school.activities.PlannerCategoriesActivity
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.repositories.AttendanceRepository
@@ -369,7 +370,7 @@ class HomeFragment : BaseFragment() {
 
     private fun handleDayCare() {
         binding.dayCareLo.setOnClickListener(View.OnClickListener {
-            var intent = Intent(context, HomeActivity::class.java)
+            var intent = Intent(context, DayCarePlansActivity::class.java)
             intent.putExtra("tag", "DayCare")
             startActivity(intent)
         })

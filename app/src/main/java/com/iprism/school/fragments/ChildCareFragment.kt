@@ -122,14 +122,14 @@ class ChildCareFragment : Fragment() {
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when (tab.position) {
-                    0 -> { // Dairy Tab
+                    0 -> {
                         binding.reportsBtn.visibility = View.VISIBLE
                         binding.dayCareLo.visibility = View.GONE
                     }
 
-                    1 -> { // Day Care Tab
+                    1 -> {
                         binding.reportsBtn.visibility = View.GONE
-                        binding.dayCareLo.visibility = View.VISIBLE
+                        binding.dayCareLo.visibility = View.GONE
                     }
                 }
             }
