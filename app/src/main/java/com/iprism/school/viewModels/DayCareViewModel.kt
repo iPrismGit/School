@@ -17,6 +17,9 @@ class DayCareViewModel(private var repository: DayCareRepository) : ViewModel() 
     private val _dayCarePlansResponse = MutableLiveData<UiState<DayCareResponse>>()
     val dayCarePlansResponse: LiveData<UiState<DayCareResponse>> = _dayCarePlansResponse
 
+    private val _dayCareStudentsResponse = MutableLiveData<UiState<DayCareResponse>>()
+    val dayCareStudentsResponse: LiveData<UiState<DayCareResponse>> = _dayCareStudentsResponse
+
     fun fetchDayCarePlans(request : DayCareApiRequest) {
         viewModelScope.launch {
             _dayCarePlansResponse.value = UiState.Loading
@@ -29,6 +32,22 @@ class DayCareViewModel(private var repository: DayCareRepository) : ViewModel() 
                 }
             } catch (e: Exception) {
                 _dayCarePlansResponse.value = UiState.Error(e.localizedMessage ?: "Unknown error")
+            }
+        }
+    }
+
+    fun fetchDayCareStudents(request : DayCareApiRequest) {
+        viewModelScope.launch {
+            _dayCareStudentsResponse.value = UiState.Loading
+            try {
+                val response = repository.fetchDayCarePlansAndStudents(request)
+                if (response.status) {
+                    _dayCareStudentsResponse.value = UiState.Success(response.response)
+                } else {
+                    _dayCareStudentsResponse.value = UiState.Error(response.message ?: "Something went wrong")
+                }
+            } catch (e: Exception) {
+                _dayCareStudentsResponse.value = UiState.Error(e.localizedMessage ?: "Unknown error")
             }
         }
     }

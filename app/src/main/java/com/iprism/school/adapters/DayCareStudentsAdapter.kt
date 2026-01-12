@@ -8,78 +8,60 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.iprism.school.R
 import com.iprism.school.databinding.CareStudentItemBinding
 import com.iprism.school.databinding.DairyItemBinding
+import com.iprism.school.databinding.StudentAttandanceItemBinding
+import com.iprism.school.databinding.StudentItemBinding
 import com.iprism.school.model.Response.GroupStudents
 import com.iprism.school.model.Response.StudentList
+import com.iprism.school.model.daycare.Student
 import com.iprism.school.utils.Constants
 
-class DayCareStudentsAdapter(
-    private val groups: List<GroupStudents>,
-    private val onSelectedIdsChanged: (List<String>) -> Unit,
-    private var selectAll: Boolean // To handle select all state
+class DayCareStudentsAdapter(var context: Context, var students: List<Student>) :
+    RecyclerView.Adapter<DayCareStudentsAdapter.DayCareStudentViewHolder>() {
 
-) : RecyclerView.Adapter<DayCareStudentsAdapter.GroupViewHolder>() {
-
-    private val selectedIdsList = mutableListOf<String>()
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
-        val binding = CareStudentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return GroupViewHolder(binding)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): DayCareStudentsAdapter.DayCareStudentViewHolder {
+        var binding =
+            StudentAttandanceItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return DayCareStudentViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: GroupViewHolder, position: Int) {
-        val group = groups[position]
-        holder.bind(group)
+    override fun onBindViewHolder(
+        holder: DayCareStudentsAdapter.DayCareStudentViewHolder,
+        position: Int
+    ) {
+        var student = students[position]
+        holder.binding.attendanceCb.visibility = View.GONE
+        holder.binding.stuName.text =
+            student.first_name + " " + student.middle_name + " " + student.last_name
+        if (student.child_image.isNotEmpty()) {
+            Glide.with(context).load(Constants.IMAGES_URL + student.child_image).error(
+                ContextCompat.getDrawable(
+                    context,
+                    R.drawable.cartoon_img
+                )
+            ).into(holder.binding.profileIv)
+        } else {
+            holder.binding.profileIv.setImageDrawable(
+                ContextCompat.getDrawable(
+                    context,
+                    R.drawable.cartoon_img
+                )
+            )
+        }
     }
 
     override fun getItemCount(): Int {
-        return groups.size
+        return students.size
     }
 
-    // This method returns all IDs of the groups in the list
-    fun getAllIds(): List<String> {
-        return groups.map { it.id }
-    }
-
-    // Update the "Select All" state
-    fun updateSelectAllState(selectAll: Boolean) {
-        this.selectAll = selectAll
-        selectedIdsList.clear()  // Clear previously selected IDs
-        if (selectAll) {
-            // Add all group IDs to the list if "Select All" is checked
-            groups.forEach { selectedIdsList.add(it.id) }
-        }
-        onSelectedIdsChanged(selectedIdsList)
-        notifyDataSetChanged() // Notify the adapter to refresh the UI
-    }
-
-    inner class GroupViewHolder(private val binding: CareStudentItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(group: GroupStudents) {
-
-            Glide.with(binding.root)
-                .load(Constants.IMAGES_URL+groups[position].student_image)
-                .into(binding.imageView)
-
-            binding.nameTv.text = group.student_name
-            binding.checkBox.isChecked = selectedIdsList.contains(group.id)
-
-            binding.checkBox.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    if (!selectedIdsList.contains(group.id)) {
-                        selectedIdsList.add(group.id)
-                        Log.d("selectedIdsList", "Added: ${group.id}")
-                    }
-                } else {
-                    selectedIdsList.remove(group.id)
-                    Log.d("selectedIdsList", "Removed: ${group.id}")
-                }
-
-                // Notify the parent activity with the updated list
-                onSelectedIdsChanged(selectedIdsList)
-            }
-        }
-    }}
+    class DayCareStudentViewHolder(var binding: StudentAttandanceItemBinding) :
+        RecyclerView.ViewHolder(binding.root)
+}

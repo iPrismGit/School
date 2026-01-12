@@ -154,12 +154,12 @@ class DaycareReportActivity : BaseActivity() {
 
         // Select All checkbox listener
         binding.checkBoxAll.setOnCheckedChangeListener { _, isChecked ->
-            dairiesAdapter.updateSelectAllState(isChecked)  // Update select all state in the adapter
-            selectedGroupIds = if (isChecked) {
-                dairiesAdapter.getAllIds().joinToString(",")  // Get all group IDs if select all is checked
-            } else {
-                ""
-            }
+//            dairiesAdapter.updateSelectAllState(isChecked)  // Update select all state in the adapter
+//            selectedGroupIds = if (isChecked) {
+//                dairiesAdapter.getAllIds().joinToString(",")  // Get all group IDs if select all is checked
+//            } else {
+//                ""
+//            }
             Log.d("selected_IDS", selectedGroupIds)  // Log the selected IDs
         }
 
@@ -417,13 +417,13 @@ class DaycareReportActivity : BaseActivity() {
                             binding.nodataTv.visibility = View.GONE
                             binding.rvList.visibility = View.VISIBLE
 
-                            dairiesAdapter = DayCareStudentsAdapter(
-                                loginApiResponse.response.groups, { selectedIdsList ->
-                                    selectedGroupIds = selectedIdsList.joinToString(",")
-                                    Log.d("selected_IDs", selectedGroupIds)
-                                },
-                                selectAll = false
-                            )
+//                            dairiesAdapter = DayCareStudentsAdapter(
+//                                loginApiResponse.response.groups, { selectedIdsList ->
+//                                    selectedGroupIds = selectedIdsList.joinToString(",")
+//                                    Log.d("selected_IDs", selectedGroupIds)
+//                                },
+//                                selectAll = false
+//                            )
                             binding.rvList.adapter = dairiesAdapter
                             binding.rvList.layoutManager = GridLayoutManager(this@DaycareReportActivity, 3)
                         }
