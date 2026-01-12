@@ -13,6 +13,7 @@ data class DayCareApiRequest(
     val student_id: String,
     val time: String,
     val user_id: String,
-    val view_type: String
+    val view_type: String,
+    val end_time: String
 
 )

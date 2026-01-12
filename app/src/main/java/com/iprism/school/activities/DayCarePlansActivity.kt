@@ -20,6 +20,7 @@ import com.iprism.school.adapters.DayCareStudentsAdapter
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityDayCarePlansBinding
 import com.iprism.school.interfaces.OnCalenderClickListener
+import com.iprism.school.interfaces.OnDayCareClickListener
 import com.iprism.school.model.circularmodels.Circular
 import com.iprism.school.model.circularmodels.CircularApiRequest
 import com.iprism.school.model.classteachermodel.Class
@@ -70,7 +71,7 @@ class DayCarePlansActivity : BaseActivity() {
         observePlansResponse()
         observeStudentsResponse()
         handleRefreshLo()
-        var request = DayCareApiRequest(userDetails[User.ACADEMIC_YEAR_ID].toString(), "", "", userDetails[User.SCHOOL_ID].toString(), "", "", "", 1, "", "", userDetails[User.ID].toString(), "categories")
+        var request = DayCareApiRequest(userDetails[User.ACADEMIC_YEAR_ID].toString(), "", "", userDetails[User.SCHOOL_ID].toString(), "", "", "", 1, "", "", userDetails[User.ID].toString(), "categories", "")
         viewModel.fetchDayCarePlans(request)
     }
 
@@ -166,7 +167,15 @@ class DayCarePlansActivity : BaseActivity() {
 
                 }
             })
+            studentsAdapter.setupListener(object : OnDayCareClickListener{
+                override fun onItemLick(id: String) {
+                    var intent = Intent(this@DayCarePlansActivity, DaycareActivitiesActivity::class.java)
+                    intent.putExtra("studentId", id)
+                    intent.putExtra("planId", planId)
+                    startActivity(intent)
+                }
 
+            })
         }
 
     }
@@ -261,7 +270,8 @@ class DayCarePlansActivity : BaseActivity() {
             "",
             "",
             userDetails[User.ID].toString(),
-            "students")
+            "students",
+            "")
 
         Log.d("StudentsApiRequest", request.toString())
         viewModel.fetchDayCareStudents(request)

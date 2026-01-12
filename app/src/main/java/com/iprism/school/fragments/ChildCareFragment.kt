@@ -17,9 +17,6 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.iprism.school.R
 import com.iprism.school.activities.CreatedDiaryActivity
-import com.iprism.school.activities.DayCareReportsActivity
-import com.iprism.school.activities.DaycareEmailReportActivity
-import com.iprism.school.activities.DaycareReportActivity
 import com.iprism.school.activities.SetActivityIconActivity
 import com.iprism.school.adapters.DairiesNewAdapter
 import com.iprism.school.adapters.PagerAdapter
@@ -61,7 +58,7 @@ class ChildCareFragment : Fragment() {
 
     private fun handleEmailBtn() {
         binding.emailIv.setOnClickListener(View.OnClickListener {
-            startActivity(Intent(context, DaycareEmailReportActivity::class.java))
+        //    startActivity(Intent(context, DaycareEmailReportActivity::class.java))
         })
     }
 
@@ -73,7 +70,7 @@ class ChildCareFragment : Fragment() {
 
     private fun handleCalenderBtn() {
         binding.calenderIv.setOnClickListener(View.OnClickListener {
-            startActivity(Intent(context, DayCareReportsActivity::class.java))
+      //      startActivity(Intent(context, DayCareReportsActivity::class.java))
         })
     }
 

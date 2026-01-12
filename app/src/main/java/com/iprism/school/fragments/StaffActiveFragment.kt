@@ -10,7 +10,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.iprism.school.base.BaseFragment
-import com.iprism.school.activities.DaycareReportActivity
 import com.iprism.school.activities.EditStaffDetailsActivity
 import com.iprism.school.activities.LoginActivity
 import com.iprism.school.adapters.DayCareViewListAdapter
@@ -115,12 +114,12 @@ class StaffActiveFragment : BaseFragment() {
 
                         adapter.OnItemBtn = {
                                 mydata ->
-                            var intent = Intent(context, DaycareReportActivity::class.java)
-                            intent.putExtra("id", mydata.id.toString())
-                            intent.putExtra("name", mydata.name.toString())
-                            intent.putExtra("type", mydata.type.toString())
-                            intent.putExtra("group_id", mydata.id.toString())
-                            startActivity(intent)
+//                            var intent = Intent(context, DaycareReportActivity::class.java)
+//                            intent.putExtra("id", mydata.id.toString())
+//                            intent.putExtra("name", mydata.name.toString())
+//                            intent.putExtra("type", mydata.type.toString())
+//                            intent.putExtra("group_id", mydata.id.toString())
+//                            startActivity(intent)
                         }
 
                     } else {

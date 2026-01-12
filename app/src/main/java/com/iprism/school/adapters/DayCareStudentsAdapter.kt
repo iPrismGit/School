@@ -16,6 +16,7 @@ import com.iprism.school.databinding.CareStudentItemBinding
 import com.iprism.school.databinding.DairyItemBinding
 import com.iprism.school.databinding.StudentAttandanceItemBinding
 import com.iprism.school.databinding.StudentItemBinding
+import com.iprism.school.interfaces.OnDayCareClickListener
 import com.iprism.school.model.Response.GroupStudents
 import com.iprism.school.model.Response.StudentList
 import com.iprism.school.model.daycare.Student
@@ -23,6 +24,12 @@ import com.iprism.school.utils.Constants
 
 class DayCareStudentsAdapter(var context: Context, var students: List<Student>) :
     RecyclerView.Adapter<DayCareStudentsAdapter.DayCareStudentViewHolder>() {
+
+    private lateinit var listener: OnDayCareClickListener
+
+    fun setupListener(listener: OnDayCareClickListener) {
+        this.listener = listener
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -55,6 +62,10 @@ class DayCareStudentsAdapter(var context: Context, var students: List<Student>) 
                     R.drawable.cartoon_img
                 )
             )
+        }
+
+        holder.binding.root.setOnClickListener { view ->
+            listener.onItemLick(student.id)
         }
     }
 

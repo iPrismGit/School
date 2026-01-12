@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.DaycareActivitiesActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout9"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/back_iv"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_margin="12dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@drawable/back_img" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/inter_bold"
+            android:gravity="center_vertical"
+            android:paddingStart="6dp"
+            android:text="DayCare Activities"
+            android:textColor="@color/black"
+            android:textSize="18dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
+
+      <ScrollView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+              <LinearLayout
+                  android:id="@+id/activity_lo"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginBottom="12dp"
+                  android:orientation="vertical">
+
+                  <LinearLayout
+
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:gravity="center"
+                      android:orientation="horizontal"
+                      android:paddingBottom="12dp">
+
+                      <com.google.android.material.card.MaterialCardView
+                          android:layout_width="60dp"
+                          android:layout_height="60dp"
+                          app:cardCornerRadius="6dp"
+                          app:strokeColor="@color/light_blue1"
+                          app:strokeWidth="1dp">
+
+                          <LinearLayout
+                              android:layout_width="match_parent"
+                              android:layout_height="match_parent"
+                              android:background="@color/light_blue1"
+                              android:gravity="center"
+                              android:orientation="vertical">
+
+                              <ImageView
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:padding="12dp"
+                                  android:src="@drawable/activity_icon" />
+
+                          </LinearLayout>
+
+                      </com.google.android.material.card.MaterialCardView>
+
+                      <TextView
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginStart="12dp"
+                          android:fontFamily="@font/lato"
+                          android:text="Activity"
+                          android:textColor="@color/black"
+                          android:textSize="14dp" />
+
+                  </LinearLayout>
+
+                  <View
+
+                      android:layout_width="match_parent"
+                      android:layout_height="1dp"
+                      android:background="?android:attr/listDivider" />
+
+              </LinearLayout>
+
+              <LinearLayout
+                  android:id="@+id/food_lo"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginBottom="12dp"
+                  android:orientation="vertical">
+
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:gravity="center"
+                      android:orientation="horizontal"
+                      android:paddingBottom="12dp">
+
+                      <com.google.android.material.card.MaterialCardView
+                          android:layout_width="60dp"
+                          android:layout_height="60dp"
+                          app:cardCornerRadius="6dp"
+                          app:strokeColor="@color/light_blue1"
+                          app:strokeWidth="1dp">
+
+                          <LinearLayout
+                              android:layout_width="match_parent"
+                              android:layout_height="match_parent"
+                              android:background="@color/light_blue1"
+                              android:gravity="center"
+                              android:orientation="vertical">
+
+                              <ImageView
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:padding="12dp"
+                                  android:src="@drawable/food_icon" />
+
+                          </LinearLayout>
+
+                      </com.google.android.material.card.MaterialCardView>
+
+                      <TextView
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginStart="12dp"
+                          android:fontFamily="@font/lato"
+                          android:text="Food"
+                          android:textColor="@color/black"
+                          android:textSize="14dp" />
+
+                  </LinearLayout>
+
+                  <View
+                      android:layout_width="match_parent"
+                      android:layout_height="1dp"
+                      android:background="?android:attr/listDivider" />
+
+              </LinearLayout>
+
+              <LinearLayout
+                  android:id="@+id/mood_lo"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginBottom="12dp"
+                  android:orientation="vertical">
+
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:gravity="center"
+                      android:orientation="horizontal"
+                      android:paddingBottom="12dp">
+
+                      <com.google.android.material.card.MaterialCardView
+                          android:layout_width="60dp"
+                          android:layout_height="60dp"
+                          app:cardCornerRadius="6dp"
+                          app:strokeColor="@color/light_blue1"
+                          app:strokeWidth="1dp">
+
+                          <LinearLayout
+                              android:layout_width="match_parent"
+                              android:layout_height="match_parent"
+                              android:background="@color/light_blue1"
+                              android:gravity="center"
+                              android:orientation="vertical">
+
+                              <ImageView
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:padding="12dp"
+                                  android:src="@drawable/mood_icon" />
+
+                          </LinearLayout>
+
+                      </com.google.android.material.card.MaterialCardView>
+
+                      <TextView
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginStart="12dp"
+                          android:fontFamily="@font/lato"
+                          android:text="Mood"
+                          android:textColor="@color/black"
+                          android:textSize="14dp" />
+
+                  </LinearLayout>
+
+                  <View
+                      android:layout_width="match_parent"
+                      android:layout_height="1dp"
+                      android:background="?android:attr/listDivider" />
+
+              </LinearLayout>
+
+              <LinearLayout
+                  android:id="@+id/medication_lo"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginBottom="12dp"
+                  android:orientation="vertical">
+
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:gravity="center"
+                      android:orientation="horizontal"
+                      android:paddingBottom="12dp">
+
+                      <com.google.android.material.card.MaterialCardView
+                          android:layout_width="60dp"
+                          android:layout_height="60dp"
+                          app:cardCornerRadius="6dp"
+                          app:strokeColor="@color/light_blue1"
+                          app:strokeWidth="1dp">
+
+                          <LinearLayout
+                              android:layout_width="match_parent"
+                              android:layout_height="match_parent"
+                              android:background="@color/light_blue1"
+                              android:gravity="center"
+                              android:orientation="vertical">
+
+                              <ImageView
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:padding="12dp"
+                                  android:src="@drawable/medication_icon" />
+
+                          </LinearLayout>
+
+                      </com.google.android.material.card.MaterialCardView>
+
+                      <TextView
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginStart="12dp"
+                          android:fontFamily="@font/lato"
+                          android:text="Medication"
+                          android:textColor="@color/black"
+                          android:textSize="14dp" />
+
+                  </LinearLayout>
+
+                  <View
+                      android:layout_width="match_parent"
+                      android:layout_height="1dp"
+                      android:background="?android:attr/listDivider" />
+
+              </LinearLayout>
+
+              <LinearLayout
+                  android:id="@+id/naps_lo"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginBottom="12dp"
+                  android:orientation="vertical">
+
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:gravity="center"
+                      android:orientation="horizontal"
+                      android:paddingBottom="12dp">
+
+                      <com.google.android.material.card.MaterialCardView
+                          android:layout_width="60dp"
+                          android:layout_height="60dp"
+                          app:cardCornerRadius="6dp"
+                          app:strokeColor="@color/light_blue1"
+                          app:strokeWidth="1dp">
+
+                          <LinearLayout
+                              android:layout_width="match_parent"
+                              android:layout_height="match_parent"
+                              android:background="@color/light_blue1"
+                              android:gravity="center"
+                              android:orientation="vertical">
+
+                              <ImageView
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:padding="12dp"
+                                  android:src="@drawable/nap_icon" />
+
+                          </LinearLayout>
+
+                      </com.google.android.material.card.MaterialCardView>
+
+                      <TextView
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginStart="12dp"
+                          android:fontFamily="@font/lato"
+                          android:text="Naps"
+                          android:textColor="@color/black"
+                          android:textSize="14dp" />
+
+                  </LinearLayout>
+
+                  <View
+                      android:layout_width="match_parent"
+                      android:layout_height="1dp"
+                      android:background="?android:attr/listDivider" />
+
+              </LinearLayout>
+
+              <LinearLayout
+                  android:id="@+id/diaper_lo"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginBottom="12dp"
+                  android:orientation="vertical">
+
+                  <LinearLayout
+
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:gravity="center"
+                      android:orientation="horizontal"
+                      android:paddingBottom="12dp">
+
+                      <com.google.android.material.card.MaterialCardView
+                          android:layout_width="60dp"
+                          android:layout_height="60dp"
+                          app:cardCornerRadius="6dp"
+                          app:strokeColor="@color/light_blue1"
+                          app:strokeWidth="1dp">
+
+                          <LinearLayout
+                              android:layout_width="match_parent"
+                              android:layout_height="match_parent"
+                              android:background="@color/light_blue1"
+                              android:gravity="center"
+                              android:orientation="vertical">
+
+                              <ImageView
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:padding="12dp"
+                                  android:src="@drawable/diaper_icon" />
+
+                          </LinearLayout>
+
+                      </com.google.android.material.card.MaterialCardView>
+
+                      <TextView
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginStart="12dp"
+                          android:fontFamily="@font/lato"
+                          android:text="Diaper"
+                          android:textColor="@color/black"
+                          android:textSize="14dp" />
+
+                  </LinearLayout>
+
+                  <View
+                      android:layout_width="match_parent"
+                      android:layout_height="1dp"
+                      android:background="?android:attr/listDivider" />
+
+              </LinearLayout>
+
+              <LinearLayout
+                  android:id="@+id/notes_lo"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginBottom="12dp"
+                  android:orientation="vertical">
+
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:gravity="center"
+                      android:orientation="horizontal"
+                      android:paddingBottom="12dp">
+
+                      <com.google.android.material.card.MaterialCardView
+                          android:layout_width="60dp"
+                          android:layout_height="60dp"
+                          app:cardCornerRadius="6dp"
+                          app:strokeColor="@color/light_blue1"
+                          app:strokeWidth="1dp">
+
+                          <LinearLayout
+                              android:layout_width="match_parent"
+                              android:layout_height="match_parent"
+                              android:background="@color/light_blue1"
+                              android:gravity="center"
+                              android:orientation="vertical">
+
+                              <ImageView
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:padding="12dp"
+                                  android:src="@drawable/note_icon" />
+
+                          </LinearLayout>
+
+                      </com.google.android.material.card.MaterialCardView>
+
+                      <TextView
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginStart="12dp"
+                          android:fontFamily="@font/lato"
+                          android:text="Notes"
+                          android:textColor="@color/black"
+                          android:textSize="14dp" />
+
+                  </LinearLayout>
+
+                  <View
+                      android:layout_width="match_parent"
+                      android:layout_height="1dp"
+                      android:background="?android:attr/listDivider" />
+
+              </LinearLayout>
+
+              <LinearLayout
+                  android:id="@+id/attachment_lo"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:layout_marginBottom="12dp"
+                  android:orientation="vertical">
+
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:gravity="center"
+                      android:orientation="horizontal"
+                      android:paddingBottom="12dp">
+
+                      <com.google.android.material.card.MaterialCardView
+                          android:layout_width="60dp"
+                          android:layout_height="60dp"
+                          app:cardCornerRadius="6dp"
+                          app:strokeColor="@color/light_blue1"
+                          app:strokeWidth="1dp">
+
+                          <LinearLayout
+                              android:layout_width="match_parent"
+                              android:layout_height="match_parent"
+                              android:background="@color/light_blue1"
+                              android:gravity="center"
+                              android:orientation="vertical">
+
+                              <ImageView
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:padding="12dp"
+                                  android:src="@drawable/link" />
+
+                          </LinearLayout>
+
+                      </com.google.android.material.card.MaterialCardView>
+
+                      <TextView
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_marginStart="12dp"
+                          android:fontFamily="@font/lato"
+                          android:text="Attachment"
+                          android:textColor="@color/black"
+                          android:textSize="14dp" />
+
+                  </LinearLayout>
+
+                  <View
+                      android:layout_width="match_parent"
+                      android:layout_height="1dp"
+                      android:background="?android:attr/listDivider" />
+
+              </LinearLayout>
+
+          </LinearLayout>
+      </ScrollView>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

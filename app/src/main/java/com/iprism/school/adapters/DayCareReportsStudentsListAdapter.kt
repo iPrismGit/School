@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.iprism.school.R
-import com.iprism.school.activities.DaycareReportDetailsActivity
 import com.iprism.school.databinding.DayCareItemBinding
 import com.iprism.school.databinding.StudentReportItemBinding
 import com.iprism.school.model.Response.Daycare

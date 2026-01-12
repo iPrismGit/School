@@ -30,6 +30,12 @@
         android:theme="@style/Theme.School"
         tools:targetApi="31">
         <activity
+            android:name=".activities.NapActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.DaycareActivitiesActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.DayCarePlansActivity"
             android:exported="false" />
         <activity
@@ -72,10 +78,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.Messages.SentMessagesActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activities.DaycareReportDetailsActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
@@ -211,27 +213,11 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.DayCareReportsActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activities.DiaryDeliveryReportsActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activities.CreatedDiaryActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.DaycareEmailReportActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activities.SetActivityIconActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activities.DaycareReportActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
