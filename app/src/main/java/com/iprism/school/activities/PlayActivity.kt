@@ -9,7 +9,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.iprism.school.R
 import com.iprism.school.base.BaseActivity
-import com.iprism.school.databinding.ActivityMoodBinding
+import com.iprism.school.databinding.ActivityPlayBinding
+import com.iprism.school.databinding.StudentItemBinding
 import com.iprism.school.model.daycare.DayCareApiRequest
 import com.iprism.school.repositories.DayCareRepository
 import com.iprism.school.utils.DateTimeUtils
@@ -21,22 +22,22 @@ import com.iprism.school.utils.showProgress
 import com.iprism.school.viewModels.DayCareViewModel
 import com.iprism.school.viewModels.ViewModelFactory
 
-class MoodActivity : BaseActivity() {
+class PlayActivity : BaseActivity() {
 
-    private lateinit var binding: ActivityMoodBinding
+    private lateinit var binding: ActivityPlayBinding
     private lateinit var viewModel: DayCareViewModel
     private var planId = ""
     private var studentId = ""
     private var type = ""
     private var id = ""
-    private var moodType = ""
+    private var activityType = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityMoodBinding.inflate(layoutInflater)
+        binding = ActivityPlayBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -45,34 +46,34 @@ class MoodActivity : BaseActivity() {
         studentId = intent.getStringExtra("studentId").toString()
         type = intent.getStringExtra("type").toString()
         id = intent.getStringExtra("id").toString()
-        binding.moodsRg.setOnCheckedChangeListener { _, checkedId ->
+        binding.activitiesRg.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
-                R.id.fussy_rb -> {
-                    moodType = "Fussy"
+                R.id.dancing_rb -> {
+                    activityType = "I am Dancing"
                 }
 
-                R.id.giggly_rb -> {
-                    moodType = "Giggly"
+                R.id.playing_rb -> {
+                    activityType = "I am Playing"
                 }
 
-                R.id.happy_rb -> {
-                    moodType = "Happy"
+                R.id.writing_rb -> {
+                    activityType = "I a Writing"
                 }
 
-                R.id.silly_rb -> {
-                    moodType = "Silly"
+                R.id.rolling_rb -> {
+                    activityType = "I am Rolling"
                 }
 
-                R.id.smiley_rb -> {
-                    moodType = "Smiley"
+                R.id.singing_rb -> {
+                    activityType = "I am Singing"
                 }
 
                 R.id.others_rb -> {
-                    moodType = "Others"
+                    activityType = "Others"
                 }
 
-                R.id.sleepy_rb -> {
-                    moodType = "Sleepy"
+                R.id.colors_rb -> {
+                    activityType = "I am Identifying Colors"
                 }
 
             }
@@ -110,12 +111,12 @@ class MoodActivity : BaseActivity() {
         binding.submitBtn.setOnClickListener { view ->
             if (getStartTime().isEmpty()) {
                 ToastUtils.showErrorCustomToast(this, "Please Select Time..!")
-            } else if (moodType.isEmpty()) {
+            } else if (activityType.isEmpty()) {
                 ToastUtils.showErrorCustomToast(this, "Please Select Mood Type..!")
             } else {
                 var request = DayCareApiRequest(
                     userDetails[User.ACADEMIC_YEAR_ID].toString(),
-                    moodType, "", userDetails[User.SCHOOL_ID].toString(), id, "",
+                    activityType, "", userDetails[User.SCHOOL_ID].toString(), id, "",
                     getMessageTime(), 1, studentId, getStartTime(),
                     userDetails[User.ID].toString(), "insert", ""
                 )
@@ -136,7 +137,7 @@ class MoodActivity : BaseActivity() {
                 is UiState.Success -> {
                     binding.progress.hideProgress()
                     var intent = Intent(this, SuccessActivity::class.java)
-                    intent.putExtra("tag", "Mood Added ")
+                    intent.putExtra("tag", "Activity Added ")
                     startActivity(intent)
                     binding.submitBtn.isEnabled = true
 

@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MoodActivity">
+    tools:context=".activities.DiaperActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout9"
@@ -32,7 +32,7 @@
             android:fontFamily="@font/inter_bold"
             android:gravity="center_vertical"
             android:paddingStart="6dp"
-            android:text="Mood"
+            android:text="Diaper"
             android:textColor="@color/black"
             android:textSize="18dp" />
 
@@ -167,58 +167,30 @@
                                 android:padding="12dp">
 
                                 <RadioGroup
-                                    android:id="@+id/moods_rg"
+                                    android:id="@+id/diapers_rg"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
 
                                     <RadioButton
-                                        android:id="@+id/fussy_rb"
+                                        android:id="@+id/soiled_rb"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Fussy"
+                                        android:text="Soiled"
                                         android:textColor="@color/black" />
 
                                     <RadioButton
-                                        android:id="@+id/giggly_rb"
+                                        android:id="@+id/wet_rb"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Giggly"
+                                        android:text="Wet"
                                         android:textColor="@color/black" />
 
                                     <RadioButton
-                                        android:id="@+id/happy_rb"
+                                        android:id="@+id/dry_rb"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Happy"
-                                        android:textColor="@color/black" />
-
-                                    <RadioButton
-                                        android:id="@+id/silly_rb"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Silly"
-                                        android:textColor="@color/black" />
-
-                                    <RadioButton
-                                        android:id="@+id/sleepy_rb"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Sleepy"
-                                        android:textColor="@color/black" />
-
-                                    <RadioButton
-                                        android:id="@+id/smiley_rb"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Smiley"
-                                        android:textColor="@color/black" />
-
-                                    <RadioButton
-                                        android:id="@+id/others_rb"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:text="Others"
+                                        android:text="Dry"
                                         android:textColor="@color/black" />
 
                                 </RadioGroup>

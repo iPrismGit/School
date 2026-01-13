@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MoodActivity">
+    tools:context=".activities.PlayActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout9"
@@ -32,7 +32,7 @@
             android:fontFamily="@font/inter_bold"
             android:gravity="center_vertical"
             android:paddingStart="6dp"
-            android:text="Mood"
+            android:text="Activity"
             android:textColor="@color/black"
             android:textSize="18dp" />
 
@@ -76,7 +76,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato_black"
-                            android:text="Adjust Time to Update"
+                            android:text="Adjust Time of Update"
                             android:textColor="@color/black"
                             android:textSize="16dp" />
 
@@ -147,7 +147,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/lato_black"
-                            android:text="Select Type"
+                            android:text="Select Activity"
                             android:textColor="@color/black"
                             android:textSize="16dp" />
 
@@ -167,51 +167,51 @@
                                 android:padding="12dp">
 
                                 <RadioGroup
-                                    android:id="@+id/moods_rg"
+                                    android:id="@+id/activities_rg"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="vertical">
 
                                     <RadioButton
-                                        android:id="@+id/fussy_rb"
+                                        android:id="@+id/playing_rb"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Fussy"
+                                        android:text="I am Playing"
                                         android:textColor="@color/black" />
 
                                     <RadioButton
-                                        android:id="@+id/giggly_rb"
+                                        android:id="@+id/writing_rb"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Giggly"
+                                        android:text="I am Writing"
                                         android:textColor="@color/black" />
 
                                     <RadioButton
-                                        android:id="@+id/happy_rb"
+                                        android:id="@+id/rolling_rb"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Happy"
+                                        android:text="I am Rolling"
                                         android:textColor="@color/black" />
 
                                     <RadioButton
-                                        android:id="@+id/silly_rb"
+                                        android:id="@+id/singing_rb"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Silly"
+                                        android:text="I am Singing"
                                         android:textColor="@color/black" />
 
                                     <RadioButton
-                                        android:id="@+id/sleepy_rb"
+                                        android:id="@+id/dancing_rb"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Sleepy"
+                                        android:text="I am Dancing"
                                         android:textColor="@color/black" />
 
                                     <RadioButton
-                                        android:id="@+id/smiley_rb"
+                                        android:id="@+id/colors_rb"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="Smiley"
+                                        android:text="I am Identifing Colors"
                                         android:textColor="@color/black" />
 
                                     <RadioButton

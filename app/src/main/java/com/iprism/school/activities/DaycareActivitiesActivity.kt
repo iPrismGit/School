@@ -33,6 +33,30 @@ class DaycareActivitiesActivity : AppCompatActivity() {
         handleMedicationLo()
         handleNotesLo()
         handleMoodLo()
+        handleDiaperLo()
+        handleActivityLo()
+    }
+
+    private fun handleActivityLo() {
+        binding.activityLo.setOnClickListener { view ->
+            var intent = Intent(this, PlayActivity::class.java)
+            intent.putExtra("planId", planId)
+            intent.putExtra("studentId", studentId)
+            intent.putExtra("type", "Activity")
+            intent.putExtra("id", "1")
+            startActivity(intent)
+        }
+    }
+
+    private fun handleDiaperLo() {
+        binding.diaperLo.setOnClickListener { view ->
+            var intent = Intent(this, DiaperActivity::class.java)
+            intent.putExtra("planId", planId)
+            intent.putExtra("studentId", studentId)
+            intent.putExtra("type", "Diaper")
+            intent.putExtra("id", "8")
+            startActivity(intent)
+        }
     }
 
     private fun handleMoodLo() {

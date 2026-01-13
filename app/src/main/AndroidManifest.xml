@@ -30,6 +30,12 @@
         android:theme="@style/Theme.School"
         tools:targetApi="31">
         <activity
+            android:name=".activities.PlayActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.DiaperActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.MoodActivity"
             android:exported="false" />
         <activity
