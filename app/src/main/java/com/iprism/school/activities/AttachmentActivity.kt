@@ -122,7 +122,7 @@ class AttachmentActivity : BaseActivity() {
             } else {
                 var request = DayCareApiRequest(
                     userDetails[User.ACADEMIC_YEAR_ID].toString(),
-                    diaperType, "", userDetails[User.SCHOOL_ID].toString(), id, convertUriToBase64Image(profileUri),
+                    "", "", userDetails[User.SCHOOL_ID].toString(), id, convertUriToBase64Image(profileUri),
                     getMessageTime(), 1, studentId, "",
                     userDetails[User.ID].toString(), "insert", ""
                 )
