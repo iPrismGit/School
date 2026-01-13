@@ -8,6 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.iprism.school.R
 import com.iprism.school.databinding.ActivityDaycareActivitiesBinding
+import com.iprism.school.model.Response.Attachment
 
 class DaycareActivitiesActivity : AppCompatActivity() {
 
@@ -35,6 +36,18 @@ class DaycareActivitiesActivity : AppCompatActivity() {
         handleMoodLo()
         handleDiaperLo()
         handleActivityLo()
+        handleAttachmentLo()
+    }
+
+    private fun handleAttachmentLo() {
+        binding.attachmentLo.setOnClickListener { view ->
+            var intent = Intent(this, AttachmentActivity::class.java)
+            intent.putExtra("planId", planId)
+            intent.putExtra("studentId", studentId)
+            intent.putExtra("type", "Attachment")
+            intent.putExtra("id", "8")
+            startActivity(intent)
+        }
     }
 
     private fun handleActivityLo() {
