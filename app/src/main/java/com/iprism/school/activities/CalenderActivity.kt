@@ -1,5 +1,6 @@
-package com.iprism.school.activities.calender
+package com.iprism.school.activities
 
+import android.R
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -7,17 +8,13 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.iprism.school.activities.ViewImageActivity
-import com.iprism.school.base.BaseActivity
-
 import com.iprism.school.adapters.CalenderAdapter
+import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityCalenderBinding
 import com.iprism.school.interfaces.OnCalenderClickListener
 import com.iprism.school.model.classteachermodel.Class
@@ -73,7 +70,13 @@ class CalenderActivity : BaseActivity() {
         handleRefreshLo()
         observeClassesResponse()
         observeSectionsResponse()
-        var requestClasses = ClassTeacherApiRequest("", userDetails[User.ID].toString(),userDetails[User.SCHOOL_ID].toString(),userDetails[User.ACADEMIC_YEAR_ID].toString(), "classes")
+        var requestClasses = ClassTeacherApiRequest(
+            "",
+            userDetails[User.Companion.ID].toString(),
+            userDetails[User.Companion.SCHOOL_ID].toString(),
+            userDetails[User.Companion.ACADEMIC_YEAR_ID].toString(),
+            "classes"
+        )
         attendanceViewModel.fetchClasses(requestClasses)
     }
 
@@ -106,13 +109,13 @@ class CalenderActivity : BaseActivity() {
         isLoading = true
 
         val request = EventsApiRequest(
-            userDetails[User.ACADEMIC_YEAR_ID].toString(),
-            userDetails[User.SCHOOL_ID].toString(),
+            userDetails[User.Companion.ACADEMIC_YEAR_ID].toString(),
+            userDetails[User.Companion.SCHOOL_ID].toString(),
             classId,
             selectedMonth,
             currentPage,
             sectionId,
-            userDetails[User.ID].toString(),
+            userDetails[User.Companion.ID].toString(),
             selectedYear
         )
 
@@ -186,7 +189,7 @@ class CalenderActivity : BaseActivity() {
                 }
             })
 
-            eventsAdapter.setupListener(object : OnCalenderClickListener{
+            eventsAdapter.setupListener(object : OnCalenderClickListener {
                 override fun onItemClick(
                     calenderId: String,
                     calenderName: String,
@@ -322,8 +325,8 @@ class CalenderActivity : BaseActivity() {
 
     private fun setupClassesAdapter(genderTypes: List<Class>) {
         var namesList = genderTypes.map { it.class_name }
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, namesList)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val adapter = ArrayAdapter(this, R.layout.simple_spinner_item, namesList)
+        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         binding.classesSp.adapter = adapter
         binding.classesSp.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
@@ -337,9 +340,9 @@ class CalenderActivity : BaseActivity() {
                     if (!classId.equals("-1", true)) {
                         var requestClasses = ClassTeacherApiRequest(
                             classId,
-                            userDetails[User.ID].toString(),
-                            userDetails[User.SCHOOL_ID].toString(),
-                            userDetails[User.ACADEMIC_YEAR_ID].toString(),
+                            userDetails[User.Companion.ID].toString(),
+                            userDetails[User.Companion.SCHOOL_ID].toString(),
+                            userDetails[User.Companion.ACADEMIC_YEAR_ID].toString(),
                             "sections"
                         )
                         attendanceViewModel.fetchSections(requestClasses)
@@ -354,8 +357,8 @@ class CalenderActivity : BaseActivity() {
 
     private fun setupSectionsAdapter(genderTypes: List<Section>) {
         var namesList = genderTypes.map { it.section_name }
-        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, namesList)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val adapter = ArrayAdapter(this, R.layout.simple_spinner_item, namesList)
+        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         binding.sectionsSp.adapter = adapter
         binding.sectionsSp.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {

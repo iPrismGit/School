@@ -10,7 +10,6 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.iprism.school.base.BaseFragment
 import com.iprism.school.activities.LoginActivity
-import com.iprism.school.adapters.DayCareViewListAdapter
 import com.iprism.school.databinding.FragmentDayCareBinding
 import com.iprism.school.interfaces.OnDayCareClickListener
 import com.iprism.school.model.Request.SchoolStaffReq

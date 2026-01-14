@@ -3,20 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/home"
+        android:id="@+id/home_nav"
         android:title="Home"
         android:icon="@drawable/home_img"/>
     <item
-        android:id="@+id/messages"
+        android:id="@+id/messages_nav"
         android:title="Messages"
         android:icon="@drawable/messages_img"/>
     <item
-        android:id="@+id/scanner"
+        android:id="@+id/scanner_nav"
         android:title="Scanner"
         android:icon="@drawable/scanner_img"/>
     <item
-        android:id="@+id/childcare"
-        android:title="Child Care"
+        android:id="@+id/diary_nav"
+        android:title="Diary"
         android:icon="@drawable/child_care_img"/>
     <item
         android:id="@+id/help"

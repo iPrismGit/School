@@ -13,7 +13,6 @@ import com.iprism.school.R
 import com.iprism.school.databinding.ActivityAlbumsBinding
 import com.iprism.school.databinding.AlbumItemBinding
 import com.iprism.school.databinding.StudentReportItemBinding
-import com.iprism.school.interfaces.OnAlbumClickListener
 import com.iprism.school.model.Response.AlbumContentList
 import com.iprism.school.model.Response.AlbumDetail
 import com.iprism.school.model.Response.GroupStuuu

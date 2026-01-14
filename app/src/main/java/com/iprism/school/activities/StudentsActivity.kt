@@ -9,7 +9,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
-import com.iprism.school.adapters.StudentsListAdapter
 import com.iprism.school.adapters.StudentsPagerAdapter
 import com.iprism.school.databinding.ActivityStudentsBinding
 import com.iprism.school.model.Request.StudentsListReq

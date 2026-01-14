@@ -21,8 +21,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
 import com.iprism.school.activities.HomeActivity
-import com.iprism.school.activities.MessageInfoActivity
-import com.iprism.school.adapters.ReplayImageAdapter
 import com.iprism.school.databinding.ActivityMessageDetailsBinding
 import com.iprism.school.databinding.MessageDeleteBottomSheetBinding
 import com.iprism.school.model.Request.InboxMessageReplyReq
@@ -57,7 +55,7 @@ class MessageDetailsActivity : BaseActivity() {
     lateinit var resultLaunchergallery: ActivityResultLauncher<Intent>
 
     private var commaSeparatedBase64 : String? = null
-    private lateinit var imageAdapter: ReplayImageAdapter
+//    private lateinit var imageAdapter: ReplayImageAdapter
     private val imageUris = mutableListOf<Uri>()
     private lateinit var photoUri: Uri
 
@@ -98,10 +96,10 @@ class MessageDetailsActivity : BaseActivity() {
         }
 
         binding.imagesRv.layoutManager = GridLayoutManager(this,5)
-        imageAdapter = ReplayImageAdapter(imageUris) { uri ->
-            imageAdapter.deleteImage(uri) }
-        binding.imagesRv.adapter = imageAdapter
-        imageAdapter.notifyDataSetChanged()
+//        imageAdapter = ReplayImageAdapter(imageUris) { uri ->
+//            imageAdapter.deleteImage(uri) }
+//        binding.imagesRv.adapter = imageAdapter
+//        imageAdapter.notifyDataSetChanged()
     }
 
     private fun handleSendMessageBtn() {
@@ -149,9 +147,9 @@ class MessageDetailsActivity : BaseActivity() {
 
     private fun handelInfoIv() {
         binding.infoIv.setOnClickListener(View.OnClickListener {
-            var intent = Intent(this, MessageInfoActivity::class.java)
-            intent.putExtra("messageId", message_id)
-            startActivity(intent)
+//            var intent = Intent(this, MessageInfoActivity::class.java)
+//            intent.putExtra("messageId", message_id)
+//            startActivity(intent)
         })
     }
 
@@ -370,7 +368,7 @@ class MessageDetailsActivity : BaseActivity() {
         if (result.resultCode == RESULT_OK && result.data?.data != null) {
             val imageUri = result.data!!.data!!
             imageUris.add(imageUri)
-            imageAdapter.notifyDataSetChanged()
+//            imageAdapter.notifyDataSetChanged()
 
         }
     }
@@ -445,15 +443,5 @@ class MessageDetailsActivity : BaseActivity() {
             }
         })
     }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-
-        val intent = Intent(this@MessageDetailsActivity, HomeActivity::class.java)
-        intent.putExtra("tag","msgInbox")
-        startActivity(intent)
-        finish()
-    }
-
 
 }

@@ -1,5 +1,6 @@
 package com.iprism.school.fragments
 
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
@@ -19,6 +20,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
+import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -27,6 +29,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.iprism.school.R
+import com.iprism.school.activities.CreatedDiaryActivity
 import com.iprism.school.activities.SuccessActivity
 import com.iprism.school.base.BaseFragment
 import com.iprism.school.adapters.DiaryStudentsAdapter
@@ -136,7 +139,23 @@ class DiaryFragment : BaseFragment() {
             "classes"
         )
         attendanceViewModel.fetchClasses(requestClasses)
+        handleReportsBtn()
         return binding.root
+    }
+
+    private fun handleReportsBtn() {
+        binding.reportsBtn.setOnClickListener(View.OnClickListener {
+            blinkButton(binding.reportsBtn)
+            startActivity(Intent(context, CreatedDiaryActivity::class.java))
+           // ToastUtils.showSuccessCustomToast(requireContext(), "Daily Report Created Successfully")
+        })
+    }
+
+    private fun blinkButton(button: TextView) {
+        val blinkAnimation = ObjectAnimator.ofFloat(button, "alpha", 0f, 1f)
+        blinkAnimation.duration = 500
+        blinkAnimation.repeatCount = 0
+        blinkAnimation.start()
     }
 
     private fun observeInsertDiaryResponse() {

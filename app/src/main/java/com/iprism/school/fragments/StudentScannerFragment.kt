@@ -1,21 +1,14 @@
 package com.iprism.school.fragments
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.content.Context
-import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
@@ -27,9 +20,7 @@ import com.budiyev.android.codescanner.ErrorCallback
 import com.budiyev.android.codescanner.ScanMode
 import com.iprism.school.base.BaseFragment
 import com.iprism.school.R
-import com.iprism.school.activities.HomeActivity
 import com.iprism.school.databinding.FragmentStudentScannerBinding
-import com.iprism.school.databinding.SuccessitemBinding
 import com.iprism.school.model.Request.StudentAttandanceUpdateReq
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.User
@@ -38,7 +29,6 @@ import com.iprism.school.viewModels.Scl_ViewModel
 class StudentScannerFragment : BaseFragment() {
 
     private lateinit var binding: FragmentStudentScannerBinding
-    private lateinit var binding1 : SuccessitemBinding
 
 
     private var codeScanner: CodeScanner? = null
@@ -188,50 +178,11 @@ class StudentScannerFragment : BaseFragment() {
             if (response != null && response.status == true ) {
                 hideProgress()
                 Log.d("updateResponse_2025",response.toString())
-                callBottomSheet()
             } else {
                 hideProgress()
                 Toast.makeText(requireContext(), response!!.message, Toast.LENGTH_SHORT).show()
             }
         })
-    }
-
-
-    private fun callBottomSheet() {
-        val dialog = Dialog(requireActivity(), android.R.style.Theme_Material_Dialog_Alert)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        binding1 = SuccessitemBinding.inflate(layoutInflater)
-        dialog.setContentView(binding1.root)
-        dialog.setCancelable(true)
-        dialog.setCanceledOnTouchOutside(true)
-        val lp = WindowManager.LayoutParams()
-        lp.copyFrom(dialog.window!!.attributes)
-        dialog.window!!.setBackgroundDrawable( ColorDrawable(Color.TRANSPARENT))
-        lp.width = WindowManager.LayoutParams.WRAP_CONTENT
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT
-        lp.gravity = Gravity.BOTTOM
-        dialog.show()
-        dialog.window!!.attributes = lp
-
-
-        binding1.crossIv.setOnClickListener {
-            dialog.dismiss()
-        }
-
-        binding1.submitBtn.setOnClickListener {
-            dialog.dismiss()
-            val intent = Intent(requireContext(),HomeActivity::class.java)
-            intent.putExtra("tag","from_qr")
-            startActivity(intent)
-        }
-    }
-
-
-    private fun refreshFragment() {
-        parentFragmentManager.beginTransaction()
-            .detach(this)
-            .attach(this)
-            .commit()
     }
 
 

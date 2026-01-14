@@ -15,7 +15,6 @@ import com.iprism.school.base.BaseActivity
 import com.iprism.school.activities.HomeActivity
 import com.iprism.school.activities.ViewImageActivity
 import com.iprism.school.adapters.AlbumCoversAdapter
-import com.iprism.school.adapters.AlbumsAdapter
 import com.iprism.school.adapters.CircularsAdapter
 import com.iprism.school.databinding.ActivityAlbumsBinding
 import com.iprism.school.interfaces.OnCalenderClickListener

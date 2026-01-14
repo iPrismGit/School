@@ -80,8 +80,6 @@ class ContentPagesActivity : BaseActivity() {
         })
     }
 
-
-
     private fun aboutUs() {
         showProgress()
         var apiRequest = SchoolStaffReq(auth_token,scl_id,teacherId)
@@ -96,11 +94,11 @@ class ContentPagesActivity : BaseActivity() {
 
                         val contentTv = loginApiResponse.response.aboutus[0].content.toString()
 
-                        var intent = Intent(this@ContentPagesActivity, InformationActivity::class.java)
-                        type = "About us"
-                        intent.putExtra("type", type)
-                        intent.putExtra("contentTv", contentTv)
-                        startActivity(intent)
+//                        var intent = Intent(this@ContentPagesActivity, InformationActivity::class.java)
+//                        type = "About us"
+//                        intent.putExtra("type", type)
+//                        intent.putExtra("contentTv", contentTv)
+//                        startActivity(intent)
 
                     }else{
 
@@ -131,10 +129,10 @@ class ContentPagesActivity : BaseActivity() {
 
                         val contentTv = loginApiResponse.response.privacypolicy[0].content.toString()
 
-                        var intent = Intent(this@ContentPagesActivity, InformationActivity::class.java)
-                        type = "Privacy Policy"
-                        intent.putExtra("type", type)
-                        intent.putExtra("contentTv", contentTv)
+//                        var intent = Intent(this@ContentPagesActivity, InformationActivity::class.java)
+//                        type = "Privacy Policy"
+//                        intent.putExtra("type", type)
+//                        intent.putExtra("contentTv", contentTv)
                         startActivity(intent)
 
                     }else{
@@ -166,11 +164,11 @@ class ContentPagesActivity : BaseActivity() {
 
                         val contentTv = loginApiResponse.response.termsandconditions[0].content.toString()
 
-                        var intent = Intent(this@ContentPagesActivity, InformationActivity::class.java)
-                        type = getString(R.string.terms_and_conditions)
-                        intent.putExtra("type", type)
-                        intent.putExtra("contentTv", contentTv)
-                        startActivity(intent)
+//                        var intent = Intent(this@ContentPagesActivity, InformationActivity::class.java)
+//                        type = getString(R.string.terms_and_conditions)
+//                        intent.putExtra("type", type)
+//                        intent.putExtra("contentTv", contentTv)
+//                        startActivity(intent)
 
                     }else{
 

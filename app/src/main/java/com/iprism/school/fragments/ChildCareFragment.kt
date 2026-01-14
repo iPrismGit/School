@@ -17,8 +17,6 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.iprism.school.R
 import com.iprism.school.activities.CreatedDiaryActivity
-import com.iprism.school.activities.SetActivityIconActivity
-import com.iprism.school.adapters.DairiesNewAdapter
 import com.iprism.school.adapters.PagerAdapter
 import com.iprism.school.databinding.FragmentChildCareBinding
 import com.iprism.school.databinding.StudentRemarksBinding
@@ -80,7 +78,7 @@ class ChildCareFragment : Fragment() {
         popupMenu.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.change_icon -> {
-                    startActivity(Intent(context, SetActivityIconActivity::class.java))
+                    //startActivity(Intent(context, SetActivityIconActivity::class.java))
                     true
                 }
                 else -> false

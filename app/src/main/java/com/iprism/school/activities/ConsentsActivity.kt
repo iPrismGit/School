@@ -1,7 +1,6 @@
-package com.iprism.school.activities.circular
+package com.iprism.school.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,22 +8,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.google.android.material.tabs.TabLayoutMediator
-import com.iprism.school.activities.HomeActivity
-import com.iprism.school.activities.ViewImageActivity
-import com.iprism.school.adapters.CalenderAdapter
 import com.iprism.school.adapters.CircularsAdapter
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityConsentsBinding
 import com.iprism.school.interfaces.OnCalenderClickListener
 import com.iprism.school.model.circularmodels.Circular
 import com.iprism.school.model.circularmodels.CircularApiRequest
-import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
-import com.iprism.school.model.eventsmodel.Event
-import com.iprism.school.model.eventsmodel.EventsApiRequest
 import com.iprism.school.repositories.AttendanceRepository
 import com.iprism.school.repositories.CircularRepository
-import com.iprism.school.repositories.EventsRepository
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.UiState
 import com.iprism.school.utils.User
@@ -57,10 +48,11 @@ class ConsentsActivity : BaseActivity() {
         observeCircularsResponse()
         handleRefreshLo()
         val request = CircularApiRequest(
-            userDetails[User.ACADEMIC_YEAR_ID].toString(),
-            userDetails[User.SCHOOL_ID].toString(),
+            userDetails[User.Companion.ACADEMIC_YEAR_ID].toString(),
+            userDetails[User.Companion.SCHOOL_ID].toString(),
             currentPage,
-            userDetails[User.ID].toString())
+            userDetails[User.Companion.ID].toString()
+        )
 
         Log.d("CircularApiRequest", request.toString())
         circularViewModel.fetchCirculars(request)
@@ -85,10 +77,11 @@ class ConsentsActivity : BaseActivity() {
         isLoading = true
 
         val request = CircularApiRequest(
-            userDetails[User.ACADEMIC_YEAR_ID].toString(),
-            userDetails[User.SCHOOL_ID].toString(),
+            userDetails[User.Companion.ACADEMIC_YEAR_ID].toString(),
+            userDetails[User.Companion.SCHOOL_ID].toString(),
             currentPage,
-            userDetails[User.ID].toString())
+            userDetails[User.Companion.ID].toString()
+        )
 
         Log.d("CircularApiRequest", request.toString())
         circularViewModel.fetchCirculars(request)
@@ -160,7 +153,7 @@ class ConsentsActivity : BaseActivity() {
                 }
             })
 
-            circularsAdapter.setupListener(object : OnCalenderClickListener{
+            circularsAdapter.setupListener(object : OnCalenderClickListener {
                 override fun onItemClick(
                     calenderId: String,
                     calenderName: String,
@@ -259,4 +252,3 @@ class ConsentsActivity : BaseActivity() {
     }
 
 }
-
