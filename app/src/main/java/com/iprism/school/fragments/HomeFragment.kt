@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.GravityCompat
 import com.iprism.school.base.BaseFragment
 import com.iprism.school.R
 import com.iprism.school.activities.AttendanceActivity
@@ -33,17 +34,21 @@ import com.bumptech.glide.Glide
 import com.iprism.school.activities.DayCarePlansActivity
 import com.iprism.school.activities.PlannerCategoriesActivity
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
+import com.iprism.school.model.daycare.DayCareStatusApiRequest
 import com.iprism.school.repositories.AttendanceRepository
+import com.iprism.school.repositories.DayCareRepository
 import com.iprism.school.utils.UiState
 import com.iprism.school.utils.hideProgress
 import com.iprism.school.utils.showProgress
 import com.iprism.school.viewModels.AttendanceViewModel
+import com.iprism.school.viewModels.DayCareViewModel
 import com.iprism.school.viewModels.ViewModelFactory
 
 class HomeFragment : BaseFragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var attendanceViewModel: AttendanceViewModel
+    private lateinit var dayCareViewModel: DayCareViewModel
     private lateinit var yesBtn: Button
     private lateinit var noBtn: Button
     private var teacherId: String = ""
@@ -68,6 +73,7 @@ class HomeFragment : BaseFragment() {
         scl_id = userDetails[User.Companion.SCHOOL_ID].toString()
         initViewModel()
         observeAcademicYearsResponse()
+        observeDayCareStatusResponse()
         var request = ClassTeacherApiRequest(
             "",
             userDetails[User.ID].toString(),
@@ -108,6 +114,11 @@ class HomeFragment : BaseFragment() {
         val repository = AttendanceRepository(requireContext())
         val factory = ViewModelFactory { AttendanceViewModel(repository) }
         attendanceViewModel = ViewModelProvider(this, factory)[AttendanceViewModel::class.java]
+
+        val dayCareRepository = DayCareRepository(requireContext())
+        val dayCareFactory = ViewModelFactory { DayCareViewModel(dayCareRepository) }
+        dayCareViewModel = ViewModelProvider(this, dayCareFactory)[DayCareViewModel::class.java]
+
     }
 
     private fun observeAcademicYearsResponse() {
@@ -120,6 +131,33 @@ class HomeFragment : BaseFragment() {
                 is UiState.Success -> {
                     binding.progress.hideProgress()
                     user!!.storeAcademicYear(result.data.id, result.data.name)
+                }
+
+                is UiState.Error -> {
+                    ToastUtils.showErrorCustomToast(requireContext(), result.message)
+                    Log.d("Message", result.message)
+                    binding.progress.hideProgress()
+                }
+            }
+        }
+    }
+
+    private fun observeDayCareStatusResponse() {
+        dayCareViewModel.dayCareStatusResponse.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is UiState.Loading -> {
+                    binding.progress.showProgress()
+                }
+
+                is UiState.Success -> {
+                    binding.progress.hideProgress()
+                    if (result.data.status.equals("yes", true)) {
+                        var intent = Intent(requireContext(), DayCarePlansActivity::class.java)
+                        intent.putExtra("tag", "DayCare")
+                        startActivity(intent)
+                    } else {
+                        showConfirmationDialog()
+                    }
                 }
 
                 is UiState.Error -> {
@@ -144,15 +182,23 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun showConfirmationDialog() {
-        val viewMessageBinding = ViewMessagesAlertDialogBinding.inflate(layoutInflater)
-        val dialogBuilder = AlertDialog.Builder(requireContext())
-        dialogBuilder.setView(viewMessageBinding.root)
-        val dialog = dialogBuilder.create()
+        val binding = ViewMessagesAlertDialogBinding.inflate(layoutInflater)
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(binding.root)
+            .create()
+
+        dialog.window?.setBackgroundDrawableResource(
+            android.R.color.transparent
+        )
+
         dialog.show()
-        viewMessageBinding.okBtn.setOnClickListener(View.OnClickListener {
+
+        binding.okBtn.setOnClickListener {
             dialog.dismiss()
-        })
+        }
     }
+
 
     private fun handleSentLo() {
         binding.sentLo.setOnClickListener(View.OnClickListener {
@@ -223,15 +269,20 @@ class HomeFragment : BaseFragment() {
 
     private fun handleDayCare() {
         binding.dayCareLo.setOnClickListener(View.OnClickListener {
-            var intent = Intent(context, DayCarePlansActivity::class.java)
-            intent.putExtra("tag", "DayCare")
-            startActivity(intent)
+            var request = DayCareStatusApiRequest(
+                userDetails[User.ACADEMIC_YEAR_ID].toString(),
+                userDetails[User.SCHOOL_ID].toString(), userDetails[User.ID].toString()
+            )
+            dayCareViewModel.fetchDayCareStatus(request)
         })
     }
 
     private fun handleStaffAttendanceLo() {
         binding.staffAttendanceLo.setOnClickListener(View.OnClickListener {
-            ToastUtils.showErrorCustomToast(requireContext(), "This Feature is Not Implemented Yet..!")
+            ToastUtils.showErrorCustomToast(
+                requireContext(),
+                "This Feature is Not Implemented Yet..!"
+            )
         })
     }
 
@@ -299,11 +350,7 @@ class HomeFragment : BaseFragment() {
 
     private fun handleMenuImg() {
         binding.menuImg.setOnClickListener(View.OnClickListener {
-            if (binding.drawer.isDrawerOpen(Gravity.LEFT)) {
-                binding.drawer.closeDrawer(Gravity.LEFT)
-            } else {
-                binding.drawer.openDrawer(Gravity.LEFT)
-            }
+            binding.drawer.openDrawer(GravityCompat.START)
         })
     }
 
