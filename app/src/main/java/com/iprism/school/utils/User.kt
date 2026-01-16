@@ -22,6 +22,8 @@ class User(var context: Context) {
         const val ACADEMIC_YEAR_ID = "academic_year_id"
         const val ACADEMIC_YEAR = "academic_year"
         const val SCHOOL_ID = "school_id"
+        const val SCHOOL_NAME = "school_name"
+        const val IMAGE = "image"
         const val FIRST_NAME = "first_name"
         const val LAST_NAME = "last_name"
         const val MIDDLE_NAME = "middle_name"
@@ -131,7 +133,9 @@ class User(var context: Context) {
         middle_name: String?,
         last_name: String?,
         school_id: String?,
-        mobile: String?
+        mobile: String?,
+        schoolName: String?,
+        image: String?
     ) {
         editor.putString(ID, id)
         editor.putString(FIRST_NAME, first_name)
@@ -139,6 +143,8 @@ class User(var context: Context) {
         editor.putString(LAST_NAME, last_name)
         editor.putString(SCHOOL_ID, school_id)
         editor.putString(MOBILE, mobile)
+        editor.putString(SCHOOL_NAME, schoolName)
+        editor.putString(IMAGE, image)
         editor.putBoolean(IS_USER_LOGIN, true)
         editor.commit()
     }
@@ -231,6 +237,8 @@ class User(var context: Context) {
         user[MIDDLE_NAME] = sharedPreferences.getString(MIDDLE_NAME, null)
         user[LAST_NAME] = sharedPreferences.getString(LAST_NAME, null)
         user[SCHOOL_ID] = sharedPreferences.getString(SCHOOL_ID, null)
+        user[SCHOOL_NAME] = sharedPreferences.getString(SCHOOL_NAME, null)
+        user[IMAGE] = sharedPreferences.getString(IMAGE, null)
         return user
     }
 

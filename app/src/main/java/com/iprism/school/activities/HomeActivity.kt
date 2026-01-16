@@ -18,7 +18,6 @@ import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
 import com.iprism.school.adapters.HomePagerAdapter
 import com.iprism.school.databinding.ActivityHomeBinding
-import com.iprism.school.fragments.ChildCareFragment
 import com.iprism.school.fragments.HomeFragment
 import com.iprism.school.fragments.MessagesFragment
 import com.iprism.school.fragments.ScannerFragment

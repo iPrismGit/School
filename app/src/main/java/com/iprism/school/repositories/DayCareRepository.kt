@@ -1,11 +1,14 @@
 package com.iprism.school.repositories
 
 import android.content.Context
+import com.iprism.school.model.albums.AlbumsGalleryApiResponse
 import com.iprism.school.model.daycare.DayCareApiRequest
 import com.iprism.school.model.daycare.DayCareApiResponse
 import com.iprism.school.model.daycare.DayCareStatusApiRequest
 import com.iprism.school.model.daycare.DayCareStatusApiResponse
 import com.iprism.school.network.SchoolApi
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 class DayCareRepository(private var context: Context) {
 

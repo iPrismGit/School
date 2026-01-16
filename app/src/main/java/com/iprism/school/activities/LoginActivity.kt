@@ -85,7 +85,9 @@ class LoginActivity : BaseActivity() {
                         result.data.middle_name,
                         result.data.last_name,
                         result.data.branch_id,
-                        result.data.mobile
+                        result.data.mobile,
+                        result.data.branch_name,
+                        result.data.image
                     )
 //                    SchoolApi.setAuthToken(result.data.auth_token)
                     user.storeNewUserAuthToken(result.data.auth_token)

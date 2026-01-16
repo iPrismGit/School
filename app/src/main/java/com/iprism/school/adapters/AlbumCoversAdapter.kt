@@ -16,16 +16,25 @@ import com.bumptech.glide.Glide
 
 import com.iprism.school.R
 import com.iprism.school.databinding.AlbumCoverItemBinding
+import com.iprism.school.interfaces.OnAlbumClickListener
 import com.iprism.school.model.albums.AlbumCover
 import com.iprism.school.utils.Constants
 
 class AlbumCoversAdapter(var context: Context, var albumCovers: List<AlbumCover>) :
     RecyclerView.Adapter<AlbumCoversAdapter.AlbumCoverViewHolder>() {
+
+    private lateinit var listener: OnAlbumClickListener
+
+    fun setupListener(listener: OnAlbumClickListener) {
+        this.listener = listener
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): AlbumCoversAdapter.AlbumCoverViewHolder {
-        var binding = AlbumCoverItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        var binding =
+            AlbumCoverItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return AlbumCoverViewHolder(binding)
     }
 
@@ -73,6 +82,11 @@ class AlbumCoversAdapter(var context: Context, var albumCovers: List<AlbumCover>
             holder.binding.imageLoader.visibility = View.GONE
             holder.binding.thumbnailImg.setImageResource(R.drawable.dummy_logo)
         }
+
+        holder.binding.root.setOnClickListener { view ->
+            listener.onCoverClick(albumCover.id, albumCover.title)
+        }
+
     }
 
 

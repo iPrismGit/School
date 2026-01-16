@@ -64,6 +64,7 @@ import com.iprism.school.model.Response.TeacherCalenderListResponse
 import com.iprism.school.model.Response.TermsandConditionResponse
 import com.iprism.school.model.albums.AlbumCoverImagesApiRequest
 import com.iprism.school.model.albums.AlbumCoverImagesApiResponse
+import com.iprism.school.model.albums.AlbumsGalleryApiResponse
 import com.iprism.school.model.authmodel.LoginApiRequest
 import com.iprism.school.model.authmodel.LoginApiResponse
 import com.iprism.school.model.circularmodels.CircularApiRequest
@@ -87,10 +88,14 @@ import com.iprism.school.model.refreshtokenmodel.RefreshTokenApiResponse
 import com.iprism.school.model.studentsmodel.StudentsApiRequest
 import com.iprism.school.model.studentsmodel.StudentsApiResponse
 import com.iprism.school.utils.Constants
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Headers
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 
 interface StaffApiService {
 
@@ -265,5 +270,17 @@ interface StaffApiService {
 
     @POST(Constants.ALBUM_COVERS_ENDPOINT)
     suspend fun fetchAndInsertAlbumCovers(@Body request: AlbumCoverImagesApiRequest): AlbumCoverImagesApiResponse
+
+    @Multipart
+    @POST(Constants.ALBUMS_GALLERY_ENDPOINT)
+    suspend fun uploadAlbumMedia(
+        @Part("user_id") userId: RequestBody,
+        @Part("album_id") albumId: RequestBody,
+        @Part("view_type") viewType: RequestBody,
+        @Part("page") page: RequestBody,
+        @Part("type") type: RequestBody,
+        @Part media: List<MultipartBody.Part>
+    ): AlbumsGalleryApiResponse
+
 
 }

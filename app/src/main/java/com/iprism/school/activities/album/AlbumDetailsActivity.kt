@@ -1,6 +1,7 @@
 package com.iprism.school.activities.album
 
 import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
@@ -17,16 +18,25 @@ import android.widget.ListView
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
 import com.iprism.school.activities.LoginActivity
+import com.iprism.school.activities.ViewImageActivity
+import com.iprism.school.adapters.AlbumCoversAdapter
+import com.iprism.school.adapters.AlbumImagesAdapter
 import com.iprism.school.adapters.AlbumsImageAdapter
 import com.iprism.school.adapters.ImageAdapter
 import com.iprism.school.adapters.VideoAdapter
 import com.iprism.school.databinding.ActivityAlbumDetailsBinding
+import com.iprism.school.interfaces.OnAlbumClickListener
 import com.iprism.school.model.Request.AlbumDetailsReq
 import com.iprism.school.model.Request.CreateAlbumReq
 import com.iprism.school.model.Request.DeleteAlbumReq
@@ -41,8 +51,22 @@ import com.iprism.school.model.Response.ClassResponse
 import com.iprism.school.model.Response.ClasseList
 import com.iprism.school.model.Response.GroupsResponse
 import com.iprism.school.model.Response.GroupsTeacher
+import com.iprism.school.model.albums.AlbumCover
+import com.iprism.school.model.albums.AlbumCoverImagesApiRequest
+import com.iprism.school.model.albums.AlbumsGallery
+import com.iprism.school.repositories.AlbumsRepository
 import com.iprism.school.utils.ToastUtils
+import com.iprism.school.utils.UiState
 import com.iprism.school.utils.User
+import com.iprism.school.utils.hideProgress
+import com.iprism.school.utils.showProgress
+import com.iprism.school.viewModels.AlbumsViewModel
+import com.iprism.school.viewModels.ViewModelFactory
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -53,935 +77,356 @@ class AlbumDetailsActivity : BaseActivity() {
 
     private lateinit var binding: ActivityAlbumDetailsBinding
     private var albumId: String = ""
-
-    private var teacherId: String = ""
-    private var auth_token: String = ""
-    private var scl_id: String = ""
-    private var emp_designation: String = ""
-    private var emp_name: String = ""
-
-    private val classNames = mutableListOf<String>()
-    private val classIds = mutableListOf<String>()
-    private val classList = mutableListOf<ClasseList>()
-
-    private val groupNames = mutableListOf<String>()
-    private val groupIds = mutableListOf<String>()
-    private val groupList = mutableListOf<GroupsTeacher>()
-
-    private var selected_class_ids: String? = ""
-    private var selected_class_names: String? = ""
-
-    private var selected_group_ids: String? = ""
-    private var selected_group_names: String? = ""
-
-    private var isVisible = false  // Initially hidden
-
-    private var commaSeparatedBase64: String? = ""
-    private var base64StringVideo: String? = ""
-
-    private lateinit var imageAdapter: ImageAdapter
-    private val imageUris = mutableListOf<Uri>()
-    private lateinit var photoUri: Uri
-
-    private var attachment_type: String? = ""
-    private var visiable_type: String? = ""
-
-    private var album_content_id: String? = ""
-
-    private lateinit var videoAdapter: VideoAdapter
-    private val videoUris = mutableListOf<Uri>()
-    private val REQUEST_VIDEO_PICK = 101
+    private var albumName: String = ""
+    private lateinit var albumsViewModel: AlbumsViewModel
+    private lateinit var albumImagesAdapter: AlbumImagesAdapter
+    private var albumImagesList = mutableListOf<AlbumsGallery>()
+    private var isFreshLoad = false
+    private var isLoading = false
+    private var isLastPage = false
+    private var currentPage = 1
+    private val limit = 10
+    private val selectedImageUris = mutableListOf<Uri>()
+    private val MAX_SELECTION = 5
+    private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAlbumDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        teacherId = userDetails[User.Companion.ID].toString()
-        auth_token = userDetails[User.Companion.AUTH_TOKEN].toString()
-        scl_id = userDetails[User.Companion.SCHOOL_ID].toString()
-
-        emp_name = userDetails[User.Companion.EMP_NAME].toString()
-        emp_designation = userDetails[User.Companion.EMP_DESIGNATION].toString()
-
         albumId = intent.getStringExtra("albumId").toString()
-        handleBack()
-        handleDeleteIv()
-        handleMoreBtn()
+        albumName = intent.getStringExtra("albumName").toString()
+        binding.titleTxt.text = albumName
+        galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
-        detailsAlbum()
+                if (result.resultCode == Activity.RESULT_OK) {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requestPermissions(arrayOf(Manifest.permission.READ_MEDIA_VIDEO), 100)
-        } else {
-            requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 100)
-        }
+                    selectedImageUris.clear()
+                    val data = result.data
 
-        handleBack()
-        handleCreateBtn()
-        handleAddBtn()
+                    if (data?.clipData != null) {
 
-        // Private - Visible to only School parent
-        // Public - Visible to Everyone
+                        val count = data.clipData!!.itemCount
 
-        val genderoptions = arrayOf("Private - Visible to only School parent", "Public - Visible to Everyone")
-        binding.privatePublicLl.setOnClickListener {
-            // Track the selected option
-            var selectedOption = ""
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("Choose an Option")
-            builder.setSingleChoiceItems(genderoptions, -1) { dialog, which ->
-                selectedOption = genderoptions[which] // Capture the selected option
-            }
-            builder.setPositiveButton("OK") { dialog, _ ->
-                if (selectedOption.isNotEmpty()) {
-                    visiable_type = selectedOption.toString()
-                    binding.selectedView.text = selectedOption.toString()
+                        if (count > MAX_SELECTION) {
+                            Toast.makeText(
+                                this,
+                                "You can select maximum $MAX_SELECTION images",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            return@registerForActivityResult
+                        }
 
-                    visiable_type = if (selectedOption == "Private - Visible to only School parent") "Private" else "Public"
+                        for (i in 0 until count) {
+                            selectedImageUris.add(data.clipData!!.getItemAt(i).uri)
+                        }
 
-//                    Toast.makeText(this, "You selected: $selectedOption", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "No option selected", Toast.LENGTH_SHORT).show()
+                    } else if (data?.data != null) {
+                        selectedImageUris.add(data.data!!)
+                    }
+
+                    updateSelectedImagesLayout()
                 }
-                dialog.dismiss()
             }
-            builder.setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
+
+        handleBack()
+        initViewModel()
+        setupRecyclerView()
+        observeAlbumsResponse()
+        observeInsertAlbumsResponse()
+        loadAlbumImages()
+        handleRefreshLo()
+        handleAddBtn()
+        handleSendBtn()
+    }
+
+    private fun observeInsertAlbumsResponse() {
+        albumsViewModel.insertImagesResponse.observe(this) { result ->
+
+            when (result) {
+                is UiState.Loading -> {
+                    binding.progress.showProgress()
+                    binding.backIv.isEnabled = false
+                    binding.addBtn.isEnabled = false
+                    binding.sendBtn.isEnabled = false
+                }
+
+                is UiState.Success -> {
+                    binding.progress.hideProgress()
+                    binding.backIv.isEnabled = true
+                    binding.addBtn.isEnabled = true
+                    binding.sendBtn.isEnabled = true
+                    ToastUtils.showSuccessCustomToast(this, "Images Added Succefully..!")
+                    loadAlbumImages()
+                }
+
+                is UiState.Error -> {
+
+                    binding.progress.hideProgress()
+                    binding.backIv.isEnabled = true
+                    binding.addBtn.isEnabled = true
+                    binding.sendBtn.isEnabled = true
+                }
             }
-            builder.create().show()
-        }
-
-        binding.imagesRv.layoutManager = GridLayoutManager(this, 3)
-        imageAdapter = ImageAdapter(imageUris) { uri ->
-            imageAdapter.deleteImage(uri)
-        }
-        binding.imagesRv.adapter = imageAdapter
-        imageAdapter.notifyDataSetChanged()
-
-        binding.videosRv.layoutManager = GridLayoutManager(this, 3)
-        videoAdapter = VideoAdapter(videoUris) { uri ->
-            deleteVideo(uri)
-        }
-        binding.videosRv.adapter = videoAdapter
-
-        binding.classLl.setOnClickListener {
-            showClasses()
-        }
-        binding.groupsLl.setOnClickListener {
-            showGroups()
-        }
-
-        binding.imagesImg.setOnClickListener {
-            binding.imagesRv.visibility = View.VISIBLE
-            binding.videosRv.visibility = View.GONE
-            openGallery()
-            attachment_type = "image"
-        }
-
-        binding.videosImg.setOnClickListener {
-            binding.imagesRv.visibility = View.GONE
-            binding.videosRv.visibility = View.VISIBLE
-            selectVideos()
-            attachment_type = "video"
-        }
-
-        binding.deleteIv.setOnClickListener {
-            deleteAlbum()
         }
     }
 
-    private fun detailsAlbum() {
-        showProgress()
-        var apiRequest = AlbumDetailsReq(albumId, auth_token,scl_id, teacherId)
-        Log.d("albumDetails_Req", apiRequest.toString())
-        val call: Call<AlbumDetailsResponse> = parentApiService!!.albumDetails(apiRequest)
-        call.enqueue(object : Callback<AlbumDetailsResponse> {
-            override fun onResponse(call: Call<AlbumDetailsResponse>, response: Response<AlbumDetailsResponse>) {
-                if (response.isSuccessful) {
-                    hideProgress()
-                    callclasses()
-                    val loginApiResponse = response.body()
+    private fun handleSendBtn() {
+        binding.sendBtn.setOnClickListener { view ->
+            if (selectedImageUris.isEmpty()){
+                ToastUtils.showErrorCustomToast(this, "Please Select Images..!")
+            } else{
+                val albumId = RequestBody.create("text/plain".toMediaType(), albumId)
+                val type = RequestBody.create("text/plain".toMediaType(), "image")
+                val page = RequestBody.create("text/plain".toMediaType(), currentPage.toString())
+                val userId = RequestBody.create("text/plain".toMediaType(), userDetails[User.ID].toString())
+                val viewType = RequestBody.create("text/plain".toMediaType(), "insert")
+                val imageParts = prepareImageParts()
+                albumsViewModel.insertAlbumMedia(
+                    userId,
+                    albumId,
+                    viewType,
+                    page,
+                    type,
+                    imageParts
+                )
+            }
+        }
+    }
 
-                    album_content_id = loginApiResponse!!.response.album_details[0].id.toString()
+    private fun prepareImageParts(): List<MultipartBody.Part> {
 
-                    selected_class_ids = loginApiResponse.response.album_details[0].classes.toString()
-                    selected_group_ids = loginApiResponse.response.album_details[0].groups.toString()
+        val parts = mutableListOf<MultipartBody.Part>()
 
-                    binding.titleEt.setText(loginApiResponse.response.album_details[0].title.toString())
-                    binding.descriptionEt.setText(loginApiResponse.response.album_details[0].description.toString())
+        for ((index, uri) in selectedImageUris.withIndex()) {
 
-                    binding.selectedclass.text = loginApiResponse.response.album_details[0].class_names.toString()
-                    binding.selectedgroups.text = loginApiResponse.response.album_details[0].group_names.toString()
-                    binding.selectedView.text = loginApiResponse.response.album_details[0].type.toString()
+            val inputStream = contentResolver.openInputStream(uri)
+            val bytes = inputStream!!.readBytes()
 
-                    visiable_type = loginApiResponse.response.album_details[0].type.toString()
+            val requestBody = bytes.toRequestBody("image/*".toMediaTypeOrNull())
 
-                    attachment_type = loginApiResponse.response.album_details[0].album_type.toString()
+            val part = MultipartBody.Part.createFormData(
+                "media[$index]",   // <-- API key name
+                "image_$index.jpg",
+                requestBody
+            )
 
-                    if (attachment_type == "image"){
-                        binding.imagesImg.visibility = View.VISIBLE
-                        binding.videosImg.visibility = View.GONE
-                    }else{
-                        binding.imagesImg.visibility = View.GONE
-                        binding.videosImg.visibility = View.VISIBLE
-                    }
+            parts.add(part)
+        }
 
-                        if (loginApiResponse.response.album_details[0].album_content.isEmpty()){
+        return parts
+    }
 
-                        }else{
-                            var albumsAdapter = AlbumsImageAdapter(this@AlbumDetailsActivity,loginApiResponse.response.album_details[0].album_content,
-                                attachment_type!!)
-                            binding.imagesRv.adapter = albumsAdapter
-                            var linearLayoutManager = GridLayoutManager(this@AlbumDetailsActivity, 2)
-                            binding.imagesRv.layoutManager = linearLayoutManager
+    private fun updateSelectedImagesLayout() {
+        if (selectedImageUris.isNotEmpty()) {
+            binding.selectedImagesLayout.visibility = View.VISIBLE
+            binding.selectedCountTxt.text =
+                "You have selected ${selectedImageUris.size} items"
+        } else {
+            binding.selectedImagesLayout.visibility = View.GONE
+        }
+    }
 
-                            albumsAdapter.OnItemBtn = {
-                                    mydata ->
-                                val album_content_idd = mydata.id.toString()
+    private fun handleBack() {
+        binding.backIv.setOnClickListener { view ->
+            finish()
+        }
+    }
 
-                                Log.d("albumContentId",album_content_idd.toString())
-                                singledeleteAlbum(album_content_idd)
-                            }
+    private fun initViewModel() {
+        val repository = AlbumsRepository(this)
+        val factory = ViewModelFactory { AlbumsViewModel(repository) }
+        albumsViewModel = ViewModelProvider(this, factory)[AlbumsViewModel::class.java]
+    }
+
+    private fun loadAlbumImages(isFromFilterChange: Boolean = false) {
+
+        if (isLoading) return
+
+        if (isFromFilterChange) {
+            currentPage = 1
+            isLastPage = false
+            isFreshLoad = true
+
+            albumImagesList.clear()
+            albumImagesAdapter.notifyDataSetChanged()
+
+            binding.albumImagesRv.visibility = View.GONE
+            binding.noDataTxt.visibility = View.VISIBLE
+        }
+        resetImages()
+        isLoading = true
+        Log.d("AlbumImagesAPI", """ albumId = $albumId
+    type = image
+    page = $currentPage
+    userId = ${userDetails[User.ID]}
+    viewType = view
+""".trimIndent())
+
+        val albumId = RequestBody.create("text/plain".toMediaType(), albumId)
+        val type = RequestBody.create("text/plain".toMediaType(), "image")
+        val page = RequestBody.create("text/plain".toMediaType(), currentPage.toString())
+        val userId = RequestBody.create("text/plain".toMediaType(), userDetails[User.ID].toString())
+        val viewType = RequestBody.create("text/plain".toMediaType(), "view")
+
+        albumsViewModel.uploadAlbumMedia(
+            userId,
+            albumId,
+            viewType,
+            page,
+            type,
+            emptyList()
+        )
+    }
+
+
+    private fun refreshItems() {
+        currentPage = 1
+        isLastPage = false
+        isLoading = false
+        albumImagesList.clear()
+        albumImagesAdapter.notifyDataSetChanged()
+        loadAlbumImages(isFromFilterChange = true)
+    }
+
+    private fun loadMoreItems() {
+        if (isLastPage || isLoading) return
+        isLoading = true
+        currentPage++
+        loadAlbumImages()
+    }
+
+    private fun resetImages() {
+        currentPage = 1
+        isLastPage = false
+        isLoading = false
+        albumImagesList.clear()
+        albumImagesAdapter.notifyDataSetChanged()
+        binding.albumImagesRv.visibility = View.GONE
+        binding.noDataTxt.visibility = View.VISIBLE
+    }
+
+    private fun handleRefreshLo() {
+        binding.refreshLayout.setOnRefreshListener(
+            SwipeRefreshLayout.OnRefreshListener {
+                refreshItems()
+                binding.refreshLayout.isRefreshing = false
+            }
+        )
+    }
+
+    private fun setupRecyclerView() {
+        albumImagesAdapter = AlbumImagesAdapter(this, albumImagesList)
+        val linearLayoutManager = GridLayoutManager(this, 3)
+
+        binding.albumImagesRv.apply {
+            layoutManager = linearLayoutManager
+            adapter = albumImagesAdapter
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    binding.refreshLayout.isEnabled =
+                        !binding.albumImagesRv.canScrollVertically(-1)
+                    val visibleItemCount = linearLayoutManager.childCount
+                    val totalItemCount = linearLayoutManager.itemCount
+                    val firstVisibleItemPosition =
+                        linearLayoutManager.findFirstVisibleItemPosition()
+
+                    if (!isLoading && !isLastPage && albumImagesList.isNotEmpty()) {
+                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                            && firstVisibleItemPosition >= 0
+                        ) {
+                            loadMoreItems()
                         }
-                    }else{
-                      hideProgress()
-                      callclasses()
-                      ToastUtils.showErrorCustomToast(this@AlbumDetailsActivity, response.message())
                     }
+
+                }
+            })
+            albumImagesAdapter.setupListener(object : OnAlbumClickListener{
+                override fun onCoverClick(albumId: String, albumName: String) {
+                    var intent = Intent(this@AlbumDetailsActivity, ViewImageActivity::class.java)
+                    intent.putExtra("EventImage", albumName)
+                    intent.putExtra("EventName", this@AlbumDetailsActivity.albumName)
+                    startActivity(intent)
+                }
+
+            })
+        }
+
+    }
+
+    private fun observeAlbumsResponse() {
+        albumsViewModel.uploadMediaResponse.observe(this) { result ->
+
+            when (result) {
+                is UiState.Loading -> {
+                    if (currentPage == 1) {
+                        binding.progress.showProgress()
+                    }
+                }
+
+                is UiState.Success -> {
+                    binding.progress.hideProgress()
+                    isLoading = false
+
+                    val newAlbumCovers = result.data.albums_gallery
+
+                    if (newAlbumCovers.isNotEmpty()) {
+
+                        if (isFreshLoad) {
+                            albumImagesList.clear()
+                            isFreshLoad = false
+                        }
+
+                        albumImagesList.addAll(newAlbumCovers)
+                        albumImagesAdapter.notifyDataSetChanged()
+
+                        binding.albumImagesRv.visibility = View.VISIBLE
+                        binding.noDataTxt.visibility = View.GONE
+
+                        isLastPage = newAlbumCovers.size < limit
+                    } else {
+                        isLastPage = true
+
+                        if (currentPage == 1) {
+                            albumImagesList.clear()
+                            albumImagesAdapter.notifyDataSetChanged()
+                            binding.albumImagesRv.visibility = View.GONE
+                            binding.noDataTxt.visibility = View.VISIBLE
+                        }
+                    }
+
+                }
+
+                is UiState.Error -> {
+                    isLoading = false
+                    binding.progress.hideProgress()
+                    if (albumImagesList.isEmpty()) {
+                        binding.albumImagesRv.visibility = View.GONE
+                        binding.noDataTxt.visibility = View.VISIBLE
+                        ToastUtils.showErrorCustomToast(this, result.message)
+                    } else {
+                        binding.albumImagesRv.visibility = View.VISIBLE
+                        binding.noDataTxt.visibility = View.GONE
+                        ToastUtils.showErrorCustomToast(this, "There is no more data")
+                    }
+                }
             }
-            override fun onFailure(call: Call<AlbumDetailsResponse>, t: Throwable) {
-                hideProgress()
-                ToastUtils.showErrorCustomToast(this@AlbumDetailsActivity, t.message.toString())
-            }
-        })
+        }
     }
 
     private fun handleAddBtn() {
         binding.addBtn.setOnClickListener(View.OnClickListener {
-            isVisible = !isVisible  // Toggle state
-            binding.optionsLo.visibility = if (isVisible) View.VISIBLE else View.GONE
-//            binding.optionsLo.visibility = View.VISIBLE
+            openGallery()
         })
-    }
-
-    private fun handleCreateBtn() {
-        binding.saveBtn.setOnClickListener(View.OnClickListener {
-//            blinkButton(binding.createBtn)
-//            showConfirmationBottomSheet()
-
-            if (attachment_type == "image") {
-                convertImagesToBase64()
-            } else {
-
-            }
-
-            if (binding.titleEt.text.toString() == "" || binding.titleEt.text.toString() == null) {
-                showToast("Enter Title")
-            } else if (binding.descriptionEt.text.toString() == "" || binding.descriptionEt.text.toString() == null) {
-                showToast("Enter Description")
-            } else if (selected_class_ids == "" || selected_class_ids == null) {
-                showToast("Select Class")
-            }
-//            else if (selected_group_ids == "" || selected_group_ids == null) {
-//                showToast("Select Group")
-//            }
-            else {
-                uploadAlbum()
-            }
-
-        })
-    }
-
-    private fun handleMoreBtn() {
-        binding.moreIv.setOnClickListener(View.OnClickListener {
-            showPopupMenu(it)
-        })
-    }
-
-    private fun handleDeleteIv() {
-        binding.deleteIv.setOnClickListener(View.OnClickListener {
-            showDeleteBottomSheet()
-        })
-    }
-
-    private fun showPopupMenu(view: View) {
-        val popupMenu = PopupMenu(this, view)
-        popupMenu.menuInflater.inflate(R.menu.album_menu_item, popupMenu.menu)
-        popupMenu.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.share_lo -> {
-                    shareAppLink()
-                    true
-                }
-
-                R.id.share_on_face_book_lo ->{
-                    shareAppLink()
-                    true
-                }
-
-                R.id.download_all_images_lo ->{
-                    ToastUtils.showSuccessCustomToast(this, "Images Downloaded Successfully")
-                    true
-                }
-
-                else -> false
-            }
-        }
-        popupMenu.show()
-    }
-
-    private fun shareAppLink() {
-        val appLink = "https://play.google.com/store/apps/details?id=" + "com.iprism.school"
-        val shareText = "Hey check out beauty services app at $appLink"
-        val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.type = "text/plain"
-        shareIntent.putExtra(Intent.EXTRA_TEXT, shareText)
-        startActivity(Intent.createChooser(shareIntent, "Share app via"))
-    }
-
-    private fun handleBack() {
-        binding.backIv.setOnClickListener(View.OnClickListener {
-            val intent = Intent(this@AlbumDetailsActivity, AlbumsActivity::class.java)
-            startActivity(intent)
-            finish()
-        })
-    }
-
-    private fun showDeleteBottomSheet() {
-
-//        val bottomSheetDialog = BottomSheetDialog(this)
-//
-//        val deleteBinding = DeleteBottomSheetBinding.inflate(layoutInflater)
-//        bottomSheetDialog.setContentView(deleteBinding.root)
-//
-//        bottomSheetDialog.setOnShowListener { dialog ->
-//            val bottomSheet =
-//                (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-//            bottomSheet?.setBackgroundResource(R.drawable.rounded_bottom_sheet_background)
-//        }
-//        deleteBinding.cancelBtn.setOnClickListener(View.OnClickListener {
-//            bottomSheetDialog.dismiss()
-//        })
-//
-//        deleteBinding.crossIv.setOnClickListener(View.OnClickListener {
-//            bottomSheetDialog.dismiss()
-//        })
-//
-//        deleteBinding.deleteButton.setOnClickListener(View.OnClickListener {
-//            bottomSheetDialog.dismiss()
-//            ToastUtils.showSuccessCustomToast(this, "Album Deleted Successfully")
-//            finish()
-//        })
-//        bottomSheetDialog.show()
-
-    }
-
-    private fun callclasses() {
-        showProgress()
-        var loginApiRequest = TeacherAccessReq(teacherId, auth_token)
-        Log.d("class_Req_2025", loginApiRequest.toString())
-        var call: Call<ClassResponse> = parentApiService!!.classes(loginApiRequest)
-        call.enqueue(object : Callback<ClassResponse> {
-            override fun onResponse(call: Call<ClassResponse>, response: Response<ClassResponse>) {
-                if (response.isSuccessful) {
-                    hideProgress()
-                    response.body()?.response?.classes?.let {
-                        hideProgress()
-                        classList.clear()
-                        classList.addAll(it)
-                    }
-
-                    hideProgress()
-                    var loginApiResponse = response.body()
-                    if (loginApiResponse!!.status) {
-                        hideProgress()
-                    } else {
-                        hideProgress()
-                        ToastUtils.showSuccessCustomToast(this@AlbumDetailsActivity, loginApiResponse.message.toString())
-                        if (loginApiResponse.message.toString() == "Authentication Token Expired") {
-                            user!!.storeUserDetails("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "")
-                            startActivity(Intent(this@AlbumDetailsActivity, LoginActivity::class.java))
-                            finish()
-                        } else {
-
-                        }
-                    }
-                } else {
-                    hideProgress()
-                    ToastUtils.showErrorCustomToast(this@AlbumDetailsActivity, response.message())
-                }
-            }
-
-            override fun onFailure(call: Call<ClassResponse>, t: Throwable) {
-                hideProgress()
-                ToastUtils.showErrorCustomToast(this@AlbumDetailsActivity, t.message.toString())
-            }
-        })
-    }
-
-    private fun callGroups() {
-        showProgress()
-        var loginApiRequest = SchoolStaffReq(auth_token, scl_id, teacherId)
-        Log.d("class_Req_2025", loginApiRequest.toString())
-        var call: Call<GroupsResponse> = parentApiService!!.teacherViewGroups(loginApiRequest)
-        call.enqueue(object : Callback<GroupsResponse> {
-            override fun onResponse(call: Call<GroupsResponse>, response: Response<GroupsResponse>) {
-                if (response.isSuccessful) {
-                    hideProgress()
-                    response.body()?.response?.groups?.let {
-                        hideProgress()
-                        groupList.clear()
-                        groupList.addAll(it)
-                    }
-
-                    hideProgress()
-                    var loginApiResponse = response.body()
-                    if (loginApiResponse!!.status) {
-                        hideProgress()
-
-                    } else {
-
-                        hideProgress()
-                        ToastUtils.showSuccessCustomToast(
-                            this@AlbumDetailsActivity,
-                            loginApiResponse.message.toString()
-                        )
-                        if (loginApiResponse.message.toString() == "Authentication Token Expired") {
-                            user!!.storeUserDetails(
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                "",
-                                ""
-                            )
-                            startActivity(
-                                Intent(
-                                    this@AlbumDetailsActivity,
-                                    LoginActivity::class.java
-                                )
-                            )
-                            finish()
-                        } else {
-
-                        }
-                    }
-                } else {
-                    hideProgress()
-                    ToastUtils.showErrorCustomToast(this@AlbumDetailsActivity, response.message())
-                }
-            }
-
-            override fun onFailure(call: Call<GroupsResponse>, t: Throwable) {
-                hideProgress()
-                ToastUtils.showErrorCustomToast(this@AlbumDetailsActivity, t.message.toString())
-            }
-        })
-    }
-
-    private fun showClasses() {
-
-        val dialogView = LayoutInflater.from(this).inflate(com.iprism.school.R.layout.dialog_class_selection, null)
-        val searchView = dialogView.findViewById<SearchView>(com.iprism.school.R.id.searchView)
-        val listView = dialogView.findViewById<ListView>(com.iprism.school.R.id.classListView)
-        val nameTv = dialogView.findViewById<TextView>(com.iprism.school.R.id.nameTv)
-
-        nameTv.text = "Select Class"
-
-        val originalClassNames = mutableListOf("Select All") + classList.map { it.class_name }
-        val filteredClassNames = originalClassNames.toMutableList()
-        val checkedItems = BooleanArray(originalClassNames.size) { false }
-
-        // Track selected class IDs
-        val tempClassNames = classNames.toMutableSet()
-        val tempClassIds = classIds.toMutableSet()
-
-        // Set up the adapter
-        val adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_list_item_multiple_choice,
-            filteredClassNames
-        )
-        listView.adapter = adapter
-        listView.choiceMode = ListView.CHOICE_MODE_MULTIPLE
-
-        // Restore previously selected checkboxes
-        classList.forEachIndexed { index, classItem ->
-            if (tempClassIds.contains(classItem.id)) {
-                checkedItems[index + 1] = true // Offset by 1 due to "Select All"
-                listView.setItemChecked(index + 1, true) // Ensure check is shown
-            }
-        }
-
-        // Check "Select All" if all are already selected
-        if (tempClassIds.size == classList.size) {
-            checkedItems[0] = true
-            listView.setItemChecked(0, true)
-        }
-
-        // Handle ListView item selection
-        listView.setOnItemClickListener { _, _, which, _ ->
-            if (which == 0) { // "Select All" logic
-                val isChecked = !checkedItems[0]
-                for (i in 1 until checkedItems.size) {
-                    checkedItems[i] = isChecked
-                    listView.setItemChecked(i, isChecked)
-                }
-                if (isChecked) {
-                    tempClassNames.clear()
-                    tempClassIds.clear()
-                    tempClassNames.addAll(classList.map { it.class_name })
-                    tempClassIds.addAll(classList.map { it.id })
-                } else {
-                    tempClassNames.clear()
-                    tempClassIds.clear()
-                }
-            } else {
-                val selectedClassName = classList[which - 1].class_name
-                val selectedClassId = classList[which - 1].id
-
-                if (tempClassNames.contains(selectedClassName)) {
-                    tempClassNames.remove(selectedClassName)
-                    tempClassIds.remove(selectedClassId)
-                    listView.setItemChecked(which, false)
-                } else {
-                    tempClassNames.add(selectedClassName)
-                    tempClassIds.add(selectedClassId)
-                    listView.setItemChecked(which, true)
-                }
-
-                // Update "Select All" state
-                checkedItems[0] = tempClassNames.size == classList.size
-                listView.setItemChecked(0, checkedItems[0])
-            }
-        }
-
-        // Implement search filter
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextChange(newText: String?): Boolean {
-                filteredClassNames.clear()
-                filteredClassNames.add("Select All") // Keep Select All on top
-                if (newText.isNullOrEmpty()) {
-                    filteredClassNames.addAll(classList.map { it.class_name })
-                } else {
-                    filteredClassNames.addAll(classList.filter {
-                        it.class_name.contains(
-                            newText,
-                            true
-                        )
-                    }.map { it.class_name })
-                }
-                adapter.notifyDataSetChanged()
-                return true
-            }
-
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-        })
-
-        // Build and Show AlertDialog
-        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
-            .setView(dialogView)
-            .setPositiveButton("OK") { _, _ ->
-                classNames.clear()
-                classIds.clear()
-                classNames.addAll(tempClassNames)
-                classIds.addAll(tempClassIds)
-
-                selected_class_ids = classIds.joinToString(",")
-                selected_class_names = classNames.joinToString(" , ")
-                binding.selectedclass.text = selected_class_names
-                Log.d("SelectedClass", selected_class_ids.toString())
-                callGroups()
-            }
-            .setNegativeButton("Cancel") { _, _ ->
-                // Reset all selections
-                classNames.clear()
-                classIds.clear()
-                selected_class_ids = ""
-                selected_class_names = ""
-                binding.selectedclass.text = ""
-
-            }
-            .create()
-        dialog.show()
-    }
-
-    private fun showGroups() {
-        val dialogView = LayoutInflater.from(this).inflate(com.iprism.school.R.layout.dialog_class_selection, null)
-        val searchView = dialogView.findViewById<SearchView>(com.iprism.school.R.id.searchView)
-        val listView = dialogView.findViewById<ListView>(com.iprism.school.R.id.classListView)
-        val nameTv = dialogView.findViewById<TextView>(com.iprism.school.R.id.nameTv)
-
-        nameTv.text = "Select Groups"
-
-        val originalClassNames = mutableListOf("Select All") + groupList.map { it.group_name }
-        val filteredClassNames = originalClassNames.toMutableList()
-        val checkedItems = BooleanArray(originalClassNames.size) { false }
-
-        // Track selected class IDs
-        val tempClassNames = groupNames.toMutableSet()
-        val tempClassIds = groupIds.toMutableSet()
-
-        // Set up the adapter
-        val adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_list_item_multiple_choice,
-            filteredClassNames
-        )
-        listView.adapter = adapter
-        listView.choiceMode = ListView.CHOICE_MODE_MULTIPLE
-
-        // Restore previously selected checkboxes
-        groupList.forEachIndexed { index, classItem ->
-            if (tempClassIds.contains(classItem.id)) {
-                checkedItems[index + 1] = true // Offset by 1 due to "Select All"
-                listView.setItemChecked(index + 1, true) // Ensure check is shown
-            }
-        }
-
-        // Check "Select All" if all are already selected
-        if (tempClassIds.size == groupList.size) {
-            checkedItems[0] = true
-            listView.setItemChecked(0, true)
-        }
-
-        // Handle ListView item selection
-        listView.setOnItemClickListener { _, _, which, _ ->
-            if (which == 0) { // "Select All" logic
-                val isChecked = !checkedItems[0]
-                for (i in 1 until checkedItems.size) {
-                    checkedItems[i] = isChecked
-                    listView.setItemChecked(i, isChecked)
-                }
-                if (isChecked) {
-                    tempClassNames.clear()
-                    tempClassIds.clear()
-                    tempClassNames.addAll(groupList.map { it.group_name })
-                    tempClassIds.addAll(groupList.map { it.id })
-                } else {
-                    tempClassNames.clear()
-                    tempClassIds.clear()
-                }
-            } else {
-                val selectedClassName = groupList[which - 1].group_name
-                val selectedClassId = groupList[which - 1].id
-
-                if (tempClassNames.contains(selectedClassName)) {
-                    tempClassNames.remove(selectedClassName)
-                    tempClassIds.remove(selectedClassId)
-                    listView.setItemChecked(which, false)
-                } else {
-                    tempClassNames.add(selectedClassName)
-                    tempClassIds.add(selectedClassId)
-                    listView.setItemChecked(which, true)
-                }
-
-                // Update "Select All" state
-                checkedItems[0] = tempClassNames.size == groupList.size
-                listView.setItemChecked(0, checkedItems[0])
-            }
-        }
-
-        // Implement search filter
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextChange(newText: String?): Boolean {
-                filteredClassNames.clear()
-                filteredClassNames.add("Select All") // Keep Select All on top
-                if (newText.isNullOrEmpty()) {
-                    filteredClassNames.addAll(groupList.map { it.group_name })
-                } else {
-                    filteredClassNames.addAll(groupList.filter {
-                        it.group_name.contains(
-                            newText,
-                            true
-                        )
-                    }.map { it.group_name })
-                }
-                adapter.notifyDataSetChanged()
-                return true
-            }
-
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-        })
-
-        // Build and Show AlertDialog
-        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
-            .setView(dialogView)
-            .setPositiveButton("OK") { _, _ ->
-                groupNames.clear()
-                groupIds.clear()
-                groupNames.addAll(tempClassNames)
-                groupIds.addAll(tempClassIds)
-
-                selected_group_ids = groupIds.joinToString(",")
-                selected_group_names = groupNames.joinToString(" , ")
-                binding.selectedgroups.text = selected_group_names
-                Log.d("selectedgroups", selected_group_ids.toString())
-            }
-            .setNegativeButton("Cancel") { _, _ ->
-                // Reset all selections
-                groupIds.clear()
-                groupList.clear()
-                selected_group_ids = ""
-                selected_group_names = ""
-                binding.selectedgroups.text = ""
-            }
-            .create()
-        dialog.show()
     }
 
     private fun openGallery() {
-        Intent(Intent.ACTION_GET_CONTENT).also { intent ->
-            intent.type = "image/*"
-            this?.let {
-                intent.resolveActivity(this.packageManager)?.also {
-                    pickImageLauncher.launch(intent)
-                }
-            }
-        }
-    }
-
-    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == RESULT_OK && result.data?.data != null) {
-                val imageUri = result.data!!.data!!
-                imageUris.add(imageUri)
-                imageAdapter.notifyDataSetChanged()
-
-                singleaddAlbum()
-
-            }
-        }
-
-    private fun convertImagesToBase64() {
-        attachment_type = "image"
-        val base64Strings = imageUris.mapNotNull { uri -> uriToBase64(this@AlbumDetailsActivity, uri) }
-        commaSeparatedBase64 = base64Strings.joinToString(",")
-        Log.d("base64String", commaSeparatedBase64.toString())
-    }
-
-    private fun uriToBase64(context: AlbumDetailsActivity, uri: Uri): String? {
-        return try {
-            val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
-            val bitmap = BitmapFactory.decodeStream(inputStream)
-            val byteArrayOutputStream = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
-            val byteArray = byteArrayOutputStream.toByteArray()
-            Base64.encodeToString(byteArray, Base64.NO_WRAP)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
-    }
-
-    private fun selectVideos() {
-        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            type = "video/*" // Correct way to set MIME type
-            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)  // Allow multiple selection
-        }
-        startActivityForResult(intent, REQUEST_VIDEO_PICK)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == REQUEST_VIDEO_PICK && resultCode == RESULT_OK) {
-            videoUris.clear()
-
-            // If multiple videos are selected
-            data?.clipData?.let { clipData ->
-                for (i in 0 until clipData.itemCount) {
-                    videoUris.add(clipData.getItemAt(i).uri)
-                }
-            }
-            data?.data?.let { uri ->
-                videoUris.add(uri)
-            }
-
-
-            // Convert videos to Base64
-            val base64Videos = videoUris.mapNotNull { uri -> uriToBase64(uri) }
-
-            // Create a comma-separated Base64 string
-            commaSeparatedBase64 = base64Videos.joinToString(",")
-
-            Log.d("base64StringVideo", commaSeparatedBase64.toString())
-
-            // Refresh RecyclerView
-//            videoAdapter.updateVideos(videoUris)
-            videoAdapter.notifyDataSetChanged()
-
-            Toast.makeText(this, "Selected ${videoUris.size} videos", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun uriToBase64(uri: Uri): String? {
-        return try {
-            val inputStream: InputStream? = contentResolver.openInputStream(uri)
-            val byteArrayOutputStream = ByteArrayOutputStream()
-            val buffer = ByteArray(1024)
-            var bytesRead: Int
-
-            while (inputStream?.read(buffer).also { bytesRead = it ?: -1 } != -1) {
-                byteArrayOutputStream.write(buffer, 0, bytesRead)
-            }
-            inputStream?.close()
-            byteArrayOutputStream.close()
-
-            // Convert to Base64 string
-            Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
-        }
-    }
-
-    private fun deleteVideo(uri: Uri) {
-        videoAdapter.deleteVideo(uri)
-        Toast.makeText(this, "Video deleted", Toast.LENGTH_SHORT).show()
-        // Convert videos to Base64
-        val base64Videos = videoUris.mapNotNull { uri -> uriToBase64(uri) }
-
-        // Create a comma-separated Base64 string
-        commaSeparatedBase64 = base64Videos.joinToString(",")
-
-        Log.d("base64StringVideo", commaSeparatedBase64.toString())
-
-    }
-
-    private fun uploadAlbum() {
-        showProgress()
-        var apiRequest = CreateAlbumReq(attachment_type.toString(),
-            commaSeparatedBase64.toString(),
-            auth_token,
-            selected_class_ids.toString(),
-            binding.descriptionEt.text.toString(),
-            selected_group_ids.toString(),
-            scl_id,
-            teacherId,
-            binding.titleEt.text.toString(),
-            visiable_type.toString(),albumId.toString())
-        Log.d("uploadAlbum_Req", apiRequest.toString())
-        val call: Call<AlbumUploadResponse> = parentApiService!!.albumDetailsUpdate(apiRequest)
-        call.enqueue(object : Callback<AlbumUploadResponse> {
-            override fun onResponse(call: Call<AlbumUploadResponse>, response: Response<AlbumUploadResponse>) {
-                if (response.isSuccessful) {
-                    hideProgress()
-                    val loginApiResponse = response.body()
-                    ToastUtils.showSuccessCustomToast(this@AlbumDetailsActivity, loginApiResponse!!.message.toString())
-                    val intent = Intent(this@AlbumDetailsActivity, AlbumDetailsActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    hideProgress()
-                    ToastUtils.showErrorCustomToast(this@AlbumDetailsActivity, response.message())
-                }
-            }
-            override fun onFailure(call: Call<AlbumUploadResponse>, t: Throwable) {
-                hideProgress()
-                ToastUtils.showErrorCustomToast(this@AlbumDetailsActivity, t.message.toString())
-            }
-        })
-    }
-
-
-    private fun deleteAlbum() {
-        showProgress()
-        var apiRequest = DeleteAlbumReq(albumId,auth_token,scl_id,teacherId)
-        Log.d("deleteAlbum_Req", apiRequest.toString())
-        val call: Call<AlbumDeleteResponse> = parentApiService!!.albumDelete(apiRequest)
-        call.enqueue(object : Callback<AlbumDeleteResponse> {
-            override fun onResponse(call: Call<AlbumDeleteResponse>, response: Response<AlbumDeleteResponse>) {
-                if (response.isSuccessful) {
-                    hideProgress()
-                    val loginApiResponse = response.body()
-                    ToastUtils.showSuccessCustomToast(this@AlbumDetailsActivity, loginApiResponse!!.message.toString())
-                    val intent = Intent(this@AlbumDetailsActivity, AlbumsActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    hideProgress()
-                    ToastUtils.showErrorCustomToast(this@AlbumDetailsActivity, response.message())
-                }
-            }
-            override fun onFailure(call: Call<AlbumDeleteResponse>, t: Throwable) {
-                hideProgress()
-                ToastUtils.showErrorCustomToast(this@AlbumDetailsActivity, t.message.toString())
-            }
-        })
-    }
-
-    private fun singledeleteAlbum(album_content_idd: String?) {
-        showProgress()
-        var apiRequest = SingleDeleteAlbumReq(album_content_idd!!,albumId,auth_token,scl_id,teacherId)
-        Log.d("deleteAlbum_Req", apiRequest.toString())
-        val call: Call<AlbumDeleteResponse> = parentApiService!!.single_album_Delete(apiRequest)
-        call.enqueue(object : Callback<AlbumDeleteResponse> {
-            override fun onResponse(call: Call<AlbumDeleteResponse>, response: Response<AlbumDeleteResponse>) {
-                if (response.isSuccessful) {
-                    hideProgress()
-                    val loginApiResponse = response.body()
-                    ToastUtils.showSuccessCustomToast(this@AlbumDetailsActivity, loginApiResponse!!.message.toString())
-                    detailsAlbum()
-                } else {
-                    hideProgress()
-                    ToastUtils.showErrorCustomToast(this@AlbumDetailsActivity, response.message())
-                }
-            }
-            override fun onFailure(call: Call<AlbumDeleteResponse>, t: Throwable) {
-                hideProgress()
-                ToastUtils.showErrorCustomToast(this@AlbumDetailsActivity, t.message.toString())
-            }
-        })
-    }
-
-    private fun singleaddAlbum() {
-        convertImagesToBase64()
-        showProgress()
-        var apiRequest = SingleAlbumAddReq(albumId,attachment_type.toString(),commaSeparatedBase64.toString(),auth_token,scl_id,teacherId)
-        Log.d("deleteAlbum_Req", apiRequest.toString())
-        val call: Call<AlbumDeleteResponse> = parentApiService!!.single_album_Add(apiRequest)
-        call.enqueue(object : Callback<AlbumDeleteResponse> {
-            override fun onResponse(call: Call<AlbumDeleteResponse>, response: Response<AlbumDeleteResponse>) {
-                if (response.isSuccessful) {
-                    hideProgress()
-                    val loginApiResponse = response.body()
-                    ToastUtils.showSuccessCustomToast(this@AlbumDetailsActivity, loginApiResponse!!.message.toString())
-                    detailsAlbum()
-                } else {
-                    hideProgress()
-                    ToastUtils.showErrorCustomToast(this@AlbumDetailsActivity, response.message())
-                }
-            }
-            override fun onFailure(call: Call<AlbumDeleteResponse>, t: Throwable) {
-                hideProgress()
-                ToastUtils.showErrorCustomToast(this@AlbumDetailsActivity, t.message.toString())
-            }
-        })
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        val intent = Intent(this@AlbumDetailsActivity, AlbumsActivity::class.java)
-        startActivity(intent)
-        finish()
-
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        galleryLauncher.launch(intent)
     }
 
 }

@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import com.iprism.school.base.BaseFragment
 import com.iprism.school.R
@@ -37,6 +38,7 @@ import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.daycare.DayCareStatusApiRequest
 import com.iprism.school.repositories.AttendanceRepository
 import com.iprism.school.repositories.DayCareRepository
+import com.iprism.school.utils.Constants
 import com.iprism.school.utils.UiState
 import com.iprism.school.utils.hideProgress
 import com.iprism.school.utils.showProgress
@@ -58,15 +60,36 @@ class HomeFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentHomeBinding.inflate(layoutInflater)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
         Glide.with(this)
             .asGif()
             .load(R.drawable.planner_gif)
             .into(binding.plannerImf)
 
-        binding.nameTv.text = " Hello " + userDetails[User.EMP_NAME].toString()
-        binding.sideNameTv.text = userDetails[User.EMP_NAME].toString()
-        binding.sideGmailTv.text = userDetails[User.EMP_EMAIL].toString()
+        val firstName = userDetails?.get(User.FIRST_NAME) ?: ""
+        val middleName = userDetails?.get(User.MIDDLE_NAME) ?: ""
+        val lastName = userDetails?.get(User.LAST_NAME) ?: ""
+        val schoolName = userDetails?.get(User.SCHOOL_NAME) ?: ""
+        val image = userDetails?.get(User.IMAGE) ?: ""
+
+        binding.nameTv.text = "Hello $firstName $middleName $lastName"
+        binding.staffNameSideTxt.text = "$firstName $middleName $lastName"
+        binding.schoolNameTxt.text = schoolName
+
+        if (image.isNotEmpty()) {
+            Glide.with(requireContext())
+                .load(Constants.IMAGES_URL + image)
+                .error(R.drawable.user_img)
+                .into(binding.staffProfile)
+
+            Glide.with(requireContext())
+                .load(Constants.IMAGES_URL + image)
+                .error(R.drawable.user_img)
+                .into(binding.profilePic)
+        } else {
+            binding.staffProfile.setImageResource(R.drawable.user_img)
+            binding.profilePic.setImageResource(R.drawable.user_img)
+        }
 
         teacherId = userDetails[User.Companion.ID].toString()
         auth_token = userDetails[User.Companion.AUTH_TOKEN].toString()
@@ -188,17 +211,19 @@ class HomeFragment : BaseFragment() {
             .setView(binding.root)
             .create()
 
-        dialog.window?.setBackgroundDrawableResource(
-            android.R.color.transparent
-        )
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
 
         dialog.show()
+
+        dialog.window?.setLayout(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        )
 
         binding.okBtn.setOnClickListener {
             dialog.dismiss()
         }
     }
-
 
     private fun handleSentLo() {
         binding.sentLo.setOnClickListener(View.OnClickListener {

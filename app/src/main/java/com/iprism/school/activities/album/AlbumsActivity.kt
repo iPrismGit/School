@@ -17,6 +17,7 @@ import com.iprism.school.activities.ViewImageActivity
 import com.iprism.school.adapters.AlbumCoversAdapter
 import com.iprism.school.adapters.CircularsAdapter
 import com.iprism.school.databinding.ActivityAlbumsBinding
+import com.iprism.school.interfaces.OnAlbumClickListener
 import com.iprism.school.interfaces.OnCalenderClickListener
 import com.iprism.school.model.Request.SchoolStaffReq
 import com.iprism.school.model.Response.AlbumsListResponse
@@ -173,7 +174,15 @@ class AlbumsActivity : BaseActivity() {
                 }
             })
 
+            albumCoversAdapter.setupListener(object  : OnAlbumClickListener{
+                override fun onCoverClick(albumId: String, albumName: String) {
+                    var intent = Intent(this@AlbumsActivity, AlbumDetailsActivity::class.java)
+                    intent.putExtra("albumId", albumId)
+                    intent.putExtra("albumName", albumName)
+                    startActivity(intent)
+                }
 
+            })
         }
 
     }

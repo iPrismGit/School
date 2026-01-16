@@ -32,13 +32,12 @@
                 android:maxHeight="24dp"
                 android:src="@drawable/menu_img" />
 
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/staff_profile"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
-                android:adjustViewBounds="true"
                 android:maxWidth="50dp"
                 android:maxHeight="50dp"
                 android:src="@drawable/user_img" />
@@ -805,7 +804,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/sideNameTv"
+                            android:id="@+id/staff_name_side_txt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/inter_medium"
@@ -813,7 +812,7 @@
                             android:textColor="@color/white" />
 
                         <TextView
-                            android:id="@+id/sideGmailTv"
+                            android:id="@+id/school_name_txt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/inter"
@@ -821,13 +820,6 @@
                             android:text="littlepebblesinternational@gmail.com"
                             android:textColor="@color/white" />
                     </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/imageView15"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_marginLeft="8dp"
-                        android:src="@drawable/profile_img" />
                 </LinearLayout>
             </LinearLayout>
 

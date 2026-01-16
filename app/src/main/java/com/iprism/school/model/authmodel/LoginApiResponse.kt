@@ -15,6 +15,7 @@ data class LoginResponse(
     val auth_token: String,
     val blood_group: String,
     val branch_id: String,
+    val branch_name: String,
     val created_on: String,
     val current_address: String,
     val delete_status: Int,
