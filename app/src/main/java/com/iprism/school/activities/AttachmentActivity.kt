@@ -82,7 +82,6 @@ class AttachmentActivity : BaseActivity() {
             .into(binding.attachmentImg)
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

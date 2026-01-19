@@ -13,7 +13,9 @@ data class AlbumCoverImagesApiResponse(
 data class AlbumCoverImagesResponse(
 
     val album_covers: List<AlbumCover>,
-    val pagination: Pagination
+    val pagination: Pagination,
+    val id: String,
+    val title: String
 
 )
 

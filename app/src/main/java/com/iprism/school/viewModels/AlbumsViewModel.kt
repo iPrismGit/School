@@ -21,6 +21,9 @@ class AlbumsViewModel(private val repository: AlbumsRepository) : ViewModel() {
     private val _albumCoversResponse = MutableLiveData<UiState<AlbumCoverImagesResponse>>()
     val albumCoversResponse: LiveData<UiState<AlbumCoverImagesResponse>> = _albumCoversResponse
 
+    private val _insertAlbumCoverResponse = MutableLiveData<UiState<AlbumCoverImagesResponse>>()
+    val insertAlbumCoverResponse: LiveData<UiState<AlbumCoverImagesResponse>> = _insertAlbumCoverResponse
+
     private val _uploadMediaResponse = MutableLiveData<UiState<AlbumsGalleryResponse>>()
     val uploadMediaResponse: LiveData<UiState<AlbumsGalleryResponse>> = _uploadMediaResponse
 
@@ -39,6 +42,22 @@ class AlbumsViewModel(private val repository: AlbumsRepository) : ViewModel() {
                 }
             } catch (e: Exception) {
                 _albumCoversResponse.value = UiState.Error(e.localizedMessage ?: "Unknown error")
+            }
+        }
+    }
+
+    fun insertAlbumCover(request : AlbumCoverImagesApiRequest) {
+        viewModelScope.launch {
+            _insertAlbumCoverResponse.value = UiState.Loading
+            try {
+                val response = repository.fetchAndInsertAlbumCovers(request)
+                if (response.status) {
+                    _insertAlbumCoverResponse.value = UiState.Success(response.response)
+                } else {
+                    _insertAlbumCoverResponse.value = UiState.Error(response.message ?: "Something went wrong")
+                }
+            } catch (e: Exception) {
+                _insertAlbumCoverResponse.value = UiState.Error(e.localizedMessage ?: "Unknown error")
             }
         }
     }

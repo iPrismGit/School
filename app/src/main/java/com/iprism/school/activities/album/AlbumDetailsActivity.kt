@@ -156,7 +156,7 @@ class AlbumDetailsActivity : BaseActivity() {
                     binding.backIv.isEnabled = true
                     binding.addBtn.isEnabled = true
                     binding.sendBtn.isEnabled = true
-                    ToastUtils.showSuccessCustomToast(this, "Images Added Succefully..!")
+                    ToastUtils.showSuccessCustomToast(this, "Images Added Successfully..!")
                     loadAlbumImages()
                 }
 

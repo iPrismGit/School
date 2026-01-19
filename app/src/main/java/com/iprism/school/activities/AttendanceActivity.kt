@@ -448,8 +448,6 @@ class AttendanceActivity : BaseActivity() {
 
     private fun handleBack() {
         binding.backIv.setOnClickListener(View.OnClickListener {
-            val intent = Intent(this@AttendanceActivity, HomeActivity::class.java)
-            startActivity(intent)
             finish()
         })
     }
