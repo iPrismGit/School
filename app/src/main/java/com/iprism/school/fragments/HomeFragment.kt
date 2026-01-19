@@ -34,6 +34,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.iprism.school.activities.DayCarePlansActivity
 import com.iprism.school.activities.PlannerCategoriesActivity
+import com.iprism.school.activities.album.DayCareAlbumsActivity
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.daycare.DayCareStatusApiRequest
 import com.iprism.school.repositories.AttendanceRepository
@@ -123,14 +124,22 @@ class HomeFragment : BaseFragment() {
         handleLogoutLo()
         hnaldestudentsLo()
         handleAboutusLo()
-        hnaldeAlbumsViewAll()
-
-        binding.createLl.setOnClickListener {
-            if (isAdded) {
-                startActivity(Intent(requireActivity(), CreateAlbumsActivity::class.java))
-            }
-        }
+        handleAlbumsViewAll()
+        handleCreateAlbumsLo()
+        handleCreateDayCareAlbumsLo()
+        handleCreateDayCareViewAllLo()
         return binding.root
+    }
+
+    private fun handleCreateDayCareAlbumsLo() {
+       binding.createDayCareLl.setOnClickListener { view ->
+           startActivity(Intent(requireContext(), DayCareAlbumsActivity::class.java))
+       }
+    }
+    private fun handleCreateDayCareViewAllLo() {
+        binding.dayCareViewAll.setOnClickListener { view ->
+            startActivity(Intent(requireContext(), DayCareAlbumsActivity::class.java))
+        }
     }
 
     private fun initViewModel() {
@@ -241,8 +250,14 @@ class HomeFragment : BaseFragment() {
         })
     }
 
-    private fun hnaldeAlbumsViewAll() {
+    private fun handleAlbumsViewAll() {
         binding.viewAll.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(context, AlbumsActivity::class.java))
+        })
+    }
+
+    private fun handleCreateAlbumsLo() {
+        binding.createLl.setOnClickListener(View.OnClickListener {
             startActivity(Intent(context, AlbumsActivity::class.java))
         })
     }

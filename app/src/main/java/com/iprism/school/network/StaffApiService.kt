@@ -65,6 +65,7 @@ import com.iprism.school.model.Response.TermsandConditionResponse
 import com.iprism.school.model.albums.AlbumCoverImagesApiRequest
 import com.iprism.school.model.albums.AlbumCoverImagesApiResponse
 import com.iprism.school.model.albums.AlbumsGalleryApiResponse
+import com.iprism.school.model.albums.DayCareAlbumsApiRequest
 import com.iprism.school.model.authmodel.LoginApiRequest
 import com.iprism.school.model.authmodel.LoginApiResponse
 import com.iprism.school.model.circularmodels.CircularApiRequest
@@ -282,5 +283,6 @@ interface StaffApiService {
         @Part media: List<MultipartBody.Part>
     ): AlbumsGalleryApiResponse
 
-
+    @POST(Constants.DAYCARE_ALBUM_COVERS_ENDPOINT)
+    suspend fun fetchAndInsertDayCareAlbumCovers(@Body request: DayCareAlbumsApiRequest): AlbumCoverImagesApiResponse
 }

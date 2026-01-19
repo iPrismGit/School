@@ -4,6 +4,7 @@ import android.content.Context
 import com.iprism.school.model.albums.AlbumCoverImagesApiRequest
 import com.iprism.school.model.albums.AlbumCoverImagesApiResponse
 import com.iprism.school.model.albums.AlbumsGalleryApiResponse
+import com.iprism.school.model.albums.DayCareAlbumsApiRequest
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.classteachermodel.ClassTeacherApiResponse
 import com.iprism.school.network.SchoolApi
@@ -53,5 +54,17 @@ class AlbumsRepository(private var context: Context) {
         return response
     }
 
+    suspend fun fetchAndInsertDayCareAlbumCovers(request: DayCareAlbumsApiRequest): AlbumCoverImagesApiResponse {
+        var response = apiService.fetchAndInsertDayCareAlbumCovers(request)
+
+        if (response.message.equals("Invalid or expired token", true)) {
+            val refreshed = authRepository.refreshToken()
+            if (refreshed) {
+                response = apiService.fetchAndInsertDayCareAlbumCovers(request)
+            }
+        }
+
+        return response
+    }
 
 }

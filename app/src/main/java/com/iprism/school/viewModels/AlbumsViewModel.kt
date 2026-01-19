@@ -8,6 +8,7 @@ import com.iprism.school.model.albums.AlbumCoverImagesApiRequest
 import com.iprism.school.model.albums.AlbumCoverImagesResponse
 import com.iprism.school.model.albums.AlbumsGalleryApiResponse
 import com.iprism.school.model.albums.AlbumsGalleryResponse
+import com.iprism.school.model.albums.DayCareAlbumsApiRequest
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.classteachermodel.ClassTeacherResponse
 import com.iprism.school.repositories.AlbumsRepository
@@ -29,6 +30,12 @@ class AlbumsViewModel(private val repository: AlbumsRepository) : ViewModel() {
 
     private val _insertImagesResponse = MutableLiveData<UiState<AlbumsGalleryResponse>>()
     val insertImagesResponse: LiveData<UiState<AlbumsGalleryResponse>> = _insertImagesResponse
+
+    private val _dayCareAlbumCoversResponse = MutableLiveData<UiState<AlbumCoverImagesResponse>>()
+    val dayCareAlbumCoversResponse: LiveData<UiState<AlbumCoverImagesResponse>> = _dayCareAlbumCoversResponse
+
+    private val _insertDayCareAlbumCoversResponse = MutableLiveData<UiState<AlbumCoverImagesResponse>>()
+    val insertDayCareAlbumCoversResponse: LiveData<UiState<AlbumCoverImagesResponse>> = _insertDayCareAlbumCoversResponse
 
     fun fetchAndInsertAlbumCovers(request : AlbumCoverImagesApiRequest) {
         viewModelScope.launch {
@@ -104,6 +111,38 @@ class AlbumsViewModel(private val repository: AlbumsRepository) : ViewModel() {
                 }
             } catch (e: Exception) {
                 _insertImagesResponse.value = UiState.Error(e.localizedMessage ?: "Unknown error")
+            }
+        }
+    }
+
+    fun fetchDayCareAlbumCovers(request : DayCareAlbumsApiRequest) {
+        viewModelScope.launch {
+            _dayCareAlbumCoversResponse.value = UiState.Loading
+            try {
+                val response = repository.fetchAndInsertDayCareAlbumCovers(request)
+                if (response.status) {
+                    _dayCareAlbumCoversResponse.value = UiState.Success(response.response)
+                } else {
+                    _dayCareAlbumCoversResponse.value = UiState.Error(response.message ?: "Something went wrong")
+                }
+            } catch (e: Exception) {
+                _dayCareAlbumCoversResponse.value = UiState.Error(e.localizedMessage ?: "Unknown error")
+            }
+        }
+    }
+
+    fun insertDayCareAlbumCovers(request : DayCareAlbumsApiRequest) {
+        viewModelScope.launch {
+            _insertDayCareAlbumCoversResponse.value = UiState.Loading
+            try {
+                val response = repository.fetchAndInsertDayCareAlbumCovers(request)
+                if (response.status) {
+                    _insertDayCareAlbumCoversResponse.value = UiState.Success(response.response)
+                } else {
+                    _insertDayCareAlbumCoversResponse.value = UiState.Error(response.message ?: "Something went wrong")
+                }
+            } catch (e: Exception) {
+                _insertDayCareAlbumCoversResponse.value = UiState.Error(e.localizedMessage ?: "Unknown error")
             }
         }
     }
