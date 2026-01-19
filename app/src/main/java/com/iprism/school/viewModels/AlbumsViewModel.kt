@@ -37,6 +37,12 @@ class AlbumsViewModel(private val repository: AlbumsRepository) : ViewModel() {
     private val _insertDayCareAlbumCoversResponse = MutableLiveData<UiState<AlbumCoverImagesResponse>>()
     val insertDayCareAlbumCoversResponse: LiveData<UiState<AlbumCoverImagesResponse>> = _insertDayCareAlbumCoversResponse
 
+    private val _uploadDayCareMediaResponse = MutableLiveData<UiState<AlbumsGalleryResponse>>()
+    val uploadDayCareMediaResponse: LiveData<UiState<AlbumsGalleryResponse>> = _uploadDayCareMediaResponse
+
+    private val _insertDayCareImagesResponse = MutableLiveData<UiState<AlbumsGalleryResponse>>()
+    val insertDayCareImagesResponse: LiveData<UiState<AlbumsGalleryResponse>> = _insertDayCareImagesResponse
+
     fun fetchAndInsertAlbumCovers(request : AlbumCoverImagesApiRequest) {
         viewModelScope.launch {
             _albumCoversResponse.value = UiState.Loading
@@ -143,6 +149,52 @@ class AlbumsViewModel(private val repository: AlbumsRepository) : ViewModel() {
                 }
             } catch (e: Exception) {
                 _insertDayCareAlbumCoversResponse.value = UiState.Error(e.localizedMessage ?: "Unknown error")
+            }
+        }
+    }
+
+    fun uploadDayCareAlbumMedia(
+        userId: RequestBody,
+        albumId: RequestBody,
+        viewType: RequestBody,
+        page: RequestBody,
+        type: RequestBody,
+        media: List<MultipartBody.Part>
+    ) {
+        viewModelScope.launch {
+            _uploadDayCareMediaResponse.value = UiState.Loading
+            try {
+                val response = repository.uploadDayCareAlbumMedia(userId, albumId, viewType, page, type, media)
+                if (response.status) {
+                    _uploadDayCareMediaResponse.value = UiState.Success(response.response)
+                } else {
+                    _uploadDayCareMediaResponse.value = UiState.Error(response.message ?: "Something went wrong")
+                }
+            } catch (e: Exception) {
+                _uploadDayCareMediaResponse.value = UiState.Error(e.localizedMessage ?: "Unknown error")
+            }
+        }
+    }
+
+    fun insertDayCareAlbumMedia(
+        userId: RequestBody,
+        albumId: RequestBody,
+        viewType: RequestBody,
+        page: RequestBody,
+        type: RequestBody,
+        media: List<MultipartBody.Part>
+    ) {
+        viewModelScope.launch {
+            _insertDayCareImagesResponse.value = UiState.Loading
+            try {
+                val response = repository.uploadDayCareAlbumMedia(userId, albumId, viewType, page, type, media)
+                if (response.status) {
+                    _insertDayCareImagesResponse.value = UiState.Success(response.response)
+                } else {
+                    _insertDayCareImagesResponse.value = UiState.Error(response.message ?: "Something went wrong")
+                }
+            } catch (e: Exception) {
+                _insertDayCareImagesResponse.value = UiState.Error(e.localizedMessage ?: "Unknown error")
             }
         }
     }

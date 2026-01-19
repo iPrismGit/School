@@ -67,4 +67,29 @@ class AlbumsRepository(private var context: Context) {
         return response
     }
 
+    suspend fun uploadDayCareAlbumMedia(
+        userId: RequestBody,
+        albumId: RequestBody,
+        viewType: RequestBody,
+        page: RequestBody,
+        type: RequestBody,
+        media: List<MultipartBody.Part>
+    ): AlbumsGalleryApiResponse {
+
+        var response = apiService.uploadDayCareAlbumMedia(
+            userId, albumId, viewType, page, type, media
+        )
+
+        if (response.message.equals("Invalid or expired token", true)) {
+            val refreshed = authRepository.refreshToken()
+            if (refreshed) {
+                response = apiService.uploadDayCareAlbumMedia(
+                    userId, albumId, viewType, page, type, media
+                )
+            }
+        }
+
+        return response
+    }
+
 }

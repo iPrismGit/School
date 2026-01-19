@@ -285,4 +285,15 @@ interface StaffApiService {
 
     @POST(Constants.DAYCARE_ALBUM_COVERS_ENDPOINT)
     suspend fun fetchAndInsertDayCareAlbumCovers(@Body request: DayCareAlbumsApiRequest): AlbumCoverImagesApiResponse
+
+    @Multipart
+    @POST(Constants.DAYCARE_ALBUMS_GALLERY_ENDPOINT)
+    suspend fun uploadDayCareAlbumMedia(
+        @Part("user_id") userId: RequestBody,
+        @Part("album_id") albumId: RequestBody,
+        @Part("view_type") viewType: RequestBody,
+        @Part("page") page: RequestBody,
+        @Part("type") type: RequestBody,
+        @Part media: List<MultipartBody.Part>
+    ): AlbumsGalleryApiResponse
 }
