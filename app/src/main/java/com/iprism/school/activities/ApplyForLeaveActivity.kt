@@ -6,7 +6,9 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.OpenableColumns
+import android.util.Log
 import android.view.View
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,6 +19,10 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.R
 import com.iprism.school.databinding.ActivityApplyForLeaveBinding
 import com.iprism.school.databinding.FileTypeBottomSheetBinding
+import com.iprism.school.utils.DateTimeUtils
+import com.iprism.school.utils.ToastUtils
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class ApplyForLeaveActivity : AppCompatActivity() {
 
@@ -58,6 +64,65 @@ class ApplyForLeaveActivity : AppCompatActivity() {
         handleAttachmentBtn()
         handleBack()
         handleCrossBtn()
+        handleStartDateLo()
+        handleEndDateLo()
+        handleSubmitBtn()
+    }
+
+    private fun handleSubmitBtn() {
+        binding.submitBtn.setOnClickListener { view ->
+            if (getStartDate().isEmpty()) {
+                ToastUtils.showErrorCustomToast(this, "Please Select Start Date..!")
+            } else if (getEndDate().isEmpty()) {
+                ToastUtils.showErrorCustomToast(this, "Please Select End Date..!")
+            } else if (getName().isEmpty()) {
+                ToastUtils.showErrorCustomToast(this, "Please Enter Applicant Name..!")
+            } else if (getReason().isEmpty()) {
+                ToastUtils.showErrorCustomToast(this, "Please Enter Reason For Leave..!")
+            } else {
+                Log.d("StartAndEndDate", "Start Date: ${convertDateFormatSafe(binding.startDateTxt)}, End Date: ${convertDateFormatSafe(binding.endDateTxt)} ")
+            }
+        }
+    }
+
+    private fun getStartDate(): String {
+        return binding.startDateTxt.text.toString().trim()
+    }
+
+    private fun getEndDate(): String {
+        return binding.endDateTxt.text.toString().trim()
+    }
+
+    private fun getName(): String {
+        return binding.nameTxt.text.toString().trim()
+    }
+
+    private fun getReason(): String {
+        return binding.reasonTxt.text.toString().trim()
+    }
+
+    private fun handleEndDateLo() {
+        binding.endDateLo.setOnClickListener { view ->
+            DateTimeUtils.getDate(binding.endDateTxt, false)
+        }
+    }
+
+    private fun handleStartDateLo() {
+        binding.startDateLo.setOnClickListener { view ->
+            DateTimeUtils.getDate(binding.startDateTxt, false)
+        }
+    }
+
+    private fun convertDateFormatSafe(textView: TextView): String? {
+        return try {
+            val inputDate = textView.text.toString()
+            val inputFormat = SimpleDateFormat("dd MMM, yyyy", Locale.ENGLISH)
+            val outputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+            val date = inputFormat.parse(inputDate)
+            date?.let { outputFormat.format(it) }
+        } catch (e: Exception) {
+            null
+        }
     }
 
     private fun handleCrossBtn() {
