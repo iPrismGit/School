@@ -85,6 +85,7 @@ dependencies {
     implementation(libs.bumptech.glide)
     implementation(libs.exo.player)
     implementation(libs.exo.player.ui)
+    implementation("com.prolificinteractive:material-calendarview:1.4.3")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")

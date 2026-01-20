@@ -33,6 +33,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.iprism.school.activities.DayCarePlansActivity
+import com.iprism.school.activities.HolidaysActivity
 import com.iprism.school.activities.PlannerCategoriesActivity
 import com.iprism.school.activities.album.DayCareAlbumsActivity
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
@@ -116,19 +117,30 @@ class HomeFragment : BaseFragment() {
         handleMessageLl()
         handleConsentsLo()
         handleMessageLo()
-        handleDirectoriesLo()
         handleCalenderLo()
         handleAttendenceLo()
         handleStaffAttendanceLo()
         handleDayCare()
         handleLogoutLo()
-        hnaldestudentsLo()
         handleAboutusLo()
         handleAlbumsViewAll()
         handleCreateAlbumsLo()
         handleCreateDayCareAlbumsLo()
         handleCreateDayCareViewAllLo()
+        handleDigitalContentLo()
+        handleHolidayCalenderLo()
         return binding.root
+    }
+
+    private fun handleHolidayCalenderLo() {
+        binding.holidayCalenderLo.setOnClickListener { view ->
+            startActivity(Intent(requireContext(), HolidaysActivity::class.java))
+        }
+    }
+
+    private fun handleDigitalContentLo() {
+        binding.staffAttendanceLo.setOnClickListener { view ->
+        }
     }
 
     private fun handleCreateDayCareAlbumsLo() {
@@ -136,6 +148,7 @@ class HomeFragment : BaseFragment() {
            startActivity(Intent(requireContext(), DayCareAlbumsActivity::class.java))
        }
     }
+
     private fun handleCreateDayCareViewAllLo() {
         binding.dayCareViewAll.setOnClickListener { view ->
             startActivity(Intent(requireContext(), DayCareAlbumsActivity::class.java))
@@ -268,12 +281,6 @@ class HomeFragment : BaseFragment() {
         })
     }
 
-    private fun hnaldestudentsLo() {
-        binding.studentsLo.setOnClickListener(View.OnClickListener {
-            startActivity(Intent(context, StudentsActivity::class.java))
-        })
-    }
-
     private fun handleLogoutLo() {
         binding.logoutLo.setOnClickListener(View.OnClickListener {
             showLogoutDialog()
@@ -335,17 +342,6 @@ class HomeFragment : BaseFragment() {
     private fun handleAttendenceLo() {
         binding.attendanceLo.setOnClickListener(View.OnClickListener {
             startActivity(Intent(context, AttendanceActivity::class.java))
-        })
-    }
-
-    private fun handleDirectoriesLo() {
-        binding.directoryLo.setOnClickListener(View.OnClickListener {
-            binding.allDirectoriesLo.visibility =
-                if (binding.allDirectoriesLo.isVisible) {
-                    View.GONE
-                } else {
-                    View.VISIBLE
-                }
         })
     }
 
