@@ -32,6 +32,7 @@ import com.iprism.school.utils.User
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.iprism.school.activities.ApplyForLeaveActivity
 import com.iprism.school.activities.DayCarePlansActivity
 import com.iprism.school.activities.HolidaysActivity
 import com.iprism.school.activities.PlannerCategoriesActivity
@@ -129,7 +130,14 @@ class HomeFragment : BaseFragment() {
         handleCreateDayCareViewAllLo()
         handleDigitalContentLo()
         handleHolidayCalenderLo()
+        handleApplyForLeaveLo()
         return binding.root
+    }
+
+    private fun handleApplyForLeaveLo() {
+        binding.applyLeaveLo.setOnClickListener { view ->
+            startActivity(Intent(requireContext(), ApplyForLeaveActivity::class.java))
+        }
     }
 
     private fun handleHolidayCalenderLo() {

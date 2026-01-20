@@ -1096,7 +1096,7 @@
                     android:layout_height="24dp"
                     android:layout_marginRight="8dp"
                     app:tint="@color/black"
-                    android:src="@drawable/calender_img" />
+                    android:src="@drawable/holidays_logo" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -1104,6 +1104,36 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/inter_medium"
                     android:text="Holiday Calender"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider" />
+
+            <LinearLayout
+                android:id="@+id/apply_leave_lo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="12dp">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginRight="8dp"
+                    app:tint="@color/black"
+                    android:src="@drawable/apply_for_leave_logo" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/inter_medium"
+                    android:text="Apply For Leave"
                     android:textColor="@color/black"
                     android:textSize="15sp" />
             </LinearLayout>
