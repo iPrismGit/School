@@ -184,27 +184,6 @@ interface StaffApiService {
     @POST(Constants.CREATENEW_MSG)
     fun createNewMsg(@Body createNewMsgReq: CreateNewMsgReq): Call<AttendanceUpdatedResponse>
 
-    @POST(Constants.TEACHER_UPLOAD_ALBUMS)
-    fun teacherUploadAlbum(@Body createAlbumReq: CreateAlbumReq): Call<AlbumUploadResponse>
-
-    @POST(Constants.ALBUMS_LIST)
-    fun albumList(@Body schoolStaffReq: SchoolStaffReq): Call<AlbumsListResponse>
-
-    @POST(Constants.ALBUMS_DETAILS)
-    fun albumDetails(@Body albumDetailsReq: AlbumDetailsReq): Call<AlbumDetailsResponse>
-
-    @POST(Constants.ALBUMS_DETAILS_UPDATE)
-    fun albumDetailsUpdate(@Body createAlbumReq: CreateAlbumReq): Call<AlbumUploadResponse>
-
-    @POST(Constants.ALBUMS_DELETE)
-    fun albumDelete(@Body albumReq: DeleteAlbumReq): Call<AlbumDeleteResponse>
-
-    @POST(Constants.SINGLE_ALBUMS_DELETE)
-    fun single_album_Delete(@Body singleDeleteAlbumReq: SingleDeleteAlbumReq): Call<AlbumDeleteResponse>
-
-    @POST(Constants.SINGLE_ALBUMS_ADD)
-    fun single_album_Add(@Body singleAlbumAddReq: SingleAlbumAddReq): Call<AlbumDeleteResponse>
-
     @POST(Constants.INBOX_MESSAGES)
     fun inbox_messages(@Body inboxMessagesReq: InboxMessagesReq): Call<InboxMessagesResponse>
 

@@ -27,6 +27,7 @@ import com.iprism.school.utils.showProgress
 import com.iprism.school.viewModels.HolidaysViewModel
 import com.iprism.school.viewModels.ViewModelFactory
 import com.prolificinteractive.materialcalendarview.CalendarDay
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -36,7 +37,6 @@ class HolidaysActivity : BaseActivity() {
     private lateinit var binding: ActivityHolidaysBinding
     private lateinit var holidaysViewModel: HolidaysViewModel
     private var currentHolidayList: List<Holiday> = emptyList()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +53,7 @@ class HolidaysActivity : BaseActivity() {
         loadCurrentMonthHolidays()
         handleMonthChanging()
         handleBack()
+        binding.calendarView.selectionMode = MaterialCalendarView.SELECTION_MODE_NONE
         binding.calendarView.setOnDateChangedListener { widget, date, _ ->
 
             val clickedDate = String.format(
@@ -71,7 +72,6 @@ class HolidaysActivity : BaseActivity() {
                 showHolidayPopup(widget, holiday.title)
             }
         }
-
 
     }
 
@@ -125,7 +125,7 @@ class HolidaysActivity : BaseActivity() {
                     currentHolidayList = result.data.holidays
                     val holidayDates = getHolidayDates(currentHolidayList)
                     binding.calendarView.removeDecorators()
-                    binding.calendarView.addDecorator(TodayDecorator(this))
+              //      binding.calendarView.addDecorator(TodayDecorator(this))
                     binding.calendarView.addDecorator(HolidayDecorator(this, holidayDates))
 
                 }

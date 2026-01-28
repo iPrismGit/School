@@ -20,7 +20,7 @@ class HolidayDecorator(
         view.setBackgroundDrawable(
             ContextCompat.getDrawable(
                 context,
-                R.drawable.bg_holiday_red
+                R.drawable.bg_holiday
             )!!
         )
     }
