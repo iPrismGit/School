@@ -4,6 +4,7 @@ import TodayDecorator
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -37,6 +38,8 @@ class HolidaysActivity : BaseActivity() {
     private lateinit var binding: ActivityHolidaysBinding
     private lateinit var holidaysViewModel: HolidaysViewModel
     private var currentHolidayList: List<Holiday> = emptyList()
+    private val onlyHolidayList = mutableListOf<Holiday>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,6 +128,12 @@ class HolidaysActivity : BaseActivity() {
                     currentHolidayList = result.data.holidays
                     val holidayDates = getHolidayDates(currentHolidayList)
                     binding.calendarView.removeDecorators()
+                    onlyHolidayList.clear()
+
+                    onlyHolidayList.addAll(
+                        currentHolidayList.filter { it.status.equals("holiday", ignoreCase = true) }
+                    )
+                    Log.d("Holidays", onlyHolidayList.toString())
               //      binding.calendarView.addDecorator(TodayDecorator(this))
                     binding.calendarView.addDecorator(HolidayDecorator(this, holidayDates))
 
