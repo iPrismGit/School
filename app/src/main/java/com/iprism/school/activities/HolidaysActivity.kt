@@ -13,6 +13,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.iprism.school.adapters.HolidaysAdapter
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityHolidaysBinding
 import com.iprism.school.databinding.DialogHolidayBinding
@@ -115,16 +117,24 @@ class HolidaysActivity : BaseActivity() {
         holidaysViewModel.fetchHolidays(request)
     }
 
+    private fun setupHolidaysAdapter(holidays: List<Holiday>) {
+        val adapter = HolidaysAdapter(this, holidays)
+        binding.holidaysRv.adapter = adapter
+        var linearLayoutManager = LinearLayoutManager(this)
+        binding.holidaysRv.layoutManager = linearLayoutManager
+    }
+
     private fun observeHolidaysCalenderResponse() {
         holidaysViewModel.holidaysResponse.observe(this) { result ->
             when (result) {
                 is UiState.Loading -> {
                     binding.progress.showProgress()
-
+                    binding.mainLo.visibility = View.GONE
                 }
 
                 is UiState.Success -> {
                     binding.progress.hideProgress()
+                    binding.mainLo.visibility = View.VISIBLE
                     currentHolidayList = result.data.holidays
                     val holidayDates = getHolidayDates(currentHolidayList)
                     binding.calendarView.removeDecorators()
@@ -133,13 +143,21 @@ class HolidaysActivity : BaseActivity() {
                     onlyHolidayList.addAll(
                         currentHolidayList.filter { it.status.equals("holiday", ignoreCase = true) }
                     )
+                    if (onlyHolidayList.isNotEmpty()) {
+                        setupHolidaysAdapter(onlyHolidayList)
+                        binding.holidaysRv.visibility = View.VISIBLE
+                        binding.noDataTxt.visibility = View.GONE
+                    } else {
+                        binding.holidaysRv.visibility = View.GONE
+                        binding.noDataTxt.visibility = View.VISIBLE
+                    }
                     Log.d("Holidays", onlyHolidayList.toString())
-              //      binding.calendarView.addDecorator(TodayDecorator(this))
                     binding.calendarView.addDecorator(HolidayDecorator(this, holidayDates))
 
                 }
 
                 is UiState.Error -> {
+                    binding.mainLo.visibility = View.GONE
                     ToastUtils.showErrorCustomToast(this, result.message)
                     binding.progress.hideProgress()
 
@@ -149,10 +167,8 @@ class HolidaysActivity : BaseActivity() {
     }
 
     private fun showHolidayPopup(anchorView: View, holidayTitle: String) {
-
         val binding = DialogHolidayBinding.inflate(layoutInflater)
         binding.tvHolidayMessage.text = holidayTitle
-
         val popupWindow = PopupWindow(
             binding.root,
             ViewGroup.LayoutParams.WRAP_CONTENT,
