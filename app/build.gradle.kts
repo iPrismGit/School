@@ -59,7 +59,6 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.code.scanner)
 
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
@@ -88,10 +87,10 @@ dependencies {
     implementation(libs.bumptech.glide)
     implementation(libs.exo.player)
     implementation(libs.exo.player.ui)
+    implementation(libs.code.scanner)
     implementation("com.prolificinteractive:material-calendarview:1.4.3")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.28")
 
 }

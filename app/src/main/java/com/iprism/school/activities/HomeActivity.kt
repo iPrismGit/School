@@ -20,7 +20,6 @@ import com.iprism.school.adapters.HomePagerAdapter
 import com.iprism.school.databinding.ActivityHomeBinding
 import com.iprism.school.fragments.HomeFragment
 import com.iprism.school.fragments.MessagesFragment
-import com.iprism.school.fragments.ScannerFragment
 import com.iprism.school.model.Request.TeacherAccessReq
 import com.iprism.school.model.Response.TeacherAccessResponse
 import com.iprism.school.utils.User
@@ -49,9 +48,8 @@ class HomeActivity : BaseActivity() {
             when (item.itemId) {
                 R.id.home_nav -> binding.viewPager.setCurrentItem(0, false)
                 R.id.messages_nav -> binding.viewPager.setCurrentItem(1, false)
-                R.id.scanner_nav -> binding.viewPager.setCurrentItem(2, false)
-                R.id.diary_nav -> binding.viewPager.setCurrentItem(3, false)
-                R.id.help -> binding.viewPager.setCurrentItem(4, false)
+                R.id.diary_nav -> binding.viewPager.setCurrentItem(2, false)
+                R.id.help -> binding.viewPager.setCurrentItem(3, false)
             }
             true
         }

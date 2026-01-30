@@ -36,6 +36,7 @@ import com.iprism.school.activities.ApplyForLeaveActivity
 import com.iprism.school.activities.DayCarePlansActivity
 import com.iprism.school.activities.HolidaysActivity
 import com.iprism.school.activities.PlannerCategoriesActivity
+import com.iprism.school.activities.StaffAttendanceActivity
 import com.iprism.school.activities.album.DayCareAlbumsActivity
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.daycare.DayCareStatusApiRequest
@@ -128,7 +129,6 @@ class HomeFragment : BaseFragment() {
         handleCreateAlbumsLo()
         handleCreateDayCareAlbumsLo()
         handleCreateDayCareViewAllLo()
-        handleDigitalContentLo()
         handleHolidayCalenderLo()
         handleApplyForLeaveLo()
         return binding.root
@@ -143,11 +143,6 @@ class HomeFragment : BaseFragment() {
     private fun handleHolidayCalenderLo() {
         binding.holidayCalenderLo.setOnClickListener { view ->
             startActivity(Intent(requireContext(), HolidaysActivity::class.java))
-        }
-    }
-
-    private fun handleDigitalContentLo() {
-        binding.staffAttendanceLo.setOnClickListener { view ->
         }
     }
 
@@ -334,10 +329,7 @@ class HomeFragment : BaseFragment() {
 
     private fun handleStaffAttendanceLo() {
         binding.staffAttendanceLo.setOnClickListener(View.OnClickListener {
-            ToastUtils.showErrorCustomToast(
-                requireContext(),
-                "This Feature is Not Implemented Yet..!"
-            )
+            startActivity(Intent(requireContext(), StaffAttendanceActivity::class.java))
         })
     }
 

@@ -11,10 +11,6 @@
         android:title="Messages"
         android:icon="@drawable/messages_img"/>
     <item
-        android:id="@+id/scanner_nav"
-        android:title="Scanner"
-        android:icon="@drawable/scanner_img"/>
-    <item
         android:id="@+id/diary_nav"
         android:title="Diary"
         android:icon="@drawable/child_care_img"/>
