@@ -75,11 +75,11 @@ class SentMessagesActivity : BaseActivity() {
                                     mydata ->
                                 val message_id = mydata.id.toString()
                                 val inbox_message_from = mydata.sent_from.toString()
-                                val intent = Intent(this@SentMessagesActivity, Msg_DetailPageActivity::class.java)
-                                intent.putExtra("inbox_message_from",inbox_message_from)
-                                intent.putExtra("message_id",message_id)
-                                intent.putExtra("tag",tag)
-                                startActivity(intent)
+//                                val intent = Intent(this@SentMessagesActivity, Msg_DetailPageActivity::class.java)
+//                                intent.putExtra("inbox_message_from",inbox_message_from)
+//                                intent.putExtra("message_id",message_id)
+//                                intent.putExtra("tag",tag)
+//                                startActivity(intent)
                             }
 
                     }else{

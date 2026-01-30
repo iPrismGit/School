@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".fragments.StaffActiveFragment">
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,8 +24,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_pic"
-                android:layout_width="@dimen/_60sdp"
-                android:layout_height="@dimen/_60sdp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:src="@drawable/message_profile" />
 
             <LinearLayout

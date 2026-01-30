@@ -18,8 +18,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imgg"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/message_profile" />
 
         <LinearLayout
@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ellipsize="end"
-                    android:textSize="@dimen/_13sdp"
+                    android:textSize="12dp"
                     android:fontFamily="@font/inter_bold"
                     android:maxLines="1"
                     android:text="Hello Parent"
@@ -67,7 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:ellipsize="end"
-                    android:textSize="@dimen/_12sdp"
+                    android:textSize="12dp"
                     android:fontFamily="@font/inter_medium"
                     android:maxLines="1"
                     android:text="Staff Attendance Update"

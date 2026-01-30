@@ -72,7 +72,7 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginTop="6dp"
                 android:id="@+id/select_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
 
                 <TextView
                     android:id="@+id/all_tv"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginHorizontal="6dp"
                     android:background="@drawable/color_bg"
                     android:layout_gravity="center"
                     android:gravity="center"
@@ -88,13 +88,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text=" All "
-                    android:padding="@dimen/_5sdp"
+                    android:padding="6dp"
                     android:textColor="@color/white"
                     android:fontFamily="@font/inter"/>
 
                 <TextView
                     android:id="@+id/parent_tv"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginHorizontal="6dp"
                     android:background="@drawable/edit_text_bg"
                     android:layout_gravity="center"
                     android:gravity="center"
@@ -102,13 +102,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text=" Parent "
-                    android:padding="@dimen/_5sdp"
+                    android:padding="6dp"
                     android:textColor="@color/black"
                     android:fontFamily="@font/inter"/>
 
                 <TextView
                     android:id="@+id/staff_tv"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginHorizontal="6dp"
                     android:background="@drawable/edit_text_bg"
                     android:layout_gravity="center"
                     android:gravity="center"
@@ -116,13 +116,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text=" Staff "
-                    android:padding="@dimen/_5sdp"
+                    android:padding="6dp"
                     android:textColor="@color/black"
                     android:fontFamily="@font/inter"/>
 
                 <TextView
                     android:id="@+id/system_tv"
-                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:layout_marginHorizontal="6dp"
                     android:background="@drawable/edit_text_bg"
                     android:layout_gravity="center"
                     android:gravity="center"
@@ -130,7 +130,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text=" System "
-                    android:padding="@dimen/_5sdp"
+                    android:padding="6dp"
                     android:textColor="@color/black"
                     android:fontFamily="@font/inter"/>
 
@@ -140,7 +140,7 @@
             <LinearLayout
                 android:gravity="center"
                 android:visibility="gone"
-                android:layout_marginTop="@dimen/_100sdp"
+                android:layout_marginTop="100dp"
                 android:id="@+id/nodataTv"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
@@ -148,12 +148,12 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:src="@drawable/chat"/>
 
                 <TextView
-                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginTop="6dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -166,7 +166,7 @@
             </LinearLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="20dp"
                 android:id="@+id/messages_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

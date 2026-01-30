@@ -23,9 +23,9 @@
             android:paddingTop="16dp">
 
             <RelativeLayout
-                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginStart="6dp"
                 android:layout_width="75dp"
-                android:layout_height="@dimen/_70sdp">
+                android:layout_height="75dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imageView"
@@ -62,8 +62,8 @@
                     android:shadowColor="@color/blue"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"/>
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"/>
 
             </RelativeLayout>
 

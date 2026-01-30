@@ -571,7 +571,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
                             android:layout_gravity="center"
-                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginStart="6dp"
                             android:layout_marginTop="20dp"
                             android:layout_toEndOf="@id/create_ll" />
 
@@ -673,7 +673,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
                             android:layout_gravity="center"
-                            android:layout_marginStart="@dimen/_5sdp"
+                            android:layout_marginStart="6dp"
                             android:layout_marginTop="20dp"
                             android:layout_toEndOf="@id/create_ll" />
 

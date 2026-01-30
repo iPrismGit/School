@@ -24,13 +24,13 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:fontFamily="@font/inter_medium"
-            android:textSize="@dimen/_13sdp"
+            android:textSize="12dp"
             android:paddingBottom="12dp"
             android:text="Are you sure you want  Logout? "
             android:textColor="@color/black" />
 
         <LinearLayout
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">

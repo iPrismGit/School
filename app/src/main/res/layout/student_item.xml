@@ -18,8 +18,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/pro_img"
-            android:layout_width="@dimen/_60sdp"
-            android:layout_height="@dimen/_60sdp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:src="@drawable/message_profile" />
 
         <LinearLayout

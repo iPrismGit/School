@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
-    android:layout_marginTop="@dimen/_10sdp"
-    app:cardCornerRadius="@dimen/_8sdp"
+    android:layout_marginTop="10dp"
+    app:cardCornerRadius="8dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_90sdp"
+    android:layout_height="80dp"
     android:layout_marginEnd="10dp"
     android:layout_marginStart="16dp">
 
@@ -30,7 +30,7 @@
             app:srcCompat="@drawable/video_play_img" />
 
         <ImageView
-            android:layout_margin="@dimen/_5sdp"
+            android:layout_margin="6dp"
             android:layout_alignParentTop="true"
             android:layout_centerInParent="true"
             android:id="@+id/closeImg"

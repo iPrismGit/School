@@ -193,7 +193,7 @@
                         android:visibility="gone"
                         android:id="@+id/no_data_found_lo"
                         android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_50sdp"
+                        android:layout_marginTop="40dp"
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -216,7 +216,7 @@
                             android:layout_gravity="center"
                             android:text="No Data Found..!"
                             android:textColor="@color/gray1"
-                            android:textSize="@dimen/_13sdp" />
+                            android:textSize="12dp" />
 
                     </LinearLayout>
 

@@ -4,13 +4,13 @@
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="100dp"
-    android:layout_marginTop="@dimen/_10sdp"
+    android:layout_marginTop="10dp"
     android:gravity="center"
     android:background="@color/white">
 
     <RelativeLayout
         android:layout_width="120dp"
-        android:layout_height="@dimen/_70sdp">
+        android:layout_height="6dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageView"
@@ -49,13 +49,13 @@
             android:shadowColor="@color/blue"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:layout_width="@dimen/_25sdp"
-            android:layout_height="@dimen/_25sdp"/>
+            android:layout_width="24dp"
+            android:layout_height="24dp"/>
 
     </RelativeLayout>
 
     <TextView
-        android:padding="@dimen/_5sdp"
+        android:padding="6dp"
         android:singleLine="true"
         android:id="@+id/nameTv"
         android:layout_width="wrap_content"

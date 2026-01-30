@@ -54,14 +54,12 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("com.intuit.ssp:ssp-android:1.1.0")
-    implementation("com.intuit.sdp:sdp-android:1.1.0")
-    implementation("com.github.yuriy-budiyev:code-scanner:2.3.0")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.activity)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.code.scanner)
 
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
@@ -94,6 +92,6 @@ dependencies {
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.28")
+    implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.28")
 
 }

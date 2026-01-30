@@ -26,13 +26,13 @@
                 android:id="@+id/nodata"
                 android:visibility="gone"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_70sdp"
+                android:layout_marginTop="70dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="No Data Found"
                 android:fontFamily="@font/inter_bold"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_12sdp"/>
+                android:textSize="12dp"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/day_care_rv"

@@ -15,8 +15,8 @@
 
         <pl.droidsonroids.gif.GifImageView
             android:background="@android:color/transparent"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_100sdp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:src="@drawable/nobg_loader"/>
 
 

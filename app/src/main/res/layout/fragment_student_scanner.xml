@@ -25,7 +25,7 @@
                 <com.budiyev.android.codescanner.CodeScannerView
                     android:id="@+id/barcode_scanner"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_400sdp"
+                    android:layout_height="400dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -35,10 +35,10 @@
             <TextView
                 android:visibility="gone"
                 android:id="@+id/studentscannerID"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="10dp"
                 android:layout_centerInParent="true"
-                android:textSize="@dimen/_12sdp"
+                android:textSize="12dp"
                 android:textColor="@color/green"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
 
 
                 <LinearLayout
-                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_margin="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -73,25 +73,25 @@
                     <TextView
                         android:background="@drawable/left_grey"
                         android:id="@+id/toggleIn"
-                        android:layout_width="@dimen/_40sdp"
-                        android:layout_height="@dimen/_25sdp"
+                        android:layout_width="40dp"
+                        android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="In"
-                        android:textSize="@dimen/_9sdp"
+                        android:textSize="9dp"
                         android:textColor="@color/black"
                         />
 
                     <TextView
                         android:background="@drawable/right_grey"
                         android:id="@+id/toggleOut"
-                        android:layout_width="@dimen/_40sdp"
-                        android:layout_height="@dimen/_25sdp"
+                        android:layout_width="40dp"
+                        android:layout_height="24dp"
                         android:textAllCaps="false"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="Out"
-                        android:textSize="@dimen/_9sdp"
+                        android:textSize="9dp"
                         android:textColor="@color/black" />
                 </LinearLayout>
 
@@ -117,7 +117,7 @@
 
 
                 <LinearLayout
-                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_margin="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -125,24 +125,24 @@
                     <TextView
                         android:background="@drawable/left_grey"
                         android:id="@+id/yes"
-                        android:layout_width="@dimen/_40sdp"
-                        android:layout_height="@dimen/_25sdp"
+                        android:layout_width="40dp"
+                        android:layout_height="24dp"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="Yes"
-                        android:textSize="@dimen/_9sdp"
+                        android:textSize="10dp"
                         android:textColor="@color/white" />
 
                     <TextView
                         android:background="@drawable/right_grey"
                         android:id="@+id/no"
                         android:text="No"
-                        android:layout_width="@dimen/_40sdp"
-                        android:layout_height="@dimen/_25sdp"
+                        android:layout_width="40dp"
+                        android:layout_height="24dp"
                         android:textAllCaps="false"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:textSize="@dimen/_9sdp"
+                        android:textSize="10dp"
                         android:textColor="@color/black" />
 
                 </LinearLayout>
@@ -160,8 +160,8 @@
                 android:gravity="center"
                 android:padding="10dp"
                 android:text="  Submit  "
-                android:layout_marginHorizontal="@dimen/_25sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginBottom="10dp"
                 android:backgroundTint="@color/blue"
                 android:background="@drawable/btn_bg"
                 android:textAllCaps="false"
