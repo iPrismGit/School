@@ -59,7 +59,7 @@ class AttendanceActivity : BaseActivity() {
     private var sectionId: String = "-1"
     private var currentDate: String = ""
     private var backendDate: String = ""
-    private var notification_parent: String? = ""
+    private var notification_parent: String? = "no"
     private lateinit var bottomSheetDialog : BottomSheetDialog
     private lateinit var markAttendanceBinding : AllStudentsPresentBottomSheetBinding
     private val selectAllListener =
@@ -127,6 +127,22 @@ class AttendanceActivity : BaseActivity() {
         }
 
     }
+
+    private fun resetStudentsData() {
+        currentPage = 1
+        isLastPage = false
+        isLoading = false
+
+        studentsList.clear()
+        selectedStudentsList.clear()
+        selectedAttendanceList.clear()
+
+        studentsAdapter.notifyDataSetChanged()
+
+        binding.studentAttendanceRv.visibility = View.GONE
+        binding.noDataTxt.visibility = View.VISIBLE
+    }
+
 
     private fun loadStudents() {
         var request = AttendanceStudentsApiRequest(
@@ -371,6 +387,7 @@ class AttendanceActivity : BaseActivity() {
                     id: Long
                 ) {
                     classId = genderTypes[position].class_id.toString()
+                    resetStudentsData()
                     if (!classId.equals("-1", true)) {
                         var requestClasses = ClassTeacherApiRequest(
                             classId,
@@ -403,6 +420,7 @@ class AttendanceActivity : BaseActivity() {
                     id: Long
                 ) {
                     sectionId = genderTypes[position].section_id.toString()
+                    resetStudentsData()
                     if (!sectionId.equals("-1", true)) {
                         loadStudents()
                     }
@@ -440,7 +458,7 @@ class AttendanceActivity : BaseActivity() {
                 ToastUtils.showErrorCustomToast(this, "Please Select Section..!")
             } else if (selectValue.equals("single", true)  && selectedAttendanceList.isEmpty()) {
                 ToastUtils.showErrorCustomToast(this, "Please Select Students..!")
-            } else{
+            } else {
                 showAttendanceConformationBottomSheet()
             }
         })
@@ -494,5 +512,8 @@ class AttendanceActivity : BaseActivity() {
         startActivity(intent)
         finish()
     }
+
+
+
 
 }
