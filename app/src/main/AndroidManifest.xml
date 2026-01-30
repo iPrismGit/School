@@ -102,10 +102,7 @@
         <activity
             android:name=".activities.ViewImageActivity"
             android:exported="false" />
-        <activity
-            android:name=".activities.Messages.Msg_DetailPageActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".activities.Messages.SentMessagesActivity"
             android:exported="false"
