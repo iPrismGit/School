@@ -38,39 +38,64 @@ class AttandanceStudentsAdapter(
 
         bindStudentInfo(binding, student)
 
-        updateCheckIcon(binding, student.isSelected)
-
-        binding.root.setOnClickListener {
-            student.isSelected = !student.isSelected
-            updateCheckIcon(binding, student.isSelected)
-
-            notifySelectionChanged()
-        }
-    }
-
-    override fun getItemCount(): Int = studentList.size
-
-    private fun updateCheckIcon(
-        binding: StudentAttandanceItemBinding,
-        selected: Boolean
-    ) {
         binding.attendanceCb.setImageResource(
-            if (selected)
+            if (student.attendance_status.equals("present", true))
                 R.drawable.attendance_selected_img
             else
                 R.drawable.attendance_un_select_img
         )
+
+        binding.root.setOnClickListener {
+            toggleSelection(student, binding)
+        }
     }
+
+
+    private fun toggleSelection(
+        student: Student,
+        binding: StudentAttandanceItemBinding
+    ) {
+        // Toggle selection
+        student.isSelected = !student.isSelected
+
+        when {
+            // PRESENT student
+            student.attendance_status.equals("present", true) -> {
+                binding.attendanceCb.setImageResource(
+                    if (student.isSelected)
+                        R.drawable.attendance_un_select_img   // user unselects present
+                    else
+                        R.drawable.attendance_selected_img   // back to present state
+                )
+            }
+
+            // ABSENT / EMPTY student
+            else -> {
+                binding.attendanceCb.setImageResource(
+                    if (student.isSelected)
+                        R.drawable.attendance_selected_img   // user selects
+                    else
+                        R.drawable.attendance_un_select_img // user unselects
+                )
+            }
+        }
+
+        notifySelectionChanged()
+    }
+
+
+
+    override fun getItemCount(): Int = studentList.size
 
     private fun notifySelectionChanged() {
         val selectedIds = studentList
             .filter { it.isSelected }
             .map { it.id }
 
-        val isAllSelected =
-            studentList.isNotEmpty() && selectedIds.size == studentList.size
-
-        listener.onAttendanceChanged(selectedIds, isAllSelected)
+        listener.onAttendanceChanged(
+            selectedIds,
+            selectedIds.size == studentList.size
+        )
     }
 
     fun selectAll(select: Boolean) {
@@ -89,11 +114,6 @@ class AttandanceStudentsAdapter(
         binding: StudentAttandanceItemBinding,
         student: Student
     ) {
-
-        student.isSelected = student.attendance_status.equals("present", true)
-
-        updateCheckIcon(binding, student.isSelected)
-
         binding.stuName.text =
             "${student.first_name} ${student.middle_name} ${student.last_name}"
 

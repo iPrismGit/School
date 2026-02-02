@@ -64,5 +64,6 @@ object Constants {
     const val DAYCARE_ALBUM_COVERS_ENDPOINT = "daycare_album_covers"
     const val DAYCARE_ALBUMS_GALLERY_ENDPOINT = "daycare_albums_gallery"
     const val HOLIDAY_CALENDER_ENDPOINT = "holiday_calendar"
+    const val STAFF_ATTENDANCE_ENDPOINT = "staff_attendance"
 
 }

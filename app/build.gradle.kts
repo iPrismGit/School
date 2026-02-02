@@ -88,7 +88,7 @@ dependencies {
     implementation(libs.exo.player)
     implementation(libs.exo.player.ui)
     implementation(libs.code.scanner)
-    implementation("com.prolificinteractive:material-calendarview:1.4.3")
+    implementation(libs.material.calendarview)
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
