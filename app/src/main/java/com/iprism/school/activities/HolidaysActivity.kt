@@ -42,7 +42,6 @@ class HolidaysActivity : BaseActivity() {
     private var currentHolidayList: List<Holiday> = emptyList()
     private val onlyHolidayList = mutableListOf<Holiday>()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

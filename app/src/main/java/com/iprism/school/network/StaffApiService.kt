@@ -66,6 +66,8 @@ import com.iprism.school.model.albums.AlbumCoverImagesApiRequest
 import com.iprism.school.model.albums.AlbumCoverImagesApiResponse
 import com.iprism.school.model.albums.AlbumsGalleryApiResponse
 import com.iprism.school.model.albums.DayCareAlbumsApiRequest
+import com.iprism.school.model.applyforleavemodel.ApplyForLeaveApiRequest
+import com.iprism.school.model.applyforleavemodel.ApplyForLeaveApiResponse
 import com.iprism.school.model.authmodel.LoginApiRequest
 import com.iprism.school.model.authmodel.LoginApiResponse
 import com.iprism.school.model.circularmodels.CircularApiRequest
@@ -285,5 +287,8 @@ interface StaffApiService {
 
     @POST(Constants.STAFF_ATTENDANCE_ENDPOINT)
     suspend fun staffAttendanceDetails(@Body request: StaffAttendanceApiRequest): StaffAttendanceApiResponse
+
+    @POST(Constants.LEAVE_REQUEST_ENDPOINT)
+    suspend fun leaveRequestDetails(@Body request: ApplyForLeaveApiRequest): ApplyForLeaveApiResponse
 
 }
