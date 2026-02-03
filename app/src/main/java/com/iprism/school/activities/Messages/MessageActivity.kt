@@ -1,5 +1,6 @@
 package com.iprism.school.activities.Messages
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.Bitmap
@@ -446,6 +447,7 @@ class MessageActivity : BaseActivity() {
         return FileProvider.getUriForFile(this, "${packageName}.provider", imageFile)
     }
 
+    @SuppressLint("GestureBackNavigation")
     override fun onBackPressed() {
         super.onBackPressed()
         val intent = Intent(this@MessageActivity, HomeActivity::class.java)
