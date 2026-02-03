@@ -4,14 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.R
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
-import com.iprism.school.databinding.FragmentScannerBinding
 import com.iprism.school.databinding.StudentItemBinding
-import com.iprism.school.interfaces.OnCalenderClickListener
 import com.iprism.school.interfaces.OnStudentClickListener
 import com.iprism.school.model.studentsmodel.Student
 import com.iprism.school.utils.Constants

@@ -33,11 +33,8 @@ open class BaseActivity : AppCompatActivity() {
     private val handler = Handler()
     private var networkCheckRunnable: Runnable? = null
 
-    private var pDialog: ProgressDialog? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupIGienApiService()
         if (user == null) {
             user = User(this)
            // userDetails = user!!.getUserDetails()
@@ -80,10 +77,6 @@ open class BaseActivity : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
-    private fun setupIGienApiService() {
-        val parentApi = StaffApi()
-        parentApiService = parentApi.createParentApiService()
-    }
 
     protected fun isConnected(): Boolean {
         val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -108,7 +101,7 @@ open class BaseActivity : AppCompatActivity() {
             val dialogView: View = inflater.inflate(R.layout.popup_newtwork_check, null)
             builder.setView(dialogView)
             builder.setCancelable(false)
-            val retryButton = dialogView.findViewById<Button>(R.id.retryButton)
+            val retryButton = dialogView.findViewById<Button>(R.id.btn_retry)
             retryButton.setOnClickListener {
                 if (NetworkUtil.isConnected(this@BaseActivity)) {
                     hideNetworkPopup()
@@ -126,31 +119,6 @@ open class BaseActivity : AppCompatActivity() {
     }
 
 
-    //handle the progressbar
-    fun showProgress() {
-        try {
-            if (pDialog == null) {
-                pDialog = ProgressDialog(this, R.style.TransparentProgressDialog)
-                pDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                pDialog!!.setIndeterminate(true)
-                pDialog!!.setCancelable(false)
-            }
-            if (!pDialog!!.isShowing) {
-                pDialog!!.show()
-                pDialog!!.setContentView(R.layout.progressxml)
-            }
-        } catch (e: Exception) {
-            Log.d("AlertDialog", "Progress dialog can not be shown")
-        }
-    }
-
-    fun hideProgress() {
-        if (pDialog != null && pDialog!!.isShowing) {
-            pDialog!!.dismiss()
-        }
-    }
-
-
     fun Activity.hideKeyboard() {
         hideKeyboard(currentFocus ?: View(this))
     }
@@ -159,4 +127,5 @@ open class BaseActivity : AppCompatActivity() {
         val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
+
 }

@@ -3,7 +3,6 @@ package com.iprism.school.adapters
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.iprism.school.fragments.DayCareFragment
 import com.iprism.school.fragments.DiaryFragment
 import com.iprism.school.fragments.HelpTutorialsFragment
 import com.iprism.school.fragments.HomeFragment

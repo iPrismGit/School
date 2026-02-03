@@ -82,8 +82,6 @@ class MessageDetailsActivity : BaseActivity() {
         handleForwordBtn()
         handelInfoIv()
 
-        messagesDetails()
-
         binding.backIv.setOnClickListener {
             val intent = Intent(this@MessageDetailsActivity, HomeActivity::class.java)
             intent.putExtra("tag","msgInbox")
@@ -108,38 +106,7 @@ class MessageDetailsActivity : BaseActivity() {
             if (binding.messageInput.text.toString() == "" || binding.messageInput.text.toString() == null) {
                 ToastUtils.showSuccessCustomToast(this@MessageDetailsActivity, "Enter Message")
             } else {
-                callCreateMSG()
-            }
-        })
-    }
 
-    private fun callCreateMSG() {
-        showProgress()
-        var apiRequest = InboxMessageReplyReq(
-            commaSeparatedBase64.toString(),auth_token,message_id,
-            msg_type,scl_id, teacherId,binding.messageInput.text.toString())
-        Log.d("createNew_Req", apiRequest.toString())
-        val call: Call<SuccessResponsePojo> = parentApiService!!.replayInboxMsg(apiRequest)
-        call.enqueue(object : Callback<SuccessResponsePojo> {
-            override fun onResponse(
-                call: Call<SuccessResponsePojo>, response: Response<SuccessResponsePojo>) {
-                if (response.isSuccessful) {
-                    hideProgress()
-                    val loginApiResponse = response.body()
-                    ToastUtils.showSuccessCustomToast(this@MessageDetailsActivity,loginApiResponse!!.message.toString())
-                    val intent = Intent(this@MessageDetailsActivity, HomeActivity::class.java)
-                    intent.putExtra("tag","msgInbox")
-                    startActivity(intent)
-                    finish()
-
-                } else {
-                    hideProgress()
-                    ToastUtils.showErrorCustomToast(this@MessageDetailsActivity, "Failed")
-                }
-            }
-            override fun onFailure(call: Call<SuccessResponsePojo>, t: Throwable) {
-                hideProgress()
-                ToastUtils.showErrorCustomToast(this@MessageDetailsActivity, "Response Failed")
             }
         })
     }
@@ -232,94 +199,6 @@ class MessageDetailsActivity : BaseActivity() {
         bottomSheetDialog.show()
     }
 
-    private fun messagesDetails() {
-        showProgress()
-        var apiRequest = InboxSingleMsgReq(auth_token,inbox_message_from,message_id,scl_id,teacherId)
-        Log.d("singleMsg_Req", apiRequest.toString())
-        val call: Call<InboxSingleMsgResponse> = parentApiService!!.inboxSingleMsg(apiRequest)
-        call.enqueue(object : Callback<InboxSingleMsgResponse> {
-            override fun onResponse(call: Call<InboxSingleMsgResponse>, response: Response<InboxSingleMsgResponse>) {
-                if (response.isSuccessful) {
-                    hideProgress()
-                    val loginApiResponse = response.body()
-                    if (loginApiResponse!!.status == true){
-
-
-                        if (loginApiResponse.response.inbox_message[0].starred_message == ""){
-                            binding.startImg.setColorFilter(Color.GRAY) // Gray Tint for Read Messages
-                        }else{
-                            binding.startImg.setColorFilter(
-                                ContextCompat.getColor(this@MessageDetailsActivity ,R.color.attendance_not_marked)
-                            )
-                        }
-
-                        Glide.with(this@MessageDetailsActivity)
-                            .load(Constants.IMAGES_URL+loginApiResponse.response.inbox_message[0].profile_image)
-                            .placeholder(R.drawable.baseline_image)
-                            .into(binding.imgs)
-
-                        binding.subjectTv.text  = loginApiResponse.response.inbox_message[0].subject.toString()
-                        binding.dateTv.text  = loginApiResponse.response.inbox_message[0].date.toString()
-                        binding.fromTv.text  =   loginApiResponse.response.inbox_message[0].name.toString()
-                        binding.messageTv.text  =   loginApiResponse.response.inbox_message[0].message.toString()
-                        binding.usersTv.text  = loginApiResponse.response.inbox_message[0].staff_names.toString()
-
-
-                        Glide.with(this@MessageDetailsActivity)
-                            .load(Constants.IMAGES_URL+loginApiResponse.response.inbox_message[0].images)
-                            .placeholder(R.drawable.baseline_image)
-                            .into(binding.msgImages)
-
-                        binding.startImg.setOnClickListener {
-                            val message_id = loginApiResponse.response.inbox_message[0].id.toString()
-                            val inbox_message_from = loginApiResponse.response.inbox_message[0].sent_from.toString()
-                            val star_msg =loginApiResponse.response.inbox_message[0].starred_message.toString()
-                            var inbox_message_status = ""
-                            if (star_msg == ""){
-                                inbox_message_status = "starred"
-                            }else{
-                                inbox_message_status = "unstarred"
-                            }
-                            callMsgUpdate(message_id,inbox_message_from,inbox_message_status)
-                        }
-
-//                        "inbox_message_status":"read,starred,archived,unstarred,unarchived",
-
-
-                        binding.archivedImg.setOnClickListener {
-                            val message_id = loginApiResponse.response.inbox_message[0].id.toString()
-                            val inbox_message_from = loginApiResponse.response.inbox_message[0].sent_from.toString()
-                            val star_msg =loginApiResponse.response.inbox_message[0].archived_message.toString()
-                            var inbox_message_status = ""
-                            if (star_msg == ""){
-                                inbox_message_status = "archived"
-                            }else{
-                                inbox_message_status = "unarchived"
-                            }
-                            callMsgUpdate(message_id,inbox_message_from,inbox_message_status)
-                        }
-
-
-                        val message_id = loginApiResponse.response.inbox_message[0].id.toString()
-                        val inbox_message_from = loginApiResponse.response.inbox_message[0].from.toString()
-                        var inbox_message_status = "read"
-
-                        callMsgUpdate(message_id,inbox_message_from,inbox_message_status)
-
-                    }else{
-                    }
-                } else {
-                    hideProgress()
-                    ToastUtils.showErrorCustomToast(this@MessageDetailsActivity, response.message())
-                }
-            }
-            override fun onFailure(call: Call<InboxSingleMsgResponse>, t: Throwable) {
-                hideProgress()
-                ToastUtils.showErrorCustomToast(this@MessageDetailsActivity, t.message.toString())
-            }
-        })
-    }
-
     private fun selectImage() {
         val items = arrayOf<CharSequence>("Take Photo", "Choose from Gallery", "Cancel")
         val builder = android.app.AlertDialog.Builder(this@MessageDetailsActivity,
@@ -401,47 +280,6 @@ class MessageDetailsActivity : BaseActivity() {
         val imageFile = File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), "camera_image_${System.currentTimeMillis()}.jpg")
         // Get URI using FileProvider.
         return FileProvider.getUriForFile(this, "${packageName}.provider", imageFile)
-    }
-
-
-
-
-    private fun callMsgUpdate(
-        message_id: String,
-        inbox_message_from: String,
-        inbox_message_status: String
-    ) {
-        showProgress()
-        var apiRequest = Update(auth_token,inbox_message_from,message_id,inbox_message_status,scl_id,teacherId)
-        Log.d("msg_Update_Req", apiRequest.toString())
-        val call: Call<SuccessResponsePojo> = parentApiService!!.msgUpdate(apiRequest)
-        call.enqueue(object : Callback<SuccessResponsePojo> {
-            override fun onResponse(call: Call<SuccessResponsePojo>, response: Response<SuccessResponsePojo>) {
-                if (response.isSuccessful) {
-                    val loginApiResponse = response.body()
-                    if (loginApiResponse!!.status == true){
-
-                        hideProgress()
-
-                        if (inbox_message_status == "read"){
-
-                        }else{
-                            messagesDetails()
-                        }
-
-                    }else{
-                        hideProgress()
-                    }
-                } else {
-                    hideProgress()
-                    ToastUtils.showErrorCustomToast(this@MessageDetailsActivity, "Failure")
-                }
-            }
-            override fun onFailure(call: Call<SuccessResponsePojo>, t: Throwable) {
-                hideProgress()
-                ToastUtils.showErrorCustomToast(this@MessageDetailsActivity, t.message.toString())
-            }
-        })
     }
 
 }

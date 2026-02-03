@@ -35,7 +35,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.activities.LoginActivity
 import com.iprism.school.adapters.ImageAdapter
-import com.iprism.school.adapters.VideoAdapter
 import com.iprism.school.databinding.ActivityCreateAlbumsBinding
 import com.iprism.school.model.Request.CreateAlbumReq
 import com.iprism.school.model.Request.SchoolStaffReq

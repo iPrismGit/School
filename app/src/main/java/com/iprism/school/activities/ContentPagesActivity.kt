@@ -50,138 +50,17 @@ class ContentPagesActivity : BaseActivity() {
     private fun handlePrivacyPolicy() {
         binding.privacyPolicyLo.setOnClickListener(View.OnClickListener {
 
-            privacy()
-
-//            var intent = Intent(this, InformationActivity::class.java)
-//             type = "Privacy Policy"
-//            intent.putExtra("type", type)
-//            startActivity(intent)
         })
     }
 
     private fun handleTermsAndConditionsLo() {
         binding.termsAndConditionsLo.setOnClickListener(View.OnClickListener {
-            tc()
-//            var intent = Intent(this, InformationActivity::class.java)
-//            type = getString(R.string.terms_and_conditions)
-//            intent.putExtra("type", type)
-//            startActivity(intent)
+
         })
     }
 
     private fun handleAboutUsLo() {
         binding.aboutUsLo.setOnClickListener(View.OnClickListener {
-
-            aboutUs()
-//            var intent = Intent(this, InformationActivity::class.java)
-//            type = "About us"
-//            intent.putExtra("type", type)
-//            startActivity(intent)
-        })
-    }
-
-    private fun aboutUs() {
-        showProgress()
-        var apiRequest = SchoolStaffReq(auth_token,scl_id,teacherId)
-        Log.d("privacy", apiRequest.toString())
-        val call: Call<AboutUsResponse> = parentApiService!!.aboutUs(apiRequest)
-        call.enqueue(object : Callback<AboutUsResponse> {
-            override fun onResponse(call: Call<AboutUsResponse>, response: Response<AboutUsResponse>) {
-                if (response.isSuccessful) {
-                    hideProgress()
-                    val loginApiResponse = response.body()
-                    if (loginApiResponse!!.status == true){
-
-                        val contentTv = loginApiResponse.response.aboutus[0].content.toString()
-
-//                        var intent = Intent(this@ContentPagesActivity, InformationActivity::class.java)
-//                        type = "About us"
-//                        intent.putExtra("type", type)
-//                        intent.putExtra("contentTv", contentTv)
-//                        startActivity(intent)
-
-                    }else{
-
-                    }
-                } else {
-                    hideProgress()
-                    ToastUtils.showErrorCustomToast(this@ContentPagesActivity, response.message())
-                }
-            }
-            override fun onFailure(call: Call<AboutUsResponse>, t: Throwable) {
-                hideProgress()
-                ToastUtils.showErrorCustomToast(this@ContentPagesActivity, t.message.toString())
-            }
-        })
-    }
-
-    private fun privacy() {
-        showProgress()
-        var apiRequest = SchoolStaffReq(auth_token,scl_id,teacherId)
-        Log.d("privacy", apiRequest.toString())
-        val call: Call<PrivacyResponse> = parentApiService!!.privacy(apiRequest)
-        call.enqueue(object : Callback<PrivacyResponse> {
-            override fun onResponse(call: Call<PrivacyResponse>, response: Response<PrivacyResponse>) {
-                if (response.isSuccessful) {
-                    hideProgress()
-                    val loginApiResponse = response.body()
-                    if (loginApiResponse!!.status == true){
-
-                        val contentTv = loginApiResponse.response.privacypolicy[0].content.toString()
-
-//                        var intent = Intent(this@ContentPagesActivity, InformationActivity::class.java)
-//                        type = "Privacy Policy"
-//                        intent.putExtra("type", type)
-//                        intent.putExtra("contentTv", contentTv)
-                        startActivity(intent)
-
-                    }else{
-
-                    }
-                } else {
-                    hideProgress()
-                    ToastUtils.showErrorCustomToast(this@ContentPagesActivity, response.message())
-                }
-            }
-            override fun onFailure(call: Call<PrivacyResponse>, t: Throwable) {
-                hideProgress()
-                ToastUtils.showErrorCustomToast(this@ContentPagesActivity, t.message.toString())
-            }
-        })
-    }
-
-    private fun tc() {
-        showProgress()
-        var apiRequest = SchoolStaffReq(auth_token,scl_id,teacherId)
-        Log.d("privacy", apiRequest.toString())
-        val call: Call<TermsandConditionResponse> = parentApiService!!.termsandcondition(apiRequest)
-        call.enqueue(object : Callback<TermsandConditionResponse> {
-            override fun onResponse(call: Call<TermsandConditionResponse>, response: Response<TermsandConditionResponse>) {
-                if (response.isSuccessful) {
-                    hideProgress()
-                    val loginApiResponse = response.body()
-                    if (loginApiResponse!!.status == true){
-
-                        val contentTv = loginApiResponse.response.termsandconditions[0].content.toString()
-
-//                        var intent = Intent(this@ContentPagesActivity, InformationActivity::class.java)
-//                        type = getString(R.string.terms_and_conditions)
-//                        intent.putExtra("type", type)
-//                        intent.putExtra("contentTv", contentTv)
-//                        startActivity(intent)
-
-                    }else{
-
-                    }
-                } else {
-                    hideProgress()
-                    ToastUtils.showErrorCustomToast(this@ContentPagesActivity, response.message())
-                }
-            }
-            override fun onFailure(call: Call<TermsandConditionResponse>, t: Throwable) {
-                hideProgress()
-                ToastUtils.showErrorCustomToast(this@ContentPagesActivity, t.message.toString())
-            }
         })
     }
 

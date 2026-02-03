@@ -34,7 +34,6 @@ import com.iprism.school.adapters.AlbumCoversAdapter
 import com.iprism.school.adapters.AlbumImagesAdapter
 import com.iprism.school.adapters.AlbumsImageAdapter
 import com.iprism.school.adapters.ImageAdapter
-import com.iprism.school.adapters.VideoAdapter
 import com.iprism.school.databinding.ActivityAlbumDetailsBinding
 import com.iprism.school.interfaces.OnAlbumClickListener
 import com.iprism.school.model.Request.AlbumDetailsReq

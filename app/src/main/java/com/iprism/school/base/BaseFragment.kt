@@ -31,12 +31,8 @@ open class BaseFragment : Fragment() {
     private val handler = Handler()
     private var networkCheckRunnable: Runnable? = null
 
-    private var pDialog: ProgressDialog? = null
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupIGienApiService()
         if (user == null) {
             user = User(requireContext())
             userDetails = user!!.getNewUserDetails()
@@ -91,7 +87,7 @@ open class BaseFragment : Fragment() {
             builder.setView(dialogView)
             builder.setCancelable(false)
 
-            val retryButton = dialogView.findViewById<Button>(R.id.retryButton)
+            val retryButton = dialogView.findViewById<Button>(R.id.btn_retry)
             retryButton.setOnClickListener {
                 if (NetworkUtil.isConnected(requireContext())) {
                     hideNetworkPopup()
@@ -109,31 +105,5 @@ open class BaseFragment : Fragment() {
         }
     }
 
-    private fun setupIGienApiService() {
-        val parentApi = StaffApi()
-        parentApiService = parentApi.createParentApiService()
-    }
-
-    fun showProgress() {
-        try {
-            pDialog = ProgressDialog(activity,R.style.TransparentProgressDialog)
-            // pDialog = new ProgressDialog(context);
-            pDialog!!.getWindow()!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            pDialog!!.setIndeterminate(true)
-            pDialog!!.setCancelable(false)
-            pDialog!!.show()
-            pDialog!!.setContentView(R.layout.progressxml)
-            pDialog!!.setCanceledOnTouchOutside(false)
-            pDialog!!.show()
-        } catch (e: Exception) {
-            Log.d("AlertDialog", "Progress dialog can not be shown")
-        }
-    }
-
-    fun hideProgress() {
-        if(pDialog!=null&& pDialog!!.isShowing()){
-            pDialog!!.dismiss();
-        }
-    }
 
 }

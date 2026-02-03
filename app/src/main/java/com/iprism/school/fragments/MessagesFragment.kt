@@ -54,7 +54,6 @@ class MessagesFragment : BaseFragment() {
         scl_id = userDetails[User.Companion.SCHOOL_ID].toString()
         handleMessageBtn()
         handleClick()
-        messagesList()
 
         binding.dotsImg.setOnClickListener {
             showSingleSelectDialog()
@@ -80,8 +79,6 @@ class MessagesFragment : BaseFragment() {
             binding.systemTv.setBackgroundResource(R.drawable.edit_text_bg)
             binding.systemTv.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
 
-            messagesList()
-
         }
 
         binding.parentTv.setOnClickListener {
@@ -97,8 +94,6 @@ class MessagesFragment : BaseFragment() {
 
             binding.systemTv.setBackgroundResource(R.drawable.edit_text_bg)
             binding.systemTv.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
-
-            messagesList()
 
         }
 
@@ -116,8 +111,6 @@ class MessagesFragment : BaseFragment() {
             binding.systemTv.setBackgroundResource(R.drawable.edit_text_bg)
             binding.systemTv.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
 
-            messagesList()
-
         }
 
         binding.systemTv.setOnClickListener {
@@ -133,8 +126,6 @@ class MessagesFragment : BaseFragment() {
 
             binding.systemTv.setBackgroundResource(R.drawable.color_bg)
             binding.systemTv.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
-
-            messagesList()
 
         }
     }
@@ -157,93 +148,6 @@ class MessagesFragment : BaseFragment() {
         })
     }
 
-
-//    inboxMessagesMarked = loginApiResponse.response.inbox_messages.map {
-//        InboxMessage(it.inbox_message_from, it.message_id)
-//    }.toMutableList()
-//    Log.d("inboxMessagesMarked", inboxMessagesMarked.toString())
-
-    private fun messagesList() {
-        showProgress()
-        var apiRequest = InboxMessagesReq(auth_token,inbox_message_type,msg_type,scl_id,"",teacherId)
-        Log.d("homeUploadAlbum_Req", apiRequest.toString())
-        val call: Call<InboxMessagesResponse> = parentApiService!!.inbox_messages(apiRequest)
-        call.enqueue(object : Callback<InboxMessagesResponse> {
-            override fun onResponse(call: Call<InboxMessagesResponse>, response: Response<InboxMessagesResponse>) {
-                if (response.isSuccessful) {
-                    hideProgress()
-                    val loginApiResponse = response.body()
-
-                    if (loginApiResponse!!.status == true){
-
-                        binding.nodataTv.visibility = View.GONE
-                        binding.messagesRv.visibility = View.VISIBLE
-
-                        inboxMessagesMarked = loginApiResponse.response.inbox_messages.map {
-                            mapOf("id" to it.message_id, "from" to it.inbox_message_from)
-                        }.toMutableList()
-
-                         jsonFormattedMessages = Gson().toJson(inboxMessagesMarked)
-
-                        Log.d("API_RESPONSE_MSG", jsonFormattedMessages.toString())
-
-                        if (isAdded){
-                            val linearLayoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL, false)
-                            binding.messagesRv.layoutManager = linearLayoutManager
-                            val albumsAdapter = MessagesAdapter(requireActivity(), loginApiResponse.response.inbox_messages)
-                            binding.messagesRv.adapter = albumsAdapter
-
-                            albumsAdapter.OnItemBtn = {
-                                    mydata ->
-                                val message_id = mydata.message_id.toString()
-                                val inbox_message_from = mydata.inbox_message_from.toString()
-                                val intent = Intent(requireActivity(), MessageDetailsActivity::class.java)
-                                intent.putExtra("inbox_message_from",inbox_message_from)
-                                intent.putExtra("message_id",message_id)
-                                startActivity(intent)
-                            }
-
-                            albumsAdapter.starBtn = {
-                                    mydata ->
-                                val message_id = mydata.message_id.toString()
-                                val inbox_message_from = mydata.inbox_message_from.toString()
-                                val star_msg = mydata.starred_message.toString()
-                                var inbox_message_status = ""
-                                if (star_msg == ""){
-                                    inbox_message_status = "starred"
-                                }else{
-                                    inbox_message_status = "unstarred"
-                                }
-
-                                callMsgUpdate(message_id,inbox_message_from,inbox_message_status)
-                            }
-
-                        }
-                    }else{
-                        binding.nodataTv.visibility = View.VISIBLE
-                        binding.messagesRv.visibility = View.GONE
-                    }
-                } else {
-                    binding.nodataTv.visibility = View.VISIBLE
-                    binding.messagesRv.visibility = View.GONE
-
-                    hideProgress()
-                    ToastUtils.showErrorCustomToast(requireActivity(), response.message())
-                }
-            }
-            override fun onFailure(call: Call<InboxMessagesResponse>, t: Throwable) {
-                hideProgress()
-                ToastUtils.showErrorCustomToast(requireActivity(), t.message.toString())
-            }
-        })
-    }
-
-
-//    inbox_message_type == "" get all messages not archived,
-//    inbox_message_type == "archived" get all archived messages,
-//    inbox_message_type == "starred" get all starred messages,
-//    inbox_message_type == "read_message" get all unread  messages,
-
     private fun showSingleSelectDialog() {
         val options = arrayOf("Mark all as read", "Starred Message", "Unread Message",
             "Archived Messages","Change Signature")
@@ -259,16 +163,14 @@ class MessagesFragment : BaseFragment() {
                     val selectedText = options[selectedOptionIndex]
                     if (selectedText == "Mark all as read"){
                         inbox_message_type = ""
-                        markALlReadMessages()
                     }else if (selectedText == "Starred Message"){
                         inbox_message_type = "starred"
-                        messagesList()
                     }else if (selectedText == "Unread Message"){
                         inbox_message_type = "read_message"
-                        messagesList()
+
                     }else if (selectedText == "Archived Messages"){
                         inbox_message_type = "archived"
-                        messagesList()
+
                     }else if (selectedText == "Change Signature"){
 //                        inbox_message_type = ""
                     }
@@ -282,68 +184,6 @@ class MessagesFragment : BaseFragment() {
         dialog.show()
     }
 
-    private fun markALlReadMessages() {
-            showProgress()
-            var apiRequest = MarkAllReadReq(auth_token,jsonFormattedMessages,scl_id,teacherId)
-            Log.d("mark_AllRead_Req", apiRequest.toString())
-            val call: Call<SuccessResponsePojo> = parentApiService!!.markALlMessages(apiRequest)
-            call.enqueue(object : Callback<SuccessResponsePojo> {
-                override fun onResponse(call: Call<SuccessResponsePojo>, response: Response<SuccessResponsePojo>) {
-                    if (response.isSuccessful) {
-                        val loginApiResponse = response.body()
-                        if (loginApiResponse!!.status == true){
-
-                            hideProgress()
-                            messagesList()
-
-                        }else{
-                            hideProgress()
-                        }
-                    } else {
-                        hideProgress()
-                        ToastUtils.showErrorCustomToast(requireActivity(), "Failure")
-                    }
-                }
-                override fun onFailure(call: Call<SuccessResponsePojo>, t: Throwable) {
-                    hideProgress()
-                    ToastUtils.showErrorCustomToast(requireActivity(), t.message.toString())
-                }
-            })
-    }
-
-
-    private fun callMsgUpdate(
-        message_id: String,
-        inbox_message_from: String,
-        inbox_message_status: String
-    ) {
-        showProgress()
-        var apiRequest = Update(auth_token,inbox_message_from,message_id,inbox_message_status,scl_id,teacherId)
-        Log.d("msg_Update_Req", apiRequest.toString())
-        val call: Call<SuccessResponsePojo> = parentApiService!!.msgUpdate(apiRequest)
-        call.enqueue(object : Callback<SuccessResponsePojo> {
-            override fun onResponse(call: Call<SuccessResponsePojo>, response: Response<SuccessResponsePojo>) {
-                if (response.isSuccessful) {
-                    val loginApiResponse = response.body()
-                    if (loginApiResponse!!.status == true){
-
-                        hideProgress()
-                        messagesList()
-
-                    }else{
-                        hideProgress()
-                    }
-                } else {
-                    hideProgress()
-                    ToastUtils.showErrorCustomToast(requireActivity(), "Failure")
-                }
-            }
-            override fun onFailure(call: Call<SuccessResponsePojo>, t: Throwable) {
-                hideProgress()
-                ToastUtils.showErrorCustomToast(requireActivity(), t.message.toString())
-            }
-        })
-    }
 
 
 }
