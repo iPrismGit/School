@@ -86,6 +86,8 @@ import com.iprism.school.model.eventsmodel.EventsApiRequest
 import com.iprism.school.model.eventsmodel.EventsApiResponse
 import com.iprism.school.model.holidaysmodel.HolidaysApiRequest
 import com.iprism.school.model.holidaysmodel.HolidaysApiResponse
+import com.iprism.school.model.homepagemodel.HomePageApiRequest
+import com.iprism.school.model.homepagemodel.HomePageApiResponse
 import com.iprism.school.model.plannersandresources.PlannersAndResourcesApiRequest
 import com.iprism.school.model.plannersandresources.PlannersAndResourcesApiResponse
 import com.iprism.school.model.refreshtokenmodel.RefreshTokenApiRequest
@@ -290,5 +292,8 @@ interface StaffApiService {
 
     @POST(Constants.LEAVE_REQUEST_ENDPOINT)
     suspend fun leaveRequestDetails(@Body request: ApplyForLeaveApiRequest): ApplyForLeaveApiResponse
+
+    @POST(Constants.HOME_PAGE_ENDPOINT)
+    suspend fun fetchHomePageDetails(@Body request: HomePageApiRequest): HomePageApiResponse
 
 }
