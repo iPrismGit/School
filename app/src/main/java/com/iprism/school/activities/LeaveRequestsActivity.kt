@@ -1,5 +1,6 @@
 package com.iprism.school.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -56,9 +57,11 @@ class LeaveRequestsActivity : BaseActivity() {
         }
         initViewModel()
         observeLeaveRequestsResponse()
-        var request = ApplyForLeaveApiRequest(userDetails[User.ACADEMIC_YEAR_ID].toString(),
+        var request = ApplyForLeaveApiRequest(
+            userDetails[User.ACADEMIC_YEAR_ID].toString(),
             userDetails[User.SCHOOL_ID].toString(), "", "", "",
-            "","",userDetails[User.ID].toString(), "view")
+            "", "", userDetails[User.ID].toString(), "view"
+        )
         viewModel.fetchLeaveRequests(request)
     }
 
@@ -69,6 +72,7 @@ class LeaveRequestsActivity : BaseActivity() {
 
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun observeLeaveRequestsResponse() {
         viewModel.leaveRequestsResponse.observe(this) { result ->
             when (result) {
@@ -81,9 +85,10 @@ class LeaveRequestsActivity : BaseActivity() {
                 is UiState.Success -> {
                     binding.progress.hideProgress()
                     if (result.data.leave_requests.isNotEmpty()) {
-                      binding.leaveRequestsRv.visibility = View.VISIBLE
-                      binding.noDataLo.visibility = View.GONE
                         setupLeaveRequestsAdapter(result.data.leave_requests)
+                        binding.leaveRequestsRv.visibility = View.VISIBLE
+                        binding.noDataLo.visibility = View.GONE
+
                     } else {
                         binding.leaveRequestsRv.visibility = View.GONE
                         binding.noDataLo.visibility = View.VISIBLE
@@ -100,23 +105,23 @@ class LeaveRequestsActivity : BaseActivity() {
         }
     }
 
-    private fun setupLeaveRequestsAdapter(leaveRequests: List<LeaveRequest>){
+    private fun setupLeaveRequestsAdapter(leaveRequests: List<LeaveRequest>) {
         var leaveRequestsAdapter = LeaveRequestsAdapter(leaveRequests)
         var linearLayoutManager = LinearLayoutManager(this)
         binding.leaveRequestsRv.adapter = leaveRequestsAdapter
         binding.leaveRequestsRv.layoutManager = linearLayoutManager
-        leaveRequestsAdapter.setupListener(object : OnCalenderClickListener{
+        leaveRequestsAdapter.setupListener(object : OnCalenderClickListener {
             override fun onItemClick(
                 calenderId: String,
                 calenderName: String,
                 image: String
             ) {
-                if (image.isNotEmpty()){
+                if (image.isNotEmpty()) {
                     var intent = Intent(this@LeaveRequestsActivity, ViewImageActivity::class.java)
                     intent.putExtra("EventImage", image)
                     intent.putExtra("EventName", "Leave Request")
                     startActivity(intent)
-                } else{
+                } else {
                     ToastUtils.showErrorCustomToast(this@LeaveRequestsActivity, "No Image Found..!")
                 }
             }
