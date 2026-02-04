@@ -15,7 +15,7 @@ class HomePageViewModel(private var repository: HomePageRepository) : ViewModel(
     private val _homePageResponse = MutableLiveData<UiState<HomePageResponse>>()
     val homePageResponse: LiveData<UiState<HomePageResponse>> = _homePageResponse
 
-    fun fetchAndInsertAlbumCovers(request : HomePageApiRequest) {
+    fun fetchHomePageDetails(request : HomePageApiRequest) {
         viewModelScope.launch {
             _homePageResponse.value = UiState.Loading
             try {

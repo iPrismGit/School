@@ -4,10 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.iprism.school.R
 import com.iprism.school.adapters.HelpTutorialsAdapter
 import com.iprism.school.databinding.ActivityHelpTutorialsBinding
-import com.iprism.school.databinding.AlbumItemBinding
 
 class HelpTutorialsActivity : AppCompatActivity() {
 

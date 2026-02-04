@@ -11,11 +11,7 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.iprism.school.R
-import com.iprism.school.databinding.ActivityMessageDetailsBinding
-import com.iprism.school.databinding.AlbumItemBinding
 import com.iprism.school.databinding.MessageItemBinding
-import com.iprism.school.interfaces.OnMessageClickListener
-import com.iprism.school.model.Response.AlbumDetail
 import com.iprism.school.model.Response.InboxMessageList
 import com.iprism.school.utils.Constants
 

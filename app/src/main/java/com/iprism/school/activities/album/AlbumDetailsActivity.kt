@@ -32,7 +32,6 @@ import com.iprism.school.activities.LoginActivity
 import com.iprism.school.activities.ViewImageActivity
 import com.iprism.school.adapters.AlbumCoversAdapter
 import com.iprism.school.adapters.AlbumImagesAdapter
-import com.iprism.school.adapters.AlbumsImageAdapter
 import com.iprism.school.adapters.ImageAdapter
 import com.iprism.school.databinding.ActivityAlbumDetailsBinding
 import com.iprism.school.interfaces.OnAlbumClickListener

@@ -31,6 +31,7 @@ import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.User
 import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.iprism.school.activities.ApplyForLeaveActivity
 import com.iprism.school.activities.DayCarePlansActivity
@@ -38,22 +39,30 @@ import com.iprism.school.activities.HolidaysActivity
 import com.iprism.school.activities.PlannerCategoriesActivity
 import com.iprism.school.activities.StaffAttendanceActivity
 import com.iprism.school.activities.album.DayCareAlbumsActivity
+import com.iprism.school.adapters.HomePAgeDayCareAlbumsAdapter
+import com.iprism.school.adapters.HomePageAlbumsAdapter
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.daycare.DayCareStatusApiRequest
+import com.iprism.school.model.homepagemodel.AlbumCoverHome
+import com.iprism.school.model.homepagemodel.DayCareAlbumCoverHome
+import com.iprism.school.model.homepagemodel.HomePageApiRequest
 import com.iprism.school.repositories.AttendanceRepository
 import com.iprism.school.repositories.DayCareRepository
+import com.iprism.school.repositories.HomePageRepository
 import com.iprism.school.utils.Constants
 import com.iprism.school.utils.UiState
 import com.iprism.school.utils.hideProgress
 import com.iprism.school.utils.showProgress
 import com.iprism.school.viewModels.AttendanceViewModel
 import com.iprism.school.viewModels.DayCareViewModel
+import com.iprism.school.viewModels.HomePageViewModel
 import com.iprism.school.viewModels.ViewModelFactory
 
 class HomeFragment : BaseFragment() {
 
     private lateinit var binding: FragmentHomeBinding
     private lateinit var attendanceViewModel: AttendanceViewModel
+    private lateinit var homePageViewModel: HomePageViewModel
     private lateinit var dayCareViewModel: DayCareViewModel
     private lateinit var yesBtn: Button
     private lateinit var noBtn: Button
@@ -101,14 +110,23 @@ class HomeFragment : BaseFragment() {
         initViewModel()
         observeAcademicYearsResponse()
         observeDayCareStatusResponse()
-        var request = ClassTeacherApiRequest(
-            "",
-            userDetails[User.ID].toString(),
-            userDetails[User.SCHOOL_ID].toString(),
-            "",
-            "academic_year"
-        )
-        attendanceViewModel.fetchAcademicYears(request)
+        observeHomePageResponse()
+        val academicYear = userDetails[User.ACADEMIC_YEAR_ID]?.toString()
+
+        if (academicYear.isNullOrEmpty()) {
+            val request = ClassTeacherApiRequest(
+                "",
+                userDetails[User.ID].toString(),
+                userDetails[User.SCHOOL_ID].toString(),
+                "",
+                "academic_year"
+            )
+            attendanceViewModel.fetchAcademicYears(request)
+        } else {
+            var request = HomePageApiRequest(userDetails[User.ACADEMIC_YEAR_ID].toString(), userDetails[User.SCHOOL_ID].toString(), userDetails[User.ID].toString())
+            homePageViewModel.fetchHomePageDetails(request)
+        }
+
         handlePlannersAndResorcesLo()
         handleStudentsLL()
         handleInboxLL()
@@ -147,9 +165,9 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun handleCreateDayCareAlbumsLo() {
-       binding.createDayCareLl.setOnClickListener { view ->
-           startActivity(Intent(requireContext(), DayCareAlbumsActivity::class.java))
-       }
+        binding.createDayCareLl.setOnClickListener { view ->
+            startActivity(Intent(requireContext(), DayCareAlbumsActivity::class.java))
+        }
     }
 
     private fun handleCreateDayCareViewAllLo() {
@@ -167,6 +185,10 @@ class HomeFragment : BaseFragment() {
         val dayCareFactory = ViewModelFactory { DayCareViewModel(dayCareRepository) }
         dayCareViewModel = ViewModelProvider(this, dayCareFactory)[DayCareViewModel::class.java]
 
+        val homePageRepository = HomePageRepository(requireContext())
+        val homePageFactory = ViewModelFactory { HomePageViewModel(homePageRepository) }
+        homePageViewModel = ViewModelProvider(this, homePageFactory)[HomePageViewModel::class.java]
+
     }
 
     private fun observeAcademicYearsResponse() {
@@ -179,6 +201,8 @@ class HomeFragment : BaseFragment() {
                 is UiState.Success -> {
                     binding.progress.hideProgress()
                     user!!.storeAcademicYear(result.data.id, result.data.name)
+                    var request = HomePageApiRequest(userDetails[User.ACADEMIC_YEAR_ID].toString(), userDetails[User.SCHOOL_ID].toString(), userDetails[User.ID].toString())
+                    homePageViewModel.fetchHomePageDetails(request)
                 }
 
                 is UiState.Error -> {
@@ -215,6 +239,57 @@ class HomeFragment : BaseFragment() {
                 }
             }
         }
+    }
+
+    private fun observeHomePageResponse() {
+        homePageViewModel.homePageResponse.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is UiState.Loading -> {
+                   binding.shimmerLo.visibility = View.VISIBLE
+                   binding.mainLo.visibility = View.GONE
+                }
+
+                is UiState.Success -> {
+                    binding.shimmerLo.visibility = View.GONE
+                    binding.mainLo.visibility = View.VISIBLE
+                    if (result.data.album_covers.isNotEmpty()) {
+                        setupAlbumsAdapter(result.data.album_covers)
+                        binding.albumsRv.visibility = View.VISIBLE
+                    } else {
+                        binding.albumsRv.visibility = View.GONE
+                    }
+
+                    if (result.data.day_care_album_covers.isNotEmpty()) {
+                        setupDayCareAlbumsAdapter(result.data.day_care_album_covers)
+                        binding.dayCareAlbumsRv.visibility = View.VISIBLE
+                    } else {
+                        binding.dayCareAlbumsRv.visibility = View.GONE
+                    }
+                }
+
+                is UiState.Error -> {
+                    binding.shimmerLo.visibility = View.VISIBLE
+                    binding.mainLo.visibility = View.GONE
+                    ToastUtils.showErrorCustomToast(requireContext(), result.message)
+                    Log.d("Message", result.message)
+                    binding.progress.hideProgress()
+                }
+            }
+        }
+    }
+
+    private fun setupAlbumsAdapter(albumCovers: List<AlbumCoverHome>) {
+        var adapter = HomePageAlbumsAdapter(albumCovers)
+        var linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.albumsRv.layoutManager = linearLayoutManager
+        binding.albumsRv.adapter = adapter
+    }
+
+    private fun setupDayCareAlbumsAdapter(albumCovers: List<DayCareAlbumCoverHome>) {
+        var adapter = HomePAgeDayCareAlbumsAdapter(albumCovers)
+        var linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.dayCareAlbumsRv.layoutManager = linearLayoutManager
+        binding.dayCareAlbumsRv.adapter = adapter
     }
 
     private fun handlePlannersAndResorcesLo() {
