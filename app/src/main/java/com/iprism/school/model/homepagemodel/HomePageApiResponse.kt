@@ -17,10 +17,10 @@ data class HomePageResponse (
 
 data class AlbumCoverHome(
 
-    val branch_id: Int,
+    val branch_id: String,
     val date: String,
     val description: String,
-    val id: Int,
+    val id: String,
     val image: String,
     val title: String
 

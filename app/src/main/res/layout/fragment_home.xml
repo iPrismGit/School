@@ -920,7 +920,7 @@
                     <LinearLayout
                         android:id="@+id/albums_view_all_lo"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="12dp">
 
@@ -964,10 +964,9 @@
 
                         </LinearLayout>
 
-                        <RelativeLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginTop="12dp"
+                            android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
                             <LinearLayout
@@ -977,6 +976,7 @@
                                 android:layout_alignParentStart="true"
                                 android:layout_centerInParent="true"
                                 android:gravity="center"
+                                android:visibility="gone"
                                 android:orientation="horizontal">
 
                                 <ImageView
@@ -1005,11 +1005,10 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
                                 android:layout_gravity="center"
-                                android:layout_marginStart="6dp"
-                                android:layout_marginTop="20dp"
+                                android:layout_marginTop="6dp"
                                 android:layout_toEndOf="@id/create_ll" />
 
-                        </RelativeLayout>
+                        </LinearLayout>
                     </LinearLayout>
 
                     <View
@@ -1046,6 +1045,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
+                                android:visibility="visible"
                                 android:orientation="horizontal">
 
                                 <TextView
@@ -1069,7 +1069,6 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_marginTop="12dp"
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
 
@@ -1080,6 +1079,7 @@
                                 android:layout_alignParentStart="true"
                                 android:layout_centerInParent="true"
                                 android:gravity="center"
+                                android:visibility="gone"
                                 android:orientation="horizontal">
 
                                 <ImageView
@@ -1107,8 +1107,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
                                 android:layout_gravity="center"
-                                android:layout_marginStart="6dp"
-                                android:layout_marginTop="20dp"
+                                android:layout_marginTop="6dp"
                                 android:layout_toEndOf="@id/create_ll" />
 
                         </LinearLayout>

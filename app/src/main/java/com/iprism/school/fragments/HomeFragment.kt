@@ -38,9 +38,14 @@ import com.iprism.school.activities.DayCarePlansActivity
 import com.iprism.school.activities.HolidaysActivity
 import com.iprism.school.activities.PlannerCategoriesActivity
 import com.iprism.school.activities.StaffAttendanceActivity
+import com.iprism.school.activities.album.AlbumDetailsActivity
+import com.iprism.school.activities.album.CreateDayCareAlbumsActivity
+import com.iprism.school.activities.album.DayCareAlbumDetailsActivity
 import com.iprism.school.activities.album.DayCareAlbumsActivity
 import com.iprism.school.adapters.HomePAgeDayCareAlbumsAdapter
 import com.iprism.school.adapters.HomePageAlbumsAdapter
+import com.iprism.school.interfaces.OnAlbumClickListener
+import com.iprism.school.model.classteachermodel.Class
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.daycare.DayCareStatusApiRequest
 import com.iprism.school.model.homepagemodel.AlbumCoverHome
@@ -69,6 +74,7 @@ class HomeFragment : BaseFragment() {
     private var teacherId: String = ""
     private var auth_token: String = ""
     private var scl_id: String = ""
+    private var navigationFrom: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -144,8 +150,6 @@ class HomeFragment : BaseFragment() {
         handleLogoutLo()
         handleAboutusLo()
         handleAlbumsViewAll()
-        handleCreateAlbumsLo()
-        handleCreateDayCareAlbumsLo()
         handleCreateDayCareViewAllLo()
         handleHolidayCalenderLo()
         handleApplyForLeaveLo()
@@ -161,12 +165,6 @@ class HomeFragment : BaseFragment() {
     private fun handleHolidayCalenderLo() {
         binding.holidayCalenderLo.setOnClickListener { view ->
             startActivity(Intent(requireContext(), HolidaysActivity::class.java))
-        }
-    }
-
-    private fun handleCreateDayCareAlbumsLo() {
-        binding.createDayCareLl.setOnClickListener { view ->
-            startActivity(Intent(requireContext(), DayCareAlbumsActivity::class.java))
         }
     }
 
@@ -217,25 +215,44 @@ class HomeFragment : BaseFragment() {
     private fun observeDayCareStatusResponse() {
         dayCareViewModel.dayCareStatusResponse.observe(viewLifecycleOwner) { result ->
             when (result) {
-                is UiState.Loading -> {
-                    binding.progress.showProgress()
-                }
+
+                is UiState.Loading -> binding.progress.showProgress()
 
                 is UiState.Success -> {
                     binding.progress.hideProgress()
+
                     if (result.data.status.equals("yes", true)) {
-                        var intent = Intent(requireContext(), DayCarePlansActivity::class.java)
-                        intent.putExtra("tag", "DayCare")
-                        startActivity(intent)
+
+                        when (navigationFrom) {
+
+                            "DAYCARE" -> {
+                                val intent = Intent(
+                                    requireContext(),
+                                    DayCarePlansActivity::class.java
+                                )
+                                intent.putExtra("tag", "DayCare")
+                                startActivity(intent)
+                            }
+
+                            "ALBUM" -> {
+                                val intent = Intent(
+                                    requireContext(),
+                                    CreateDayCareAlbumsActivity::class.java
+                                )
+                                startActivity(intent)
+                            }
+                        }
+
+                        navigationFrom = ""
+
                     } else {
                         showConfirmationDialog()
                     }
                 }
 
                 is UiState.Error -> {
-                    ToastUtils.showErrorCustomToast(requireContext(), result.message)
-                    Log.d("Message", result.message)
                     binding.progress.hideProgress()
+                    ToastUtils.showErrorCustomToast(requireContext(), result.message)
                 }
             }
         }
@@ -252,15 +269,20 @@ class HomeFragment : BaseFragment() {
                 is UiState.Success -> {
                     binding.shimmerLo.visibility = View.GONE
                     binding.mainLo.visibility = View.VISIBLE
-                    if (result.data.album_covers.isNotEmpty()) {
-                        setupAlbumsAdapter(result.data.album_covers)
+                    var updatedAlbumCoversList = result.data.album_covers.toMutableList()
+                    updatedAlbumCoversList.add(0, AlbumCoverHome("", "", "", "-1", "",  ""))
+
+                    var updatedDayCareAlbumCoversList = result.data.day_care_album_covers.toMutableList()
+                    updatedDayCareAlbumCoversList.add(0, DayCareAlbumCoverHome("", "", "", "-1", "",  ""))
+                    if (updatedAlbumCoversList.isNotEmpty()) {
+                        setupAlbumsAdapter(updatedAlbumCoversList)
                         binding.albumsRv.visibility = View.VISIBLE
                     } else {
                         binding.albumsRv.visibility = View.GONE
                     }
 
-                    if (result.data.day_care_album_covers.isNotEmpty()) {
-                        setupDayCareAlbumsAdapter(result.data.day_care_album_covers)
+                    if (updatedDayCareAlbumCoversList.isNotEmpty()) {
+                        setupDayCareAlbumsAdapter(updatedDayCareAlbumCoversList)
                         binding.dayCareAlbumsRv.visibility = View.VISIBLE
                     } else {
                         binding.dayCareAlbumsRv.visibility = View.GONE
@@ -283,6 +305,19 @@ class HomeFragment : BaseFragment() {
         var linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.albumsRv.layoutManager = linearLayoutManager
         binding.albumsRv.adapter = adapter
+        adapter.setupListener(object : OnAlbumClickListener{
+            override fun onCoverClick(albumId: String, albumName: String) {
+                if (albumId.equals("-1", true)){
+                    startActivity(Intent(requireContext(), CreateAlbumsActivity::class.java))
+                } else{
+                    var intent = Intent(requireContext(), AlbumDetailsActivity::class.java)
+                    intent.putExtra("albumId", albumId)
+                    intent.putExtra("albumName", albumName)
+                    startActivity(intent)
+                }
+            }
+
+        })
     }
 
     private fun setupDayCareAlbumsAdapter(albumCovers: List<DayCareAlbumCoverHome>) {
@@ -290,6 +325,31 @@ class HomeFragment : BaseFragment() {
         var linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.dayCareAlbumsRv.layoutManager = linearLayoutManager
         binding.dayCareAlbumsRv.adapter = adapter
+        adapter.setupListener(object : OnAlbumClickListener{
+            override fun onCoverClick(albumId: String, albumName: String) {
+
+                if (albumId.equals("-1", true)) {
+
+                    navigationFrom = "ALBUM"
+
+                    val request = DayCareStatusApiRequest(
+                        userDetails[User.ACADEMIC_YEAR_ID].toString(),
+                        userDetails[User.SCHOOL_ID].toString(),
+                        userDetails[User.ID].toString()
+                    )
+
+                    dayCareViewModel.fetchDayCareStatus(request)
+
+                } else {
+                    val intent = Intent(requireContext(), DayCareAlbumDetailsActivity::class.java)
+                    intent.putExtra("albumId", albumId)
+                    intent.putExtra("albumName", albumName)
+                    startActivity(intent)
+                }
+            }
+
+
+        })
     }
 
     private fun handlePlannersAndResorcesLo() {
@@ -347,12 +407,6 @@ class HomeFragment : BaseFragment() {
         })
     }
 
-    private fun handleCreateAlbumsLo() {
-        binding.createLl.setOnClickListener(View.OnClickListener {
-            startActivity(Intent(context, AlbumsActivity::class.java))
-        })
-    }
-
     private fun handleAboutusLo() {
         binding.aboutUsLo.setOnClickListener(View.OnClickListener {
             startActivity(Intent(context, ContentPagesActivity::class.java))
@@ -393,13 +447,19 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun handleDayCare() {
-        binding.dayCareLo.setOnClickListener(View.OnClickListener {
-            var request = DayCareStatusApiRequest(
+        binding.dayCareLo.setOnClickListener {
+
+            navigationFrom = "DAYCARE"
+
+            val request = DayCareStatusApiRequest(
                 userDetails[User.ACADEMIC_YEAR_ID].toString(),
-                userDetails[User.SCHOOL_ID].toString(), userDetails[User.ID].toString()
+                userDetails[User.SCHOOL_ID].toString(),
+                userDetails[User.ID].toString()
             )
+
             dayCareViewModel.fetchDayCareStatus(request)
-        })
+        }
+
     }
 
     private fun handleStaffAttendanceLo() {
