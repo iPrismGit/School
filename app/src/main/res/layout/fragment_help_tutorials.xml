@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/item_help_tutorial" />
+        tools:listitem="@layout/help_tutorial_item" />
 
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/progress"
