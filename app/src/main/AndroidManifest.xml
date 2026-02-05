@@ -106,10 +106,6 @@
             android:name=".activities.ViewImageActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.Messages.SentMessagesActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activities.Messages.MessageDetailsActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
@@ -147,10 +143,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.StudentsActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activities.Messages.MessageActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
