@@ -22,6 +22,8 @@ import com.iprism.school.model.daycare.DayCareStatusApiRequest
 import com.iprism.school.model.daycare.DayCareStatusApiResponse
 import com.iprism.school.model.eventsmodel.EventsApiRequest
 import com.iprism.school.model.eventsmodel.EventsApiResponse
+import com.iprism.school.model.helptutorials.HelpTutorialsApiRequest
+import com.iprism.school.model.helptutorials.HelpTutorialsApiResponse
 import com.iprism.school.model.holidaysmodel.HolidaysApiRequest
 import com.iprism.school.model.holidaysmodel.HolidaysApiResponse
 import com.iprism.school.model.homepagemodel.HomePageApiRequest
@@ -121,5 +123,8 @@ interface StaffApiService {
 
     @POST(Constants.HOME_PAGE_ENDPOINT)
     suspend fun fetchHomePageDetails(@Body request: HomePageApiRequest): HomePageApiResponse
+
+    @POST(Constants.TUTORIALS_ENDPOINT)
+    suspend fun fetchHelpTutorials(@Body request: HelpTutorialsApiRequest): HelpTutorialsApiResponse
 
 }

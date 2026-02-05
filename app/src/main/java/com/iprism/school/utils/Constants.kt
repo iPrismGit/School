@@ -67,5 +67,6 @@ object Constants {
     const val STAFF_ATTENDANCE_ENDPOINT = "staff_attendance"
     const val LEAVE_REQUEST_ENDPOINT = "leave_request"
     const val HOME_PAGE_ENDPOINT = "home_page"
+    const val TUTORIALS_ENDPOINT = "help_tutorials"
 
 }
