@@ -1,4 +1,3 @@
-package com.iprism.school.activities.Messages
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -27,29 +26,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
 import com.iprism.school.activities.HomeActivity
-import com.iprism.school.activities.LoginActivity
+
 import com.iprism.school.adapters.ImageAdapter
 import com.iprism.school.databinding.ActivityMessageBinding
-import com.iprism.school.model.Request.CLass_StudentsReq
-import com.iprism.school.model.Request.CreateNewMsgReq
-import com.iprism.school.model.Request.SchoolStaffReq
-import com.iprism.school.model.Request.TeacherAccessReq
-import com.iprism.school.model.Response.AttendanceUpdatedResponse
-import com.iprism.school.model.Response.ClassResponse
-import com.iprism.school.model.Response.Class_studentResponse
-import com.iprism.school.model.Response.ClasseList
-import com.iprism.school.model.Response.GroupsResponse
-import com.iprism.school.model.Response.GroupsTeacher
-import com.iprism.school.model.Response.SchoolStaffResponse
-import com.iprism.school.model.Response.StaffDetailList
-import com.iprism.school.model.Response.StudentList
+
 import com.iprism.school.utils.DateTimeUtils
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.User
 import com.iprism.school.utils.Utility
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.InputStream
@@ -64,33 +48,17 @@ class MessageActivity : BaseActivity() {
     private var emp_designation: String = ""
     private var emp_name: String = ""
 
-    private val classNames = mutableListOf<String>()
-    private val classIds = mutableListOf<String>()
-    private val classList = mutableListOf<ClasseList>()
-
-    private val studentNames = mutableListOf<String>()
-    private val studentIds = mutableListOf<String>()
-    private val studentList = mutableListOf<StudentList>()
-
     private val usersNames = mutableListOf<String>()
     private val usersIds = mutableListOf<String>()
-    private val usersList = mutableListOf<StaffDetailList>()
-
-    private val groupNames = mutableListOf<String>()
-    private val groupIds = mutableListOf<String>()
-    private val groupList = mutableListOf<GroupsTeacher>()
 
     private var selected_class_ids : String? = ""
-    private var selected_class_names : String? = ""
 
     private var selected_student_ids : String? = ""
-    private var selected_student_names : String? = ""
 
     private var selected_users_ids : String? = ""
     private var selected_users_names : String? = ""
 
     private var selected_group_ids : String? = ""
-    private var selected_group_names : String? = ""
 
     private var message_type : String? = "normal"
 
@@ -174,7 +142,6 @@ class MessageActivity : BaseActivity() {
             }else if (selected_student_ids == ""||selected_student_ids == null){
                 ToastUtils.showSuccessCustomToast(this@MessageActivity, "Select Students")
             } else{
-                showusers()
             }
         }
 
@@ -244,123 +211,6 @@ class MessageActivity : BaseActivity() {
         yesBtn.setOnClickListener(View.OnClickListener {
             dialog.dismiss()
         })
-        dialog.show()
-    }
-
-    private fun showusers() {
-
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_class_selection, null)
-        val searchView = dialogView.findViewById<SearchView>(R.id.searchView)
-        val listView = dialogView.findViewById<ListView>(R.id.classListView)
-        val nameTv = dialogView.findViewById<TextView>(R.id.nameTv)
-
-        nameTv.text = "Select User"
-
-        val originalClassNames = mutableListOf("Select All") + usersList.map { it.employee_name }
-        val filteredClassNames = originalClassNames.toMutableList()
-        val checkedItems = BooleanArray(originalClassNames.size) { false }
-
-        // Track selected class IDs
-        val tempClassNames = usersNames.toMutableSet()
-        val tempClassIds = usersIds.toMutableSet()
-
-        // Set up the adapter
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, filteredClassNames)
-        listView.adapter = adapter
-        listView.choiceMode = ListView.CHOICE_MODE_MULTIPLE
-
-        // Restore previously selected checkboxes
-        usersList.forEachIndexed { index, classItem ->
-            if (tempClassIds.contains(classItem.id)) {
-                checkedItems[index + 1] = true // Offset by 1 due to "Select All"
-                listView.setItemChecked(index + 1, true) // Ensure check is shown
-            }
-        }
-
-        // Check "Select All" if all are already selected
-        if (tempClassIds.size == usersList.size) {
-            checkedItems[0] = true
-            listView.setItemChecked(0, true)
-        }
-
-        // Handle ListView item selection
-        listView.setOnItemClickListener { _, _, which, _ ->
-            if (which == 0) { // "Select All" logic
-                val isChecked = !checkedItems[0]
-                for (i in 1 until checkedItems.size) {
-                    checkedItems[i] = isChecked
-                    listView.setItemChecked(i, isChecked)
-                }
-                if (isChecked) {
-                    tempClassNames.clear()
-                    tempClassIds.clear()
-                    tempClassNames.addAll(usersList.map { it.employee_name })
-                    tempClassIds.addAll(usersList.map { it.id })
-                } else {
-                    tempClassNames.clear()
-                    tempClassIds.clear()
-                }
-            } else {
-                val selectedClassName = usersList[which - 1].employee_name
-                val selectedClassId = usersList[which - 1].id
-
-                if (tempClassNames.contains(selectedClassName)) {
-                    tempClassNames.remove(selectedClassName)
-                    tempClassIds.remove(selectedClassId)
-                    listView.setItemChecked(which, false)
-                } else {
-                    tempClassNames.add(selectedClassName)
-                    tempClassIds.add(selectedClassId)
-                    listView.setItemChecked(which, true)
-                }
-
-                // Update "Select All" state
-                checkedItems[0] = tempClassNames.size == usersList.size
-                listView.setItemChecked(0, checkedItems[0])
-            }
-        }
-
-        // Implement search filter
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextChange(newText: String?): Boolean {
-                filteredClassNames.clear()
-                filteredClassNames.add("Select All") // Keep Select All on top
-                if (newText.isNullOrEmpty()) {
-                    filteredClassNames.addAll(usersList.map { it.employee_name })
-                } else {
-                    filteredClassNames.addAll(usersList.filter { it.employee_name.contains(newText, true) }.map { it.employee_name })
-                }
-                adapter.notifyDataSetChanged()
-                return true
-            }
-
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-        })
-
-        // Build and Show AlertDialog
-        val dialog = AlertDialog.Builder(this)
-            .setView(dialogView)
-            .setPositiveButton("OK") { _, _ ->
-                usersNames.clear()
-                usersIds.clear()
-                usersNames.addAll(tempClassNames)
-                usersIds.addAll(tempClassIds)
-
-                selected_users_ids = usersIds.joinToString(",")
-                selected_users_names = usersNames.joinToString(" , ")
-                binding.selectedusers.text = selected_users_names
-                Log.d("selectedUsers", selected_users_ids.toString())
-            }
-            .setNegativeButton("Cancel") { _, _ ->
-                // Reset all selections
-                usersIds.clear()
-                usersList.clear()
-                selected_users_ids = ""
-                selected_users_names = ""
-            }
-            .create()
         dialog.show()
     }
 

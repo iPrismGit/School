@@ -4,13 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import com.iprism.school.base.BaseFragment
 import com.iprism.school.R
@@ -20,8 +18,6 @@ import com.iprism.school.activities.ConsentsActivity
 import com.iprism.school.activities.ContentPagesActivity
 import com.iprism.school.activities.HomeActivity
 import com.iprism.school.activities.LoginActivity
-import com.iprism.school.activities.Messages.MessageActivity
-import com.iprism.school.activities.Messages.SentMessagesActivity
 import com.iprism.school.activities.StudentsActivity
 import com.iprism.school.activities.album.AlbumsActivity
 import com.iprism.school.activities.album.CreateAlbumsActivity
@@ -45,7 +41,6 @@ import com.iprism.school.activities.album.DayCareAlbumsActivity
 import com.iprism.school.adapters.HomePAgeDayCareAlbumsAdapter
 import com.iprism.school.adapters.HomePageAlbumsAdapter
 import com.iprism.school.interfaces.OnAlbumClickListener
-import com.iprism.school.model.classteachermodel.Class
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.daycare.DayCareStatusApiRequest
 import com.iprism.school.model.homepagemodel.AlbumCoverHome

@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.iprism.school.databinding.ActivityDaycareEmailReportBinding
 import com.iprism.school.databinding.CreatedDiaryItemBinding
 import com.iprism.school.interfaces.OnCreatedDiariesClickListener
 import com.iprism.school.model.dairy.Diary

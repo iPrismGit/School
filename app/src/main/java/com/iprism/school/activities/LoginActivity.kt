@@ -9,13 +9,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
-import com.google.gson.Gson
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityLoginBinding
-import com.iprism.school.model.Request.LoginReq
-import com.iprism.school.model.Request.OtpReq
-import com.iprism.school.model.Response.LoginResponse
-import com.iprism.school.model.Response.OtpResponse
 import com.iprism.school.model.authmodel.LoginApiRequest
 import com.iprism.school.repositories.AuthenticationRepository
 import com.iprism.school.utils.ToastUtils
@@ -23,12 +18,8 @@ import com.iprism.school.utils.UiState
 import com.iprism.school.utils.User
 import com.iprism.school.utils.hideProgress
 import com.iprism.school.utils.showProgress
-import com.iprism.school.viewModels.AttendanceViewModel
 import com.iprism.school.viewModels.AuthViewModel
 import com.iprism.school.viewModels.ViewModelFactory
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.regex.Pattern
 import kotlin.toString
 

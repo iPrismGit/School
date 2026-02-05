@@ -33,17 +33,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.iprism.school.base.BaseActivity
-import com.iprism.school.activities.LoginActivity
-import com.iprism.school.adapters.ImageAdapter
+
 import com.iprism.school.databinding.ActivityCreateAlbumsBinding
-import com.iprism.school.model.Request.CreateAlbumReq
-import com.iprism.school.model.Request.SchoolStaffReq
-import com.iprism.school.model.Request.TeacherAccessReq
-import com.iprism.school.model.Response.AlbumUploadResponse
-import com.iprism.school.model.Response.ClassResponse
-import com.iprism.school.model.Response.ClasseList
-import com.iprism.school.model.Response.GroupsResponse
-import com.iprism.school.model.Response.GroupsTeacher
+
 import com.iprism.school.model.albums.AlbumCoverImagesApiRequest
 import com.iprism.school.model.classteachermodel.Class
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
@@ -60,14 +52,11 @@ import com.iprism.school.viewModels.AlbumsViewModel
 import com.iprism.school.viewModels.AttendanceViewModel
 import com.iprism.school.viewModels.ViewModelFactory
 import com.yalantis.ucrop.UCrop
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
-import java.io.InputStream
 
 class CreateAlbumsActivity : BaseActivity() {
 

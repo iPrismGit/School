@@ -1,21 +1,10 @@
 package com.iprism.school.activities
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import com.iprism.school.base.BaseActivity
-import com.iprism.school.R
 import com.iprism.school.databinding.ActivityContentPagesBinding
-import com.iprism.school.model.Request.SchoolStaffReq
-import com.iprism.school.model.Response.AboutUsResponse
-import com.iprism.school.model.Response.PrivacyResponse
-import com.iprism.school.model.Response.TermsandConditionResponse
-import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.User
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ContentPagesActivity : BaseActivity() {
 

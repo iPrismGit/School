@@ -1,45 +1,28 @@
 package com.iprism.school.activities.album
 
-import android.Manifest
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.iprism.school.base.BaseActivity
-import com.iprism.school.activities.HomeActivity
-import com.iprism.school.activities.ViewImageActivity
 import com.iprism.school.adapters.AlbumCoversAdapter
-import com.iprism.school.adapters.CircularsAdapter
 import com.iprism.school.databinding.ActivityAlbumsBinding
 import com.iprism.school.interfaces.OnAlbumClickListener
-import com.iprism.school.interfaces.OnCalenderClickListener
-import com.iprism.school.model.Request.SchoolStaffReq
-import com.iprism.school.model.Response.AlbumsListResponse
 import com.iprism.school.model.albums.AlbumCover
 import com.iprism.school.model.albums.AlbumCoverImagesApiRequest
-import com.iprism.school.model.circularmodels.Circular
-import com.iprism.school.model.circularmodels.CircularApiRequest
 import com.iprism.school.repositories.AlbumsRepository
-import com.iprism.school.repositories.AttendanceRepository
-import com.iprism.school.repositories.CircularRepository
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.UiState
 import com.iprism.school.utils.User
 import com.iprism.school.utils.hideProgress
 import com.iprism.school.utils.showProgress
 import com.iprism.school.viewModels.AlbumsViewModel
-import com.iprism.school.viewModels.AttendanceViewModel
-import com.iprism.school.viewModels.CircularViewModel
+
 import com.iprism.school.viewModels.ViewModelFactory
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class AlbumsActivity : BaseActivity() {
 

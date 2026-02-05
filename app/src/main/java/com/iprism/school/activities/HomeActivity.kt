@@ -1,31 +1,16 @@
 package com.iprism.school.activities
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
 import com.iprism.school.adapters.HomePagerAdapter
 import com.iprism.school.databinding.ActivityHomeBinding
-import com.iprism.school.fragments.HomeFragment
-import com.iprism.school.fragments.MessagesFragment
-import com.iprism.school.model.Request.TeacherAccessReq
-import com.iprism.school.model.Response.TeacherAccessResponse
-import com.iprism.school.utils.User
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 
 class HomeActivity : BaseActivity() {
 

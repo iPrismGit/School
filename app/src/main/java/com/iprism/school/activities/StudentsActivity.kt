@@ -1,23 +1,13 @@
 package com.iprism.school.activities
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
 import com.iprism.school.adapters.StudentsPagerAdapter
 import com.iprism.school.databinding.ActivityStudentsBinding
-import com.iprism.school.model.Request.StudentsListReq
-import com.iprism.school.model.Response.StudentListResponse
-import com.iprism.school.utils.ToastUtils
-import com.iprism.school.utils.User
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class StudentsActivity : BaseActivity() {
 

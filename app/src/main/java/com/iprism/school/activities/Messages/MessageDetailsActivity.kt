@@ -23,18 +23,11 @@ import com.iprism.school.R
 import com.iprism.school.activities.HomeActivity
 import com.iprism.school.databinding.ActivityMessageDetailsBinding
 import com.iprism.school.databinding.MessageDeleteBottomSheetBinding
-import com.iprism.school.model.Request.InboxMessageReplyReq
-import com.iprism.school.model.Request.InboxSingleMsgReq
-import com.iprism.school.model.Request.Update
-import com.iprism.school.model.Response.InboxSingleMsgResponse
-import com.iprism.school.model.Response.SuccessResponsePojo
-import com.iprism.school.utils.Constants
+
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.User
 import com.iprism.school.utils.Utility
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.InputStream

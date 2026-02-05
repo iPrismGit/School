@@ -118,10 +118,6 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.HelpTutorialsActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".activities.album.AlbumsActivity"
             android:exported="false"
             android:screenOrientation="portrait" />

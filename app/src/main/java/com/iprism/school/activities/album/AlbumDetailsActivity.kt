@@ -1,56 +1,24 @@
 package com.iprism.school.activities.album
 
-import android.Manifest
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.ListView
-import android.widget.PopupMenu
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.iprism.school.base.BaseActivity
-import com.iprism.school.R
-import com.iprism.school.activities.LoginActivity
 import com.iprism.school.activities.ViewImageActivity
-import com.iprism.school.adapters.AlbumCoversAdapter
 import com.iprism.school.adapters.AlbumImagesAdapter
-import com.iprism.school.adapters.ImageAdapter
 import com.iprism.school.databinding.ActivityAlbumDetailsBinding
 import com.iprism.school.interfaces.OnAlbumClickListener
-import com.iprism.school.model.Request.AlbumDetailsReq
-import com.iprism.school.model.Request.CreateAlbumReq
-import com.iprism.school.model.Request.DeleteAlbumReq
-import com.iprism.school.model.Request.SchoolStaffReq
-import com.iprism.school.model.Request.SingleAlbumAddReq
-import com.iprism.school.model.Request.SingleDeleteAlbumReq
-import com.iprism.school.model.Request.TeacherAccessReq
-import com.iprism.school.model.Response.AlbumDeleteResponse
-import com.iprism.school.model.Response.AlbumDetailsResponse
-import com.iprism.school.model.Response.AlbumUploadResponse
-import com.iprism.school.model.Response.ClassResponse
-import com.iprism.school.model.Response.ClasseList
-import com.iprism.school.model.Response.GroupsResponse
-import com.iprism.school.model.Response.GroupsTeacher
-import com.iprism.school.model.albums.AlbumCover
-import com.iprism.school.model.albums.AlbumCoverImagesApiRequest
+
 import com.iprism.school.model.albums.AlbumsGallery
 import com.iprism.school.repositories.AlbumsRepository
 import com.iprism.school.utils.ToastUtils
@@ -65,11 +33,6 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.io.ByteArrayOutputStream
-import java.io.InputStream
 
 class AlbumDetailsActivity : BaseActivity() {
 

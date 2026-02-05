@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.iprism.school.databinding.ActivityHelpTutorialsBinding
 import com.iprism.school.databinding.TutorialItemBinding
 
 class HelpTutorialsAdapter(context: Context) : Adapter<HelpTutorialsAdapter.HelpTutorialViewHolder>() {

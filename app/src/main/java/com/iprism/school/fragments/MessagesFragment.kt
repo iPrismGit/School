@@ -8,24 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
 import com.iprism.school.base.BaseFragment
 import com.iprism.school.R
-import com.iprism.school.activities.Messages.MessageActivity
-import com.iprism.school.activities.Messages.MessageDetailsActivity
-import com.iprism.school.adapters.MessagesAdapter
 import com.iprism.school.databinding.FragmentMessagesBinding
-import com.iprism.school.model.Request.InboxMessagesReq
-import com.iprism.school.model.Request.MarkAllReadReq
-import com.iprism.school.model.Request.Update
-import com.iprism.school.model.Response.InboxMessagesResponse
-import com.iprism.school.model.Response.SuccessResponsePojo
-import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.User
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class MessagesFragment : BaseFragment() {
 
