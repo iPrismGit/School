@@ -27,14 +27,14 @@ class DaycareActivitiesActivity : AppCompatActivity() {
         planId = intent.getStringExtra("planId").toString()
         studentId = intent.getStringExtra("studentId").toString()
         handleBack()
-        handleActivitiesLo()
         handleNapLo()
         handleMedicationLo()
         handleNotesLo()
-        handleMoodLo()
         handleDiaperLo()
         handleActivityLo()
+        handleFoodLo()
         handleAttachmentLo()
+        handleMoodLo()
     }
 
     private fun handleAttachmentLo() {
@@ -59,13 +59,13 @@ class DaycareActivitiesActivity : AppCompatActivity() {
         }
     }
 
-    private fun handleDiaperLo() {
-        binding.diaperLo.setOnClickListener { view ->
-            var intent = Intent(this, DiaperActivity::class.java)
+    private fun handleFoodLo() {
+        binding.foodLo.setOnClickListener { view ->
+            var intent = Intent(this, FoodActivity::class.java)
             intent.putExtra("planId", planId)
             intent.putExtra("studentId", studentId)
-            intent.putExtra("type", "Diaper")
-            intent.putExtra("id", "8")
+            intent.putExtra("type", "Food")
+            intent.putExtra("id", "2")
             startActivity(intent)
         }
     }
@@ -80,6 +80,19 @@ class DaycareActivitiesActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+    private fun handleDiaperLo() {
+        binding.diaperLo.setOnClickListener { view ->
+            var intent = Intent(this, DiaperActivity::class.java)
+            intent.putExtra("planId", planId)
+            intent.putExtra("studentId", studentId)
+            intent.putExtra("type", "Diaper")
+            intent.putExtra("id", "8")
+            startActivity(intent)
+        }
+    }
+
+
 
     private fun handleMedicationLo() {
         binding.medicationLo.setOnClickListener { view ->
@@ -114,11 +127,7 @@ class DaycareActivitiesActivity : AppCompatActivity() {
         }
     }
 
-    private fun handleActivitiesLo() {
-        binding.activityLo.setOnClickListener { view ->
 
-        }
-    }
 
     private fun handleBack() {
         binding.backIv.setOnClickListener { view ->

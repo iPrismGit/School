@@ -63,6 +63,13 @@ class LeaveRequestsActivity : BaseActivity() {
             "", "", userDetails[User.ID].toString(), "view"
         )
         viewModel.fetchLeaveRequests(request)
+        handleBack()
+    }
+
+    private fun handleBack() {
+        binding.ivBack.setOnClickListener { view ->
+            finish()
+        }
     }
 
     private fun initViewModel() {
