@@ -29,6 +29,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.iprism.school.activities.AboutUsActivity
 import com.iprism.school.activities.ApplyForLeaveActivity
 import com.iprism.school.activities.DayCarePlansActivity
 import com.iprism.school.activities.HolidaysActivity
@@ -420,7 +421,7 @@ class HomeFragment : BaseFragment() {
 
     private fun handleAboutusLo() {
         binding.aboutUsLo.setOnClickListener(View.OnClickListener {
-            startActivity(Intent(context, ContentPagesActivity::class.java))
+            startActivity(Intent(context, AboutUsActivity::class.java))
         })
     }
 
