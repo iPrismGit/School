@@ -15,6 +15,8 @@ import com.iprism.school.model.classteachermodel.AttendanceStudentsApiRequest
 import com.iprism.school.model.classteachermodel.AttendanceStudentsApiResponse
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.classteachermodel.ClassTeacherApiResponse
+import com.iprism.school.model.contentpagesmodel.ContentPagesApiRequest
+import com.iprism.school.model.contentpagesmodel.ContentPagesApiResponse
 import com.iprism.school.model.dairy.DiaryApiRequest
 import com.iprism.school.model.dairy.DiaryApiResponse
 import com.iprism.school.model.daycare.DayCareApiRequest
@@ -128,5 +130,8 @@ interface StaffApiService {
 
     @POST(Constants.TUTORIALS_ENDPOINT)
     suspend fun fetchHelpTutorials(@Body request: HelpTutorialsApiRequest): HelpTutorialsApiResponse
+
+    @POST(Constants.CONTENT_PAGES_ENDPOINT)
+    suspend fun fetchAppContent(@Body request: ContentPagesApiRequest): ContentPagesApiResponse
 
 }

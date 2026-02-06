@@ -26,5 +26,6 @@ object Constants {
     const val LEAVE_REQUEST_ENDPOINT = "leave_request"
     const val HOME_PAGE_ENDPOINT = "home_page"
     const val TUTORIALS_ENDPOINT = "help_tutorials"
+    const val CONTENT_PAGES_ENDPOINT = "content_pages"
 
 }
