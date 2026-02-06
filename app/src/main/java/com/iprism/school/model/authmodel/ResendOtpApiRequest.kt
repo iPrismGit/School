@@ -1,6 +1,6 @@
 package com.iprism.school.model.authmodel
 
-class ResendOtpApiRequest (
+data class ResendOtpApiRequest (
 
     val mobile: String
 

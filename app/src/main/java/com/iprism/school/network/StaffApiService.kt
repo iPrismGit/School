@@ -8,6 +8,7 @@ import com.iprism.school.model.applyforleavemodel.ApplyForLeaveApiRequest
 import com.iprism.school.model.applyforleavemodel.ApplyForLeaveApiResponse
 import com.iprism.school.model.authmodel.LoginApiRequest
 import com.iprism.school.model.authmodel.LoginApiResponse
+import com.iprism.school.model.authmodel.ResendOtpApiRequest
 import com.iprism.school.model.circularmodels.CircularApiRequest
 import com.iprism.school.model.circularmodels.CircularApiResponse
 import com.iprism.school.model.classteachermodel.AttendanceStudentsApiRequest
@@ -48,6 +49,9 @@ interface StaffApiService {
 
     @POST(Constants.LOGIN_ENDPOINT)
     suspend fun userLogin(@Body loginApiRequest: LoginApiRequest): LoginApiResponse
+
+    @POST(Constants.RESEND_OTP_ENDPOINT)
+    suspend fun resendOtp(@Body request: ResendOtpApiRequest): LoginApiResponse
 
     @POST(Constants.CLASS_TEACHER_ENDPOINT)
     suspend fun getYearClassAndSection(@Body request: ClassTeacherApiRequest): ClassTeacherApiResponse

@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityLoginBinding
 import com.iprism.school.model.authmodel.LoginApiRequest
+import com.iprism.school.model.authmodel.ResendOtpApiRequest
 import com.iprism.school.repositories.AuthenticationRepository
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.UiState
@@ -42,6 +43,7 @@ class LoginActivity : BaseActivity() {
         initViewModel()
         handleRequestOtpBtn()
         observeGenerateOtpResponse()
+        observeGenerateResendOtpResponse()
         handleResendBtn()
         handleContinueBtn()
         observeLoginResponse()
@@ -146,6 +148,30 @@ class LoginActivity : BaseActivity() {
         }
     }
 
+    private fun observeGenerateResendOtpResponse() {
+        viewModel.resendOtpResponse.observe(this) { result ->
+            when (result) {
+                is UiState.Loading -> {
+                    binding.progress.showProgress()
+                    binding.resendBtn.isEnabled = false
+                }
+
+                is UiState.Success -> {
+                    binding.progress.hideProgress()
+                    currentOtp = result.data.otp
+                    binding.resendBtn.isEnabled = true
+                    countDown()
+                    ToastUtils.showSuccessCustomToast(this, currentOtp.toString())
+                }
+
+                is UiState.Error -> {
+                    binding.resendBtn.isEnabled = true
+                    ToastUtils.showErrorCustomToast(this, result.message)
+                    binding.progress.hideProgress()
+                }
+            }
+        }
+    }
 
     private fun handleRequestOtpBtn() {
         binding.requestOtpBtn.setOnClickListener {
@@ -194,10 +220,8 @@ class LoginActivity : BaseActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
-                binding.resendBtn.isEnabled = false
-                countDown()
-//                var resendOtpApiRequest = ResendOtpApiRequest(mobileNumber)
-//                viewModel.resendOtp(resendOtpApiRequest)
+                var resendOtpApiRequest = ResendOtpApiRequest(getMobileNumber())
+                viewModel.generateResendOtp(resendOtpApiRequest)
             }
         })
     }

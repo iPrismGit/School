@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.iprism.school.model.authmodel.LoginApiRequest
 import com.iprism.school.model.authmodel.LoginResponse
+import com.iprism.school.model.authmodel.ResendOtpApiRequest
 import com.iprism.school.repositories.AuthenticationRepository
 import com.iprism.school.utils.UiState
 import kotlinx.coroutines.launch
@@ -13,6 +14,9 @@ class AuthViewModel(private var repository: AuthenticationRepository) : ViewMode
 
     private val _otpResponse = MutableLiveData<UiState<LoginResponse>>()
     val otpResponse: LiveData<UiState<LoginResponse>> = _otpResponse
+
+    private val _resendOtpResponse = MutableLiveData<UiState<LoginResponse>>()
+    val resendOtpResponse: LiveData<UiState<LoginResponse>> = _resendOtpResponse
 
     private val _loginResponse = MutableLiveData<UiState<LoginResponse>>()
     val loginResponse: LiveData<UiState<LoginResponse>> = _loginResponse
@@ -29,6 +33,22 @@ class AuthViewModel(private var repository: AuthenticationRepository) : ViewMode
                 }
             } catch (e: Exception) {
                 _otpResponse.value = UiState.Error(e.localizedMessage ?: "Unknown error")
+            }
+        }
+    }
+
+    fun generateResendOtp(request : ResendOtpApiRequest) {
+        viewModelScope.launch {
+            _resendOtpResponse.value = UiState.Loading
+            try {
+                val response = repository.resendOtp(request)
+                if (response.status) {
+                    _resendOtpResponse.value = UiState.Success(response.response)
+                } else {
+                    _resendOtpResponse.value = UiState.Error(response.message ?: "Something went wrong")
+                }
+            } catch (e: Exception) {
+                _resendOtpResponse.value = UiState.Error(e.localizedMessage ?: "Unknown error")
             }
         }
     }

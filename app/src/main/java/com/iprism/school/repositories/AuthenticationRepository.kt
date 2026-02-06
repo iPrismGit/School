@@ -3,6 +3,7 @@ package com.iprism.school.repositories
 import android.content.Context
 import com.iprism.school.model.authmodel.LoginApiRequest
 import com.iprism.school.model.authmodel.LoginApiResponse
+import com.iprism.school.model.authmodel.ResendOtpApiRequest
 import com.iprism.school.network.SchoolApi
 
 class AuthenticationRepository(private val context: Context) {
@@ -11,6 +12,10 @@ class AuthenticationRepository(private val context: Context) {
 
     suspend fun userLogin(request: LoginApiRequest): LoginApiResponse {
         return apiService.userLogin(request)
+    }
+
+    suspend fun resendOtp(request: ResendOtpApiRequest): LoginApiResponse {
+        return apiService.resendOtp(request)
     }
 
 }

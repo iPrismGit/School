@@ -5,9 +5,7 @@ object Constants {
     const val BASE_URL = "https://littlepebbles.co.in/schoolappnew/teacher_app/ws/"
     const val IMAGES_URL = "https://littlepebbles.co.in/schoolappnew/"
     const val LOGIN_ENDPOINT = "login"
-
-    //new Apis
-
+    const val RESEND_OTP_ENDPOINT = "resend_otp"
     const val CLASS_TEACHER_ENDPOINT = "class_teacher"
     const val ATTENDANCE_ENDPOINT = "attendance"
     const val REFRESH_TOKEN_ENDPOINT = "refresh_token"
