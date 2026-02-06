@@ -1579,6 +1579,7 @@
                         android:background="?android:attr/listDivider" />
 
                     <LinearLayout
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
@@ -1602,11 +1603,13 @@
                     </LinearLayout>
 
                     <View
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="?android:attr/listDivider" />
 
                     <LinearLayout
+                        android:id="@+id/side_help_tutorials_lo"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"

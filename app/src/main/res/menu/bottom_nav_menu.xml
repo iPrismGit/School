@@ -15,7 +15,7 @@
         android:title="Diary"
         android:icon="@drawable/child_care_img"/>
     <item
-        android:id="@+id/help"
+        android:id="@+id/help_nav"
         android:title="Help"
         android:icon="@drawable/help_img"/>
 </menu>

@@ -3,6 +3,8 @@ package com.iprism.school.activities
 import com.iprism.school.repositories.AttendanceRepository
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -479,7 +481,7 @@ class AttendanceActivity : BaseActivity() {
         bottomSheetDialog.setOnShowListener { dialog ->
             val bottomSheet =
                 (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-            bottomSheet?.setBackgroundResource(R.drawable.rounded_bottom_sheet_background)
+            bottomSheet?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
 
         markAttendanceBinding.cancelBtn.setOnClickListener {

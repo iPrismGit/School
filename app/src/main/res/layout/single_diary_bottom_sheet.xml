@@ -123,6 +123,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
+                    app:tint="@color/blue1"
                     android:src="@drawable/camera_img" />
 
             </LinearLayout>

@@ -148,7 +148,16 @@ class HomeFragment : BaseFragment() {
         handleCreateDayCareViewAllLo()
         handleHolidayCalenderLo()
         handleApplyForLeaveLo()
+        handleSideHelpTutorialsLo()
         return binding.root
+    }
+
+    private fun handleSideHelpTutorialsLo() {
+        binding.sideHelpTutorialsLo.setOnClickListener { view ->
+            var intent = Intent(requireContext(), HomeActivity::class.java)
+            intent.putExtra("tag", "Tutorial")
+            startActivity(intent)
+        }
     }
 
     private fun handleApplyForLeaveLo() {

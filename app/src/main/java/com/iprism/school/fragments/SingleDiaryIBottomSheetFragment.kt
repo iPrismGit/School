@@ -19,6 +19,7 @@ import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.iprism.school.R
 import com.iprism.school.activities.SuccessActivity
@@ -93,6 +94,11 @@ class SingleDiaryIBottomSheetFragment : BottomSheetDialogFragment() {
         return binding.root
     }
 
+    override fun getTheme(): Int {
+        return R.style.TransparentBottomSheetTheme
+    }
+
+
     private fun handleCross() {
         binding.crossImg.setOnClickListener { view ->
             dismiss()
@@ -102,17 +108,16 @@ class SingleDiaryIBottomSheetFragment : BottomSheetDialogFragment() {
     override fun onStart() {
         super.onStart()
 
-        // Make the BottomSheet cancelable
         dialog?.setCancelable(true)
         dialog?.setCanceledOnTouchOutside(true)
 
-        // Set transparent background
-        val bottomSheet = dialog?.findViewById<View>(
-            com.google.android.material.R.id.design_bottom_sheet
-        )
-        bottomSheet?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.setOnShowListener { dialog ->
+            val bottomSheet =
+                (dialog as BottomSheetDialog)
+                    .findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            bottomSheet?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
     }
-
 
     private fun handleUploadLo() {
         binding.uploadFileLo.setOnClickListener { view ->

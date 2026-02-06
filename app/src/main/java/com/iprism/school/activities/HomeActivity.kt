@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import androidx.activity.enableEdgeToEdge
 import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
 import com.iprism.school.base.BaseActivity
@@ -15,16 +16,26 @@ import com.iprism.school.databinding.ActivityHomeBinding
 class HomeActivity : BaseActivity() {
 
     private lateinit var binding: ActivityHomeBinding
+    private var tag = ""
     private var backPressedOnce = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enableEdgeToEdge()
+        tag = intent.getStringExtra("tag").toString()
         val adapter = HomePagerAdapter(this)
         binding.viewPager.isUserInputEnabled = false
         binding.viewPager.adapter = adapter
-        binding.viewPager.setCurrentItem(0, false)
+        if (tag.isEmpty()){
+            binding.bottomNavigationView.selectedItemId = R.id.home_nav
+            binding.viewPager.setCurrentItem(0, false)
+        } else if (tag.equals("Tutorial", true)){
+            binding.bottomNavigationView.selectedItemId = R.id.help_nav
+            binding.viewPager.setCurrentItem(3, false)
+        }
+
         handleBottomNav()
     }
 
@@ -34,7 +45,7 @@ class HomeActivity : BaseActivity() {
                 R.id.home_nav -> binding.viewPager.setCurrentItem(0, false)
                 R.id.messages_nav -> binding.viewPager.setCurrentItem(1, false)
                 R.id.diary_nav -> binding.viewPager.setCurrentItem(2, false)
-                R.id.help -> binding.viewPager.setCurrentItem(3, false)
+                R.id.help_nav -> binding.viewPager.setCurrentItem(3, false)
             }
             true
         }
