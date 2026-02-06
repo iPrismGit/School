@@ -4,7 +4,6 @@ import android.content.Context
 import com.iprism.school.model.helptutorials.HelpTutorialsApiRequest
 import com.iprism.school.model.helptutorials.HelpTutorialsApiResponse
 import com.iprism.school.network.SchoolApi
-import com.iprism.school.network.StaffApi
 
 class HelpTutorialsRepository(private var context: Context) {
 

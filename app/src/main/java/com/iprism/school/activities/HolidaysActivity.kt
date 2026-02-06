@@ -1,6 +1,5 @@
 package com.iprism.school.activities
 
-import TodayDecorator
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle

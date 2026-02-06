@@ -2,7 +2,6 @@ package com.iprism.school.utils
 
 import android.Manifest
 import android.R
-import android.annotation.TargetApi
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager

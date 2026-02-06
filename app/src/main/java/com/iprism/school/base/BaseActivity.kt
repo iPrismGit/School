@@ -20,7 +20,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.iprism.school.network.StaffApiService
 import com.iprism.school.R
-import com.iprism.school.network.StaffApi
 import com.iprism.school.utils.NetworkUtil
 import com.iprism.school.utils.User
 open class BaseActivity : AppCompatActivity() {
