@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.iprism.school.R
 import com.iprism.school.adapters.HelpTutorialAdapter
-import com.iprism.school.adapters.HelpTutorialsAdapter
 import com.iprism.school.base.BaseFragment
 import com.iprism.school.databinding.FragmentHelpTutorialsBinding
 import com.iprism.school.model.helptutorials.HelpTutorial

@@ -135,7 +135,6 @@ class HomeFragment : BaseFragment() {
         handleSentLo()
         handleScheduled()
         handleMenuImg()
-        handleMessageLl()
         handleConsentsLo()
         handleMessageLo()
         handleCalenderLo()
@@ -511,14 +510,6 @@ class HomeFragment : BaseFragment() {
         binding.inboxLl.setOnClickListener(View.OnClickListener {
             var intent = Intent(context, HomeActivity::class.java)
             intent.putExtra("tag", "msgInbox")
-            startActivity(intent)
-        })
-    }
-
-    private fun handleMessageLl() {
-        binding.messageLl.setOnClickListener(View.OnClickListener {
-            var intent = Intent(context, MessageActivity::class.java)
-            intent.putExtra("tag", "msg")
             startActivity(intent)
         })
     }

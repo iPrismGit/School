@@ -38,7 +38,6 @@ class MessagesFragment : BaseFragment() {
         teacherId = userDetails[User.Companion.ID].toString()
         auth_token = userDetails[User.Companion.AUTH_TOKEN].toString()
         scl_id = userDetails[User.Companion.SCHOOL_ID].toString()
-        handleMessageBtn()
         handleClick()
 
         binding.dotsImg.setOnClickListener {
@@ -126,12 +125,6 @@ class MessagesFragment : BaseFragment() {
         } else if (tag.equals("scheduled", true)) {
             binding.textView10.text = " Scheduled Messages"
         }
-    }
-
-    private fun handleMessageBtn() {
-        binding.messageBtn.setOnClickListener(View.OnClickListener {
-            startActivity(Intent(context, MessageActivity::class.java))
-        })
     }
 
     private fun showSingleSelectDialog() {

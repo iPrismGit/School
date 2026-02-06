@@ -72,7 +72,6 @@ class MessageDetailsActivity : BaseActivity() {
         handleSendMessageBtn()
 //        handleApproveBtn()
 //        handleRejectBtn()
-        handleForwordBtn()
         handelInfoIv()
 
         binding.backIv.setOnClickListener {
@@ -110,13 +109,6 @@ class MessageDetailsActivity : BaseActivity() {
 //            var intent = Intent(this, MessageInfoActivity::class.java)
 //            intent.putExtra("messageId", message_id)
 //            startActivity(intent)
-        })
-    }
-
-    private fun handleForwordBtn() {
-        binding.forwordIv.setOnClickListener(View.OnClickListener {
-            var intent = Intent(this, MessageActivity::class.java)
-            startActivity(intent)
         })
     }
 
