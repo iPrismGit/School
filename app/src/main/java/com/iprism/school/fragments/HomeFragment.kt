@@ -66,9 +66,6 @@ class HomeFragment : BaseFragment() {
     private lateinit var dayCareViewModel: DayCareViewModel
     private lateinit var yesBtn: Button
     private lateinit var noBtn: Button
-    private var teacherId: String = ""
-    private var auth_token: String = ""
-    private var scl_id: String = ""
     private var navigationFrom: String = ""
 
     override fun onCreateView(
@@ -105,9 +102,6 @@ class HomeFragment : BaseFragment() {
             binding.profilePic.setImageResource(R.drawable.user_img)
         }
 
-        teacherId = userDetails[User.Companion.ID].toString()
-        auth_token = userDetails[User.Companion.AUTH_TOKEN].toString()
-        scl_id = userDetails[User.Companion.SCHOOL_ID].toString()
         initViewModel()
         observeAcademicYearsResponse()
         observeDayCareStatusResponse()
@@ -124,7 +118,11 @@ class HomeFragment : BaseFragment() {
             )
             attendanceViewModel.fetchAcademicYears(request)
         } else {
-            var request = HomePageApiRequest(userDetails[User.ACADEMIC_YEAR_ID].toString(), userDetails[User.SCHOOL_ID].toString(), userDetails[User.ID].toString())
+            var request = HomePageApiRequest(
+                userDetails[User.ACADEMIC_YEAR_ID].toString(),
+                userDetails[User.SCHOOL_ID].toString(),
+                userDetails[User.ID].toString()
+            )
             homePageViewModel.fetchHomePageDetails(request)
         }
 
@@ -202,7 +200,11 @@ class HomeFragment : BaseFragment() {
                 is UiState.Success -> {
                     binding.progress.hideProgress()
                     user!!.storeAcademicYear(result.data.id, result.data.name)
-                    var request = HomePageApiRequest(userDetails[User.ACADEMIC_YEAR_ID].toString(), userDetails[User.SCHOOL_ID].toString(), userDetails[User.ID].toString())
+                    var request = HomePageApiRequest(
+                        userDetails[User.ACADEMIC_YEAR_ID].toString(),
+                        userDetails[User.SCHOOL_ID].toString(),
+                        userDetails[User.ID].toString()
+                    )
                     homePageViewModel.fetchHomePageDetails(request)
                 }
 
@@ -265,18 +267,22 @@ class HomeFragment : BaseFragment() {
         homePageViewModel.homePageResponse.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is UiState.Loading -> {
-                   binding.shimmerLo.visibility = View.VISIBLE
-                   binding.mainLo.visibility = View.GONE
+                    binding.shimmerLo.visibility = View.VISIBLE
+                    binding.mainLo.visibility = View.GONE
                 }
 
                 is UiState.Success -> {
                     binding.shimmerLo.visibility = View.GONE
                     binding.mainLo.visibility = View.VISIBLE
                     var updatedAlbumCoversList = result.data.album_covers.toMutableList()
-                    updatedAlbumCoversList.add(0, AlbumCoverHome("", "", "", "-1", "",  ""))
+                    updatedAlbumCoversList.add(0, AlbumCoverHome("", "", "", "-1", "", ""))
 
-                    var updatedDayCareAlbumCoversList = result.data.day_care_album_covers.toMutableList()
-                    updatedDayCareAlbumCoversList.add(0, DayCareAlbumCoverHome("", "", "", "-1", "",  ""))
+                    var updatedDayCareAlbumCoversList =
+                        result.data.day_care_album_covers.toMutableList()
+                    updatedDayCareAlbumCoversList.add(
+                        0,
+                        DayCareAlbumCoverHome("", "", "", "-1", "", "")
+                    )
                     if (updatedAlbumCoversList.isNotEmpty()) {
                         setupAlbumsAdapter(updatedAlbumCoversList)
                         binding.albumsRv.visibility = View.VISIBLE
@@ -305,14 +311,15 @@ class HomeFragment : BaseFragment() {
 
     private fun setupAlbumsAdapter(albumCovers: List<AlbumCoverHome>) {
         var adapter = HomePageAlbumsAdapter(albumCovers)
-        var linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        var linearLayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.albumsRv.layoutManager = linearLayoutManager
         binding.albumsRv.adapter = adapter
-        adapter.setupListener(object : OnAlbumClickListener{
+        adapter.setupListener(object : OnAlbumClickListener {
             override fun onCoverClick(albumId: String, albumName: String) {
-                if (albumId.equals("-1", true)){
+                if (albumId.equals("-1", true)) {
                     startActivity(Intent(requireContext(), CreateAlbumsActivity::class.java))
-                } else{
+                } else {
                     var intent = Intent(requireContext(), AlbumDetailsActivity::class.java)
                     intent.putExtra("albumId", albumId)
                     intent.putExtra("albumName", albumName)
@@ -325,10 +332,11 @@ class HomeFragment : BaseFragment() {
 
     private fun setupDayCareAlbumsAdapter(albumCovers: List<DayCareAlbumCoverHome>) {
         var adapter = HomePAgeDayCareAlbumsAdapter(albumCovers)
-        var linearLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        var linearLayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.dayCareAlbumsRv.layoutManager = linearLayoutManager
         binding.dayCareAlbumsRv.adapter = adapter
-        adapter.setupListener(object : OnAlbumClickListener{
+        adapter.setupListener(object : OnAlbumClickListener {
             override fun onCoverClick(albumId: String, albumName: String) {
 
                 if (albumId.equals("-1", true)) {
