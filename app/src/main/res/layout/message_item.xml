@@ -7,103 +7,121 @@
 
     <LinearLayout
         android:id="@+id/linearLayout4"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="12dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgg"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/message_profile" />
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:padding="12dp"
+           android:orientation="horizontal">
+           <de.hdodenhof.circleimageview.CircleImageView
+               android:id="@+id/image_iv"
+               android:layout_width="40dp"
+               android:layout_height="40dp"
+               android:src="@drawable/message_profile" />
 
-        <LinearLayout
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginLeft="8dp"
+               android:orientation="vertical">
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="2dp"
+                   android:orientation="horizontal">
+
+                   <TextView
+                       android:id="@+id/name_txt"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="1"
+                       android:ellipsize="end"
+                       android:fontFamily="@font/inter_bold"
+                       android:maxLines="1"
+                       android:text="Hello Parent"
+                       android:textColor="@color/black"
+                       android:textSize="12dp" />
+
+                   <TextView
+                       android:id="@+id/date_txt"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:fontFamily="@font/inter"
+                       android:text="5 Jun"
+                       android:textColor="@color/black" />
+               </LinearLayout>
+
+               <TextView
+                   android:id="@+id/subject_txt"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="1"
+                   android:ellipsize="end"
+                   android:fontFamily="@font/inter_medium"
+                   android:maxLines="1"
+                   android:text="Staff Attendance Update"
+                   android:textColor="@color/black"
+                   android:textSize="12dp"
+                   android:visibility="gone" />
+
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="2dp"
+                   android:gravity="center"
+                   android:orientation="horizontal">
+
+                   <ImageView
+                       android:layout_width="20dp"
+                       android:layout_height="20dp"
+                       android:padding="2dp"
+                       android:layout_marginEnd="4dp"
+                       android:src="@drawable/image_icon"/>
+
+                   <TextView
+                       android:id="@+id/message_txt"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_weight="1"
+                       android:ellipsize="end"
+                       android:fontFamily="@font/inter_medium"
+                       android:maxLines="1"
+                       android:text="Staff Attendance Update"
+                       android:textColor="@color/black"
+                       android:textSize="12dp" />
+
+                   <ImageView
+                       android:id="@+id/read_img"
+                       android:layout_width="12dp"
+                       android:layout_height="12dp"
+                       android:adjustViewBounds="true"
+                       android:src="@drawable/green_bg"
+                       app:tint="@color/thick_green" />
+
+               </LinearLayout>
+
+           </LinearLayout>
+       </LinearLayout>
+
+        <View
+            android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:orientation="vertical">
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/nameTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:textSize="12dp"
-                    android:fontFamily="@font/inter_bold"
-                    android:maxLines="1"
-                    android:text="Hello Parent"
-                    android:textColor="@color/black" />
-
-                <TextView
-                    android:id="@+id/dateTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/inter"
-                    android:text="5 Jun"
-                    android:textColor="@color/black" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/subjectTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:textSize="12dp"
-                    android:fontFamily="@font/inter_medium"
-                    android:maxLines="1"
-                    android:text="Staff Attendance Update"
-                    android:textColor="@color/black" />
-
-                <ImageView
-                    android:id="@+id/starImg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:adjustViewBounds="true"
-                    android:maxWidth="24dp"
-                    android:maxHeight="24dp"
-                    android:src="@drawable/star_img" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/msgTv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:ellipsize="end"
-                android:fontFamily="@font/inter"
-                android:maxLines="1"
-                android:text="Dear User, the system has shown your..."
-                android:textColor="@color/black" />
-        </LinearLayout>
     </LinearLayout>
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
