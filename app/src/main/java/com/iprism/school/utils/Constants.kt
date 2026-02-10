@@ -27,5 +27,6 @@ object Constants {
     const val HOME_PAGE_ENDPOINT = "home_page"
     const val TUTORIALS_ENDPOINT = "help_tutorials"
     const val CONTENT_PAGES_ENDPOINT = "content_pages"
+    const val MESSAGES_ENDPOINT = "messages"
 
 }

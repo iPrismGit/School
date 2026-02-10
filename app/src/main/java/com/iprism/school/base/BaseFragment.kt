@@ -22,13 +22,8 @@ import com.iprism.school.utils.User
 
 open class BaseFragment : Fragment() {
 
-    protected var parentApiService: StaffApiService? = null
     var user: User? = null
     lateinit var userDetails: HashMap<String, String?>
-    private var alertDialog: AlertDialog? = null
-    private var networkReceiver: BroadcastReceiver? = null
-    private val handler = Handler()
-    private var networkCheckRunnable: Runnable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,73 +31,11 @@ open class BaseFragment : Fragment() {
             user = User(requireContext())
             userDetails = user!!.getNewUserDetails()
         }
-        // Network receiver to listen for changes in connectivity
-        networkReceiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                if (!NetworkUtil.isConnected(context)) {
-                    activity?.runOnUiThread {
-                        showNetworkPopup() // Ensure UI updates happen on the main thread
-                    }
-                } else {
-                    activity?.runOnUiThread {
-                        hideNetworkPopup() // Ensure UI updates happen on the main thread
-                    }
-                }
-            }
-        }
 
-        // Register the network receiver
-        requireActivity().registerReceiver(networkReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
-
-        // Periodic network check to handle edge cases
-        networkCheckRunnable = object : Runnable {
-            override fun run() {
-                if (!NetworkUtil.isConnected(requireContext())) {
-                    activity?.runOnUiThread {
-                        showNetworkPopup() // Ensure UI updates happen on the main thread
-                    }
-                } else {
-                    activity?.runOnUiThread {
-                        hideNetworkPopup() // Ensure UI updates happen on the main thread
-                    }
-                }
-                handler.postDelayed(this, 3000) // Check every 3 seconds
-            }
-        }
-        handler.post(networkCheckRunnable as Runnable)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        requireActivity().unregisterReceiver(networkReceiver)
-        networkCheckRunnable?.let { handler.removeCallbacks(it) }
     }
-
-    private fun showNetworkPopup() {
-        if (alertDialog == null || !alertDialog!!.isShowing) {
-            val builder = AlertDialog.Builder(requireContext())
-            val inflater = LayoutInflater.from(requireContext())
-            val dialogView = inflater.inflate(R.layout.popup_newtwork_check, null)
-            builder.setView(dialogView)
-            builder.setCancelable(false)
-
-            val retryButton = dialogView.findViewById<Button>(R.id.btn_retry)
-            retryButton.setOnClickListener {
-                if (NetworkUtil.isConnected(requireContext())) {
-                    hideNetworkPopup()
-                }
-            }
-
-            alertDialog = builder.create()
-            alertDialog!!.show()
-        }
-    }
-
-    private fun hideNetworkPopup() {
-        if (alertDialog != null && alertDialog!!.isShowing) {
-            alertDialog!!.dismiss()
-        }
-    }
-
 
 }

@@ -31,6 +31,8 @@ import com.iprism.school.model.holidaysmodel.HolidaysApiRequest
 import com.iprism.school.model.holidaysmodel.HolidaysApiResponse
 import com.iprism.school.model.homepagemodel.HomePageApiRequest
 import com.iprism.school.model.homepagemodel.HomePageApiResponse
+import com.iprism.school.model.messagemodel.MessagesApiRequest
+import com.iprism.school.model.messagemodel.MessagesApiResponse
 import com.iprism.school.model.plannersandresources.PlannersAndResourcesApiRequest
 import com.iprism.school.model.plannersandresources.PlannersAndResourcesApiResponse
 import com.iprism.school.model.refreshtokenmodel.RefreshTokenApiRequest
@@ -133,5 +135,8 @@ interface StaffApiService {
 
     @POST(Constants.CONTENT_PAGES_ENDPOINT)
     suspend fun fetchAppContent(@Body request: ContentPagesApiRequest): ContentPagesApiResponse
+
+    @POST(Constants.MESSAGES_ENDPOINT)
+    suspend fun fetchAndInsertMessages(@Body request: MessagesApiRequest): MessagesApiResponse
 
 }

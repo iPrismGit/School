@@ -131,8 +131,6 @@ class HomeFragment : BaseFragment() {
         handleStudentsLL()
         handleInboxLL()
         handleViewAllMessagesLo()
-        handleSentLo()
-        handleScheduled()
         handleMenuImg()
         handleConsentsLo()
         handleMessageLo()
@@ -395,22 +393,6 @@ class HomeFragment : BaseFragment() {
         binding.okBtn.setOnClickListener {
             dialog.dismiss()
         }
-    }
-
-    private fun handleSentLo() {
-        binding.sentLo.setOnClickListener(View.OnClickListener {
-            var intent = Intent(context, SentMessagesActivity::class.java)
-            intent.putExtra("tag", "")
-            startActivity(intent)
-        })
-    }
-
-    private fun handleScheduled() {
-        binding.scheduledLo.setOnClickListener(View.OnClickListener {
-            var intent = Intent(context, SentMessagesActivity::class.java)
-            intent.putExtra("tag", "scheduled")
-            startActivity(intent)
-        })
     }
 
     private fun handleAlbumsViewAll() {

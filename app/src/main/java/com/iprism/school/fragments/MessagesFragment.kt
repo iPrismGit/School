@@ -1,168 +1,154 @@
 package com.iprism.school.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.iprism.school.adapters.HelpTutorialAdapter
+import com.iprism.school.adapters.MessagesAdapter
 import com.iprism.school.base.BaseFragment
-import com.iprism.school.R
+import com.iprism.school.databinding.FragmentHelpTutorialsBinding
 import com.iprism.school.databinding.FragmentMessagesBinding
+import com.iprism.school.model.helptutorials.HelpTutorial
+import com.iprism.school.model.helptutorials.HelpTutorialsApiRequest
+import com.iprism.school.model.messagemodel.MessageThread
+import com.iprism.school.model.messagemodel.MessagesApiRequest
+import com.iprism.school.repositories.HelpTutorialsRepository
+import com.iprism.school.repositories.MessagesRepository
+import com.iprism.school.utils.UiState
 import com.iprism.school.utils.User
+import com.iprism.school.utils.hideProgress
+import com.iprism.school.utils.showProgress
+import com.iprism.school.viewModels.HelpTutorialsViewModel
+import com.iprism.school.viewModels.MessagesViewModel
+import com.iprism.school.viewModels.ViewModelFactory
 
 class MessagesFragment : BaseFragment() {
 
-    private lateinit var binding: FragmentMessagesBinding
-    private var tag: String = ""
+    private var _binding: FragmentMessagesBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var viewModel: MessagesViewModel
+    private var isLoading = false
+    private var isLastPage = false
+    private var currentPage = 1
+    private var messages = mutableListOf<MessageThread>()
+    private lateinit var messagesAdapter: MessagesAdapter
 
-    private var teacherId: String = ""
-    private var auth_token: String = ""
-    private var scl_id: String = ""
-    private var msg_type: String = "all"
-    private var inbox_message_type: String = ""
-
-    var jsonFormattedMessages: String = ""
-
-//    private var inboxMessagesMarked: MutableList<InboxMessage> = mutableListOf()
-
-    var inboxMessagesMarked: MutableList<Map<String, String>> = mutableListOf()
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentMessagesBinding.inflate(inflater)
-
-        tag = arguments?.getString("tag").toString()
-        setupFragmentSettings(tag)
-        teacherId = userDetails[User.Companion.ID].toString()
-        auth_token = userDetails[User.Companion.AUTH_TOKEN].toString()
-        scl_id = userDetails[User.Companion.SCHOOL_ID].toString()
-        handleClick()
-
-        binding.dotsImg.setOnClickListener {
-            showSingleSelectDialog()
-            Log.d("newwwwwwww","20255555")
-        }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentMessagesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    private fun handleClick() {
-
-        binding.allTv.setOnClickListener {
-            msg_type = "all"
-
-            binding.allTv.setBackgroundResource(R.drawable.color_bg)
-            binding.allTv.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
-
-            binding.parentTv.setBackgroundResource(R.drawable.edit_text_bg)
-            binding.parentTv.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
-
-            binding.staffTv.setBackgroundResource(R.drawable.edit_text_bg)
-            binding.staffTv.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
-
-            binding.systemTv.setBackgroundResource(R.drawable.edit_text_bg)
-            binding.systemTv.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
-
-        }
-
-        binding.parentTv.setOnClickListener {
-            msg_type = "parent"
-            binding.allTv.setBackgroundResource(R.drawable.edit_text_bg)
-            binding.allTv.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
-
-            binding.parentTv.setBackgroundResource(R.drawable.color_bg)
-            binding.parentTv.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
-
-            binding.staffTv.setBackgroundResource(R.drawable.edit_text_bg)
-            binding.staffTv.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
-
-            binding.systemTv.setBackgroundResource(R.drawable.edit_text_bg)
-            binding.systemTv.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
-
-        }
-
-        binding.staffTv.setOnClickListener {
-            msg_type = "staff"
-            binding.allTv.setBackgroundResource(R.drawable.edit_text_bg)
-            binding.allTv.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
-
-            binding.parentTv.setBackgroundResource(R.drawable.edit_text_bg)
-            binding.parentTv.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
-
-            binding.staffTv.setBackgroundResource(R.drawable.color_bg)
-            binding.staffTv.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
-
-            binding.systemTv.setBackgroundResource(R.drawable.edit_text_bg)
-            binding.systemTv.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
-
-        }
-
-        binding.systemTv.setOnClickListener {
-            msg_type = "system"
-            binding.allTv.setBackgroundResource(R.drawable.edit_text_bg)
-            binding.allTv.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
-
-            binding.parentTv.setBackgroundResource(R.drawable.edit_text_bg)
-            binding.parentTv.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
-
-            binding.staffTv.setBackgroundResource(R.drawable.edit_text_bg)
-            binding.staffTv.setTextColor(ContextCompat.getColor(requireActivity(), R.color.black))
-
-            binding.systemTv.setBackgroundResource(R.drawable.color_bg)
-            binding.systemTv.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
-
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViewModel()
+        setUpAdapter()
+        setupObservers()
+        fetchChats()
     }
 
-    private fun setupFragmentSettings(tag: String) {
-        if (tag.equals("msg", true)) {
-            binding.textView10.text = "Messages"
-        } else if (tag.equals("msgInbox", true)) {
-            binding.textView10.text = "Messages"
-        } else if (tag.equals("sent", true)) {
-            binding.textView10.text = "Sent Messages"
-        } else if (tag.equals("scheduled", true)) {
-            binding.textView10.text = " Scheduled Messages"
-        }
+    private fun initViewModel() {
+        val repository = MessagesRepository(requireContext())
+        viewModel = ViewModelProvider(this, ViewModelFactory {
+            MessagesViewModel(repository)
+        })[MessagesViewModel::class.java]
     }
 
-    private fun showSingleSelectDialog() {
-        val options = arrayOf("Mark all as read", "Starred Message", "Unread Message",
-            "Archived Messages","Change Signature")
-        var selectedOptionIndex = -1 // Default: No selection
+    private fun fetchChats() {
+        val request = MessagesApiRequest(
+            userDetails[User.ACADEMIC_YEAR_ID]!!,
+            userDetails[User.SCHOOL_ID]!!,
+            "",
+            "",
+            "",
+            "",
+            currentPage,
+            "",
+            "teacher",
+            userDetails[User.STUDENT_ID]!!,
+            "",
+            userDetails[User.ID]!!,
+            "view"
+        )
+        viewModel.fetchChats(request)
+        Log.d("requestLoading", request.toString())
+    }
 
-        val dialog = AlertDialog.Builder(requireContext())
-            .setTitle("Select an Option")
-            .setSingleChoiceItems(options, selectedOptionIndex) { _, which ->
-                selectedOptionIndex = which // Store selected index
-            }
-            .setPositiveButton("OK") { _, _ ->
-                if (selectedOptionIndex != -1) {
-                    val selectedText = options[selectedOptionIndex]
-                    if (selectedText == "Mark all as read"){
-                        inbox_message_type = ""
-                    }else if (selectedText == "Starred Message"){
-                        inbox_message_type = "starred"
-                    }else if (selectedText == "Unread Message"){
-                        inbox_message_type = "read_message"
-
-                    }else if (selectedText == "Archived Messages"){
-                        inbox_message_type = "archived"
-
-                    }else if (selectedText == "Change Signature"){
-//                        inbox_message_type = ""
+    private fun setUpAdapter() {
+        messagesAdapter = MessagesAdapter(messages as ArrayList<MessageThread?>)
+        val linearLayoutManager = LinearLayoutManager(requireContext())
+        binding.rvHelpTutorials.apply {
+            layoutManager = linearLayoutManager
+            adapter = messagesAdapter
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val visibleItemCount = linearLayoutManager.childCount
+                    val totalItemCount = linearLayoutManager.itemCount
+                    val firstVisibleItemPosition =
+                        linearLayoutManager.findFirstVisibleItemPosition()
+                    if (!isLoading && !isLastPage) {
+                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
+                            loadMoreTutorials()
+                        }
                     }
-//                    binding.selectedOptionTextView.text = selectedText // Update UI with selected option
+                }
+            })
+        }
+    }
+
+    private fun setupObservers() {
+        viewModel.messagesResponse.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loading -> {
+                    binding.progress.showProgress()
+                }
+
+                is UiState.Success -> {
+                    binding.noDataFoundLo.visibility = View.GONE
+                    binding.progress.hideProgress()
+                    isLoading = false
+                    messagesAdapter.removeLoadingFooter()
+                    val newBookings = state.data.response.message_threads
+                    if (newBookings.isNotEmpty()) {
+                        messages.addAll(newBookings)
+                        messagesAdapter.notifyDataSetChanged()
+                        if (state.data.response.pagination.total_pages.size == currentPage) {
+                            isLastPage = true
+                        }
+                    }
+                }
+
+                is UiState.Error -> {
+                    isLoading = false
+                    messagesAdapter.removeLoadingFooter()
+                    binding.progress.hideProgress()
+                    if (state.message.equals("no data found", true)) {
+                        binding.noDataFoundLo.visibility = View.VISIBLE
+                    }
                 }
             }
-            .setNegativeButton("Cancel") { _, _ -> }
-            .create()
-
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.show()
+        }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
+    private fun loadMoreTutorials() {
+        isLoading = true
+        currentPage += 1
+        messagesAdapter.showLoadingFooter()
+        fetchChats()
+    }
 
 }

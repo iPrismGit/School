@@ -89,8 +89,10 @@ dependencies {
     implementation(libs.exo.player.ui)
     implementation(libs.code.scanner)
     implementation(libs.material.calendarview)
-
+    implementation("androidx.emoji2:emoji2:1.4.0")
+    implementation("androidx.emoji2:emoji2-views:1.4.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    implementation("com.onesignal:OneSignal:[4.0.0, 4.99.99]")
 
 }
