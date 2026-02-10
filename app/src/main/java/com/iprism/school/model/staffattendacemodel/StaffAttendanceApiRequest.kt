@@ -13,6 +13,7 @@ data class StaffAttendanceApiRequest(
     val time_type: String,
     val user_id: String,
     val view_type: String,
-    val year: String
+    val year: String,
+    val qr_id: String
 
 )

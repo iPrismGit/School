@@ -111,7 +111,8 @@ class StaffAttendanceActivity : AppCompatActivity() {
             "",
             userDetails[User.ID].toString(),
             "view",
-            year.toString()
+            year.toString(),
+            ""
         )
 
         Log.d("AttendanceDetails", request.toString())
