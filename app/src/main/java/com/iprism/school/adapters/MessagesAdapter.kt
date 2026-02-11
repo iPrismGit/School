@@ -4,7 +4,6 @@ import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.iprism.school.R
@@ -13,7 +12,6 @@ import com.iprism.school.databinding.MessageItemBinding
 import com.iprism.school.model.messagemodel.MessageThread
 import com.iprism.school.utils.Constants
 import com.iprism.school.viewholders.ItemLoadingViewHolder
-
 
 class MessagesAdapter(private val messages: ArrayList<MessageThread?>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -95,7 +93,6 @@ class MessagesAdapter(private val messages: ArrayList<MessageThread?>) :
     override fun getItemCount(): Int {
         return messages.size
     }
-
 
     fun showLoadingFooter() {
         messages.add(null)

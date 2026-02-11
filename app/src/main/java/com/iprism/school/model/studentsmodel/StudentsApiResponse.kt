@@ -1,6 +1,7 @@
 package com.iprism.school.model.studentsmodel
 
 import com.google.gson.annotations.SerializedName
+import com.iprism.school.model.classteachermodel.Pagination
 
 data class StudentsApiResponse(
 
@@ -12,7 +13,8 @@ data class StudentsApiResponse(
 
 data class StudentsResponse(
 
-    val students: List<Student>
+    val students: List<Student>,
+    val pagination: Pagination
 
 )
 

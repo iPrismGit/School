@@ -134,17 +134,13 @@ class AttendanceActivity : BaseActivity() {
         currentPage = 1
         isLastPage = false
         isLoading = false
-
         studentsList.clear()
         selectedStudentsList.clear()
         selectedAttendanceList.clear()
-
         studentsAdapter.notifyDataSetChanged()
-
         binding.studentAttendanceRv.visibility = View.GONE
         binding.noDataTxt.visibility = View.VISIBLE
     }
-
 
     private fun loadStudents() {
         var request = AttendanceStudentsApiRequest(

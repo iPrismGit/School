@@ -1,5 +1,6 @@
 package com.iprism.school.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.iprism.school.activities.InitiateMessageActivity
 import com.iprism.school.adapters.HelpTutorialAdapter
 import com.iprism.school.adapters.MessagesAdapter
 import com.iprism.school.base.BaseFragment
@@ -53,6 +55,13 @@ class MessagesFragment : BaseFragment() {
         setUpAdapter()
         setupObservers()
         fetchChats()
+        insertMessageBtn()
+    }
+
+    private fun insertMessageBtn() {
+        binding.messageBtn.setOnClickListener { view ->
+            startActivity(Intent(requireContext(), InitiateMessageActivity::class.java))
+        }
     }
 
     private fun initViewModel() {
