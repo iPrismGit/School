@@ -1,4 +1,5 @@
 package com.iprism.school.adapters
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,15 +8,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.iprism.school.R
 
 import com.iprism.school.databinding.ItemSelectStudentBinding
+import com.iprism.school.interfaces.OnMessageClickListener
 import com.iprism.school.model.studentsmodel.Student
 
 
-class StudentMessageSelectAdapter(private val students: ArrayList<Student?>) :
-    RecyclerView.Adapter<StudentMessageSelectAdapter.StudentMessageSelectViewHolder>() {
+class StudentMessageSelectAdapter(private val students: List<Student?>) : RecyclerView.Adapter<StudentMessageSelectAdapter.StudentMessageSelectViewHolder>() {
+
+    private lateinit var listener : OnMessageClickListener
+
+    fun setupListener(listener: OnMessageClickListener){
+        this.listener = listener
+    }
 
     private var selectedPosition = -1
     private var isAllSelected = false
-
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -28,7 +34,7 @@ class StudentMessageSelectAdapter(private val students: ArrayList<Student?>) :
 
     override fun onBindViewHolder(
         holder: StudentMessageSelectAdapter.StudentMessageSelectViewHolder,
-        position: Int
+        @SuppressLint("RecyclerView") position: Int
     ) {
         var student = students[position]
         if (student != null) {
@@ -52,6 +58,13 @@ class StudentMessageSelectAdapter(private val students: ArrayList<Student?>) :
             )
             holder.binding.imgCheck.visibility = View.GONE
         }
+
+        holder.binding.root.setOnClickListener { view ->
+            selectedPosition = position
+            notifyDataSetChanged()
+            listener.onStudentSelectClick("single", student!!.id, student.first_name + " " + student.middle_name + " " + student.last_name)
+        }
+
     }
 
 

@@ -1,6 +1,8 @@
 package com.iprism.school.activities
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -13,19 +15,31 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.R
 import com.iprism.school.activities.album.CreateDayCareAlbumsActivity
+import com.iprism.school.adapters.AttandanceStudentsAdapter
+import com.iprism.school.adapters.DiaryStudentsAdapter
 import com.iprism.school.adapters.MessagesAdapter
+import com.iprism.school.adapters.StudentMessageSelectAdapter
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityInitiateMessageBinding
+import com.iprism.school.databinding.DialogSelectStudentsBinding
+import com.iprism.school.interfaces.OnAttendanceClickListener
+import com.iprism.school.interfaces.OnMessageClickListener
+import com.iprism.school.model.classteachermodel.AttendanceStudent
+import com.iprism.school.model.classteachermodel.AttendanceStudentsApiRequest
 import com.iprism.school.model.classteachermodel.Class
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.classteachermodel.Section
 import com.iprism.school.model.messagemodel.MessageThread
 import com.iprism.school.model.messagemodel.MessagesApiRequest
 import com.iprism.school.model.studentsmodel.Student
+import com.iprism.school.model.studentsmodel.StudentsApiRequest
 import com.iprism.school.repositories.AttendanceRepository
 import com.iprism.school.repositories.MessagesRepository
+import com.iprism.school.repositories.StudentsRepository
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.UiState
 import com.iprism.school.utils.User
@@ -41,13 +55,21 @@ class InitiateMessageActivity : BaseActivity() {
     private lateinit var binding: ActivityInitiateMessageBinding
     private lateinit var viewModel: MessagesViewModel
     private lateinit var attendanceViewModel: AttendanceViewModel
+    private lateinit var studentsViewModel: StudentsViewModel
     private var classId: String = "-1"
     private var sectionId: String = "-1"
     private val studentList = ArrayList<Student?>()
-    private val selectedStudentIds = mutableListOf<String>()
-    private var selectedValue = ""
-    private var selectedId = ""
-    private var selectedName = ""
+    private lateinit var studentsBottomSheetBinding: DialogSelectStudentsBinding
+    private lateinit var bottomSheetDialog: BottomSheetDialog
+    private var studentsList = mutableListOf<Student>()
+    private lateinit var studentsAdapter: StudentMessageSelectAdapter
+    private var isFreshLoad = false
+    private var isLoading = false
+    private var isLastPage = false
+    private var currentPage = 1
+    private val limit = 10
+    private var studentId = ""
+    private var studentName = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +96,7 @@ class InitiateMessageActivity : BaseActivity() {
             "classes"
         )
         attendanceViewModel.fetchClasses(requestClasses)
+        observeStudentsResponse()
     }
 
     private fun handleSelectStudentsLo() {
@@ -83,44 +106,57 @@ class InitiateMessageActivity : BaseActivity() {
             } else if (sectionId.equals("-1", true)){
                 ToastUtils.showErrorCustomToast(this, "Please Select Section..!")
             } else {
-                val dialog = StudentSelectDialogFragment(
-                    classId = classId,
-                    sectionId = sectionId,
-                    studentList = studentList,
-                    alreadySelectedIds = selectedStudentIds
-                ) { value, id, name ->
-
-                    when (value) {
-                        "Broadcast" -> {
-                            selectedValue = "Broadcast"
-                            selectedId = "0"
-                            selectedName = ""
-
-                            binding.selectStudentTxt.text = "All Students Message"
-                        }
-
-                        "single" -> {
-                            selectedValue = "single"
-                            selectedId = id
-                            selectedName = name
-
-                            binding.selectStudentTxt.text = name
-                        }
-
-                        "Multiple" -> {
-                            selectedValue = "Multiple"
-                            selectedId = ""
-                            selectedName = ""
-
-                            binding.selectStudentTxt.text = "Multiple Students Selected"
-                        }
-                    }
-                }
-
-                dialog.show(supportFragmentManager, "StudentSelectDialog")
+                openStudentsBottomSheets(classId, sectionId)
 
             }
         }
+    }
+
+    private fun openStudentsBottomSheets(classId: String, sectionId: String) {
+
+        this.classId = classId
+        this.sectionId = sectionId
+
+        bottomSheetDialog = BottomSheetDialog(this)
+        studentsBottomSheetBinding =
+            DialogSelectStudentsBinding.inflate(layoutInflater)
+
+        bottomSheetDialog.setContentView(studentsBottomSheetBinding.root)
+        bottomSheetDialog.setCancelable(true)
+
+
+        bottomSheetDialog.setOnShowListener { dialog ->
+            val bottomSheet =
+                (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            bottomSheet?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
+
+        initializeBottomSheet()
+
+        studentsBottomSheetBinding.btnBack.setOnClickListener { view ->
+            bottomSheetDialog.dismiss()
+        }
+
+        studentsBottomSheetBinding.btnSave.setOnClickListener { view ->
+            binding.selectStudentTxt.text = studentName
+            bottomSheetDialog.dismiss()
+        }
+
+        bottomSheetDialog.show()
+    }
+
+    private fun initializeBottomSheet() {
+
+        currentPage = 1
+        isLastPage = false
+        isLoading = false
+
+        studentsList.clear()
+        studentsAdapter = StudentMessageSelectAdapter(studentsList)
+
+        setupRecyclerView()
+
+        loadStudents()
     }
 
     private fun handleBack() {
@@ -142,6 +178,10 @@ class InitiateMessageActivity : BaseActivity() {
         val attendanceRepository = AttendanceRepository(this)
         val attendanceFactory = ViewModelFactory { AttendanceViewModel(attendanceRepository) }
         attendanceViewModel = ViewModelProvider(this, attendanceFactory)[AttendanceViewModel::class.java]
+
+        val studentsRepository = StudentsRepository(this)
+        val studentsFactory = ViewModelFactory { StudentsViewModel(studentsRepository) }
+        studentsViewModel = ViewModelProvider(this,studentsFactory )[StudentsViewModel::class.java]
 
     }
 
@@ -277,6 +317,143 @@ class InitiateMessageActivity : BaseActivity() {
 
                 }
             }
+    }
+
+    private fun resetStudentsData() {
+        currentPage = 1
+        isLastPage = false
+        isLoading = false
+        studentsList.clear()
+        studentsList.clear()
+        studentsList.clear()
+        studentsAdapter.notifyDataSetChanged()
+        studentsBottomSheetBinding.rvStudents.visibility = View.GONE
+        studentsBottomSheetBinding.noDataFoundLo.visibility = View.VISIBLE
+    }
+
+    private fun loadStudents() {
+        var request = StudentsApiRequest(
+            userDetails[User.ACADEMIC_YEAR_ID].toString(),
+            userDetails[User.SCHOOL_ID].toString(), classId, currentPage, sectionId,
+            userDetails[User.ID].toString())
+        studentsViewModel.fetchActiveStudents(request)
+        Log.d("StudentsFetchRequest", request.toString())
+    }
+
+    private fun refreshItems() {
+        currentPage = 1
+        isLastPage = false
+        isLoading = false
+        studentsList.clear()
+        studentsAdapter.notifyDataSetChanged()
+        loadStudents()
+    }
+
+    private fun loadMoreItems() {
+        if (isLastPage || isLoading) return
+        isLoading = true
+        currentPage++
+        loadStudents()
+    }
+
+
+    private fun setupRecyclerView() {
+        studentsAdapter = StudentMessageSelectAdapter(studentsList)
+        val linearLayoutManager = LinearLayoutManager(this)
+
+        studentsBottomSheetBinding.rvStudents.apply {
+            layoutManager = linearLayoutManager
+            adapter = studentsAdapter
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+//                    binding.refreshLayout.isEnabled =
+//                        !binding.studentAttendanceRv.canScrollVertically(-1)
+                    val visibleItemCount = linearLayoutManager.childCount
+                    val totalItemCount = linearLayoutManager.itemCount
+                    val firstVisibleItemPosition =
+                        linearLayoutManager.findFirstVisibleItemPosition()
+
+                    if (!isLoading && !isLastPage && studentsList.isNotEmpty()) {
+                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                            && firstVisibleItemPosition >= 0
+                        ) {
+                            loadMoreItems()
+                        }
+                    }
+
+                }
+            })
+            studentsAdapter.setupListener(object  : OnMessageClickListener{
+                override fun onItemClick(messageId: String) {
+
+                }
+
+                override fun onStudentSelectClick(
+                    value: String,
+                    studentId: String,
+                    studentName: String
+                ) {
+                    this@InitiateMessageActivity.studentId = studentId
+                    this@InitiateMessageActivity.studentName = studentName
+                }
+
+            })
+
+        }
+
+    }
+
+    private fun observeStudentsResponse() {
+        studentsViewModel.activeStudentsResponse.observe(this) { result ->
+
+            when (result) {
+                is UiState.Loading -> {
+                    if (currentPage == 1) {
+                        studentsBottomSheetBinding.progress2.showProgress()
+                    }
+                }
+
+                is UiState.Success -> {
+                    studentsBottomSheetBinding.progress2.hideProgress()
+                    isLoading = false
+                    val newStudents = result.data.students
+
+                    if (newStudents.isNotEmpty()) {
+
+                        studentsList.addAll(newStudents)
+                        studentsAdapter.notifyDataSetChanged()
+                        isLastPage = newStudents.size < limit
+                        studentsBottomSheetBinding.rvStudents.visibility = View.VISIBLE
+                        studentsBottomSheetBinding.noDataFoundLo.visibility = View.GONE
+                    } else {
+                        isLastPage = true
+
+                        if (currentPage == 1) {
+                            studentsList.clear()
+                            studentsAdapter.notifyDataSetChanged()
+                            studentsBottomSheetBinding.rvStudents.visibility = View.GONE
+                            studentsBottomSheetBinding.noDataFoundLo.visibility = View.VISIBLE
+                        }
+                    }
+                }
+
+                is UiState.Error -> {
+                    isLoading = false
+                    studentsBottomSheetBinding.progress2.hideProgress()
+                    if (studentsList.isEmpty()) {
+                        studentsBottomSheetBinding.rvStudents.visibility = View.GONE
+                        studentsBottomSheetBinding.noDataFoundLo.visibility = View.VISIBLE
+                        ToastUtils.showErrorCustomToast(this, result.message)
+                    } else {
+                        studentsBottomSheetBinding.tvSelectAll.visibility = View.VISIBLE
+                        studentsBottomSheetBinding.noDataFoundLo.visibility = View.GONE
+                        ToastUtils.showErrorCustomToast(this, "There is no more data")
+                    }
+                }
+            }
+        }
     }
 
 }
