@@ -36,7 +36,7 @@ class MessagesViewModel(var repository: MessagesRepository) : ViewModel() {
         }
     }
 
-    fun fetchInsertMessage(request: MessagesApiRequest) {
+    fun insertMessage(request: MessagesApiRequest) {
         viewModelScope.launch {
             _insertMessageResponse.value = UiState.Loading
             try {
