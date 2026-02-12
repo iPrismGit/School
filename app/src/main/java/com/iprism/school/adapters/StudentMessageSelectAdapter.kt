@@ -41,36 +41,57 @@ class StudentMessageSelectAdapter(private val students: List<Student?>) : Recycl
             holder.binding.nameTxt.text =
                 student.first_name + " " + student.middle_name + " " + student.last_name
         }
-        if (selectedPosition == position) {
+        if (isAllSelected) {
             holder.binding.imgCheck.visibility = View.VISIBLE
             holder.binding.nameTxt.setTextColor(
-                ContextCompat.getColor(
-                    holder.binding.root.context,
-                    R.color.blue1
-                )
+                ContextCompat.getColor(holder.binding.root.context, R.color.blue1)
+            )
+        } else if (selectedPosition == position) {
+            holder.binding.imgCheck.visibility = View.VISIBLE
+            holder.binding.nameTxt.setTextColor(
+                ContextCompat.getColor(holder.binding.root.context, R.color.blue1)
             )
         } else {
-            holder.binding.nameTxt.setTextColor(
-                ContextCompat.getColor(
-                    holder.binding.root.context,
-                    R.color.black
-                )
-            )
             holder.binding.imgCheck.visibility = View.GONE
+            holder.binding.nameTxt.setTextColor(
+                ContextCompat.getColor(holder.binding.root.context, R.color.black)
+            )
         }
 
-        holder.binding.root.setOnClickListener { view ->
+        holder.binding.root.setOnClickListener {
+
+            if (isAllSelected) {
+                isAllSelected = false
+            }
+
             selectedPosition = position
             notifyDataSetChanged()
-            listener.onStudentSelectClick("single", student!!.id, student.first_name + " " + student.middle_name + " " + student.last_name)
+
+            listener.onStudentSelectClick(
+                "single",
+                student!!.id,
+                student.first_name + " " + student.middle_name + " " + student.last_name
+            )
         }
 
     }
-
 
     override fun getItemCount(): Int = students.size
 
     class StudentMessageSelectViewHolder(var binding: ItemSelectStudentBinding) :
         RecyclerView.ViewHolder(binding.root)
+
+    fun selectAllStudents() {
+        isAllSelected = true
+        selectedPosition = -1
+        notifyDataSetChanged()
+
+        listener.onStudentSelectClick(
+            "broadcast",
+            "0",
+            "Group Message"
+        )
+    }
+
 }
 

@@ -70,6 +70,7 @@ class InitiateMessageActivity : BaseActivity() {
     private val limit = 10
     private var studentId = ""
     private var studentName = ""
+    private var value = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,49 +114,40 @@ class InitiateMessageActivity : BaseActivity() {
     }
 
     private fun openStudentsBottomSheets(classId: String, sectionId: String) {
-
         this.classId = classId
         this.sectionId = sectionId
-
         bottomSheetDialog = BottomSheetDialog(this)
         studentsBottomSheetBinding =
             DialogSelectStudentsBinding.inflate(layoutInflater)
-
         bottomSheetDialog.setContentView(studentsBottomSheetBinding.root)
         bottomSheetDialog.setCancelable(true)
-
-
         bottomSheetDialog.setOnShowListener { dialog ->
             val bottomSheet =
                 (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
             bottomSheet?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
-
         initializeBottomSheet()
-
         studentsBottomSheetBinding.btnBack.setOnClickListener { view ->
             bottomSheetDialog.dismiss()
         }
-
         studentsBottomSheetBinding.btnSave.setOnClickListener { view ->
             binding.selectStudentTxt.text = studentName
+            Log.d("StudentDetails", studentName + ", " + value)
             bottomSheetDialog.dismiss()
         }
-
+        studentsBottomSheetBinding.tvSelectAll.setOnClickListener { view ->
+            studentsAdapter.selectAllStudents()
+        }
         bottomSheetDialog.show()
     }
 
     private fun initializeBottomSheet() {
-
         currentPage = 1
         isLastPage = false
         isLoading = false
-
         studentsList.clear()
         studentsAdapter = StudentMessageSelectAdapter(studentsList)
-
         setupRecyclerView()
-
         loadStudents()
     }
 
@@ -397,6 +389,8 @@ class InitiateMessageActivity : BaseActivity() {
                 ) {
                     this@InitiateMessageActivity.studentId = studentId
                     this@InitiateMessageActivity.studentName = studentName
+                    this@InitiateMessageActivity.value = value
+                  //  Log.d("SingleStudentDetails", studentName + ", " + value)
                 }
 
             })
