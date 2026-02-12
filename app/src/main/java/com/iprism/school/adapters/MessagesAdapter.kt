@@ -9,12 +9,18 @@ import com.bumptech.glide.Glide
 import com.iprism.school.R
 import com.iprism.school.databinding.ItemLoadingBinding
 import com.iprism.school.databinding.MessageItemBinding
+import com.iprism.school.interfaces.OnMessageClickListener
 import com.iprism.school.model.messagemodel.MessageThread
 import com.iprism.school.utils.Constants
 import com.iprism.school.viewholders.ItemLoadingViewHolder
 
-class MessagesAdapter(private val messages: ArrayList<MessageThread?>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MessagesAdapter(private val messages: ArrayList<MessageThread?>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private lateinit var listener: OnMessageClickListener
+
+    fun setupListener(listener: OnMessageClickListener){
+        this.listener = listener
+    }
 
     inner class MessageViewHolder(val binding: MessageItemBinding) :
         RecyclerView.ViewHolder(binding.root)
@@ -85,7 +91,9 @@ class MessagesAdapter(private val messages: ArrayList<MessageThread?>) :
                 } else {
                     fileImg.visibility = View.GONE
                 }
-
+                root.setOnClickListener {
+                    listener.onItemClick(message.id, message.first_name  + " " + message.middle_name + message.last_name, message.student_image, message.message_type)
+                }
             }
         }
     }

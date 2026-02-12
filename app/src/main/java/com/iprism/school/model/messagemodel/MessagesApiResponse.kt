@@ -1,5 +1,6 @@
 package com.iprism.school.model.messagemodel
 
+import com.google.gson.annotations.SerializedName
 import com.iprism.school.model.classteachermodel.Pagination
 
 data class MessagesApiResponse(
@@ -13,7 +14,8 @@ data class MessagesApiResponse(
 data class MessagesResponse (
 
     val message_threads: List<MessageThread>,
-    val pagination: Pagination
+    val pagination: Pagination,
+    val messages: List<MessagesItem>
 
 )
 
@@ -34,4 +36,28 @@ data class MessageThread(
     val section_name: String,
     val student_image: String
 
+)
+
+data class MessagesItem(
+
+    @field:SerializedName("image")
+    val image: String,
+
+    @field:SerializedName("created_on")
+    val createdOn: String,
+
+    @field:SerializedName("date")
+    val date: String,
+
+    @field:SerializedName("sender_type")
+    val senderType: String,
+
+    @field:SerializedName("read_status")
+    val readStatus: Int,
+
+    @field:SerializedName("id")
+    val id: Int,
+
+    @field:SerializedName("message")
+    val message: String
 )

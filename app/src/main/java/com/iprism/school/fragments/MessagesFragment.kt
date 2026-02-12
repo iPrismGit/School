@@ -9,23 +9,19 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.iprism.school.activities.ChatActivity
 import com.iprism.school.activities.InitiateMessageActivity
-import com.iprism.school.adapters.HelpTutorialAdapter
 import com.iprism.school.adapters.MessagesAdapter
 import com.iprism.school.base.BaseFragment
-import com.iprism.school.databinding.FragmentHelpTutorialsBinding
 import com.iprism.school.databinding.FragmentMessagesBinding
-import com.iprism.school.model.helptutorials.HelpTutorial
-import com.iprism.school.model.helptutorials.HelpTutorialsApiRequest
+import com.iprism.school.interfaces.OnMessageClickListener
 import com.iprism.school.model.messagemodel.MessageThread
 import com.iprism.school.model.messagemodel.MessagesApiRequest
-import com.iprism.school.repositories.HelpTutorialsRepository
 import com.iprism.school.repositories.MessagesRepository
 import com.iprism.school.utils.UiState
 import com.iprism.school.utils.User
 import com.iprism.school.utils.hideProgress
 import com.iprism.school.utils.showProgress
-import com.iprism.school.viewModels.HelpTutorialsViewModel
 import com.iprism.school.viewModels.MessagesViewModel
 import com.iprism.school.viewModels.ViewModelFactory
 
@@ -110,6 +106,30 @@ class MessagesFragment : BaseFragment() {
                         }
                     }
                 }
+            })
+            messagesAdapter.setupListener(object : OnMessageClickListener{
+                override fun onItemClick(
+                    threadId: String,
+                    name: String,
+                    image: String,
+                    type: String
+                ) {
+                    var intent = Intent(requireContext(), ChatActivity::class.java)
+                    intent.putExtra("threadId", threadId)
+                    intent.putExtra("name", name)
+                    intent.putExtra("image", image)
+                    intent.putExtra("messageType", type)
+                    startActivity(intent)
+                }
+
+                override fun onStudentSelectClick(
+                    value: String,
+                    studentId: String,
+                    studentName: String
+                ) {
+
+                }
+
             })
         }
     }

@@ -31,8 +31,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.School"
         tools:targetApi="31" >
+
         <activity
-            android:name=".activities.SingleChatActivity"
+            android:name=".activities.ChatActivity"
             android:exported="false" />
         <activity
             android:name=".activities.InitiateMessageActivity"

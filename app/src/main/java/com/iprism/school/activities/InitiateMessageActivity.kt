@@ -439,7 +439,14 @@ class InitiateMessageActivity : BaseActivity() {
                 }
             })
             studentsAdapter.setupListener(object : OnMessageClickListener {
-                override fun onItemClick(messageId: String) {
+
+
+                override fun onItemClick(
+                    threadId: String,
+                    name: String,
+                    image: String,
+                    type: String
+                ) {
 
                 }
 
