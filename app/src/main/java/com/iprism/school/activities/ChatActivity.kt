@@ -63,6 +63,7 @@ class ChatActivity : BaseActivity() {
     private var threadId = ""
     private var name =""
     private var messageType = ""
+    private var studentId = ""
     private var image = ""
     private var latestMessageId = 0
     private lateinit var viewModel: MessagesViewModel
@@ -111,6 +112,7 @@ class ChatActivity : BaseActivity() {
         name = intent.getStringExtra("name").toString()
         image = intent.getStringExtra("image").toString()
         messageType = intent.getStringExtra("messageType").toString()
+        studentId = intent.getStringExtra("studentId").toString()
         setupData()
         setupListeners()
         handleBack()
@@ -384,7 +386,7 @@ class ChatActivity : BaseActivity() {
             currentPage,
             "",
             "teacher",
-            "",
+            studentId,
             threadId,
             "",
             "messages"
@@ -404,7 +406,7 @@ class ChatActivity : BaseActivity() {
             currentPage,
             "",
             "teacher",
-            "",
+            studentId,
             threadId,
             userDetails[User.ID].toString(),
             "messages"
@@ -431,12 +433,12 @@ class ChatActivity : BaseActivity() {
             0,
             "",
             "teacher",
-            "",
+            studentId,
             threadId,
             userDetails[User.ID]!!,
-            "insert",
-        )
+            "insert",)
         viewModel.insertMessage(request)
         Log.d("requestLoading", request.toString())
     }
+
 }

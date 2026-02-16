@@ -112,13 +112,15 @@ class MessagesFragment : BaseFragment() {
                     threadId: String,
                     name: String,
                     image: String,
-                    type: String
+                    type: String,
+                    studentId: String
                 ) {
                     var intent = Intent(requireContext(), ChatActivity::class.java)
                     intent.putExtra("threadId", threadId)
                     intent.putExtra("name", name)
                     intent.putExtra("image", image)
                     intent.putExtra("messageType", type)
+                    intent.putExtra("studentId", studentId)
                     startActivity(intent)
                 }
 

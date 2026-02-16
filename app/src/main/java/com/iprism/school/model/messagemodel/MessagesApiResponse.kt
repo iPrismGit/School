@@ -24,6 +24,7 @@ data class MessageThread(
     val allow_reply: String,
     val class_name: String,
     val first_name: String,
+    val student_id: String,
     val id: String,
     val image: String,
     val last_name: String,

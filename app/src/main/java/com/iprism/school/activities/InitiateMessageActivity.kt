@@ -445,7 +445,8 @@ class InitiateMessageActivity : BaseActivity() {
                     threadId: String,
                     name: String,
                     image: String,
-                    type: String
+                    type: String,
+                    studentId: String
                 ) {
 
                 }

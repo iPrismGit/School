@@ -1,5 +1,6 @@
 package com.iprism.school.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,11 +69,26 @@ class ChatAdapter(private val messages: ArrayList<MessagesItem?>) :
 
     inner class SentViewHolder(private val binding: ItemChatSentBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
         fun bind(message: MessagesItem) {
+
+            Log.d("CHAT_IMAGE", "Sent Image: ${message.image}")
+
             binding.tvMessage.text = message.message
             binding.tvTime.text = message.date
+
+            if (!message.image.isNullOrEmpty()) {
+                binding.messageImg.visibility = View.VISIBLE
+
+                Glide.with(binding.root.context)
+                    .load(Constants.IMAGES_URL + message.image)
+                    .into(binding.messageImg)
+            } else {
+                binding.messageImg.visibility = View.GONE
+            }
         }
     }
+
 
     inner class ReceivedViewHolder(private val binding: ItemChatReceivedBinding) :
         RecyclerView.ViewHolder(binding.root) {
