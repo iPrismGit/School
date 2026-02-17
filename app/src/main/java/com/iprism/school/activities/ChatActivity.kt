@@ -29,6 +29,7 @@ import com.iprism.school.adapters.ChatAdapter
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityChatBinding
 import com.iprism.school.databinding.FileTypeBottomSheetBinding
+import com.iprism.school.interfaces.OnMessageClickListener
 import com.iprism.school.model.messagemodel.MessagesApiRequest
 import com.iprism.school.model.messagemodel.MessagesItem
 import com.iprism.school.repositories.MessagesRepository
@@ -301,6 +302,41 @@ class ChatActivity : BaseActivity() {
                 }
             })
         }
+        chatAdapter.setupListener(object : OnMessageClickListener{
+            override fun onItemClick(
+                threadId: String,
+                name: String,
+                image: String,
+                type: String,
+                studentId: String
+            ) {
+
+            }
+
+            override fun onStudentSelectClick(
+                value: String,
+                studentId: String,
+                studentName: String
+            ) {
+
+            }
+
+            override fun onInnerItemClick(eventImage: String) {
+                if (eventImage.isNotEmpty()){
+                    if (eventImage.endsWith(".pdf")){
+                        var intent = Intent(this@ChatActivity, PdfViewActivity::class.java)
+                        intent.putExtra("pdfUrl", eventImage)
+                        startActivity(intent)
+                    }else{
+                        var intent = Intent(this@ChatActivity, ViewImageActivity::class.java)
+                        intent.putExtra("EventImage", eventImage)
+                        intent.putExtra("EventName", "Message Image")
+                        startActivity(intent)
+                    }
+                }
+            }
+
+        })
     }
 
     private fun initViewModel() {

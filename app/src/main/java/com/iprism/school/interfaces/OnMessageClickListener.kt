@@ -5,5 +5,6 @@ interface OnMessageClickListener {
     fun onItemClick(threadId : String, name : String, image : String, type : String, studentId : String)
 
     fun onStudentSelectClick(value : String, studentId : String, studentName : String)
+    fun onInnerItemClick(eventImage : String)
 
 }
