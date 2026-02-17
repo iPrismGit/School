@@ -1,10 +1,7 @@
 package com.iprism.school.activities
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -44,19 +41,15 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import java.io.ByteArrayOutputStream
-import java.io.IOException
-import java.io.InputStream
 import kotlin.apply
 import kotlin.collections.filter
 import kotlin.collections.isNotEmpty
 import kotlin.collections.maxOf
 import kotlin.jvm.java
-import kotlin.text.clear
 import kotlin.text.equals
-import kotlin.text.get
 import kotlin.text.isNotEmpty
 import kotlin.text.trim
+import kotlin.toString
 
 class ChatActivity : BaseActivity() {
 
@@ -96,9 +89,6 @@ class ChatActivity : BaseActivity() {
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
                 uri?.let {
                     handleSelectedFile(it)
-
-                    val base64 = convertUriToBase64(it)
-                    Log.d("BASE64_IMAGE", base64)
                 }
             }
 
@@ -109,11 +99,7 @@ class ChatActivity : BaseActivity() {
                         it,
                         Intent.FLAG_GRANT_READ_URI_PERMISSION
                     )
-
                     handleSelectedFile(it)
-
-                    val base64 = convertUriToBase64(it)
-                    Log.d("BASE64_FILE", base64)
                 }
             }
         threadId = intent.getStringExtra("threadId").toString()
@@ -134,27 +120,6 @@ class ChatActivity : BaseActivity() {
         handleCrossBtn()
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private fun observeInsertResponse() {
-        viewModel.insertMessageResponse.observe(this) { result ->
-            when (result) {
-                is UiState.Loading -> {
-                    if (selectedFileUri != null) {
-                        binding.progress.showProgress()
-                    }
-                }
-
-                is UiState.Success -> {
-                    binding.progress.hideProgress()
-                }
-
-                is UiState.Error -> {
-                    binding.progress.hideProgress()
-                }
-            }
-        }
-    }
-
     private fun setupData() {
        if (messageType.equals("single", true)){
            binding.tvName.text = name
@@ -165,10 +130,28 @@ class ChatActivity : BaseActivity() {
                ContextCompat.getDrawable(this, R.drawable.message_profile)
            }
 
-       }else{
+       } else{
            binding.tvName.text = "Group Message"
            binding.ivProfile.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.group_icon))
        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (isFirstLoaded) {
+            isFirstLoaded = false
+            lifecycleScope.launch {
+                delay(3000)
+                startPolling()
+            }
+        } else {
+            startPolling()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        pollingJob?.cancel()
     }
 
     private fun startPolling() {
@@ -226,26 +209,7 @@ class ChatActivity : BaseActivity() {
         }
     }
 
-
-    override fun onResume() {
-        super.onResume()
-        if (isFirstLoaded) {
-            isFirstLoaded = false
-            lifecycleScope.launch {
-                delay(3000)
-                startPolling()
-            }
-        } else {
-            startPolling()
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        pollingJob?.cancel()
-    }
-
-    private fun convertUriToBase64(uri: Uri?): String {
+    private fun convertUriToBase64Image(uri: Uri?): String {
         if (uri == null) return ""
 
         return try {
@@ -258,7 +222,6 @@ class ChatActivity : BaseActivity() {
             } else {
                 ""
             }
-
         } catch (e: Exception) {
             e.printStackTrace()
             ""
@@ -286,7 +249,7 @@ class ChatActivity : BaseActivity() {
 
     private fun handleBack() {
         binding.ivBack.setOnClickListener(View.OnClickListener {
-           finish()
+            finish()
         })
     }
 
@@ -304,7 +267,7 @@ class ChatActivity : BaseActivity() {
                     val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                     val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
                     if (!isLoading && !isLastPage && lastVisibleItemPosition == messages.size - 1) {
-                        loadMoreDoctors()
+                        loadMoreMessages()
                     }
                 }
             })
@@ -329,22 +292,23 @@ class ChatActivity : BaseActivity() {
             }
 
             override fun onInnerItemClick(eventImage: String) {
-                if (eventImage.isNotEmpty()){
-                    if (eventImage.endsWith(".pdf")){
-                        var intent = Intent(this@ChatActivity, PdfViewActivity::class.java)
-                        intent.putExtra("pdfUrl", eventImage)
-                        startActivity(intent)
-                    }else{
-                        var intent = Intent(this@ChatActivity, ViewImageActivity::class.java)
-                        intent.putExtra("EventImage", eventImage)
-                        intent.putExtra("EventName", "Message Image")
-                        startActivity(intent)
-                    }
-                }
+               if (eventImage.isNotEmpty()){
+                   if (eventImage.endsWith(".pdf")){
+                       var intent = Intent(this@ChatActivity, PdfViewActivity::class.java)
+                       intent.putExtra("pdfUrl", eventImage)
+                       startActivity(intent)
+                   }else{
+                       var intent = Intent(this@ChatActivity, ViewImageActivity::class.java)
+                       intent.putExtra("EventImage", eventImage)
+                       intent.putExtra("EventName", "Message Image")
+                       startActivity(intent)
+                   }
+               }
             }
 
         })
     }
+
 
     private fun initViewModel() {
         val repository = MessagesRepository(this)
@@ -407,12 +371,34 @@ class ChatActivity : BaseActivity() {
                             latestMessageId = filteredMessages.maxOf { it.id }
                             messages.addAll(0, filteredMessages)
                             chatAdapter.notifyItemRangeInserted(0, filteredMessages.size)
-                            binding.rvChat.scrollToPosition(0)
+                            binding.rvChat.scrollToPosition(0) // optional auto scroll
                         }
                     }
                 }
 
                 is UiState.Error -> {
+                }
+            }
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun observeInsertResponse() {
+        viewModel.insertMessageResponse.observe(this) { result ->
+            when (result) {
+                is UiState.Loading -> {
+                    if (selectedFileUri != null) {
+                        binding.progress.showProgress()
+                    }
+                }
+
+                is UiState.Success -> {
+                    binding.progress.hideProgress()
+                    fetchNewMessages()
+                }
+
+                is UiState.Error -> {
+                    binding.progress.hideProgress()
                 }
             }
         }
@@ -431,7 +417,7 @@ class ChatActivity : BaseActivity() {
             "teacher",
             studentId,
             threadId,
-            "",
+            userDetails[User.ID]!!,
             "messages"
         )
         viewModel.fetchMessages(request)
@@ -445,20 +431,20 @@ class ChatActivity : BaseActivity() {
             "",
             "",
             "",
-            messageType,
+            "",
             currentPage.toString(),
             "",
             "teacher",
             studentId,
             threadId,
-            userDetails[User.ID].toString(),
+            userDetails[User.ID]!!,
             "messages"
         )
         viewModel.fetchNewMessages(request)
         Log.d("requestLoading", request.toString())
     }
 
-    private fun loadMoreDoctors() {
+    private fun loadMoreMessages() {
         isLoading = true
         currentPage += 1
         chatAdapter.showLoadingFooter()
@@ -470,18 +456,20 @@ class ChatActivity : BaseActivity() {
             userDetails[User.ACADEMIC_YEAR_ID]!!,
             userDetails[User.SCHOOL_ID]!!,
             "",
-            convertUriToBase64(selectedFileUri),
+            convertUriToBase64Image(selectedFileUri),
             message,
             "single",
-            "0",
+            currentPage.toString(),
             "",
             "teacher",
             studentId,
             threadId,
             userDetails[User.ID]!!,
-            "insert",)
+            "insert"
+        )
         viewModel.insertMessage(request)
-        Log.d("requestLoading", request.toString())
+        Log.d("requestLoading1", request.toString())
+        Log.d("imageBas64", convertUriToBase64Image(selectedFileUri))
     }
 
 }
