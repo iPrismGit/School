@@ -14,11 +14,12 @@ import com.iprism.school.model.messagemodel.MessageThread
 import com.iprism.school.utils.Constants
 import com.iprism.school.viewholders.ItemLoadingViewHolder
 
-class MessagesAdapter(private val messages: ArrayList<MessageThread?>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MessagesAdapter(private val messages: ArrayList<MessageThread?>) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private lateinit var listener: OnMessageClickListener
 
-    fun setupListener(listener: OnMessageClickListener){
+    fun setupListener(listener: OnMessageClickListener) {
         this.listener = listener
     }
 
@@ -57,26 +58,27 @@ class MessagesAdapter(private val messages: ArrayList<MessageThread?>) : Recycle
             val message = messages[position]
             val context = holder.itemView.context
             holder.binding.apply {
-
-                if (message!!.message_type.equals("single", true)){
-                    nameTxt.text = message.first_name + " " + message.middle_name + " " + message.last_name
+                if (message!!.message_type.equals("single", true)) {
+                    nameTxt.text =
+                        message.first_name + " " + message.middle_name + " " + message.last_name
 
                     if (message.student_image.isNotEmpty()) {
                         Glide.with(context)
                             .load(Constants.IMAGES_URL + message.student_image)
                             .into(profileIv)
-                    } else{
+                    } else {
                         profileIv.setImageResource(R.drawable.message_profile)
                     }
-                } else{
+                } else {
+                    profileIv.setImageResource(R.drawable.group_icon)
                     nameTxt.text = "Group Message"
                 }
                 dateTxt.text = message.date
                 messageTxt.text = message.message
-                if (message.read_status.equals("0", true)){
+                if (message.read_status.equals("0", true)) {
                     readImg.visibility = View.VISIBLE
                     messageTxt.setTypeface(null, Typeface.BOLD)
-                }else{
+                } else {
                     readImg.visibility = View.GONE
                     messageTxt.setTypeface(null, Typeface.NORMAL)
                 }
@@ -92,7 +94,13 @@ class MessagesAdapter(private val messages: ArrayList<MessageThread?>) : Recycle
                     fileImg.visibility = View.GONE
                 }
                 root.setOnClickListener {
-                    listener.onItemClick(message.id, message.first_name  + " " + message.middle_name + message.last_name, message.student_image, message.message_type, message.student_id)
+                    listener.onItemClick(
+                        message.id,
+                        message.first_name + " " + message.middle_name + message.last_name,
+                        message.student_image,
+                        message.message_type,
+                        message.student_id
+                    )
                 }
             }
         }

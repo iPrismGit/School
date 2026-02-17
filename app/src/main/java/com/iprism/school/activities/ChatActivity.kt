@@ -196,11 +196,19 @@ class ChatActivity : BaseActivity() {
 
     private fun handleSelectedFile(uri: Uri) {
         selectedFileUri = uri
+
         binding.uploadedFileImg.visibility = View.VISIBLE
         binding.fileImg.visibility = View.GONE
-        binding.checkInImg.setImageURI(selectedFileUri)
-    }
 
+        val mimeType = contentResolver.getType(uri)
+
+        if (mimeType != null && mimeType.startsWith("image/")) {
+            binding.checkInImg.setImageURI(uri)
+        } else {
+            binding.checkInImg.setImageResource(R.drawable.document_icon)
+        }
+    }
+    
     private fun handleCrossBtn() {
         binding.deleteImg.setOnClickListener {
             selectedFileUri = null
