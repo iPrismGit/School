@@ -233,7 +233,7 @@ class CreateDayCareAlbumsActivity : BaseActivity() {
                     position: Int,
                     id: Long
                 ) {
-                    planId = plans[position].id.toString()
+                    planId = plans[position].cat_id.toString()
 
                 }
 

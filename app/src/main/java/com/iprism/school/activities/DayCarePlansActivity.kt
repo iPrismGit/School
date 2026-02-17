@@ -7,39 +7,26 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.iprism.school.R
-import com.iprism.school.adapters.CircularsAdapter
 import com.iprism.school.adapters.DayCareStudentsAdapter
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityDayCarePlansBinding
-import com.iprism.school.interfaces.OnCalenderClickListener
 import com.iprism.school.interfaces.OnDayCareClickListener
-import com.iprism.school.model.circularmodels.Circular
-import com.iprism.school.model.circularmodels.CircularApiRequest
-import com.iprism.school.model.classteachermodel.Class
-import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
-import com.iprism.school.model.classteachermodel.Section
 import com.iprism.school.model.daycare.Category
 import com.iprism.school.model.daycare.DayCareApiRequest
 import com.iprism.school.model.daycare.Student
-import com.iprism.school.repositories.AttendanceRepository
 import com.iprism.school.repositories.DayCareRepository
-import com.iprism.school.repositories.EventsRepository
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.UiState
 import com.iprism.school.utils.User
 import com.iprism.school.utils.hideProgress
 import com.iprism.school.utils.showProgress
-import com.iprism.school.viewModels.AttendanceViewModel
 import com.iprism.school.viewModels.DayCareViewModel
-import com.iprism.school.viewModels.EventsViewModel
 import com.iprism.school.viewModels.ViewModelFactory
 
 class DayCarePlansActivity : BaseActivity() {
@@ -126,7 +113,7 @@ class DayCarePlansActivity : BaseActivity() {
                     position: Int,
                     id: Long
                 ) {
-                    planId = plans[position].id.toString()
+                    planId = plans[position].cat_id.toString()
                     resetEvents()
                     if (!planId.equals("-1", true)){
                         loadEvents()

@@ -1,5 +1,7 @@
 package com.iprism.school.model.daycare
 
+import kotlinx.serialization.SerialName
+
 data class DayCareApiResponse(
 
     val message: String,
@@ -17,7 +19,7 @@ data class DayCareResponse(
 
 data class Category(
 
-    val id: String,
+    val cat_id: String,
     val name: String
 
 )

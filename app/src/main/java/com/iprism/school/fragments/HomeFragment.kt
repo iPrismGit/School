@@ -2,6 +2,8 @@ package com.iprism.school.fragments
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,8 +31,10 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.activities.AboutUsActivity
 import com.iprism.school.activities.ApplyForLeaveActivity
+import com.iprism.school.activities.DayCareAttendanceActivity
 import com.iprism.school.activities.DayCarePlansActivity
 import com.iprism.school.activities.HolidaysActivity
 import com.iprism.school.activities.PlannerCategoriesActivity
@@ -41,7 +45,10 @@ import com.iprism.school.activities.album.DayCareAlbumDetailsActivity
 import com.iprism.school.activities.album.DayCareAlbumsActivity
 import com.iprism.school.adapters.HomePAgeDayCareAlbumsAdapter
 import com.iprism.school.adapters.HomePageAlbumsAdapter
+import com.iprism.school.databinding.AllStudentsPresentBottomSheetBinding
+import com.iprism.school.databinding.ClassOrDaycareTypeBottomSheetBinding
 import com.iprism.school.interfaces.OnAlbumClickListener
+import com.iprism.school.model.classteachermodel.AttendanceStudentsApiRequest
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.daycare.DayCareStatusApiRequest
 import com.iprism.school.model.homepagemodel.AlbumCoverHome
@@ -68,6 +75,8 @@ class HomeFragment : BaseFragment() {
     private lateinit var yesBtn: Button
     private lateinit var noBtn: Button
     private var navigationFrom: String = ""
+    private lateinit var bottomSheetDialog : BottomSheetDialog
+    private lateinit var classTypesBinding : ClassOrDaycareTypeBottomSheetBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -242,6 +251,13 @@ class HomeFragment : BaseFragment() {
                                 val intent = Intent(
                                     requireContext(),
                                     CreateDayCareAlbumsActivity::class.java
+                                )
+                                startActivity(intent)
+                            }
+                            "day_care_attendance" ->{
+                                val intent = Intent(
+                                    requireContext(),
+                                    DayCareAttendanceActivity::class.java
                                 )
                                 startActivity(intent)
                             }
@@ -470,7 +486,8 @@ class HomeFragment : BaseFragment() {
 
     private fun handleAttendenceLo() {
         binding.attendanceLo.setOnClickListener(View.OnClickListener {
-            startActivity(Intent(context, AttendanceActivity::class.java))
+            showAttendanceDayCareBottomSheet()
+           // startActivity(Intent(context, AttendanceActivity::class.java))
         })
     }
 
@@ -511,62 +528,45 @@ class HomeFragment : BaseFragment() {
         })
     }
 
-//    private fun allAlbum() {
-//        showProgress()
-//        var apiRequest = SchoolStaffReq(auth_token,scl_id,teacherId)
-//        Log.d("homeUploadAlbum_Req", apiRequest.toString())
-//        val call: Call<AlbumsListResponse> = parentApiService!!.albumList(apiRequest)
-//        call.enqueue(object : Callback<AlbumsListResponse> {
-//            override fun onResponse(call: Call<AlbumsListResponse>, response: Response<AlbumsListResponse>) {
-//                if (response.isSuccessful) {
-//                    hideProgress()
-//                    val loginApiResponse = response.body()
-//
-//                    if (loginApiResponse!!.status == true){
-////                        binding.nodataTv.visibility = View.GONE
-//                        binding.albumsRv.visibility = View.VISIBLE
-//
-//
-//                        if (isAdded){
-//                            val linearLayoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
-//                            binding.albumsRv.layoutManager = linearLayoutManager
-//                            val albumsAdapter = AlbumsAdapter(requireActivity(), loginApiResponse.response.album_details)
-//                            binding.albumsRv.adapter = albumsAdapter
-//
-//                            albumsAdapter.OnItemBtn = {
-//                                    mydata ->
-//                                val studentId = mydata.id.toString()
-//                                val intent = Intent(requireActivity(), AlbumDetailsActivity::class.java)
-//                                intent.putExtra("studentId",studentId)
-//                                intent.putExtra("albumId",studentId)
-//                                startActivity(intent)
-//                            }
-//
-//                        }
-//
-////                        var albumsAdapter = AlbumsAdapter(requireContext(), loginApiResponse.response.album_details)
-////                        binding.albumsRv.adapter = albumsAdapter
-////                        var linearLayoutManager = GridLayoutManager(requireContext(), 2)
-////                        binding.albumsRv.layoutManager = linearLayoutManager
-//
-//
-//                    }else{
-////                        binding.nodataTv.visibility = View.VISIBLE
-//                        binding.albumsRv.visibility = View.GONE
-//                    }
-//                } else {
-////                    binding.nodataTv.visibility = View.VISIBLE
-//                    binding.albumsRv.visibility = View.GONE
-//
-//                    hideProgress()
-//                    ToastUtils.showErrorCustomToast(requireActivity(), response.message())
-//                }
-//            }
-//            override fun onFailure(call: Call<AlbumsListResponse>, t: Throwable) {
-//                hideProgress()
-////                ToastUtils.showErrorCustomToast(requireActivity(), t.message.toString())
-//            }
-//        })
-//    }
+    private fun showAttendanceDayCareBottomSheet() {
+        bottomSheetDialog = BottomSheetDialog(requireContext())
+        classTypesBinding = ClassOrDaycareTypeBottomSheetBinding.inflate(layoutInflater)
+        bottomSheetDialog.setContentView(classTypesBinding.root)
+        bottomSheetDialog.setCanceledOnTouchOutside(false)
+        classTypesBinding.classTypeRg.setOnCheckedChangeListener { _, checkedId ->
+            navigationFrom = when (checkedId) {
+                R.id.daycare_rb -> "day_care_attendance"
+                R.id.classes_rb -> ""
+                else -> ""
+            }
+        }
+        bottomSheetDialog.setOnShowListener { dialog ->
+            val bottomSheet =
+                (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            bottomSheet?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
+
+        classTypesBinding.continueBtn.setOnClickListener { view ->
+            if (navigationFrom.isEmpty()){
+                startActivity(Intent(context, AttendanceActivity::class.java))
+            }else if (navigationFrom.equals("day_care_attendance", true)){
+
+                val request = DayCareStatusApiRequest(
+                    userDetails[User.ACADEMIC_YEAR_ID].toString(),
+                    userDetails[User.SCHOOL_ID].toString(),
+                    userDetails[User.ID].toString()
+                )
+
+                dayCareViewModel.fetchDayCareStatus(request)
+            }
+            bottomSheetDialog.dismiss()
+        }
+        classTypesBinding.crossIv.setOnClickListener {
+
+            bottomSheetDialog.dismiss()
+        }
+
+        bottomSheetDialog.show()
+    }
 
 }

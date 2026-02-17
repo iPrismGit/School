@@ -3,14 +3,12 @@ package com.iprism.school.activities
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.iprism.school.R
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityNapBinding
-import com.iprism.school.model.daycare.Category
 import com.iprism.school.model.daycare.DayCareApiRequest
 import com.iprism.school.repositories.DayCareRepository
 import com.iprism.school.utils.DateTimeUtils
@@ -20,9 +18,7 @@ import com.iprism.school.utils.User
 import com.iprism.school.utils.hideProgress
 import com.iprism.school.utils.showProgress
 import com.iprism.school.viewModels.DayCareViewModel
-import com.iprism.school.viewModels.DiaryViewModel
 import com.iprism.school.viewModels.ViewModelFactory
-import kotlin.math.tan
 
 class NapActivity : BaseActivity() {
 

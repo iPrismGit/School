@@ -349,8 +349,6 @@
 
     </LinearLayout>
 
-
-
     <!-- Progress -->
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/progress"
