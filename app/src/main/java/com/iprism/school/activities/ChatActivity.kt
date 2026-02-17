@@ -171,24 +171,6 @@ class ChatActivity : BaseActivity() {
        }
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (isFirstLoaded) {
-            isFirstLoaded = false
-            lifecycleScope.launch {
-                delay(3000)
-                startPolling()
-            }
-        } else {
-            startPolling()
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        pollingJob?.cancel()
-    }
-
     private fun startPolling() {
         if (pollingJob?.isActive == true) return
         pollingJob = lifecycleScope.launch {
@@ -242,6 +224,25 @@ class ChatActivity : BaseActivity() {
             binding.uploadedFileImg.visibility = View.GONE
             binding.fileImg.visibility = View.VISIBLE
         }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        if (isFirstLoaded) {
+            isFirstLoaded = false
+            lifecycleScope.launch {
+                delay(3000)
+                startPolling()
+            }
+        } else {
+            startPolling()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        pollingJob?.cancel()
     }
 
     private fun convertUriToBase64(uri: Uri?): String {
@@ -425,7 +426,7 @@ class ChatActivity : BaseActivity() {
             "",
             "",
             "",
-            currentPage,
+            currentPage.toString(),
             "",
             "teacher",
             studentId,
@@ -445,7 +446,7 @@ class ChatActivity : BaseActivity() {
             "",
             "",
             messageType,
-            currentPage,
+            currentPage.toString(),
             "",
             "teacher",
             studentId,
@@ -472,7 +473,7 @@ class ChatActivity : BaseActivity() {
             convertUriToBase64(selectedFileUri),
             message,
             "single",
-            0,
+            "0",
             "",
             "teacher",
             studentId,

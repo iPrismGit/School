@@ -1,5 +1,6 @@
 package com.iprism.school.fragments
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.iprism.school.activities.ChatActivity
 import com.iprism.school.activities.InitiateMessageActivity
 import com.iprism.school.adapters.MessagesAdapter
@@ -50,8 +52,23 @@ class MessagesFragment : BaseFragment() {
         initViewModel()
         setUpAdapter()
         setupObservers()
-        fetchChats()
+        refresh()
         insertMessageBtn()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun refresh() {
+        binding.refreshLayout.setOnRefreshListener(
+            SwipeRefreshLayout.OnRefreshListener {
+                currentPage = 1
+                isLastPage = false
+                isLoading = false
+                messages.clear()
+                messagesAdapter.notifyDataSetChanged()
+                fetchChats()
+                binding.refreshLayout.isRefreshing = false
+            }
+        )
     }
 
     private fun insertMessageBtn() {
@@ -75,7 +92,7 @@ class MessagesFragment : BaseFragment() {
             "",
             "",
             "",
-            currentPage,
+            currentPage.toString(),
             "",
             "teacher",
             userDetails[User.STUDENT_ID]!!,
@@ -87,10 +104,20 @@ class MessagesFragment : BaseFragment() {
         Log.d("requestLoading", request.toString())
     }
 
+    override fun onResume() {
+        super.onResume()
+        currentPage = 1
+        isLastPage = false
+        isLoading = false
+        messages.clear()
+        messagesAdapter.notifyDataSetChanged()
+        fetchChats()
+    }
+
     private fun setUpAdapter() {
         messagesAdapter = MessagesAdapter(messages as ArrayList<MessageThread?>)
         val linearLayoutManager = LinearLayoutManager(requireContext())
-        binding.rvHelpTutorials.apply {
+        binding.messagesRv.apply {
             layoutManager = linearLayoutManager
             adapter = messagesAdapter
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -129,6 +156,10 @@ class MessagesFragment : BaseFragment() {
                     studentId: String,
                     studentName: String
                 ) {
+
+                }
+
+                override fun onInnerItemClick(eventImage: String) {
 
                 }
 

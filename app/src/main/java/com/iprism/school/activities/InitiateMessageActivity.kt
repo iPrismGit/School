@@ -102,6 +102,9 @@ class InitiateMessageActivity : BaseActivity() {
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
                 uri?.let {
                     handleSelectedFile(it)
+
+                    val base64 = convertUriToBase64(it)
+                    Log.d("BASE64_IMAGE", base64)
                 }
             }
 
@@ -112,7 +115,11 @@ class InitiateMessageActivity : BaseActivity() {
                         it,
                         Intent.FLAG_GRANT_READ_URI_PERMISSION
                     )
+
                     handleSelectedFile(it)
+
+                    val base64 = convertUriToBase64(it)
+                    Log.d("BASE64_FILE", base64)
                 }
             }
         initViewModel()
@@ -175,6 +182,7 @@ class InitiateMessageActivity : BaseActivity() {
         bottomSheetDialog.show()
     }
 
+
     private fun initializeBottomSheet() {
         currentPage = 1
         isLastPage = false
@@ -216,10 +224,10 @@ class InitiateMessageActivity : BaseActivity() {
                     userDetails[User.ACADEMIC_YEAR_ID].toString(),
                     userDetails[User.SCHOOL_ID].toString(),
                     classId,
-                    convertUriToBase64Image(selectedFileUri),
+                    convertUriToBase64(selectedFileUri),
                     getMessage(),
                     value,
-                    1,
+                    "1",
                     sectionId,
                     "teacher",
                     studentId,
@@ -462,6 +470,10 @@ class InitiateMessageActivity : BaseActivity() {
                     //  Log.d("SingleStudentDetails", studentName + ", " + value)
                 }
 
+                override fun onInnerItemClick(eventImage: String) {
+
+                }
+
             })
 
         }
@@ -580,29 +592,24 @@ class InitiateMessageActivity : BaseActivity() {
         return name
     }
 
-    private fun convertUriToBase64Image(imageUri: Uri?): String {
-        if (imageUri == null) return ""
+    private fun convertUriToBase64(uri: Uri?): String {
+        if (uri == null) return ""
 
         return try {
-            val inputStream = contentResolver.openInputStream(imageUri)
-            val bitmap = BitmapFactory.decodeStream(inputStream)
+            val inputStream = contentResolver.openInputStream(uri)
+            val bytes = inputStream?.readBytes()
             inputStream?.close()
 
-            if (bitmap != null) {
-                val byteArrayOutputStream = ByteArrayOutputStream()
-                bitmap.compress(
-                    Bitmap.CompressFormat.JPEG,
-                    100,
-                    byteArrayOutputStream
-                ) // Use PNG if you prefer lossless
-                val imageBytes = byteArrayOutputStream.toByteArray()
-                Base64.encodeToString(imageBytes, Base64.DEFAULT)
+            if (bytes != null) {
+                Base64.encodeToString(bytes, Base64.NO_WRAP)
             } else {
                 ""
             }
-        } catch (e: IOException) {
+
+        } catch (e: Exception) {
             e.printStackTrace()
             ""
         }
     }
+
 }

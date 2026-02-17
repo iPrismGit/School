@@ -8,7 +8,7 @@ data class MessagesApiRequest(
     val image: String,
     val message: String,
     val message_type: String,
-    val page: Int,
+    val page: String,
     val section_id: String,
     val sender_type: String,
     val student_id: String,
