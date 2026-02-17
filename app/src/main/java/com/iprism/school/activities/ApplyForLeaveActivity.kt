@@ -71,6 +71,9 @@ class ApplyForLeaveActivity : AppCompatActivity() {
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
                 uri?.let {
                     handleSelectedFile(it)
+
+                    val base64 = convertUriToBase64(it)
+                    Log.d("BASE64_IMAGE", base64)
                 }
             }
 
@@ -81,9 +84,14 @@ class ApplyForLeaveActivity : AppCompatActivity() {
                         it,
                         Intent.FLAG_GRANT_READ_URI_PERMISSION
                     )
+
                     handleSelectedFile(it)
+
+                    val base64 = convertUriToBase64(it)
+                    Log.d("BASE64_FILE", base64)
                 }
             }
+
         user = User(this)
         userDetails = user.getNewUserDetails()
         handleAttachmentBtn()
@@ -116,7 +124,7 @@ class ApplyForLeaveActivity : AppCompatActivity() {
             } else {
                 var request = ApplyForLeaveApiRequest(userDetails[User.ACADEMIC_YEAR_ID].toString(),
                     userDetails[User.SCHOOL_ID].toString(), convertDateFormatSafe(binding.startDateTxt)!!,
-                    convertUriToBase64Image(selectedFileUri), getName(), getReason(), convertDateFormatSafe(binding.endDateTxt)!!,
+                    convertUriToBase64(selectedFileUri), getName(), getReason(), convertDateFormatSafe(binding.endDateTxt)!!,
                     userDetails[User.ID].toString(), "insert")
                 viewModel.insertLeaveRequest(request)
              //   Log.d("StartAndEndDate", "Start Date: ${convertDateFormatSafe(binding.startDateTxt)}, End Date: ${convertDateFormatSafe(binding.endDateTxt)} ")
@@ -124,27 +132,21 @@ class ApplyForLeaveActivity : AppCompatActivity() {
         }
     }
 
-    private fun convertUriToBase64Image(imageUri: Uri?): String {
-        if (imageUri == null) return ""
+    private fun convertUriToBase64(uri: Uri?): String {
+        if (uri == null) return ""
 
         return try {
-            val inputStream = contentResolver.openInputStream(imageUri)
-            val bitmap = BitmapFactory.decodeStream(inputStream)
+            val inputStream = contentResolver.openInputStream(uri)
+            val bytes = inputStream?.readBytes()
             inputStream?.close()
 
-            if (bitmap != null) {
-                val byteArrayOutputStream = ByteArrayOutputStream()
-                bitmap.compress(
-                    Bitmap.CompressFormat.JPEG,
-                    100,
-                    byteArrayOutputStream
-                ) // Use PNG if you prefer lossless
-                val imageBytes = byteArrayOutputStream.toByteArray()
-                Base64.encodeToString(imageBytes, Base64.DEFAULT)
+            if (bytes != null) {
+                Base64.encodeToString(bytes, Base64.NO_WRAP)
             } else {
                 ""
             }
-        } catch (e: IOException) {
+
+        } catch (e: Exception) {
             e.printStackTrace()
             ""
         }
