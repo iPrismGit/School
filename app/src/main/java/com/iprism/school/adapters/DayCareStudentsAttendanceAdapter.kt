@@ -82,7 +82,6 @@ class DayCareStudentsAttendanceAdapter(
                     imageView17.setImageResource(R.drawable.cartoon_img)
                 }
 
-                // ✅ UI depends ONLY on selectedStudents
                 if (selectedStudents.any { it.id == student.id }) {
                     imageView21.setImageResource(R.drawable.present_img)
                 } else {

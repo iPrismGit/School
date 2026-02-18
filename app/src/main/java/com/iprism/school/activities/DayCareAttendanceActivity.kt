@@ -1,5 +1,7 @@
 package com.iprism.school.activities
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -16,14 +18,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.R
 import com.iprism.school.adapters.DayCareStudentsAttendanceAdapter
 import com.iprism.school.adapters.HelpTutorialAdapter
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityDayCareAttendanceBinding
+import com.iprism.school.databinding.AllStudentsPresentBottomSheetBinding
 import com.iprism.school.interfaces.OnDayCareStudentClickListener
 import com.iprism.school.model.DayCareAttendanceApiRequest
 import com.iprism.school.model.SelectedStudent
+import com.iprism.school.model.classteachermodel.AttendanceStudentsApiRequest
 import com.iprism.school.model.daycare.Category
 import com.iprism.school.model.daycare.DayCareApiRequest
 import com.iprism.school.model.daycare.Student
@@ -50,8 +55,6 @@ class DayCareAttendanceActivity : BaseActivity() {
     private lateinit var viewModel: DayCareViewModel
     private lateinit var attendanceViewModel: DayCareAttendanceViewModel
     private var planId: String = ""
-    private var isUpdatingFromAdapter = false
-
     private var attendanceStatus: String = ""
     private var selectValue: String = "single"
     private var isLoading = false
@@ -62,7 +65,8 @@ class DayCareAttendanceActivity : BaseActivity() {
     private lateinit var studentsAdapter: DayCareStudentsAttendanceAdapter
     private var currentDate: String = ""
     private var backendDate: String = ""
-
+    private lateinit var bottomSheetDialog : BottomSheetDialog
+    private lateinit var markAttendanceBinding : AllStudentsPresentBottomSheetBinding
     private val selectAllListener: CompoundButton.OnCheckedChangeListener =
         CompoundButton.OnCheckedChangeListener { _, isChecked ->
 
@@ -95,7 +99,6 @@ class DayCareAttendanceActivity : BaseActivity() {
         }
         val formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy")
         currentDate = LocalDate.now().format(formatter)
-
         val formatterBackend = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         backendDate = LocalDate.now().format(formatterBackend)
         binding.dateTxt.text = currentDate
@@ -105,6 +108,8 @@ class DayCareAttendanceActivity : BaseActivity() {
         setUpAdapter()
         setupObservers()
         handleRefresh()
+        observeAttendanceResponse()
+        handleSaveBtn()
         var request = DayCareApiRequest(
             userDetails[User.ACADEMIC_YEAR_ID].toString(),
             "",
@@ -122,7 +127,50 @@ class DayCareAttendanceActivity : BaseActivity() {
         )
         viewModel.fetchDayCarePlans(request)
         binding.checkBoxAll.setOnCheckedChangeListener(selectAllListener)
+    }
 
+    private fun handleSaveBtn() {
+        binding.saveAttendanceBtn.setOnClickListener { view ->
+            if (planId.equals("-1", true)){
+                ToastUtils.showErrorCustomToast(this, "Please Select DayCare Plan..!")
+            } else if (selectedStudents.isEmpty()) {
+                ToastUtils.showErrorCustomToast(this, "Please Select Students..!")
+            } else {
+                showAttendanceConformationBottomSheet()
+            }
+        }
+    }
+
+    private fun showAttendanceConformationBottomSheet() {
+        bottomSheetDialog = BottomSheetDialog(this)
+        markAttendanceBinding = AllStudentsPresentBottomSheetBinding.inflate(layoutInflater)
+        bottomSheetDialog.setContentView(markAttendanceBinding.root)
+        bottomSheetDialog.setCanceledOnTouchOutside(false)
+
+        bottomSheetDialog.setOnShowListener { dialog ->
+            val bottomSheet =
+                (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            bottomSheet?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
+
+        markAttendanceBinding.cancelBtn.setOnClickListener {
+            if (!markAttendanceBinding.markBtn.isEnabled) return@setOnClickListener
+            bottomSheetDialog.dismiss()
+        }
+
+        markAttendanceBinding.crossIv.setOnClickListener {
+            if (!markAttendanceBinding.markBtn.isEnabled) return@setOnClickListener
+            bottomSheetDialog.dismiss()
+        }
+
+        markAttendanceBinding.markBtn.setOnClickListener {
+            var markAttendanceRequest = DayCareAttendanceApiRequest("", userDetails[User.ACADEMIC_YEAR_ID].toString(), userDetails[User.SCHOOL_ID].toString(), planId, backendDate, "yes", currentPage, selectValue,
+                selectedStudents, userDetails[User.ID].toString(), "insert")
+            attendanceViewModel.insertDayCareStudentsAttendance(markAttendanceRequest)
+            Log.d("MarkAttendanceRequest", markAttendanceRequest.toString())
+        }
+
+        bottomSheetDialog.show()
     }
 
     private fun handleRefresh() {
@@ -257,8 +305,9 @@ class DayCareAttendanceActivity : BaseActivity() {
                     selectedIds: ArrayList<SelectedStudent>,
                     type: String
                 ) {
-
-                    Log.d("ATTENDANCE_LIST", "$selectedIds , $type")
+                    selectValue = type
+                    selectedStudents = selectedIds
+                    Log.d("ATTENDANCE_LIST", "$selectedStudents , $selectValue")
                     binding.checkBoxAll.setOnCheckedChangeListener(null)
                     binding.checkBoxAll.isChecked = (type == "all")
                     binding.checkBoxAll.setOnCheckedChangeListener(selectAllListener)
@@ -313,6 +362,34 @@ class DayCareAttendanceActivity : BaseActivity() {
         currentPage += 1
         studentsAdapter.showLoadingFooter()
         fetchStudents()
+    }
+
+    private fun observeAttendanceResponse() {
+        attendanceViewModel.insertDaycareAttendanceResponse.observe(this) { result ->
+            when (result) {
+                is UiState.Loading -> {
+                    markAttendanceBinding.progress.showProgress()
+                    markAttendanceBinding.markBtn.isEnabled = false
+                    markAttendanceBinding.cancelBtn.isEnabled = false
+                    markAttendanceBinding.crossIv.isEnabled = false
+                }
+
+                is UiState.Success -> {
+                    markAttendanceBinding.progress.hideProgress()
+                    ToastUtils.showSuccessCustomToast(this, "Attendance Marked Successfully..!")
+                    resetStudentsData()
+                    fetchStudents()
+                    bottomSheetDialog.dismiss()
+                }
+
+                is UiState.Error -> {
+                    markAttendanceBinding.progress.hideProgress()
+                    markAttendanceBinding.markBtn.isEnabled = true
+                    markAttendanceBinding.cancelBtn.isEnabled = true
+                    markAttendanceBinding.crossIv.isEnabled = true
+                }
+            }
+        }
     }
 
 }

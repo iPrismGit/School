@@ -502,7 +502,6 @@ class AttendanceActivity : BaseActivity() {
         bottomSheetDialog.show()
     }
 
-
     @SuppressLint("GestureBackNavigation")
     override fun onBackPressed() {
         super.onBackPressed()
