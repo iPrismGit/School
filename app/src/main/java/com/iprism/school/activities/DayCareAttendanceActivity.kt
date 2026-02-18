@@ -20,6 +20,7 @@ import com.iprism.school.adapters.DayCareStudentsAttendanceAdapter
 import com.iprism.school.adapters.HelpTutorialAdapter
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityDayCareAttendanceBinding
+import com.iprism.school.interfaces.OnDayCareStudentClickListener
 import com.iprism.school.model.DayCareAttendanceApiRequest
 import com.iprism.school.model.SelectedStudent
 import com.iprism.school.model.daycare.Category
@@ -48,6 +49,10 @@ class DayCareAttendanceActivity : BaseActivity() {
     private lateinit var viewModel: DayCareViewModel
     private lateinit var attendanceViewModel: DayCareAttendanceViewModel
     private var planId: String = ""
+    private var isUpdatingFromAdapter = false
+
+    private var attendanceStatus: String = ""
+    private var selectValue: String = "single"
     private var isLoading = false
     private var isLastPage = false
     private var currentPage = 1
@@ -96,6 +101,27 @@ class DayCareAttendanceActivity : BaseActivity() {
             ""
         )
         viewModel.fetchDayCarePlans(request)
+        binding.checkBoxAll.setOnCheckedChangeListener { _, isChecked ->
+
+            if (attendanceStatus.equals("attendance_not_given", true)) {
+
+                if (isUpdatingFromAdapter) {
+                    isUpdatingFromAdapter = false
+                    return@setOnCheckedChangeListener
+                }
+
+                if (isChecked) {
+                    studentsAdapter.selectAll()
+                } else {
+                    studentsAdapter.clearAll()
+                }
+
+            } else {
+                binding.checkBoxAll.isChecked = false
+                ToastUtils.showErrorCustomToast(this, "Attendance Already Given..!")
+            }
+        }
+
     }
 
     private fun handleRefresh() {
@@ -224,6 +250,20 @@ class DayCareAttendanceActivity : BaseActivity() {
                     }
                 }
             })
+            studentsAdapter.setupListener(object : OnDayCareStudentClickListener{
+
+                    override fun onSelectionChanged(
+                        selectedIds: ArrayList<SelectedStudent>,
+                        type: String
+                    ) {
+
+                        Log.d("ATTENDANCE_LIST", "$selectedIds , $type")
+
+                        isUpdatingFromAdapter = true
+                        binding.checkBoxAll.isChecked = (type == "all")
+                    }
+                })
+            studentsAdapter.initializePresentStudents()
         }
     }
 
@@ -239,6 +279,7 @@ class DayCareAttendanceActivity : BaseActivity() {
                     binding.studentAttendanceRv.visibility = View.VISIBLE
                     binding.progress.hideProgress()
                     isLoading = false
+                    attendanceStatus = state.data.response.attendance_status
                     studentsAdapter.removeLoadingFooter()
                     val newBookings = state.data.response.students
                     Log.d("StudentsList", state.data.response.students.toString())

@@ -15,7 +15,8 @@ data class DayCareResponse(
 
     val categories: List<Category>,
     val students: List<Student>,
-    val pagination: Pagination
+    val pagination: Pagination,
+    val attendance_status: String
 
 )
 
