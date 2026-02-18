@@ -75,8 +75,8 @@ class HomeFragment : BaseFragment() {
     private lateinit var yesBtn: Button
     private lateinit var noBtn: Button
     private var navigationFrom: String = ""
-    private lateinit var bottomSheetDialog : BottomSheetDialog
-    private lateinit var classTypesBinding : ClassOrDaycareTypeBottomSheetBinding
+    private lateinit var bottomSheetDialog: BottomSheetDialog
+    private lateinit var classTypesBinding: ClassOrDaycareTypeBottomSheetBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -254,7 +254,8 @@ class HomeFragment : BaseFragment() {
                                 )
                                 startActivity(intent)
                             }
-                            "day_care_attendance" ->{
+
+                            "day_care_attendance" -> {
                                 val intent = Intent(
                                     requireContext(),
                                     DayCareAttendanceActivity::class.java
@@ -487,7 +488,7 @@ class HomeFragment : BaseFragment() {
     private fun handleAttendenceLo() {
         binding.attendanceLo.setOnClickListener(View.OnClickListener {
             showAttendanceDayCareBottomSheet()
-           // startActivity(Intent(context, AttendanceActivity::class.java))
+            // startActivity(Intent(context, AttendanceActivity::class.java))
         })
     }
 
@@ -547,9 +548,9 @@ class HomeFragment : BaseFragment() {
         }
 
         classTypesBinding.continueBtn.setOnClickListener { view ->
-            if (navigationFrom.isEmpty()){
+            if (navigationFrom.isEmpty()) {
                 startActivity(Intent(context, AttendanceActivity::class.java))
-            }else if (navigationFrom.equals("day_care_attendance", true)){
+            } else if (navigationFrom.equals("day_care_attendance", true)) {
 
                 val request = DayCareStatusApiRequest(
                     userDetails[User.ACADEMIC_YEAR_ID].toString(),

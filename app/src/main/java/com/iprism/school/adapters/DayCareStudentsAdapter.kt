@@ -8,7 +8,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.iprism.school.R
-
 import com.iprism.school.databinding.StudentAttandanceItemBinding
 import com.iprism.school.interfaces.OnDayCareClickListener
 import com.iprism.school.model.daycare.Student

@@ -137,7 +137,7 @@
                         android:orientation="horizontal">
 
                         <Spinner
-                            android:id="@+id/categories_rv"
+                            android:id="@+id/plans_sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"

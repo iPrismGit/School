@@ -27,12 +27,13 @@ data class Category(
 data class Student(
 
     val academic_year: String,
+    val attendance_id: String,
+    val attendance_status: String,
+    val cat_id: String,
     val child_image: String,
     val first_name: String,
     val id: String,
     val last_name: String,
-    val middle_name: String,
-    val primary_mobile: String,
-    val user_id: String
+    val middle_name: String
 
 )

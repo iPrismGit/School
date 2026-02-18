@@ -1,5 +1,6 @@
 package com.iprism.school.network
 
+import com.iprism.school.model.DayCareAttendanceApiRequest
 import com.iprism.school.model.albums.AlbumCoverImagesApiRequest
 import com.iprism.school.model.albums.AlbumCoverImagesApiResponse
 import com.iprism.school.model.albums.AlbumsGalleryApiResponse
@@ -138,5 +139,8 @@ interface StaffApiService {
 
     @POST(Constants.MESSAGES_ENDPOINT)
     suspend fun fetchAndInsertMessages(@Body request: MessagesApiRequest): MessagesApiResponse
+
+    @POST(Constants.DAYCARE_ATTENDANCE_ENDPOINT)
+    suspend fun fetchDAyCareStudentsAndInsertAttendance(@Body request: DayCareAttendanceApiRequest): DayCareApiResponse
 
 }
