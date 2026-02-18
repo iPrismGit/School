@@ -1,5 +1,6 @@
 package com.iprism.school.model.daycare
 
+import com.iprism.school.model.classteachermodel.Pagination
 import kotlinx.serialization.SerialName
 
 data class DayCareApiResponse(
@@ -13,7 +14,8 @@ data class DayCareApiResponse(
 data class DayCareResponse(
 
     val categories: List<Category>,
-    val students: List<Student>
+    val students: List<Student>,
+    val pagination: Pagination
 
 )
 
