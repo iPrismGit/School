@@ -29,5 +29,6 @@ object Constants {
     const val CONTENT_PAGES_ENDPOINT = "content_pages"
     const val MESSAGES_ENDPOINT = "messages"
     const val DAYCARE_ATTENDANCE_ENDPOINT = "daycare_attendance"
+    const val SCHOOL_SUPPORT_ENDPOINT = "school_support"
 
 }

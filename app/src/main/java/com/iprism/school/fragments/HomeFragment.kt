@@ -39,7 +39,9 @@ import com.iprism.school.activities.DayCareAttendanceActivity
 import com.iprism.school.activities.DayCarePlansActivity
 import com.iprism.school.activities.HolidaysActivity
 import com.iprism.school.activities.PlannerCategoriesActivity
+import com.iprism.school.activities.SchoolSupportActivity
 import com.iprism.school.activities.StaffAttendanceActivity
+import com.iprism.school.activities.TechnicalSupportActivity
 import com.iprism.school.activities.album.AlbumDetailsActivity
 import com.iprism.school.activities.album.CreateDayCareAlbumsActivity
 import com.iprism.school.activities.album.DayCareAlbumDetailsActivity
@@ -147,11 +149,10 @@ class HomeFragment : BaseFragment() {
 
         handlePlannersAndResorcesLo()
         handleStudentsLL()
-        handleInboxLL()
-        handleViewAllMessagesLo()
         handleMenuImg()
         handleConsentsLo()
         handleMessageLo()
+        handleSideMessageLo()
         handleCalenderLo()
         handleAttendenceLo()
         handleStaffAttendanceLo()
@@ -163,7 +164,29 @@ class HomeFragment : BaseFragment() {
         handleHolidayCalenderLo()
         handleApplyForLeaveLo()
         handleSideHelpTutorialsLo()
+        handleSchoolSupportLo()
+        handleTechnicalSupportLo()
         return binding.root
+    }
+
+    private fun handleTechnicalSupportLo() {
+        binding.technicalSupportLo.setOnClickListener { view ->
+            startActivity(Intent(requireContext(), TechnicalSupportActivity::class.java))
+        }
+    }
+
+    private fun handleSchoolSupportLo() {
+        binding.schoolSupportLo.setOnClickListener { view ->
+            startActivity(Intent(requireContext(), SchoolSupportActivity::class.java))
+        }
+    }
+
+    private fun handleMessageLo() {
+        binding.messageLl.setOnClickListener { view ->
+            var intent = Intent(requireContext(), HomeActivity::class.java)
+            intent.putExtra("tag", "Messages")
+            startActivity(intent)
+        }
     }
 
     private fun handleSideHelpTutorialsLo() {
@@ -394,12 +417,6 @@ class HomeFragment : BaseFragment() {
         })
     }
 
-    private fun handleViewAllMessagesLo() {
-        binding.viewAllMessageLo.setOnClickListener(View.OnClickListener {
-            showConfirmationDialog()
-        })
-    }
-
     private fun showConfirmationDialog() {
         val binding = ViewMessagesAlertDialogBinding.inflate(layoutInflater)
 
@@ -501,14 +518,11 @@ class HomeFragment : BaseFragment() {
         })
     }
 
-    private fun handleMessageLo() {
+    private fun handleSideMessageLo() {
         binding.messagesLo.setOnClickListener(View.OnClickListener {
-            binding.allMessagesLo.visibility =
-                if (binding.allMessagesLo.isVisible) {
-                    View.GONE
-                } else {
-                    View.VISIBLE
-                }
+           var intent = Intent(requireContext(), HomeActivity::class.java)
+            intent.putExtra("tag", "Messages")
+            startActivity(intent)
         })
     }
 
@@ -521,14 +535,6 @@ class HomeFragment : BaseFragment() {
     private fun handleStudentsLL() {
         binding.studentsLl.setOnClickListener(View.OnClickListener {
             startActivity(Intent(context, StudentsActivity::class.java))
-        })
-    }
-
-    private fun handleInboxLL() {
-        binding.inboxLl.setOnClickListener(View.OnClickListener {
-            var intent = Intent(context, HomeActivity::class.java)
-            intent.putExtra("tag", "msgInbox")
-            startActivity(intent)
         })
     }
 

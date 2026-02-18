@@ -1,7 +1,7 @@
 package com.iprism.school.repositories
 
 import android.content.Context
-import com.iprism.school.model.DayCareAttendanceApiRequest
+import com.iprism.school.model.daycare.DayCareAttendanceApiRequest
 import com.iprism.school.model.daycare.DayCareApiResponse
 import com.iprism.school.network.SchoolApi
 

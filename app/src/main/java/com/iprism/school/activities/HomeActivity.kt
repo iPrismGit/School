@@ -34,6 +34,9 @@ class HomeActivity : BaseActivity() {
         } else if (tag.equals("Tutorial", true)){
             binding.bottomNavigationView.selectedItemId = R.id.help_nav
             binding.viewPager.setCurrentItem(3, false)
+        } else if (tag.equals("Messages", true)){
+            binding.bottomNavigationView.selectedItemId = R.id.messages_nav
+            binding.viewPager.setCurrentItem(1, false)
         }
 
         handleBottomNav()

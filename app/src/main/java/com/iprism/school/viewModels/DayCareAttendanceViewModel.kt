@@ -4,12 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.iprism.school.model.DayCareAttendanceApiRequest
+import com.iprism.school.model.daycare.DayCareAttendanceApiRequest
 import com.iprism.school.model.daycare.DayCareApiResponse
-import com.iprism.school.model.helptutorials.HelpTutorialsApiRequest
-import com.iprism.school.model.helptutorials.HelpTutorialsApiResponse
 import com.iprism.school.repositories.DayCareAttendanceRepository
-import com.iprism.school.repositories.HelpTutorialsRepository
 import com.iprism.school.utils.UiState
 import kotlinx.coroutines.launch
 

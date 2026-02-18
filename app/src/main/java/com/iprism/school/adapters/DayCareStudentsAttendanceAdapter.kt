@@ -9,7 +9,7 @@ import com.iprism.school.R
 import com.iprism.school.databinding.AttendanceItemBinding
 import com.iprism.school.databinding.ItemLoadingBinding
 import com.iprism.school.interfaces.OnDayCareStudentClickListener
-import com.iprism.school.model.SelectedStudent
+import com.iprism.school.model.daycare.SelectedStudent
 import com.iprism.school.model.daycare.Student
 import com.iprism.school.utils.Constants
 import com.iprism.school.viewholders.ItemLoadingViewHolder

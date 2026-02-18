@@ -5,6 +5,8 @@ import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.classteachermodel.ClassTeacherApiResponse
 import com.iprism.school.model.contentpagesmodel.ContentPagesApiRequest
 import com.iprism.school.model.contentpagesmodel.ContentPagesApiResponse
+import com.iprism.school.model.contentpagesmodel.SchoolSupportApiRequest
+import com.iprism.school.model.contentpagesmodel.SchoolSupportApiResponse
 import com.iprism.school.network.SchoolApi
 
 class ContentPagesRepository(private val context: Context) {
@@ -21,7 +23,18 @@ class ContentPagesRepository(private val context: Context) {
                 response = apiService.fetchAppContent(request)
             }
         }
+        return response
+    }
 
+    suspend fun fetchSchoolSupportDetails(request: SchoolSupportApiRequest): SchoolSupportApiResponse {
+        var response = apiService.fetchSchoolSupportDetails(request)
+
+        if (response.message.equals("Invalid or expired token", true)) {
+            val refreshed = authRepository.refreshToken()
+            if (refreshed) {
+                response = apiService.fetchSchoolSupportDetails(request)
+            }
+        }
         return response
     }
 

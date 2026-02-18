@@ -1,4 +1,4 @@
-package com.iprism.school.model
+package com.iprism.school.model.daycare
 
 data class DayCareAttendanceApiRequest(
 

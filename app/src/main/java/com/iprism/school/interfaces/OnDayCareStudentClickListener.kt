@@ -1,6 +1,6 @@
 package com.iprism.school.interfaces
 
-import com.iprism.school.model.SelectedStudent
+import com.iprism.school.model.daycare.SelectedStudent
 
 interface OnDayCareStudentClickListener {
 
