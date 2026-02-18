@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.CompoundButton
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -62,6 +63,25 @@ class DayCareAttendanceActivity : BaseActivity() {
     private var currentDate: String = ""
     private var backendDate: String = ""
 
+    private val selectAllListener: CompoundButton.OnCheckedChangeListener =
+        CompoundButton.OnCheckedChangeListener { _, isChecked ->
+
+            if (attendanceStatus.equals("attendance_not_given", true)) {
+
+                if (isChecked) {
+                    studentsAdapter.selectAll()
+                } else {
+                    studentsAdapter.clearAll()
+                }
+
+            } else {
+                binding.checkBoxAll.setOnCheckedChangeListener(null)
+                binding.checkBoxAll.isChecked = false
+                binding.checkBoxAll.setOnCheckedChangeListener(selectAllListener)
+                ToastUtils.showErrorCustomToast(this, "Attendance Already Given..!")
+            }
+        }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,26 +121,7 @@ class DayCareAttendanceActivity : BaseActivity() {
             ""
         )
         viewModel.fetchDayCarePlans(request)
-        binding.checkBoxAll.setOnCheckedChangeListener { _, isChecked ->
-
-            if (attendanceStatus.equals("attendance_not_given", true)) {
-
-                if (isUpdatingFromAdapter) {
-                    isUpdatingFromAdapter = false
-                    return@setOnCheckedChangeListener
-                }
-
-                if (isChecked) {
-                    studentsAdapter.selectAll()
-                } else {
-                    studentsAdapter.clearAll()
-                }
-
-            } else {
-                binding.checkBoxAll.isChecked = false
-                ToastUtils.showErrorCustomToast(this, "Attendance Already Given..!")
-            }
-        }
+        binding.checkBoxAll.setOnCheckedChangeListener(selectAllListener)
 
     }
 
@@ -250,19 +251,20 @@ class DayCareAttendanceActivity : BaseActivity() {
                     }
                 }
             })
-            studentsAdapter.setupListener(object : OnDayCareStudentClickListener{
+            studentsAdapter.setupListener(object : OnDayCareStudentClickListener {
 
-                    override fun onSelectionChanged(
-                        selectedIds: ArrayList<SelectedStudent>,
-                        type: String
-                    ) {
+                override fun onSelectionChanged(
+                    selectedIds: ArrayList<SelectedStudent>,
+                    type: String
+                ) {
 
-                        Log.d("ATTENDANCE_LIST", "$selectedIds , $type")
+                    Log.d("ATTENDANCE_LIST", "$selectedIds , $type")
+                    binding.checkBoxAll.setOnCheckedChangeListener(null)
+                    binding.checkBoxAll.isChecked = (type == "all")
+                    binding.checkBoxAll.setOnCheckedChangeListener(selectAllListener)
+                }
+            })
 
-                        isUpdatingFromAdapter = true
-                        binding.checkBoxAll.isChecked = (type == "all")
-                    }
-                })
             studentsAdapter.initializePresentStudents()
         }
     }
