@@ -35,7 +35,7 @@ data class Student(
     val cat_id: String,
     val child_image: String,
     val first_name: String,
-    val id: String,
+    val id: Int,
     val last_name: String,
     val middle_name: String
 

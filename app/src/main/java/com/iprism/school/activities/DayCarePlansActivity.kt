@@ -155,7 +155,7 @@ class DayCarePlansActivity : BaseActivity() {
                 }
             })
             studentsAdapter.setupListener(object : OnDayCareClickListener{
-                override fun onItemLick(id: String) {
+                override fun onItemLick(id: Int) {
                     var intent = Intent(this@DayCarePlansActivity, DaycareActivitiesActivity::class.java)
                     intent.putExtra("studentId", id)
                     intent.putExtra("planId", planId)

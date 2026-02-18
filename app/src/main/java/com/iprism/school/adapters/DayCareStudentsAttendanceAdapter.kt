@@ -2,7 +2,7 @@ package com.iprism.school.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.iprism.school.R
@@ -18,21 +18,27 @@ class DayCareStudentsAttendanceAdapter(
     private val students: ArrayList<Student?>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    var attendanceStatus: String = ""
+
     private var listener: OnDayCareStudentClickListener? = null
 
-    private val selectedStudents = ArrayList<SelectedStudent>()
+    private val selectedStudents = mutableSetOf<Int>()
+
+    private val modifiedStudents = mutableSetOf<Int>()
 
     fun setupListener(listener: OnDayCareStudentClickListener) {
         this.listener = listener
     }
-
     fun initializePresentStudents() {
         selectedStudents.clear()
+
         students.filterNotNull().forEach {
             if (it.attendance_status.equals("present", true)) {
-                selectedStudents.add(SelectedStudent(it.id))
+                selectedStudents.add(it.id)
             }
         }
+
+        modifiedStudents.clear()
         notifyDataSetChanged()
     }
 
@@ -49,14 +55,20 @@ class DayCareStudentsAttendanceAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val binding =
-            AttendanceItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        val itemLoadingBinding =
-            ItemLoadingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         return if (viewType == VIEW_TYPE_ITEM) {
+            val binding = AttendanceItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
             DayCareStudentAttendanceViewHolder(binding)
         } else {
+            val itemLoadingBinding = ItemLoadingBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
             ItemLoadingViewHolder(itemLoadingBinding)
         }
     }
@@ -82,7 +94,9 @@ class DayCareStudentsAttendanceAdapter(
                     imageView17.setImageResource(R.drawable.cartoon_img)
                 }
 
-                if (selectedStudents.any { it.id == student.id }) {
+                val isSelected = selectedStudents.contains(student.id)
+
+                if (isSelected) {
                     imageView21.setImageResource(R.drawable.present_img)
                 } else {
                     imageView21.setImageResource(R.drawable.attendance_un_select_img)
@@ -90,21 +104,48 @@ class DayCareStudentsAttendanceAdapter(
 
                 root.setOnClickListener {
 
-                    if (selectedStudents.any { it.id == student.id }) {
-                        selectedStudents.removeAll { it.id == student.id }
-                    } else {
-                        selectedStudents.add(SelectedStudent(student.id))
+                    if (attendanceStatus.equals("attendance_not_given", true)) {
+
+                        if (selectedStudents.contains(student.id)) {
+                            selectedStudents.remove(student.id)
+                        } else {
+                            selectedStudents.add(student.id)
+                        }
+
+                        listener?.onSelectionChanged(
+                            selectedStudents.map { SelectedStudent(it) } as ArrayList<SelectedStudent>,
+                            "single"
+                        )
+                    }
+
+                    else if (attendanceStatus.equals("attendance_given", true)) {
+
+                        val originalPresent =
+                            student.attendance_status.equals("present", true)
+
+                        val currentlySelected = selectedStudents.contains(student.id)
+
+                        if (currentlySelected) {
+                            selectedStudents.remove(student.id)
+                        } else {
+                            selectedStudents.add(student.id)
+                        }
+
+                        val nowSelected = selectedStudents.contains(student.id)
+
+                        if (originalPresent == nowSelected) {
+                            modifiedStudents.remove(student.id)
+                        } else {
+                            modifiedStudents.add(student.id)
+                        }
+
+                        listener?.onSelectionChanged(
+                            modifiedStudents.map { SelectedStudent(it) } as ArrayList<SelectedStudent>,
+                            "single"
+                        )
                     }
 
                     notifyItemChanged(holder.adapterPosition)
-
-                    val type =
-                        if (selectedStudents.size == students.filterNotNull().size)
-                            "all"
-                        else
-                            "single"
-
-                    listener?.onSelectionChanged(selectedStudents, type)
                 }
             }
         }
@@ -112,19 +153,35 @@ class DayCareStudentsAttendanceAdapter(
 
     override fun getItemCount(): Int = students.size
 
+    // ✅ Select All only for attendance_not_given
     fun selectAll() {
-        selectedStudents.clear()
-        students.filterNotNull().forEach {
-            selectedStudents.add(SelectedStudent(it.id))
+        if (attendanceStatus.equals("attendance_not_given", true)) {
+
+            selectedStudents.clear()
+            students.filterNotNull().forEach {
+                selectedStudents.add(it.id)
+            }
+
+            notifyDataSetChanged()
+
+            listener?.onSelectionChanged(
+                selectedStudents.map { SelectedStudent(it) } as ArrayList<SelectedStudent>,
+                "all"
+            )
         }
-        notifyDataSetChanged()
-        listener?.onSelectionChanged(selectedStudents, "all")
     }
 
     fun clearAll() {
-        selectedStudents.clear()
-        notifyDataSetChanged()
-        listener?.onSelectionChanged(selectedStudents, "single")
+        if (attendanceStatus.equals("attendance_not_given", true)) {
+
+            selectedStudents.clear()
+            notifyDataSetChanged()
+
+            listener?.onSelectionChanged(
+                arrayListOf(),
+                "clear"
+            )
+        }
     }
 
     fun showLoadingFooter() {
@@ -139,5 +196,5 @@ class DayCareStudentsAttendanceAdapter(
             notifyItemRemoved(index)
         }
     }
-
 }
+

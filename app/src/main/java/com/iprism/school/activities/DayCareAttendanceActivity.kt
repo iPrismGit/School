@@ -65,8 +65,8 @@ class DayCareAttendanceActivity : BaseActivity() {
     private lateinit var studentsAdapter: DayCareStudentsAttendanceAdapter
     private var currentDate: String = ""
     private var backendDate: String = ""
-    private lateinit var bottomSheetDialog : BottomSheetDialog
-    private lateinit var markAttendanceBinding : AllStudentsPresentBottomSheetBinding
+    private lateinit var bottomSheetDialog: BottomSheetDialog
+    private lateinit var markAttendanceBinding: AllStudentsPresentBottomSheetBinding
     private val selectAllListener: CompoundButton.OnCheckedChangeListener =
         CompoundButton.OnCheckedChangeListener { _, isChecked ->
 
@@ -131,7 +131,7 @@ class DayCareAttendanceActivity : BaseActivity() {
 
     private fun handleSaveBtn() {
         binding.saveAttendanceBtn.setOnClickListener { view ->
-            if (planId.equals("-1", true)){
+            if (planId.equals("-1", true)) {
                 ToastUtils.showErrorCustomToast(this, "Please Select DayCare Plan..!")
             } else if (selectedStudents.isEmpty()) {
                 ToastUtils.showErrorCustomToast(this, "Please Select Students..!")
@@ -164,8 +164,19 @@ class DayCareAttendanceActivity : BaseActivity() {
         }
 
         markAttendanceBinding.markBtn.setOnClickListener {
-            var markAttendanceRequest = DayCareAttendanceApiRequest("", userDetails[User.ACADEMIC_YEAR_ID].toString(), userDetails[User.SCHOOL_ID].toString(), planId, backendDate, "yes", currentPage, selectValue,
-                selectedStudents, userDetails[User.ID].toString(), "insert")
+            var markAttendanceRequest = DayCareAttendanceApiRequest(
+                "",
+                userDetails[User.ACADEMIC_YEAR_ID].toString(),
+                userDetails[User.SCHOOL_ID].toString(),
+                planId,
+                backendDate,
+                "yes",
+                currentPage,
+                selectValue,
+                selectedStudents,
+                userDetails[User.ID].toString(),
+                "insert"
+            )
             attendanceViewModel.insertDayCareStudentsAttendance(markAttendanceRequest)
             Log.d("MarkAttendanceRequest", markAttendanceRequest.toString())
         }
@@ -256,10 +267,13 @@ class DayCareAttendanceActivity : BaseActivity() {
         isLastPage = false
         isLoading = false
         students.clear()
+        selectedStudents.clear()
+        binding.checkBoxAll.isChecked = false
         studentsAdapter.notifyDataSetChanged()
         binding.studentAttendanceRv.visibility = View.GONE
         binding.noDataTxt.visibility = View.VISIBLE
     }
+
 
     private fun fetchStudents() {
         val request = DayCareAttendanceApiRequest(
@@ -313,8 +327,6 @@ class DayCareAttendanceActivity : BaseActivity() {
                     binding.checkBoxAll.setOnCheckedChangeListener(selectAllListener)
                 }
             })
-
-            studentsAdapter.initializePresentStudents()
         }
     }
 
@@ -331,12 +343,15 @@ class DayCareAttendanceActivity : BaseActivity() {
                     binding.progress.hideProgress()
                     isLoading = false
                     attendanceStatus = state.data.response.attendance_status
+                    studentsAdapter.attendanceStatus = attendanceStatus
                     studentsAdapter.removeLoadingFooter()
                     val newBookings = state.data.response.students
                     Log.d("StudentsList", state.data.response.students.toString())
                     if (newBookings.isNotEmpty()) {
                         students.addAll(newBookings)
                         studentsAdapter.notifyDataSetChanged()
+
+                        studentsAdapter.initializePresentStudents()
                         if (state.data.response.pagination.total_pages.size == currentPage) {
                             isLastPage = true
                         }

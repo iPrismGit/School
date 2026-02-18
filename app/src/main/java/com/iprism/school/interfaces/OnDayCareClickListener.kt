@@ -2,6 +2,6 @@ package com.iprism.school.interfaces
 
 interface OnDayCareClickListener {
 
-    fun onItemLick(id : String)
+    fun onItemLick(id : Int)
 
 }
