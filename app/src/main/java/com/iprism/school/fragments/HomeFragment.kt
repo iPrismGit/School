@@ -28,6 +28,7 @@ import com.iprism.school.databinding.ViewMessagesAlertDialogBinding
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.User
 import androidx.core.view.isVisible
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -111,6 +112,14 @@ class HomeFragment : BaseFragment() {
             binding.staffProfile.setImageResource(R.drawable.user_img)
             binding.profilePic.setImageResource(R.drawable.user_img)
         }
+        binding.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+        binding.drawer.addDrawerListener(object : DrawerLayout.SimpleDrawerListener() {
+            override fun onDrawerStateChanged(newState: Int) {
+                if (newState == DrawerLayout.STATE_IDLE) {
+                    binding.drawer.requestLayout()
+                }
+            }
+        })
 
         initViewModel()
         observeAcademicYearsResponse()
@@ -524,9 +533,16 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun handleMenuImg() {
-        binding.menuImg.setOnClickListener(View.OnClickListener {
-            binding.drawer.openDrawer(GravityCompat.START)
-        })
+        binding.menuImg.setOnClickListener {
+
+            if (binding.drawer.isDrawerOpen(GravityCompat.START)) {
+                binding.drawer.closeDrawer(GravityCompat.START)
+            } else {
+                binding.drawer.post {
+                    binding.drawer.openDrawer(GravityCompat.START)
+                }
+            }
+        }
     }
 
     private fun showAttendanceDayCareBottomSheet() {
