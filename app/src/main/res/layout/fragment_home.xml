@@ -1528,7 +1528,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginRight="8dp"
-                            android:src="@drawable/school_support_img" />
+                            android:src="@drawable/support" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -1557,7 +1557,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:layout_marginRight="8dp"
-                            android:src="@drawable/technical_support_iimg" />
+                            android:src="@drawable/tech_support" />
 
                         <TextView
                             android:layout_width="wrap_content"

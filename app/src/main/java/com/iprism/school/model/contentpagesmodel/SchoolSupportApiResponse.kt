@@ -13,8 +13,8 @@ data class Response(
     val address: String,
     val alternate_mobile: String,
     val email: String,
-    val lat: String,
-    val lon: String,
+    val lat: Double,
+    val lon: Double,
     val mobile: String
 
 )

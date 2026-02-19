@@ -45,5 +45,6 @@
     <string name="active_students">Active Students</string>
     <string name="inactive_students">In-Active Students</string>
     <string name="underlined_text"><u>Underlined Text</u></string>
+    <string name="office_hours">(Office Hours : <font fgcolor='#FF000000'>Monday - Saturday, </font>10 : 00 AM to 06 : 00 PM.)</string>
 
 </resources>
