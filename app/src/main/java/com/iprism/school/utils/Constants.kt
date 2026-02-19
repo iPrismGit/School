@@ -30,5 +30,6 @@ object Constants {
     const val MESSAGES_ENDPOINT = "messages"
     const val DAYCARE_ATTENDANCE_ENDPOINT = "daycare_attendance"
     const val SCHOOL_SUPPORT_ENDPOINT = "school_support"
+    const val TECH_SUPPORT_ENDPOINT = "technical_support"
 
 }

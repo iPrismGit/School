@@ -1564,7 +1564,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:fontFamily="@font/inter_medium"
-                            android:text="School Support"
+                            android:text="Tehnical Support"
                             android:textColor="@color/black"
                             android:textSize="15sp" />
                     </LinearLayout>

@@ -20,6 +20,9 @@ class ContentPagesViewModel(private  val repository: ContentPagesRepository ) : 
     private val _schoolSupportResponse = MutableLiveData<UiState<SchoolSupportApiResponse>>()
     val schoolSupportResponse: LiveData<UiState<SchoolSupportApiResponse>> = _schoolSupportResponse
 
+    private val _technicalSupportResponse = MutableLiveData<UiState<SchoolSupportApiResponse>>()
+    val technicalSupportResponse: LiveData<UiState<SchoolSupportApiResponse>> = _technicalSupportResponse
+
     fun fetchAppContent(request : ContentPagesApiRequest) {
         viewModelScope.launch {
             _contentPagesResponse.value = UiState.Loading
@@ -48,6 +51,22 @@ class ContentPagesViewModel(private  val repository: ContentPagesRepository ) : 
                 }
             } catch (e: Exception) {
                 _schoolSupportResponse.value = UiState.Error(e.localizedMessage ?: "Unknown error")
+            }
+        }
+    }
+
+    fun fetchTechnicalSupportDetails(request : SchoolSupportApiRequest) {
+        viewModelScope.launch {
+            _technicalSupportResponse.value = UiState.Loading
+            try {
+                val response = repository.fetchTechnicalSupportDetails(request)
+                if (response.status) {
+                    _technicalSupportResponse.value = UiState.Success(response)
+                } else {
+                    _technicalSupportResponse.value = UiState.Error(response.message ?: "Something went wrong")
+                }
+            } catch (e: Exception) {
+                _technicalSupportResponse.value = UiState.Error(e.localizedMessage ?: "Unknown error")
             }
         }
     }

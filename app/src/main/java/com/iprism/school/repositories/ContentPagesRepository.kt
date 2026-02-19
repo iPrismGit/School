@@ -38,4 +38,16 @@ class ContentPagesRepository(private val context: Context) {
         return response
     }
 
+    suspend fun fetchTechnicalSupportDetails(request: SchoolSupportApiRequest): SchoolSupportApiResponse {
+        var response = apiService.fetchTechnicalSupportDetails(request)
+
+        if (response.message.equals("Invalid or expired token", true)) {
+            val refreshed = authRepository.refreshToken()
+            if (refreshed) {
+                response = apiService.fetchTechnicalSupportDetails(request)
+            }
+        }
+        return response
+    }
+
 }

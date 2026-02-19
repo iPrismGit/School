@@ -148,4 +148,7 @@ interface StaffApiService {
     @POST(Constants.SCHOOL_SUPPORT_ENDPOINT)
     suspend fun fetchSchoolSupportDetails(@Body request: SchoolSupportApiRequest): SchoolSupportApiResponse
 
+    @POST(Constants.TECH_SUPPORT_ENDPOINT)
+    suspend fun fetchTechnicalSupportDetails(@Body request: SchoolSupportApiRequest): SchoolSupportApiResponse
+
 }
