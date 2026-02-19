@@ -1,11 +1,8 @@
-<!-- res/layout/bottom_sheet_layout.xml -->
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:ignore="MissingClass">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:id="@+id/linearLayout10"
@@ -47,8 +44,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical"
-
-                    android:text="Confirmation"
+                    android:text="Leave Request Confirmation"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -62,14 +58,27 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/button1"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:fontFamily="@font/inter_semibold"
-                    android:text="@string/students_attendance_confirmation"
-                    android:textColor="@color/black" />
+                    android:hint="Reason"
+                    android:layout_marginBottom="24dp"
+                    app:boxBackgroundColor="@android:color/transparent"
+                    app:boxBackgroundMode="outline"
+                    app:boxCornerRadiusTopStart="8dp"
+                    app:boxCornerRadiusTopEnd="8dp"
+                    app:boxCornerRadiusBottomStart="8dp"
+                    app:boxCornerRadiusBottomEnd="8dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/reason_txt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPersonName"
+                        android:padding="16dp"
+                        android:textSize="14sp" />
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <com.wang.avi.AVLoadingIndicatorView
                     android:id="@+id/progress"
@@ -93,7 +102,7 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/cancel_btn"
+                        android:id="@+id/reject_btn"
                         style="@style/Widget.Material3.Button.OutlinedButton.Icon"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -101,18 +110,18 @@
                         android:layout_marginBottom="4dp"
                         android:padding="12dp"
                         android:layout_weight="1"
-                        android:text="Cancel"
+                        android:text="Reject"
                         android:textAllCaps="false"
-                        android:textColor="@color/black"
+                        android:textColor="@color/red"
                         android:textSize="14dp"
                         app:cornerRadius="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:strokeColor="@color/black" />
+                        app:strokeColor="@color/red" />
 
                     <Button
-                        android:id="@+id/mark_btn"
+                        android:id="@+id/approve_btn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="4dp"
@@ -120,7 +129,7 @@
                         android:padding="12dp"
                         android:layout_marginStart="8dp"
                         android:layout_weight="1"
-                        android:text="Mark"
+                        android:text="Approve"
                         android:textAllCaps="false"
                         app:cornerRadius="8dp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -133,5 +142,4 @@
 
 
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

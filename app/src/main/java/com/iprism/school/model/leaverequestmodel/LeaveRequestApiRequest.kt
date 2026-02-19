@@ -8,6 +8,7 @@ data class LeaveRequestApiRequest(
     val section_id: String,
     val status: String,
     val user_id: String,
-    val view_type: String
+    val view_type: String,
+    val reject_reason: String
 
 )

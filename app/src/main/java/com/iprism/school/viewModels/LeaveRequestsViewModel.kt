@@ -19,6 +19,9 @@ class LeaveRequestsViewModel(private var repository: LeaveRequestRepository) : V
     private val _leaveRequestsResponse = MutableLiveData<UiState<LeaveRequestApiResponse>>()
     val leaveRequestsResponse: LiveData<UiState<LeaveRequestApiResponse>> = _leaveRequestsResponse
 
+    private val _updateLeaveRequestsResponse = MutableLiveData<UiState<LeaveRequestApiResponse>>()
+    val updateLeaveRequestsResponse: LiveData<UiState<LeaveRequestApiResponse>> = _updateLeaveRequestsResponse
+
     fun fetchLeaveRequests(request: LeaveRequestApiRequest) {
         viewModelScope.launch {
             _leaveRequestsResponse.value = UiState.Loading
@@ -32,6 +35,23 @@ class LeaveRequestsViewModel(private var repository: LeaveRequestRepository) : V
                 }
             } catch (e: Exception) {
                 _leaveRequestsResponse.value = UiState.Error(e.localizedMessage ?: "Unknown error")
+            }
+        }
+    }
+
+    fun updateLeaveRequests(request: LeaveRequestApiRequest) {
+        viewModelScope.launch {
+            _updateLeaveRequestsResponse.value = UiState.Loading
+            try {
+                val response = repository.fetchLeaveRequests(request)
+                if (response.status) {
+                    _updateLeaveRequestsResponse.value = UiState.Success(response)
+                } else {
+                    _updateLeaveRequestsResponse.value =
+                        UiState.Error(response.message ?: "Something went wrong")
+                }
+            } catch (e: Exception) {
+                _updateLeaveRequestsResponse.value = UiState.Error(e.localizedMessage ?: "Unknown error")
             }
         }
     }

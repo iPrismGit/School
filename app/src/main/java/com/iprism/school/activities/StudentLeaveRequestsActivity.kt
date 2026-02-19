@@ -1,6 +1,10 @@
 package com.iprism.school.activities
 
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -10,10 +14,15 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.R
 import com.iprism.school.adapters.StudentLeaveRequestsAdapter
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityStudentLeaveRequestsBinding
+import com.iprism.school.databinding.AllStudentsPresentBottomSheetBinding
+import com.iprism.school.databinding.LeaveApprovalOrRejectionBottomSheetBinding
+import com.iprism.school.interfaces.OnLeaveRequestClickListener
+import com.iprism.school.model.classteachermodel.AttendanceStudentsApiRequest
 import com.iprism.school.model.classteachermodel.Class
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.classteachermodel.Section
@@ -37,6 +46,8 @@ class StudentLeaveRequestsActivity : BaseActivity() {
     private lateinit var leaveRequestsViewModel: LeaveRequestsViewModel
     private var classId: String = "-1"
     private var sectionId: String = "-1"
+    private lateinit var bottomSheetDialog : BottomSheetDialog
+    private lateinit var approvalBottomSheetBinding : LeaveApprovalOrRejectionBottomSheetBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +63,7 @@ class StudentLeaveRequestsActivity : BaseActivity() {
         observeClassesResponse()
         observeSectionsResponse()
         observeLeaveRequestsResponse()
+        observeLeaveRequestUpdateResponse()
         var requestClasses = ClassTeacherApiRequest(
             "",
             userDetails[User.ID].toString(),
@@ -153,13 +165,63 @@ class StudentLeaveRequestsActivity : BaseActivity() {
         }
     }
 
+    private fun observeLeaveRequestUpdateResponse() {
+        leaveRequestsViewModel.updateLeaveRequestsResponse.observe(this) { result ->
+            when (result) {
+                is UiState.Loading -> {
+                    approvalBottomSheetBinding.progress.showProgress()
+                    approvalBottomSheetBinding.approveBtn.isEnabled = false
+                    approvalBottomSheetBinding.rejectBtn.isEnabled = false
+                    approvalBottomSheetBinding.crossIv.isEnabled = false
+                }
+
+                is UiState.Success -> {
+                    approvalBottomSheetBinding.progress.hideProgress()
+                    fetchLeaveRequests()
+                    bottomSheetDialog.dismiss()
+                }
+
+                is UiState.Error -> {
+                    ToastUtils.showErrorCustomToast(this, result.message)
+                    approvalBottomSheetBinding.progress.hideProgress()
+                    approvalBottomSheetBinding.approveBtn.isEnabled = true
+                    approvalBottomSheetBinding.rejectBtn.isEnabled = true
+                    approvalBottomSheetBinding.crossIv.isEnabled = true
+                }
+            }
+        }
+    }
+
     private fun setupLeaveRequestsAdapter(leaveRequests: List<Request>){
         var adapter = StudentLeaveRequestsAdapter(leaveRequests)
         binding.leaveRequestsRv.adapter = adapter
         var linearLayoutManager = LinearLayoutManager(this)
         binding.leaveRequestsRv.layoutManager = linearLayoutManager
-    }
+        adapter.setupListener(object : OnLeaveRequestClickListener{
+            override fun onItemClick(leaveRequestId: String, status : String) {
+                if (status.isEmpty()){
+                    showLeaveApprovalBottomSheet(leaveRequestId)
+                }
 
+            }
+
+            override fun onViewAttachmentClick(attachmentUrl: String) {
+                if (attachmentUrl.isNotEmpty()){
+                    if (attachmentUrl.endsWith(".pdf")){
+                        var intent = Intent(this@StudentLeaveRequestsActivity, PdfViewActivity::class.java)
+                        intent.putExtra("pdfUrl", attachmentUrl)
+                        startActivity(intent)
+                    }else{
+                        var intent = Intent(this@StudentLeaveRequestsActivity, ViewImageActivity::class.java)
+                        intent.putExtra("EventImage", attachmentUrl)
+                        intent.putExtra("EventName", "Leave Request Image")
+                        startActivity(intent)
+                    }
+                }
+            }
+
+        })
+    }
 
     private fun setupClassesAdapter(genderTypes: List<Class>) {
         var namesList = genderTypes.map { it.class_name }
@@ -175,6 +237,12 @@ class StudentLeaveRequestsActivity : BaseActivity() {
                     id: Long
                 ) {
                     classId = genderTypes[position].class_id.toString()
+                    sectionId = "-1"
+                    binding.sectionsSp.setSelection(0)
+
+                    binding.leaveRequestsRv.visibility = View.GONE
+                    binding.noDataFoundTxt.visibility = View.GONE
+
                     if (!classId.equals("-1", true)) {
                         var requestClasses = ClassTeacherApiRequest(
                             classId,
@@ -207,17 +275,12 @@ class StudentLeaveRequestsActivity : BaseActivity() {
                     id: Long
                 ) {
                     sectionId = genderTypes[position].section_id.toString()
+
                     if (!sectionId.equals("-1", true)) {
-                        var request = LeaveRequestApiRequest(
-                            userDetails[User.SCHOOL_ID].toString(),
-                            classId,
-                            "",
-                            sectionId,
-                            "",
-                            userDetails[User.ID].toString(),
-                            "view"
-                        )
-                        leaveRequestsViewModel.fetchLeaveRequests(request)
+                        fetchLeaveRequests()
+                    } else {
+                        binding.leaveRequestsRv.visibility = View.GONE
+                        binding.noDataFoundTxt.visibility = View.GONE
                     }
 
                 }
@@ -226,6 +289,20 @@ class StudentLeaveRequestsActivity : BaseActivity() {
 
                 }
             }
+    }
+
+    private fun fetchLeaveRequests(){
+        var request = LeaveRequestApiRequest(
+            userDetails[User.SCHOOL_ID].toString(),
+            classId,
+            "",
+            sectionId,
+            "",
+            userDetails[User.ID].toString(),
+            "view",
+            ""
+        )
+        leaveRequestsViewModel.fetchLeaveRequests(request)
     }
 
     private fun initViewModel() {
@@ -239,6 +316,45 @@ class StudentLeaveRequestsActivity : BaseActivity() {
         leaveRequestsViewModel =
             ViewModelProvider(this, leaveRequestFactory)[LeaveRequestsViewModel::class.java]
 
+    }
+
+    private fun showLeaveApprovalBottomSheet(leaveRequestId : String) {
+        bottomSheetDialog = BottomSheetDialog(this)
+        approvalBottomSheetBinding = LeaveApprovalOrRejectionBottomSheetBinding.inflate(layoutInflater)
+        bottomSheetDialog.setContentView(approvalBottomSheetBinding.root)
+        bottomSheetDialog.setCanceledOnTouchOutside(false)
+
+        bottomSheetDialog.setOnShowListener { dialog ->
+            val bottomSheet =
+                (dialog as BottomSheetDialog).findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            bottomSheet?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
+
+        approvalBottomSheetBinding.rejectBtn.setOnClickListener {
+            if (approvalBottomSheetBinding.reasonTxt.text.toString().trim().isEmpty()){
+                ToastUtils.showErrorCustomToast(this, "Please Enter Rejection Reason..!")
+            }else{
+                var request = LeaveRequestApiRequest(userDetails[User.SCHOOL_ID].toString(), userDetails[User.ACADEMIC_YEAR_ID].toString(),
+                    leaveRequestId, sectionId,
+                    "rejected", userDetails[User.ID].toString(), "update", approvalBottomSheetBinding.reasonTxt.text.toString().trim())
+                leaveRequestsViewModel.updateLeaveRequests(request)
+                Log.d("RejectionRequest", request.toString())
+            }
+        }
+
+        approvalBottomSheetBinding.crossIv.setOnClickListener {
+            bottomSheetDialog.dismiss()
+        }
+
+        approvalBottomSheetBinding.approveBtn.setOnClickListener {
+            var request = LeaveRequestApiRequest(userDetails[User.SCHOOL_ID].toString(), userDetails[User.ACADEMIC_YEAR_ID].toString(),
+                leaveRequestId, sectionId,
+                "accepted", userDetails[User.ID].toString(), "update", "")
+            leaveRequestsViewModel.updateLeaveRequests(request)
+            Log.d("ApprovalRequest", request.toString())
+        }
+
+        bottomSheetDialog.show()
     }
 
 }

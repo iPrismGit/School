@@ -7,10 +7,18 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.iprism.school.R
 import com.iprism.school.databinding.ItemLeaveRequestBinding
+import com.iprism.school.interfaces.OnLeaveRequestClickListener
 import com.iprism.school.model.leaverequestmodel.Request
 
 class StudentLeaveRequestsAdapter(var requests: List<Request>) :
     RecyclerView.Adapter<StudentLeaveRequestsAdapter.StudentLeaveRequestsViewHolder>() {
+
+        private lateinit var listener: OnLeaveRequestClickListener
+
+    fun setupListener(listener: OnLeaveRequestClickListener){
+        this.listener =listener
+    }
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -62,6 +70,14 @@ class StudentLeaveRequestsAdapter(var requests: List<Request>) :
                 )
             )
             holder.binding.rejectionReasonLo.visibility = View.GONE
+        }
+
+        holder.binding.root.setOnClickListener { view ->
+            listener.onItemClick(request.id, request.status)
+        }
+
+        holder.binding.tvAttachment.setOnClickListener { view ->
+            listener.onViewAttachmentClick(request.image)
         }
 
     }
