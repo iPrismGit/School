@@ -8,10 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.iprism.school.R
 import com.iprism.school.databinding.ItemLeaveRequestBinding
 import com.iprism.school.model.leaverequestmodel.Request
-import com.iprism.school.model.plannersandresources.PlannerInner
 
 class StudentLeaveRequestsAdapter(var requests: List<Request>) :
     RecyclerView.Adapter<StudentLeaveRequestsAdapter.StudentLeaveRequestsViewHolder>() {
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -42,7 +42,7 @@ class StudentLeaveRequestsAdapter(var requests: List<Request>) :
                     R.color.gray1
                 )
             )
-            holder.binding.rejectionReason.visibility = View.GONE
+            holder.binding.rejectionReasonLo.visibility = View.GONE
         } else if (request.status.equals("rejected", true)) {
             holder.binding.tvStatus.text = "Rejected"
             holder.binding.tvStatus.setTextColor(
@@ -51,7 +51,7 @@ class StudentLeaveRequestsAdapter(var requests: List<Request>) :
                     R.color.red
                 )
             )
-            holder.binding.rejectionReason.visibility = View.VISIBLE
+            holder.binding.rejectionReasonLo.visibility = View.VISIBLE
             holder.binding.rejectionReason.text = request.reject_reason
         } else if (request.status.equals("accepted", true)) {
             holder.binding.tvStatus.text = "Approved"
@@ -61,7 +61,7 @@ class StudentLeaveRequestsAdapter(var requests: List<Request>) :
                     R.color.green
                 )
             )
-            holder.binding.rejectionReason.visibility = View.GONE
+            holder.binding.rejectionReasonLo.visibility = View.GONE
         }
 
     }
