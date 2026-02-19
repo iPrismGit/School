@@ -32,6 +32,9 @@
         android:theme="@style/Theme.School"
         tools:targetApi="31">
         <activity
+            android:name=".activities.StudentLeaveRequestsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.TechnicalSupportActivity"
             android:exported="false" />
         <activity

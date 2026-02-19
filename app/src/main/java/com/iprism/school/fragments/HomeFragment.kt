@@ -41,6 +41,7 @@ import com.iprism.school.activities.HolidaysActivity
 import com.iprism.school.activities.PlannerCategoriesActivity
 import com.iprism.school.activities.SchoolSupportActivity
 import com.iprism.school.activities.StaffAttendanceActivity
+import com.iprism.school.activities.StudentLeaveRequestsActivity
 import com.iprism.school.activities.TechnicalSupportActivity
 import com.iprism.school.activities.album.AlbumDetailsActivity
 import com.iprism.school.activities.album.CreateDayCareAlbumsActivity
@@ -166,7 +167,14 @@ class HomeFragment : BaseFragment() {
         handleSideHelpTutorialsLo()
         handleSchoolSupportLo()
         handleTechnicalSupportLo()
+        handleLeaveRequestsLo()
         return binding.root
+    }
+
+    private fun handleLeaveRequestsLo() {
+        binding.leaveRequestsLo.setOnClickListener { view ->
+            startActivity(Intent(requireContext(), StudentLeaveRequestsActivity::class.java))
+        }
     }
 
     private fun handleTechnicalSupportLo() {
