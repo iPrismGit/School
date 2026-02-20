@@ -9,7 +9,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import com.iprism.school.base.BaseFragment
@@ -30,6 +32,7 @@ import com.iprism.school.utils.User
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -58,9 +61,11 @@ import com.iprism.school.model.daycare.DayCareStatusApiRequest
 import com.iprism.school.model.homepagemodel.AlbumCoverHome
 import com.iprism.school.model.homepagemodel.DayCareAlbumCoverHome
 import com.iprism.school.model.homepagemodel.HomePageApiRequest
+import com.iprism.school.model.leaverequestmodel.LeaveRequestApiRequest
 import com.iprism.school.repositories.AttendanceRepository
 import com.iprism.school.repositories.DayCareRepository
 import com.iprism.school.repositories.HomePageRepository
+import com.iprism.school.repositories.LeaveRequestRepository
 import com.iprism.school.utils.Constants
 import com.iprism.school.utils.UiState
 import com.iprism.school.utils.hideProgress
@@ -68,7 +73,10 @@ import com.iprism.school.utils.showProgress
 import com.iprism.school.viewModels.AttendanceViewModel
 import com.iprism.school.viewModels.DayCareViewModel
 import com.iprism.school.viewModels.HomePageViewModel
+import com.iprism.school.viewModels.LeaveRequestsViewModel
 import com.iprism.school.viewModels.ViewModelFactory
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class HomeFragment : BaseFragment() {
 
@@ -81,6 +89,8 @@ class HomeFragment : BaseFragment() {
     private var navigationFrom: String = ""
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private lateinit var classTypesBinding: ClassOrDaycareTypeBottomSheetBinding
+    private var leaveRequestCount = 0
+    private lateinit var leaveRequestViewModel: LeaveRequestsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -168,7 +178,67 @@ class HomeFragment : BaseFragment() {
         handleSchoolSupportLo()
         handleTechnicalSupportLo()
         handleLeaveRequestsLo()
+        observeLeaveRequestCountResponse()
+        fetchLeaveRequestCount()
         return binding.root
+    }
+
+    private fun fetchLeaveRequestCount() {
+        lifecycleScope.launch {
+            while (true) {
+                getNotificationCountFromApi()
+                delay(4000)
+            }
+        }
+    }
+
+    private fun getNotificationCountFromApi() {
+        var leaveRequestApiRequest = LeaveRequestApiRequest(
+            userDetails[User.SCHOOL_ID].toString(),
+            "",
+            "",
+            "",
+            "",
+            userDetails[User.ID].toString(),
+            "count",
+            ""
+        )
+        leaveRequestViewModel.fetchLeaveRequestsCount(leaveRequestApiRequest)
+    }
+
+    private fun observeLeaveRequestCountResponse() {
+        leaveRequestViewModel.leaveRequestsCountResponse.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is UiState.Loading -> {
+
+                }
+
+                is UiState.Success -> {
+                    leaveRequestCount = result.data.response.count
+                    updateBadge(leaveRequestCount)
+                    Log.d("notificationCount", leaveRequestCount.toString())
+                }
+
+                is UiState.Error -> {
+                  //  ToastUtils.showErrorCustomToast(this, result.message)
+                }
+            }
+        }
+    }
+
+    private fun updateBadge(count: Int) {
+        leaveRequestCount = count
+        if (count > 0) {
+            if (count > 10){
+                binding.countTxt.text = "10+"
+            } else{
+                binding.countTxt.text = count.toString()
+            }
+            binding.countLo.visibility = View.VISIBLE
+
+        } else {
+            binding.countLo.visibility = View.GONE
+        }
     }
 
     private fun handleLeaveRequestsLo() {
@@ -235,6 +305,10 @@ class HomeFragment : BaseFragment() {
         val homePageRepository = HomePageRepository(requireContext())
         val homePageFactory = ViewModelFactory { HomePageViewModel(homePageRepository) }
         homePageViewModel = ViewModelProvider(this, homePageFactory)[HomePageViewModel::class.java]
+
+        val leaveRequestsRepository = LeaveRequestRepository(requireContext())
+        val leaveRequestFactory = ViewModelFactory { LeaveRequestsViewModel(leaveRequestsRepository) }
+        leaveRequestViewModel = ViewModelProvider(this, leaveRequestFactory)[LeaveRequestsViewModel::class.java]
 
     }
 

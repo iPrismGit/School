@@ -10,7 +10,8 @@ data class LeaveRequestApiResponse(
 
 data class LeaveRequestResponse(
 
-    val requests: List<Request>
+    val requests: List<Request>,
+    val count: Int
 
 )
 
