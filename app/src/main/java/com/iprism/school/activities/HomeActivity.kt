@@ -49,6 +49,7 @@ class HomeActivity : BaseActivity() {
                 R.id.messages_nav -> binding.viewPager.setCurrentItem(1, false)
                 R.id.diary_nav -> binding.viewPager.setCurrentItem(2, false)
                 R.id.help_nav -> binding.viewPager.setCurrentItem(3, false)
+                R.id.profile_nav -> binding.viewPager.setCurrentItem(4, false)
             }
             true
         }

@@ -18,4 +18,9 @@
         android:id="@+id/help_nav"
         android:title="Help"
         android:icon="@drawable/help_img"/>
+
+    <item
+        android:id="@+id/profile_nav"
+        android:title="Profile"
+        android:icon="@drawable/profile_icon"/>
 </menu>

@@ -40,6 +40,8 @@ import com.iprism.school.model.messagemodel.MessagesApiRequest
 import com.iprism.school.model.messagemodel.MessagesApiResponse
 import com.iprism.school.model.plannersandresources.PlannersAndResourcesApiRequest
 import com.iprism.school.model.plannersandresources.PlannersAndResourcesApiResponse
+import com.iprism.school.model.profile.ProfileApiRequest
+import com.iprism.school.model.profile.ProfileApiResponse
 import com.iprism.school.model.refreshtokenmodel.RefreshTokenApiRequest
 import com.iprism.school.model.refreshtokenmodel.RefreshTokenApiResponse
 import com.iprism.school.model.staffattendacemodel.StaffAttendanceApiRequest
@@ -156,5 +158,7 @@ interface StaffApiService {
     @POST(Constants.STUDENT_LEAVE_REQUEST_ENDPOINT)
     suspend fun studentLeaveRequests(@Body request: LeaveRequestApiRequest): LeaveRequestApiResponse
 
+    @POST(Constants.PROFILE_ENDPOINT)
+    suspend fun fetchProfileDetails(@Body request: ProfileApiRequest): ProfileApiResponse
 
 }
