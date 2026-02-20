@@ -84,49 +84,6 @@ class User(var context: Context) {
         const val IS_USER_LOGIN = "isUserLogin"
     }
 
-    fun storeUserDetails(
-        id: String?,
-        school_id: String?,
-        authToken: String?,
-        token: String?,
-        mobile: String?,
-        employee_id: String?,
-        employee_name: String?,
-        employee_email: String?,
-        employee_dob: String?,
-        employee_gender: String?,
-        employee_image: String?,
-        employee_designation: String?,
-        employee_class: String?,
-        employee_department: String?,
-        employee_use_designation: String?,
-        deleteStatus: String?,
-        createdOn: String?,
-        updated_on: String?
-    ) {
-        editor.putString(ID, id)
-        editor.putString(SCHOOL_ID, school_id)
-        editor.putString(AUTH_TOKEN, authToken)
-        editor.putString(TOKEN, token)
-        editor.putString(MOBILE, mobile)
-        editor.putString(EMP_ID, employee_id)
-        editor.putString(EMP_NAME, employee_name)
-        editor.putString(EMP_EMAIL, employee_email)
-        editor.putString(EMP_DOB, employee_dob)
-        editor.putString(EMP_GENDER, employee_gender)
-        editor.putString(EMP_IMG, employee_image)
-        editor.putString(EMP_DESIGNATION, employee_designation)
-        editor.putString(EMP_CLASS, employee_class)
-        editor.putString(EMP_DEPARTMENT, employee_department)
-        editor.putString(EMP_USE_DESIGNATION, employee_use_designation)
-
-        editor.putString(DELETE_STATUS, deleteStatus)
-        editor.putString(CREATED_ON, createdOn)
-        editor.putString(UPDATED_ON, updated_on)
-        editor.putBoolean(IS_USER_LOGIN, true)
-        editor.commit()
-    }
-
     fun storeNewUserDetails(
         id: String?,
         first_name: String?,
@@ -158,72 +115,6 @@ class User(var context: Context) {
         editor.putString(ACADEMIC_YEAR_ID, academic_year_id)
         editor.putString(ACADEMIC_YEAR, academic_year)
         editor.commit()
-    }
-
-    fun getUserDetails(): HashMap<String, String?> {
-        val user = HashMap<String, String?>()
-        user[ID] = sharedPreferences.getString(ID, null)
-        user[AUTH_TOKEN] = sharedPreferences.getString(AUTH_TOKEN, null)
-        user[TOKEN] = sharedPreferences.getString(TOKEN, null)
-        user[MOBILE] = sharedPreferences.getString(MOBILE, null)
-
-        user[EMP_ID] = sharedPreferences.getString(EMP_ID, null)
-        user[EMP_NAME] = sharedPreferences.getString(EMP_NAME, null)
-        user[EMP_EMAIL] = sharedPreferences.getString(EMP_EMAIL, null)
-        user[EMP_DOB] = sharedPreferences.getString(EMP_DOB, null)
-        user[EMP_GENDER] = sharedPreferences.getString(EMP_GENDER, null)
-        user[EMP_IMG] = sharedPreferences.getString(EMP_IMG, null)
-        user[EMP_DESIGNATION] = sharedPreferences.getString(EMP_DESIGNATION, null)
-        user[EMP_CLASS] = sharedPreferences.getString(EMP_CLASS, null)
-        user[EMP_DEPARTMENT] = sharedPreferences.getString(EMP_DEPARTMENT, null)
-        user[EMP_USE_DESIGNATION] = sharedPreferences.getString(EMP_USE_DESIGNATION, null)
-        user[DELETE_STATUS] = sharedPreferences.getString(DELETE_STATUS, null)
-        user[CREATED_ON] = sharedPreferences.getString(CREATED_ON, null)
-        user[UPDATED_ON] = sharedPreferences.getString(UPDATED_ON, null)
-
-        user[STUDENT_ID] = sharedPreferences.getString(STUDENT_ID, null)
-        user[STUDENT_SCHOOL_ID] = sharedPreferences.getString(STUDENT_SCHOOL_ID, null)
-        user[STUDENT_CLASS_ID] = sharedPreferences.getString(STUDENT_CLASS_ID, null)
-        user[STUDENT_SESSION_ID] = sharedPreferences.getString(STUDENT_SESSION_ID, null)
-        user[STUDENT_ADMISSION_ID] = sharedPreferences.getString(STUDENT_ADMISSION_ID, null)
-        user[STUDENT_JOINING_DATE] = sharedPreferences.getString(STUDENT_JOINING_DATE, null)
-        user[STUDENT_NAME] = sharedPreferences.getString(STUDENT_NAME, null)
-        user[STUDENT_DOB] = sharedPreferences.getString(STUDENT_DOB, null)
-        user[STUDENT_GENDER] = sharedPreferences.getString(STUDENT_GENDER, null)
-        user[STUDENT_B_G] = sharedPreferences.getString(STUDENT_B_G, null)
-        user[STUDENT_IMAGE] = sharedPreferences.getString(STUDENT_IMAGE, null)
-        user[FATHER_NAME] = sharedPreferences.getString(FATHER_NAME, null)
-        user[FATHER_MOBILE] = sharedPreferences.getString(FATHER_MOBILE, null)
-        user[FATHER_EMAIL] = sharedPreferences.getString(FATHER_EMAIL, null)
-        user[FATHER_IMAGE] = sharedPreferences.getString(FATHER_IMAGE, null)
-        user[MOTHER_NAME] = sharedPreferences.getString(MOTHER_NAME, null)
-        user[MOTHER_MOBILE] = sharedPreferences.getString(MOTHER_MOBILE, null)
-        user[MOTHER_EMAIL] = sharedPreferences.getString(MOTHER_EMAIL, null)
-        user[MOTHER_IMAGE] = sharedPreferences.getString(MOTHER_IMAGE, null)
-        user[GUARDIAN_NAME] = sharedPreferences.getString(GUARDIAN_NAME, null)
-        user[GUARDIAN_MOBILE] = sharedPreferences.getString(GUARDIAN_MOBILE, null)
-        user[GUARDIAN_EMAIL] = sharedPreferences.getString(GUARDIAN_EMAIL, null)
-        user[GUARDIAN_IMAGE] = sharedPreferences.getString(GUARDIAN_IMAGE, null)
-        user[ADDRESS] = sharedPreferences.getString(ADDRESS, null)
-        user[CITY] = sharedPreferences.getString(CITY, null)
-        user[PINCODE] = sharedPreferences.getString(PINCODE, null)
-        user[FATHER_OCCUPATION] = sharedPreferences.getString(FATHER_OCCUPATION, null)
-        user[FATHER_OFFICE_DESIGNATION] =
-            sharedPreferences.getString(FATHER_OFFICE_DESIGNATION, null)
-        user[FATHER_OFFICE_ADDRESS] = sharedPreferences.getString(FATHER_OFFICE_ADDRESS, null)
-        user[FATHER_ANNUAL_INCOME] = sharedPreferences.getString(FATHER_ANNUAL_INCOME, null)
-        user[MOTHER_OCCUPATION] = sharedPreferences.getString(MOTHER_OCCUPATION, null)
-        user[MOTHER_OFFICE_DESIGNATION] =
-            sharedPreferences.getString(MOTHER_OFFICE_DESIGNATION, null)
-        user[MOTHER_OFFICE_ADDRESS] = sharedPreferences.getString(MOTHER_OFFICE_ADDRESS, null)
-        user[MOTHER_ANNUAL_INCOME] = sharedPreferences.getString(MOTHER_ANNUAL_INCOME, null)
-        user[QRCODE] = sharedPreferences.getString(QRCODE, null)
-        user[QRCODE_ID] = sharedPreferences.getString(QRCODE_ID, null)
-        user[STATUS] = sharedPreferences.getString(STATUS, null)
-        user[STUDENT_DELETE_STATUS] = sharedPreferences.getString(STUDENT_DELETE_STATUS, null)
-        user[STUDENT_CREATED_ON] = sharedPreferences.getString(STUDENT_CREATED_ON, null)
-        user[STUDENT_UPDATED_ON] = sharedPreferences.getString(STUDENT_UPDATED_ON, null)
-        return user
     }
 
     fun getNewUserDetails(): HashMap<String, String?> {

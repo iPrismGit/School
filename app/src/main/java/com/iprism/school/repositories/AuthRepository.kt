@@ -12,10 +12,10 @@ class AuthRepository(private val context: Context) {
 
     suspend fun refreshToken(): Boolean {
         return try {
-            val userId = user.getUserDetails()[User.ID].orEmpty()
+            val userId = user.getNewUserDetails()[User.ID].orEmpty()
             if (userId.isEmpty()) return false
 
-            val refreshToken = user.getUserDetails()[User.AUTH_TOKEN].orEmpty()
+            val refreshToken = user.getNewUserDetails()[User.AUTH_TOKEN].orEmpty()
             if (refreshToken.isEmpty()) return false
 
             val response = api.refreshToken(

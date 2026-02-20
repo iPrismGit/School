@@ -1,5 +1,7 @@
 package com.iprism.school.model.homepagemodel
 
+import com.iprism.school.model.messagemodel.MessageThread
+
 data class HomePageApiResponse(
 
     val message: String,
@@ -11,7 +13,8 @@ data class HomePageApiResponse(
 data class HomePageResponse (
 
     val album_covers: List<AlbumCoverHome>,
-    val day_care_album_covers: List<DayCareAlbumCoverHome>
+    val day_care_album_covers: List<DayCareAlbumCoverHome>,
+    val messages: List<MessageThread>
 
 )
 

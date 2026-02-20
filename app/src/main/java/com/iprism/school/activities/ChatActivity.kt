@@ -125,14 +125,14 @@ class ChatActivity : BaseActivity() {
            binding.tvName.text = name
            if (image.isNotEmpty()){
                Glide.with(this).load(Constants.IMAGES_URL + image).error(ContextCompat.getDrawable(this,
-                   R.drawable.message_profile)).into(binding.ivProfile)
+                   R.drawable.message_profile)).into(binding.profileIv)
            }else{
                ContextCompat.getDrawable(this, R.drawable.message_profile)
            }
 
        } else{
            binding.tvName.text = "Group Message"
-           binding.ivProfile.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.group_icon))
+           binding.profileIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.group_icon))
        }
     }
 

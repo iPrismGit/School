@@ -88,7 +88,6 @@ class LoginActivity : BaseActivity() {
                     var intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)
                     finish()
-
                 }
 
                 is UiState.Error -> {
@@ -141,7 +140,11 @@ class LoginActivity : BaseActivity() {
 
                 is UiState.Error -> {
                     binding.requestOtpBtn.isEnabled = true
-                    ToastUtils.showErrorCustomToast(this, result.message)
+                    if (result.message.equals("You are marked as ex-staff", true)){
+                        ToastUtils.showErrorCustomToast(this, "You are Ex-Staff and not allowed to login")
+                    } else{
+                        ToastUtils.showErrorCustomToast(this, result.message)
+                    }
                     binding.progress.hideProgress()
                 }
             }

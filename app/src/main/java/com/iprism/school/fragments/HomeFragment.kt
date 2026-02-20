@@ -38,6 +38,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.activities.AboutUsActivity
 import com.iprism.school.activities.ApplyForLeaveActivity
+import com.iprism.school.activities.ChatActivity
 import com.iprism.school.activities.DayCareAttendanceActivity
 import com.iprism.school.activities.DayCarePlansActivity
 import com.iprism.school.activities.HolidaysActivity
@@ -52,9 +53,11 @@ import com.iprism.school.activities.album.DayCareAlbumDetailsActivity
 import com.iprism.school.activities.album.DayCareAlbumsActivity
 import com.iprism.school.adapters.HomePAgeDayCareAlbumsAdapter
 import com.iprism.school.adapters.HomePageAlbumsAdapter
+import com.iprism.school.adapters.MessagesAdapter
 import com.iprism.school.databinding.AllStudentsPresentBottomSheetBinding
 import com.iprism.school.databinding.ClassOrDaycareTypeBottomSheetBinding
 import com.iprism.school.interfaces.OnAlbumClickListener
+import com.iprism.school.interfaces.OnMessageClickListener
 import com.iprism.school.model.classteachermodel.AttendanceStudentsApiRequest
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.daycare.DayCareStatusApiRequest
@@ -62,6 +65,7 @@ import com.iprism.school.model.homepagemodel.AlbumCoverHome
 import com.iprism.school.model.homepagemodel.DayCareAlbumCoverHome
 import com.iprism.school.model.homepagemodel.HomePageApiRequest
 import com.iprism.school.model.leaverequestmodel.LeaveRequestApiRequest
+import com.iprism.school.model.messagemodel.MessageThread
 import com.iprism.school.repositories.AttendanceRepository
 import com.iprism.school.repositories.DayCareRepository
 import com.iprism.school.repositories.HomePageRepository
@@ -180,7 +184,25 @@ class HomeFragment : BaseFragment() {
         handleLeaveRequestsLo()
         observeLeaveRequestCountResponse()
         fetchLeaveRequestCount()
+        handleViewAllMessages()
+        handleDigitalContentLo()
         return binding.root
+    }
+
+    private fun handleDigitalContentLo() {
+        binding.degitalContentLo.setOnClickListener { view ->
+            var intent = Intent(requireContext(), HomeActivity::class.java)
+            intent.putExtra("tag", "Tutorial")
+            startActivity(intent)
+        }
+    }
+
+    private fun handleViewAllMessages() {
+        binding.messagesViewAll.setOnClickListener { view ->
+            var intent = Intent(requireContext(), HomeActivity::class.java)
+            intent.putExtra("tag", "Messages")
+            startActivity(intent)
+        }
     }
 
     private fun fetchLeaveRequestCount() {
@@ -426,17 +448,64 @@ class HomeFragment : BaseFragment() {
                     } else {
                         binding.dayCareAlbumsRv.visibility = View.GONE
                     }
+
+                    if (result.data.messages.isNotEmpty()){
+                        binding.messagesListLo.visibility = View.VISIBLE
+                        setupMessagesAdapter(result.data.messages as ArrayList<MessageThread?>)
+                    }else{
+                        binding.messagesListLo.visibility = View.GONE
+                    }
                 }
 
                 is UiState.Error -> {
                     binding.shimmerLo.visibility = View.VISIBLE
                     binding.mainLo.visibility = View.GONE
                     ToastUtils.showErrorCustomToast(requireContext(), result.message)
+                    if (result.message.equals("You are marked as ex-staff", true)){
+                        user?.logoutUser()
+                        startActivity(Intent(requireContext(), LoginActivity::class.java))
+                    }
                     Log.d("Message", result.message)
                     binding.progress.hideProgress()
                 }
             }
         }
+    }
+
+    private fun setupMessagesAdapter(messages: ArrayList<MessageThread?>) {
+        var adapter = MessagesAdapter(messages)
+        var linearLayoutManager =
+            LinearLayoutManager(requireContext())
+        binding.messagesRv.layoutManager = linearLayoutManager
+        binding.messagesRv.adapter = adapter
+        adapter.setupListener(object : OnMessageClickListener {
+            override fun onItemClick(
+                threadId: String,
+                name: String,
+                image: String,
+                type: String,
+                studentId: String
+            ) {
+                var intent = Intent(requireContext(), ChatActivity::class.java)
+                intent.putExtra("threadId", threadId)
+                intent.putExtra("name", name)
+                intent.putExtra("image", image)
+                intent.putExtra("messageType", type)
+                intent.putExtra("studentId", studentId)
+                startActivity(intent)
+            }
+
+            override fun onStudentSelectClick(
+                value: String,
+                studentId: String,
+                studentName: String
+            ) {
+            }
+
+            override fun onInnerItemClick(eventImage: String) {
+            }
+
+        })
     }
 
     private fun setupAlbumsAdapter(albumCovers: List<AlbumCoverHome>) {
@@ -553,11 +622,8 @@ class HomeFragment : BaseFragment() {
         })
 
         yesBtn.setOnClickListener(View.OnClickListener {
-            user!!.storeUserDetails(
-                "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
-            )
-
-//            ToastUtils.showSuccessCustomToast(requireContext(), "Clicked On Yes Button")
+            user?.logoutUser()
+            startActivity(Intent(requireContext(), LoginActivity::class.java))
             dialog.dismiss()
             startActivity(Intent(requireContext(), LoginActivity::class.java))
             activity?.finish()

@@ -8,7 +8,7 @@ class AuthInterceptor(private val context: Context) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
         val user = User(context)
-        val token = user.getUserDetails()[User.AUTH_TOKEN]
+        val token = user.getNewUserDetails()[User.AUTH_TOKEN]
 
         val request = chain.request().newBuilder()
             .addHeader("Accept", "application/json")

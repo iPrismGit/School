@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import androidx.annotation.MainThread
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivitySplashBinding
 import com.iprism.school.utils.User
@@ -17,26 +18,19 @@ class SplashActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val userId = userDetails[User.ID].toString()
-
-        Log.d("userDetails", user!!.getUserDetails().toString())
         Log.d("newUserDetails", user!!.getNewUserDetails().toString())
-
         Log.d("authToken", userDetails[User.AUTH_TOKEN].toString())
-
         val handler = Handler()
         handler.postDelayed({
-            if (userId == "" || userId == null) {
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
-            } else {
+            if (user!!.isUserLoggedIn()) {
                 val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
                 finish()
+            } else {
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
             }
-            //    startActivity(Intent(this, LocationActivity::class.java))
         }, 2000)
     }
 
