@@ -159,6 +159,7 @@ class HomeFragment : BaseFragment() {
                 userDetails[User.SCHOOL_ID].toString(),
                 userDetails[User.ID].toString()
             )
+            Log.d("HomePageRequest", request.toString())
             homePageViewModel.fetchHomePageDetails(request)
         }
 
