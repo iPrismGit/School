@@ -40,7 +40,7 @@ class StudentsActivity : BaseActivity() {
         })
     }
 
-    private fun setupButtonsStyling(textView: TextView, textView1: TextView){
+    private fun setupButtonsStyling(textView: TextView, textView1: TextView) {
         textView.setTextColor(ContextCompat.getColor(this, R.color.white))
         textView.setBackgroundColor(ContextCompat.getColor(this, R.color.blue1))
         textView1.setTextColor(ContextCompat.getColor(this, R.color.black))

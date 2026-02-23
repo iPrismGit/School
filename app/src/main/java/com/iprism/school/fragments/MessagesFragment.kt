@@ -134,7 +134,7 @@ class MessagesFragment : BaseFragment() {
                     }
                 }
             })
-            messagesAdapter.setupListener(object : OnMessageClickListener{
+            messagesAdapter.setupListener(object : OnMessageClickListener {
                 override fun onItemClick(
                     threadId: String,
                     name: String,

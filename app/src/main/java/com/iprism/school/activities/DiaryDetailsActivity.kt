@@ -46,31 +46,32 @@ class DiaryDetailsActivity : AppCompatActivity() {
     }
 
     private fun setupData() {
-        if (studentId.equals("all", true)){
+        if (studentId.equals("all", true)) {
             binding.sentToTxt.text = "Sent to All Students"
-        } else{
+        } else {
             binding.sentToTxt.text = "Sent to " + firstName + " " + middleName + " " + lastName
         }
-        if (type.equals("cw", true)){
+        if (type.equals("cw", true)) {
             binding.diaryTypeTxt.text = "Diary Type : Class Work"
-        } else{
+        } else {
             binding.diaryTypeTxt.text = "Diary Type :Home Work"
         }
 
-        if (details.isEmpty()){
+        if (details.isEmpty()) {
             binding.detailsTxt.text = "Details : Not Given"
-        } else{
+        } else {
             binding.detailsTxt.text = "Details : " + details
         }
         Log.d("Image", image)
-        if (image.equals("", true)){
+        if (image.equals("", true)) {
             binding.noImgTxt.visibility = View.VISIBLE
             binding.diaryImg.visibility = View.GONE
         }
         Glide.with(this)
             .load(Constants.IMAGES_URL + image)
             .error(R.drawable.dummy_logo)
-            .listener(object : com.bumptech.glide.request.RequestListener<android.graphics.drawable.Drawable> {
+            .listener(object :
+                com.bumptech.glide.request.RequestListener<android.graphics.drawable.Drawable> {
 
                 override fun onLoadFailed(
                     e: com.bumptech.glide.load.engine.GlideException?,

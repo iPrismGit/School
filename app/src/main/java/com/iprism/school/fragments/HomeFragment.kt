@@ -243,7 +243,7 @@ class HomeFragment : BaseFragment() {
                 }
 
                 is UiState.Error -> {
-                  //  ToastUtils.showErrorCustomToast(this, result.message)
+                    //  ToastUtils.showErrorCustomToast(this, result.message)
                 }
             }
         }
@@ -252,9 +252,9 @@ class HomeFragment : BaseFragment() {
     private fun updateBadge(count: Int) {
         leaveRequestCount = count
         if (count > 0) {
-            if (count > 10){
+            if (count > 10) {
                 binding.countTxt.text = "10+"
-            } else{
+            } else {
                 binding.countTxt.text = count.toString()
             }
             binding.countLo.visibility = View.VISIBLE
@@ -330,8 +330,10 @@ class HomeFragment : BaseFragment() {
         homePageViewModel = ViewModelProvider(this, homePageFactory)[HomePageViewModel::class.java]
 
         val leaveRequestsRepository = LeaveRequestRepository(requireContext())
-        val leaveRequestFactory = ViewModelFactory { LeaveRequestsViewModel(leaveRequestsRepository) }
-        leaveRequestViewModel = ViewModelProvider(this, leaveRequestFactory)[LeaveRequestsViewModel::class.java]
+        val leaveRequestFactory =
+            ViewModelFactory { LeaveRequestsViewModel(leaveRequestsRepository) }
+        leaveRequestViewModel =
+            ViewModelProvider(this, leaveRequestFactory)[LeaveRequestsViewModel::class.java]
 
     }
 
@@ -450,10 +452,10 @@ class HomeFragment : BaseFragment() {
                         binding.dayCareAlbumsRv.visibility = View.GONE
                     }
 
-                    if (result.data.messages.isNotEmpty()){
+                    if (result.data.messages.isNotEmpty()) {
                         binding.messagesListLo.visibility = View.VISIBLE
                         setupMessagesAdapter(result.data.messages as ArrayList<MessageThread?>)
-                    }else{
+                    } else {
                         binding.messagesListLo.visibility = View.GONE
                     }
                 }
@@ -462,7 +464,7 @@ class HomeFragment : BaseFragment() {
                     binding.shimmerLo.visibility = View.VISIBLE
                     binding.mainLo.visibility = View.GONE
                     ToastUtils.showErrorCustomToast(requireContext(), result.message)
-                    if (result.message.equals("You are marked as ex-staff", true)){
+                    if (result.message.equals("You are marked as ex-staff", true)) {
                         user?.logoutUser()
                         startActivity(Intent(requireContext(), LoginActivity::class.java))
                     }
@@ -669,7 +671,7 @@ class HomeFragment : BaseFragment() {
 
     private fun handleSideMessageLo() {
         binding.messagesLo.setOnClickListener(View.OnClickListener {
-           var intent = Intent(requireContext(), HomeActivity::class.java)
+            var intent = Intent(requireContext(), HomeActivity::class.java)
             intent.putExtra("tag", "Messages")
             startActivity(intent)
         })

@@ -33,13 +33,13 @@ class HomeActivity : BaseActivity() {
         val adapter = HomePagerAdapter(this)
         binding.viewPager.isUserInputEnabled = false
         binding.viewPager.adapter = adapter
-        if (tag.isEmpty()){
+        if (tag.isEmpty()) {
             binding.bottomNavigationView.selectedItemId = R.id.home_nav
             binding.viewPager.setCurrentItem(0, false)
-        } else if (tag.equals("Tutorial", true)){
+        } else if (tag.equals("Tutorial", true)) {
             binding.bottomNavigationView.selectedItemId = R.id.help_nav
             binding.viewPager.setCurrentItem(3, false)
-        } else if (tag.equals("Messages", true)){
+        } else if (tag.equals("Messages", true)) {
             binding.bottomNavigationView.selectedItemId = R.id.messages_nav
             binding.viewPager.setCurrentItem(1, false)
         }

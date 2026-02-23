@@ -70,7 +70,7 @@ class PlannersActivity : BaseActivity() {
         handleBack()
     }
 
-    private fun handleBack(){
+    private fun handleBack() {
         binding.backIv.setOnClickListener(View.OnClickListener {
             finish()
         })
@@ -79,7 +79,8 @@ class PlannersActivity : BaseActivity() {
     private fun initViewModel() {
         val plannersRepository = PlannersRepository(this)
         val plannersFactory = ViewModelFactory { PLannersAndResourcesViewModel(plannersRepository) }
-        plannersViewModel = ViewModelProvider(this, plannersFactory)[PLannersAndResourcesViewModel::class.java]
+        plannersViewModel =
+            ViewModelProvider(this, plannersFactory)[PLannersAndResourcesViewModel::class.java]
     }
 
     private fun loadPlanners(isFromFilterChange: Boolean = false) {
@@ -106,7 +107,8 @@ class PlannersActivity : BaseActivity() {
             catId,
             currentPage,
             "",
-            userDetails[User.ID].toString(), "planners")
+            userDetails[User.ID].toString(), "planners"
+        )
 
         Log.d("PlannersApiRequest", request.toString())
         plannersViewModel.fetchPlanners(request)
@@ -179,7 +181,7 @@ class PlannersActivity : BaseActivity() {
                 }
             })
 
-            plannersAdapter.setupListener(object : PlannersAdapter.OnPlannerOuterClickListener{
+            plannersAdapter.setupListener(object : PlannersAdapter.OnPlannerOuterClickListener {
                 override fun onItemClick(
                     id: String,
                     catId: String,

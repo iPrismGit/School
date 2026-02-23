@@ -147,7 +147,7 @@ class DiaryFragment : BaseFragment() {
         binding.reportsBtn.setOnClickListener(View.OnClickListener {
             blinkButton(binding.reportsBtn)
             startActivity(Intent(context, CreatedDiaryActivity::class.java))
-           // ToastUtils.showSuccessCustomToast(requireContext(), "Daily Report Created Successfully")
+            // ToastUtils.showSuccessCustomToast(requireContext(), "Daily Report Created Successfully")
         })
     }
 
@@ -353,7 +353,7 @@ class DiaryFragment : BaseFragment() {
 
                 }
             })
-            studentsAdapter.setupListener(object : OnDiaryStudentsClickListener{
+            studentsAdapter.setupListener(object : OnDiaryStudentsClickListener {
                 override fun onItemClick(studentId: String) {
 
                     // CASE 1: Select All is active
@@ -390,7 +390,12 @@ class DiaryFragment : BaseFragment() {
                     binding.detailsLl.visibility = View.GONE
 
                     Log.d("StudentDetails", "Single selected: $studentId")
-                    val bottomSheet = SingleDiaryIBottomSheetFragment.newInstance(studentId, classId, sectionId, backendDate)
+                    val bottomSheet = SingleDiaryIBottomSheetFragment.newInstance(
+                        studentId,
+                        classId,
+                        sectionId,
+                        backendDate
+                    )
                     bottomSheet.show(parentFragmentManager, "SingleDiaryIBottomSheetFragment")
                 }
             })

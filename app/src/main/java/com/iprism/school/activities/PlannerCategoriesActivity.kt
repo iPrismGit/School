@@ -39,7 +39,6 @@ import com.iprism.school.viewModels.ViewModelFactory
 class PlannerCategoriesActivity : BaseActivity() {
 
     private lateinit var binding: ActivityPlannerCategoriesBinding
-    private lateinit var attendanceViewModel: AttendanceViewModel
     private lateinit var plannersViewModel: PLannersAndResourcesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +62,8 @@ class PlannerCategoriesActivity : BaseActivity() {
             1,
             "",
             userDetails[User.ID].toString(),
-            "categories")
+            "categories"
+        )
 
         Log.d("PlannersRequest", request.toString())
         plannersViewModel.fetchPlannerCategories(request)
@@ -79,7 +79,8 @@ class PlannerCategoriesActivity : BaseActivity() {
                     1,
                     "",
                     userDetails[User.ID].toString(),
-                    "categories")
+                    "categories"
+                )
 
                 Log.d("PlannersRequest", request.toString())
                 plannersViewModel.fetchPlannerCategories(request)
@@ -97,7 +98,8 @@ class PlannerCategoriesActivity : BaseActivity() {
     private fun initViewModel() {
         val plannersRepository = PlannersRepository(this)
         val plannersFactory = ViewModelFactory { PLannersAndResourcesViewModel(plannersRepository) }
-        plannersViewModel = ViewModelProvider(this, plannersFactory)[PLannersAndResourcesViewModel::class.java]
+        plannersViewModel =
+            ViewModelProvider(this, plannersFactory)[PLannersAndResourcesViewModel::class.java]
     }
 
     private fun observePlannerCategoriesResponse() {
@@ -110,11 +112,11 @@ class PlannerCategoriesActivity : BaseActivity() {
 
                 is UiState.Success -> {
                     binding.progress.hideProgress()
-                    if (result.data.categories.isNotEmpty()){
+                    if (result.data.categories.isNotEmpty()) {
                         setupPlannerCategoriesAdapter(result.data.categories)
                         binding.categoriesRv.visibility = View.VISIBLE
                         binding.noDataTxt.visibility = View.GONE
-                    }else{
+                    } else {
                         binding.categoriesRv.visibility = View.GONE
                         binding.noDataTxt.visibility = View.VISIBLE
                     }
@@ -130,13 +132,13 @@ class PlannerCategoriesActivity : BaseActivity() {
         }
     }
 
-    private fun setupPlannerCategoriesAdapter(categories : List<Category>){
+    private fun setupPlannerCategoriesAdapter(categories: List<Category>) {
         var categoriesAdapter = PlannerCategoriesAdapter(this, categories)
         binding.categoriesRv.adapter = categoriesAdapter
         var linearLayoutManager = LinearLayoutManager(this)
         binding.categoriesRv.layoutManager = linearLayoutManager
-        categoriesAdapter.setupListener(object  : OnPlannerClickListener{
-            override fun onCategoryClick(id: String, catName : String) {
+        categoriesAdapter.setupListener(object : OnPlannerClickListener {
+            override fun onCategoryClick(id: String, catName: String) {
                 var intent = Intent(this@PlannerCategoriesActivity, PlannersActivity::class.java)
                 intent.putExtra("catId", id)
                 intent.putExtra("catName", catName)

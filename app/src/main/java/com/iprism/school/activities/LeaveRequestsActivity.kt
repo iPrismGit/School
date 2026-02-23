@@ -124,13 +124,14 @@ class LeaveRequestsActivity : BaseActivity() {
                 image: String
             ) {
                 if (image.isNotEmpty()) {
-                    if (image.endsWith(".pdf")){
+                    if (image.endsWith(".pdf")) {
                         var intent = Intent(this@LeaveRequestsActivity, PdfViewActivity::class.java)
                         intent.putExtra("pdfUrl", image)
                         intent.putExtra("EventName", "Leave Request")
                         startActivity(intent)
-                    }else{
-                        var intent = Intent(this@LeaveRequestsActivity, ViewImageActivity::class.java)
+                    } else {
+                        var intent =
+                            Intent(this@LeaveRequestsActivity, ViewImageActivity::class.java)
                         intent.putExtra("EventImage", image)
                         intent.putExtra("EventName", "Leave Request")
                         startActivity(intent)

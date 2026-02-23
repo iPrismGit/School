@@ -67,7 +67,13 @@ class InActiveStudentsFragment : BaseFragment() {
         setupRecyclerView()
         observeEventsResponse()
         handleRefreshLo()
-        var requestClasses = ClassTeacherApiRequest("", userDetails[User.ID].toString(),userDetails[User.SCHOOL_ID].toString(),  userDetails[User.ACADEMIC_YEAR_ID].toString(),"classes")
+        var requestClasses = ClassTeacherApiRequest(
+            "",
+            userDetails[User.ID].toString(),
+            userDetails[User.SCHOOL_ID].toString(),
+            userDetails[User.ACADEMIC_YEAR_ID].toString(),
+            "classes"
+        )
         attendanceViewModel.fetchClasses(requestClasses)
         return binding.root
     }
@@ -126,7 +132,8 @@ class InActiveStudentsFragment : BaseFragment() {
 
     private fun setupClassesAdapter(genderTypes: List<Class>) {
         var namesList = genderTypes.map { it.class_name }
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, namesList)
+        val adapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, namesList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.classesSp.adapter = adapter
         binding.classesSp.onItemSelectedListener =
@@ -158,7 +165,8 @@ class InActiveStudentsFragment : BaseFragment() {
 
     private fun setupSectionsAdapter(genderTypes: List<Section>) {
         var namesList = genderTypes.map { it.section_name }
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, namesList)
+        val adapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, namesList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.sectionsSp.adapter = adapter
         binding.sectionsSp.onItemSelectedListener =
@@ -290,10 +298,10 @@ class InActiveStudentsFragment : BaseFragment() {
                 }
             })
 
-            studentsAdapter.setupListener(object  : OnStudentClickListener{
+            studentsAdapter.setupListener(object : OnStudentClickListener {
                 override fun onCallClick(mobileNumber: String) {
                     this@InActiveStudentsFragment.mobileNumber = mobileNumber
-                    if (mobileNumber.isNotEmpty()){
+                    if (mobileNumber.isNotEmpty()) {
                         makePhoneCall(this@InActiveStudentsFragment.mobileNumber)
                     }
                 }
@@ -370,7 +378,11 @@ class InActiveStudentsFragment : BaseFragment() {
             ) != PackageManager.PERMISSION_GRANTED
         ) {
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(requireActivity(), Manifest.permission.CALL_PHONE)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    requireActivity(),
+                    Manifest.permission.CALL_PHONE
+                )
+            ) {
 
                 ActivityCompat.requestPermissions(
                     requireActivity(),

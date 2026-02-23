@@ -17,10 +17,9 @@ import com.iprism.school.viewModels.ViewModelFactory
 
 class ContentPagesActivity : BaseActivity() {
 
-    private lateinit var binding : ActivityContentPagesBinding
-    private var tag : String = ""
-    private var name : String = ""
-
+    private lateinit var binding: ActivityContentPagesBinding
+    private var tag: String = ""
+    private var name: String = ""
     private lateinit var viewModel: ContentPagesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {

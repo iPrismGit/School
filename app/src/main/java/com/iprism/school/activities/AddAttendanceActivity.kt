@@ -66,7 +66,7 @@ class AddAttendanceActivity : BaseActivity() {
     private var longitude: Double? = null
     private var currentTime: String = ""
     private lateinit var attendanceViewModel: StaffAttendanceViewModel
-    private lateinit var progressDialog : ProgressDialog
+    private lateinit var progressDialog: ProgressDialog
 
     private val locationPermissionRequest =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
@@ -125,7 +125,8 @@ class AddAttendanceActivity : BaseActivity() {
     private fun initViewModel() {
         val eventsRepository = StaffAttendanceApiRepository(this)
         val eventsFactory = ViewModelFactory { StaffAttendanceViewModel(eventsRepository) }
-        attendanceViewModel = ViewModelProvider(this, eventsFactory)[StaffAttendanceViewModel::class.java]
+        attendanceViewModel =
+            ViewModelProvider(this, eventsFactory)[StaffAttendanceViewModel::class.java]
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -170,11 +171,22 @@ class AddAttendanceActivity : BaseActivity() {
                 runOnUiThread {
                     vibratePhone()
                     fetchCurrentTime()
-                //    Toast.makeText(this@AddAttendanceActivity, it.text, Toast.LENGTH_SHORT).show()
-                    var request = StaffAttendanceApiRequest(userDetails[User.ACADEMIC_YEAR_ID].toString(),
-                        userDetails[User.SCHOOL_ID].toString(), backendDate, latitude.toString(), longitude.toString(),
-                        "", "present", currentTime, value, userDetails[User.ID].toString(),
-                        "insert", "", it.text.toString())
+                    //    Toast.makeText(this@AddAttendanceActivity, it.text, Toast.LENGTH_SHORT).show()
+                    var request = StaffAttendanceApiRequest(
+                        userDetails[User.ACADEMIC_YEAR_ID].toString(),
+                        userDetails[User.SCHOOL_ID].toString(),
+                        backendDate,
+                        latitude.toString(),
+                        longitude.toString(),
+                        "",
+                        "present",
+                        currentTime,
+                        value,
+                        userDetails[User.ID].toString(),
+                        "insert",
+                        "",
+                        it.text.toString()
+                    )
                     Log.d("InsertRequest", request.toString())
                     attendanceViewModel.insertStaffAttendance(request)
                 }

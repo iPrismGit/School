@@ -40,10 +40,8 @@ class CreatedDiaryActivity : BaseActivity() {
 
     private lateinit var binding: ActivityCreatedDiaryBinding
     private val calendar: Calendar = Calendar.getInstance()
-
     private val displayDateFormat =
         SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
-
     private val backendDateFormat =
         SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     private lateinit var diariesViewModel: DiaryViewModel
@@ -58,8 +56,8 @@ class CreatedDiaryActivity : BaseActivity() {
     private val limit = 10
     private var classId: String = "-1"
     private var sectionId: String = "-1"
-    private lateinit var bottomSheetDialog : BottomSheetDialog
-    private lateinit var deleteBinding : DeleteBottomSheetBinding
+    private lateinit var bottomSheetDialog: BottomSheetDialog
+    private lateinit var deleteBinding: DeleteBottomSheetBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +73,13 @@ class CreatedDiaryActivity : BaseActivity() {
         observeClassesResponse()
         observeSectionsResponse()
         observeDeleteDiaryResponse()
-        var requestClasses = ClassTeacherApiRequest("", userDetails[User.ID].toString(),userDetails[User.SCHOOL_ID].toString(),userDetails[User.ACADEMIC_YEAR_ID].toString(), "classes")
+        var requestClasses = ClassTeacherApiRequest(
+            "",
+            userDetails[User.ID].toString(),
+            userDetails[User.SCHOOL_ID].toString(),
+            userDetails[User.ACADEMIC_YEAR_ID].toString(),
+            "classes"
+        )
         attendanceViewModel.fetchClasses(requestClasses)
     }
 
@@ -192,7 +196,7 @@ class CreatedDiaryActivity : BaseActivity() {
                 }
             })
 
-            diariesAdapter.setListener(object  : OnCreatedDiariesClickListener{
+            diariesAdapter.setListener(object : OnCreatedDiariesClickListener {
                 override fun onDeleteClickListener(dairyId: String) {
                     showDeleteBottomSheet(dairyId)
                 }
@@ -422,7 +426,7 @@ class CreatedDiaryActivity : BaseActivity() {
             }
     }
 
-    private fun showDeleteBottomSheet(diaryId : String) {
+    private fun showDeleteBottomSheet(diaryId: String) {
         bottomSheetDialog = BottomSheetDialog(this)
         deleteBinding = DeleteBottomSheetBinding.inflate(layoutInflater)
         bottomSheetDialog.setContentView(deleteBinding.root)

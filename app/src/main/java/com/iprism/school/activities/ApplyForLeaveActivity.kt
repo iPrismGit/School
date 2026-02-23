@@ -122,12 +122,19 @@ class ApplyForLeaveActivity : AppCompatActivity() {
             } else if (getReason().isEmpty()) {
                 ToastUtils.showErrorCustomToast(this, "Please Enter Reason For Leave..!")
             } else {
-                var request = ApplyForLeaveApiRequest(userDetails[User.ACADEMIC_YEAR_ID].toString(),
-                    userDetails[User.SCHOOL_ID].toString(), convertDateFormatSafe(binding.startDateTxt)!!,
-                    convertUriToBase64(selectedFileUri), getName(), getReason(), convertDateFormatSafe(binding.endDateTxt)!!,
-                    userDetails[User.ID].toString(), "insert")
+                var request = ApplyForLeaveApiRequest(
+                    userDetails[User.ACADEMIC_YEAR_ID].toString(),
+                    userDetails[User.SCHOOL_ID].toString(),
+                    convertDateFormatSafe(binding.startDateTxt)!!,
+                    convertUriToBase64(selectedFileUri),
+                    getName(),
+                    getReason(),
+                    convertDateFormatSafe(binding.endDateTxt)!!,
+                    userDetails[User.ID].toString(),
+                    "insert"
+                )
                 viewModel.insertLeaveRequest(request)
-             //   Log.d("StartAndEndDate", "Start Date: ${convertDateFormatSafe(binding.startDateTxt)}, End Date: ${convertDateFormatSafe(binding.endDateTxt)} ")
+                //   Log.d("StartAndEndDate", "Start Date: ${convertDateFormatSafe(binding.startDateTxt)}, End Date: ${convertDateFormatSafe(binding.endDateTxt)} ")
             }
         }
     }
@@ -281,7 +288,7 @@ class ApplyForLeaveActivity : AppCompatActivity() {
                 is UiState.Success -> {
                     binding.progress.hideProgress()
                     binding.submitBtn.isEnabled = false
-                    var intent= Intent(this, SuccessActivity::class.java)
+                    var intent = Intent(this, SuccessActivity::class.java)
                     intent.putExtra("tag", "Leave Request Sent ")
                     startActivity(intent)
                 }

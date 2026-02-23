@@ -62,8 +62,8 @@ class AttendanceActivity : BaseActivity() {
     private var currentDate: String = ""
     private var backendDate: String = ""
     private var notification_parent: String? = "no"
-    private lateinit var bottomSheetDialog : BottomSheetDialog
-    private lateinit var markAttendanceBinding : AllStudentsPresentBottomSheetBinding
+    private lateinit var bottomSheetDialog: BottomSheetDialog
+    private lateinit var markAttendanceBinding: AllStudentsPresentBottomSheetBinding
     private val selectAllListener =
         CompoundButton.OnCheckedChangeListener { _, isChecked ->
             studentsAdapter.selectAll(isChecked)
@@ -82,7 +82,7 @@ class AttendanceActivity : BaseActivity() {
         binding.dateTxt.text = currentDate
         initViewModel()
         handleBack()
-       // handleDateLo()
+        // handleDateLo()
         handleSaveAttendanceBtn()
         observeClassesResponse()
         observeSectionsResponse()
@@ -91,7 +91,13 @@ class AttendanceActivity : BaseActivity() {
         handleRefreshLo()
         observeAttendanceResponse()
         binding.checkBoxAll.setOnCheckedChangeListener(selectAllListener)
-        var requestClasses = ClassTeacherApiRequest("", userDetails[User.ID].toString(), userDetails[User.SCHOOL_ID].toString(), userDetails[User.ACADEMIC_YEAR_ID].toString(),"classes")
+        var requestClasses = ClassTeacherApiRequest(
+            "",
+            userDetails[User.ID].toString(),
+            userDetails[User.SCHOOL_ID].toString(),
+            userDetails[User.ACADEMIC_YEAR_ID].toString(),
+            "classes"
+        )
         attendanceViewModel.fetchClasses(requestClasses)
         binding.parentNotificationCb.setOnCheckedChangeListener { _, isChecked ->
             notification_parent = if (isChecked) "yes" else "no"
@@ -146,7 +152,7 @@ class AttendanceActivity : BaseActivity() {
         var request = AttendanceStudentsApiRequest(
             userDetails[User.ACADEMIC_YEAR_ID].toString(), "", "",
             userDetails[User.SCHOOL_ID].toString(), classId, backendDate, sectionId,
-            selectedStudentsList, userDetails[User.ID].toString(), "view", "" , currentPage
+            selectedStudentsList, userDetails[User.ID].toString(), "view", "", currentPage
         )
         attendanceViewModel.fetchStudents(request)
         Log.d("StudentsFetchRequest", request.toString())
@@ -450,11 +456,11 @@ class AttendanceActivity : BaseActivity() {
                 AttendanceStudent(id = it)
             }.toMutableList()
 
-            if (classId.equals("-1", true)){
+            if (classId.equals("-1", true)) {
                 ToastUtils.showErrorCustomToast(this, "Please Select Class..!")
-            } else if (sectionId.equals("-1", true)){
+            } else if (sectionId.equals("-1", true)) {
                 ToastUtils.showErrorCustomToast(this, "Please Select Section..!")
-            } else if (selectValue.equals("single", true)  && selectedAttendanceList.isEmpty()) {
+            } else if (selectValue.equals("single", true) && selectedAttendanceList.isEmpty()) {
                 ToastUtils.showErrorCustomToast(this, "Please Select Students..!")
             } else {
                 showAttendanceConformationBottomSheet()
@@ -491,10 +497,12 @@ class AttendanceActivity : BaseActivity() {
         }
 
         markAttendanceBinding.markBtn.setOnClickListener {
-            var markAttendanceRequest = AttendanceStudentsApiRequest(userDetails[User.ACADEMIC_YEAR_ID].toString(),
+            var markAttendanceRequest = AttendanceStudentsApiRequest(
+                userDetails[User.ACADEMIC_YEAR_ID].toString(),
                 "", "", userDetails[User.SCHOOL_ID].toString(),
                 classId, backendDate, sectionId, selectedAttendanceList,
-                userDetails[User.ID].toString(), "insert", selectValue, 1)
+                userDetails[User.ID].toString(), "insert", selectValue, 1
+            )
             attendanceViewModel.updateStudentsAttendance(markAttendanceRequest)
             Log.d("MarkAttendanceRequest", markAttendanceRequest.toString())
         }

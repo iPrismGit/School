@@ -43,14 +43,12 @@ class SingleDiaryIBottomSheetFragment : BottomSheetDialogFragment() {
     private var backendDate: String? = null
     private var selectedImageUri: Uri? = null
 
-    lateinit var resultLauncher: ActivityResultLauncher<Intent>
-    lateinit var resultLaunchergallery: ActivityResultLauncher<Intent>
     private var studentId: String? = null
     private var classId: String? = null
     private var sectionId: String? = null
     private var diaryType = ""
     private lateinit var user: User
-    private lateinit var userDetails : HashMap<String, String?>
+    private lateinit var userDetails: HashMap<String, String?>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -259,24 +257,41 @@ class SingleDiaryIBottomSheetFragment : BottomSheetDialogFragment() {
 
     private fun handleSaveBtn() {
         binding.saveDiaryBtn.setOnClickListener { view ->
-          if (diaryType.isEmpty()) {
-                ToastUtils.showErrorCustomToast(requireContext(), "Please Select Class Work or Home Work..!")
-            }else if (getDetails().isEmpty() && selectedImageUri == null) {
-                ToastUtils.showErrorCustomToast(requireContext(), "Please Enter Details or Select Image..")
+            if (diaryType.isEmpty()) {
+                ToastUtils.showErrorCustomToast(
+                    requireContext(),
+                    "Please Select Class Work or Home Work..!"
+                )
+            } else if (getDetails().isEmpty() && selectedImageUri == null) {
+                ToastUtils.showErrorCustomToast(
+                    requireContext(),
+                    "Please Enter Details or Select Image.."
+                )
             } else {
                 var request = DiaryApiRequest(
                     userDetails[User.ACADEMIC_YEAR_ID].toString(),
-                    userDetails[User.SCHOOL_ID].toString(), classId!!, backendDate!!, getDetails(), "",
-                    convertUriToBase64Image(selectedImageUri), 1, sectionId!!, "single",
-                    studentId!!, diaryType, userDetails[User.ID].toString(), "insert")
-              Log.d("SingleDiaryRequest", request.toString())
+                    userDetails[User.SCHOOL_ID].toString(),
+                    classId!!,
+                    backendDate!!,
+                    getDetails(),
+                    "",
+                    convertUriToBase64Image(selectedImageUri),
+                    1,
+                    sectionId!!,
+                    "single",
+                    studentId!!,
+                    diaryType,
+                    userDetails[User.ID].toString(),
+                    "insert"
+                )
+                Log.d("SingleDiaryRequest", request.toString())
                 diariesViewModel.insertDiary(request)
             }
         }
 
     }
 
-    private fun getDetails() : String{
+    private fun getDetails(): String {
         return binding.detailsTxt.text.toString().trim()
     }
 

@@ -25,7 +25,7 @@ class ViewImageActivity : AppCompatActivity() {
         setContentView(binding.root)
         eventImage = intent.getStringExtra("EventImage").toString()
         eventName = intent.getStringExtra("EventName").toString()
-        ViewCompat.setOnApplyWindowInsetsListener( binding.main) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -35,7 +35,8 @@ class ViewImageActivity : AppCompatActivity() {
         Glide.with(this)
             .load(Constants.IMAGES_URL + eventImage)
             .error(R.drawable.dummy_logo)
-            .listener(object : com.bumptech.glide.request.RequestListener<android.graphics.drawable.Drawable> {
+            .listener(object :
+                com.bumptech.glide.request.RequestListener<android.graphics.drawable.Drawable> {
 
                 override fun onLoadFailed(
                     e: com.bumptech.glide.load.engine.GlideException?,

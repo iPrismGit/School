@@ -23,7 +23,7 @@ import com.iprism.school.viewModels.ViewModelFactory
 
 class DiaperActivity : BaseActivity() {
 
-    private lateinit var binding : ActivityDiaperBinding
+    private lateinit var binding: ActivityDiaperBinding
     private lateinit var viewModel: DayCareViewModel
     private var planId = ""
     private var studentId = ""

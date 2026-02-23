@@ -33,7 +33,7 @@ class DayCarePlansActivity : BaseActivity() {
 
     private lateinit var binding: ActivityDayCarePlansBinding
     private lateinit var viewModel: DayCareViewModel
-    private var planId : String = ""
+    private var planId: String = ""
     private lateinit var studentsAdapter: DayCareStudentsAdapter
     private var studentsList = mutableListOf<Student>()
     private var isFreshLoad = false
@@ -58,7 +58,21 @@ class DayCarePlansActivity : BaseActivity() {
         observePlansResponse()
         observeStudentsResponse()
         handleRefreshLo()
-        var request = DayCareApiRequest(userDetails[User.ACADEMIC_YEAR_ID].toString(), "", "", userDetails[User.SCHOOL_ID].toString(), "", "", "", 1, "", "", userDetails[User.ID].toString(), "categories", "")
+        var request = DayCareApiRequest(
+            userDetails[User.ACADEMIC_YEAR_ID].toString(),
+            "",
+            "",
+            userDetails[User.SCHOOL_ID].toString(),
+            "",
+            "",
+            "",
+            1,
+            "",
+            "",
+            userDetails[User.ID].toString(),
+            "categories",
+            ""
+        )
         viewModel.fetchDayCarePlans(request)
     }
 
@@ -115,7 +129,7 @@ class DayCarePlansActivity : BaseActivity() {
                 ) {
                     planId = plans[position].cat_id.toString()
                     resetEvents()
-                    if (!planId.equals("-1", true)){
+                    if (!planId.equals("-1", true)) {
                         loadEvents()
                     }
                 }
@@ -154,9 +168,10 @@ class DayCarePlansActivity : BaseActivity() {
 
                 }
             })
-            studentsAdapter.setupListener(object : OnDayCareClickListener{
+            studentsAdapter.setupListener(object : OnDayCareClickListener {
                 override fun onItemLick(id: Int) {
-                    var intent = Intent(this@DayCarePlansActivity, DaycareActivitiesActivity::class.java)
+                    var intent =
+                        Intent(this@DayCarePlansActivity, DaycareActivitiesActivity::class.java)
                     intent.putExtra("studentId", id)
                     intent.putExtra("planId", planId)
                     startActivity(intent)
@@ -258,7 +273,8 @@ class DayCarePlansActivity : BaseActivity() {
             "",
             userDetails[User.ID].toString(),
             "students",
-            "")
+            ""
+        )
 
         Log.d("StudentsApiRequest", request.toString())
         viewModel.fetchDayCareStudents(request)

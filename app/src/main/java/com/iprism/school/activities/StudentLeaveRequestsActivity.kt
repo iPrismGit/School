@@ -46,8 +46,8 @@ class StudentLeaveRequestsActivity : BaseActivity() {
     private lateinit var leaveRequestsViewModel: LeaveRequestsViewModel
     private var classId: String = "-1"
     private var sectionId: String = "-1"
-    private lateinit var bottomSheetDialog : BottomSheetDialog
-    private lateinit var approvalBottomSheetBinding : LeaveApprovalOrRejectionBottomSheetBinding
+    private lateinit var bottomSheetDialog: BottomSheetDialog
+    private lateinit var approvalBottomSheetBinding: LeaveApprovalOrRejectionBottomSheetBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -145,11 +145,11 @@ class StudentLeaveRequestsActivity : BaseActivity() {
 
                 is UiState.Success -> {
                     binding.progress.hideProgress()
-                    if (result.data.response.requests.isNotEmpty()){
+                    if (result.data.response.requests.isNotEmpty()) {
                         binding.leaveRequestsRv.visibility = View.VISIBLE
                         setupLeaveRequestsAdapter(result.data.response.requests)
                         binding.noDataFoundTxt.visibility = View.GONE
-                    }else{
+                    } else {
                         binding.leaveRequestsRv.visibility = View.GONE
                         binding.noDataFoundTxt.visibility = View.VISIBLE
                     }
@@ -192,27 +192,29 @@ class StudentLeaveRequestsActivity : BaseActivity() {
         }
     }
 
-    private fun setupLeaveRequestsAdapter(leaveRequests: List<Request>){
+    private fun setupLeaveRequestsAdapter(leaveRequests: List<Request>) {
         var adapter = StudentLeaveRequestsAdapter(leaveRequests)
         binding.leaveRequestsRv.adapter = adapter
         var linearLayoutManager = LinearLayoutManager(this)
         binding.leaveRequestsRv.layoutManager = linearLayoutManager
-        adapter.setupListener(object : OnLeaveRequestClickListener{
-            override fun onItemClick(leaveRequestId: String, status : String) {
-                if (status.isEmpty()){
+        adapter.setupListener(object : OnLeaveRequestClickListener {
+            override fun onItemClick(leaveRequestId: String, status: String) {
+                if (status.isEmpty()) {
                     showLeaveApprovalBottomSheet(leaveRequestId)
                 }
 
             }
 
             override fun onViewAttachmentClick(attachmentUrl: String) {
-                if (attachmentUrl.isNotEmpty()){
-                    if (attachmentUrl.endsWith(".pdf")){
-                        var intent = Intent(this@StudentLeaveRequestsActivity, PdfViewActivity::class.java)
+                if (attachmentUrl.isNotEmpty()) {
+                    if (attachmentUrl.endsWith(".pdf")) {
+                        var intent =
+                            Intent(this@StudentLeaveRequestsActivity, PdfViewActivity::class.java)
                         intent.putExtra("pdfUrl", attachmentUrl)
                         startActivity(intent)
-                    }else{
-                        var intent = Intent(this@StudentLeaveRequestsActivity, ViewImageActivity::class.java)
+                    } else {
+                        var intent =
+                            Intent(this@StudentLeaveRequestsActivity, ViewImageActivity::class.java)
                         intent.putExtra("EventImage", attachmentUrl)
                         intent.putExtra("EventName", "Leave Request Image")
                         startActivity(intent)
@@ -291,7 +293,7 @@ class StudentLeaveRequestsActivity : BaseActivity() {
             }
     }
 
-    private fun fetchLeaveRequests(){
+    private fun fetchLeaveRequests() {
         var request = LeaveRequestApiRequest(
             userDetails[User.SCHOOL_ID].toString(),
             classId,
@@ -318,9 +320,10 @@ class StudentLeaveRequestsActivity : BaseActivity() {
 
     }
 
-    private fun showLeaveApprovalBottomSheet(leaveRequestId : String) {
+    private fun showLeaveApprovalBottomSheet(leaveRequestId: String) {
         bottomSheetDialog = BottomSheetDialog(this)
-        approvalBottomSheetBinding = LeaveApprovalOrRejectionBottomSheetBinding.inflate(layoutInflater)
+        approvalBottomSheetBinding =
+            LeaveApprovalOrRejectionBottomSheetBinding.inflate(layoutInflater)
         bottomSheetDialog.setContentView(approvalBottomSheetBinding.root)
         bottomSheetDialog.setCanceledOnTouchOutside(false)
 
@@ -331,12 +334,19 @@ class StudentLeaveRequestsActivity : BaseActivity() {
         }
 
         approvalBottomSheetBinding.rejectBtn.setOnClickListener {
-            if (approvalBottomSheetBinding.reasonTxt.text.toString().trim().isEmpty()){
+            if (approvalBottomSheetBinding.reasonTxt.text.toString().trim().isEmpty()) {
                 ToastUtils.showErrorCustomToast(this, "Please Enter Rejection Reason..!")
-            }else{
-                var request = LeaveRequestApiRequest(userDetails[User.SCHOOL_ID].toString(), userDetails[User.ACADEMIC_YEAR_ID].toString(),
-                    leaveRequestId, sectionId,
-                    "rejected", userDetails[User.ID].toString(), "update", approvalBottomSheetBinding.reasonTxt.text.toString().trim())
+            } else {
+                var request = LeaveRequestApiRequest(
+                    userDetails[User.SCHOOL_ID].toString(),
+                    userDetails[User.ACADEMIC_YEAR_ID].toString(),
+                    leaveRequestId,
+                    sectionId,
+                    "rejected",
+                    userDetails[User.ID].toString(),
+                    "update",
+                    approvalBottomSheetBinding.reasonTxt.text.toString().trim()
+                )
                 leaveRequestsViewModel.updateLeaveRequests(request)
                 Log.d("RejectionRequest", request.toString())
             }
@@ -347,9 +357,16 @@ class StudentLeaveRequestsActivity : BaseActivity() {
         }
 
         approvalBottomSheetBinding.approveBtn.setOnClickListener {
-            var request = LeaveRequestApiRequest(userDetails[User.SCHOOL_ID].toString(), userDetails[User.ACADEMIC_YEAR_ID].toString(),
-                leaveRequestId, sectionId,
-                "accepted", userDetails[User.ID].toString(), "update", "")
+            var request = LeaveRequestApiRequest(
+                userDetails[User.SCHOOL_ID].toString(),
+                userDetails[User.ACADEMIC_YEAR_ID].toString(),
+                leaveRequestId,
+                sectionId,
+                "accepted",
+                userDetails[User.ID].toString(),
+                "update",
+                ""
+            )
             leaveRequestsViewModel.updateLeaveRequests(request)
             Log.d("ApprovalRequest", request.toString())
         }

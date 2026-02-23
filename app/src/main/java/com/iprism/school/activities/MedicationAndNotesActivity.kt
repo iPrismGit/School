@@ -45,11 +45,11 @@ class MedicationAndNotesActivity : BaseActivity() {
         studentId = intent.getStringExtra("studentId").toString()
         type = intent.getStringExtra("type").toString()
         id = intent.getStringExtra("id").toString()
-        if (type.equals("Medication", true)){
+        if (type.equals("Medication", true)) {
             binding.medicationLo.visibility = View.VISIBLE
             binding.noteLo.visibility = View.GONE
             binding.titleTxt.text = "Medication"
-        } else{
+        } else {
             binding.medicationLo.visibility = View.GONE
             binding.noteLo.visibility = View.VISIBLE
             binding.titleTxt.text = "Notes"
@@ -69,26 +69,30 @@ class MedicationAndNotesActivity : BaseActivity() {
 
     private fun handleSubmitBtn() {
         binding.submitBtn.setOnClickListener { view ->
-            if (type.equals("Medication", true)){
-                if (getTime().isEmpty()){
+            if (type.equals("Medication", true)) {
+                if (getTime().isEmpty()) {
                     ToastUtils.showErrorCustomToast(this, "Please Select Time..!")
-                } else if (getMedicationNotes().isEmpty()){
+                } else if (getMedicationNotes().isEmpty()) {
                     ToastUtils.showErrorCustomToast(this, "Please Enter Medication Notes..!")
-                } else{
-                    var request = DayCareApiRequest(userDetails[User.ACADEMIC_YEAR_ID].toString(),
+                } else {
+                    var request = DayCareApiRequest(
+                        userDetails[User.ACADEMIC_YEAR_ID].toString(),
                         "", "", userDetails[User.SCHOOL_ID].toString(), id, "",
                         getMedicationNotes(), 1, studentId, getTime(),
-                        userDetails[User.ID].toString(), "insert", "")
+                        userDetails[User.ID].toString(), "insert", ""
+                    )
                     viewModel.insertDaycareReport(request)
                 }
-            } else{
-                if (getNotes().isEmpty()){
+            } else {
+                if (getNotes().isEmpty()) {
                     ToastUtils.showErrorCustomToast(this, "Please Enter Notes Message..!")
-                } else{
-                    var request = DayCareApiRequest(userDetails[User.ACADEMIC_YEAR_ID].toString(),
+                } else {
+                    var request = DayCareApiRequest(
+                        userDetails[User.ACADEMIC_YEAR_ID].toString(),
                         "", "", userDetails[User.SCHOOL_ID].toString(), id, "",
                         getNotes(), 1, studentId, "",
-                        userDetails[User.ID].toString(), "insert", "")
+                        userDetails[User.ID].toString(), "insert", ""
+                    )
                     viewModel.insertDaycareReport(request)
                 }
             }
@@ -127,15 +131,15 @@ class MedicationAndNotesActivity : BaseActivity() {
         }
     }
 
-    private fun getTime() : String{
+    private fun getTime(): String {
         return binding.startTimeTxt.text.toString().trim()
     }
 
-    private fun getMedicationNotes() : String{
+    private fun getMedicationNotes(): String {
         return binding.medicationMessageTxt.text.toString().trim()
     }
 
-    private fun getNotes() : String{
+    private fun getNotes(): String {
         return binding.noteTxt.text.toString().trim()
     }
 

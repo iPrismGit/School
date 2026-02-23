@@ -29,7 +29,7 @@ import java.util.HashMap
 
 class StaffAttendanceActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityStaffAttendanceBinding
+    private lateinit var binding: ActivityStaffAttendanceBinding
     private lateinit var attendanceViewModel: StaffAttendanceViewModel
     private lateinit var user: User
     private lateinit var userDetails: HashMap<String, String?>
@@ -79,7 +79,8 @@ class StaffAttendanceActivity : AppCompatActivity() {
     private fun initViewModel() {
         val eventsRepository = StaffAttendanceApiRepository(this)
         val eventsFactory = ViewModelFactory { StaffAttendanceViewModel(eventsRepository) }
-        attendanceViewModel = ViewModelProvider(this, eventsFactory)[StaffAttendanceViewModel::class.java]
+        attendanceViewModel =
+            ViewModelProvider(this, eventsFactory)[StaffAttendanceViewModel::class.java]
     }
 
     private fun loadCurrentMonthAttendance() {

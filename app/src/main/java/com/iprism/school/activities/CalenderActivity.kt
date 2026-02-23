@@ -195,12 +195,12 @@ class CalenderActivity : BaseActivity() {
                     calenderName: String,
                     image: String
                 ) {
-                    if (image != null && image.isNotEmpty()){
+                    if (image != null && image.isNotEmpty()) {
                         val intent = Intent(this@CalenderActivity, ViewImageActivity::class.java)
                         intent.putExtra("EventImage", image)
                         intent.putExtra("EventName", calenderName)
                         startActivity(intent)
-                    }else{
+                    } else {
                         ToastUtils.showErrorCustomToast(this@CalenderActivity, "No Image Found..!")
                     }
                 }
@@ -415,7 +415,7 @@ class CalenderActivity : BaseActivity() {
             selectedCalendar.get(Calendar.YEAR) == currentCalendar.get(Calendar.YEAR) &&
                     selectedCalendar.get(Calendar.MONTH) == currentCalendar.get(Calendar.MONTH)
 
-     //   binding.rightArrowIv.visibility = if (isCurrentMonth) View.GONE else View.VISIBLE
+        //   binding.rightArrowIv.visibility = if (isCurrentMonth) View.GONE else View.VISIBLE
         selectedMonth = selectedCalendar.get(Calendar.MONTH) + 1
         selectedYear = selectedCalendar.get(Calendar.YEAR)
         if (!classId.equals("-1", true) && !sectionId.equals("-1", true)) {

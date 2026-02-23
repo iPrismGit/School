@@ -122,7 +122,8 @@ class SchoolSupportActivity : BaseActivity() {
                     binding.progress.hideProgress()
                     binding.emailTxt.text = state.data.response.email
                     binding.mobileTxt.text = "+91 - " + state.data.response.mobile
-                    binding.alternativeMobileTxt.text = "+91 - " + state.data.response.alternate_mobile
+                    binding.alternativeMobileTxt.text =
+                        "+91 - " + state.data.response.alternate_mobile
                     binding.addressTxt.text = state.data.response.address
                     lat = state.data.response.lat
                     lon = state.data.response.lon
@@ -149,7 +150,11 @@ class SchoolSupportActivity : BaseActivity() {
             ) != PackageManager.PERMISSION_GRANTED
         ) {
 
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CALL_PHONE)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    Manifest.permission.CALL_PHONE
+                )
+            ) {
 
                 ActivityCompat.requestPermissions(
                     this,

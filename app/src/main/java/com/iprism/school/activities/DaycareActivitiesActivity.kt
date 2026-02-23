@@ -93,7 +93,6 @@ class DaycareActivitiesActivity : AppCompatActivity() {
     }
 
 
-
     private fun handleMedicationLo() {
         binding.medicationLo.setOnClickListener { view ->
             var intent = Intent(this, MedicationAndNotesActivity::class.java)
@@ -126,7 +125,6 @@ class DaycareActivitiesActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
 
 
     private fun handleBack() {

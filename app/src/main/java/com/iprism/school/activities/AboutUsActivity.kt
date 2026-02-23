@@ -13,8 +13,8 @@ import com.iprism.school.databinding.HelpTutorialItemBinding
 class AboutUsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAboutUsBinding
-    private var tag : String = ""
-    private var name : String = ""
+    private var tag: String = ""
+    private var name: String = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +66,7 @@ class AboutUsActivity : AppCompatActivity() {
         }
     }
 
-    private fun handleBack(){
+    private fun handleBack() {
         binding.backIv.setOnClickListener {
             finish()
         }

@@ -159,12 +159,12 @@ class ConsentsActivity : BaseActivity() {
                     calenderName: String,
                     image: String
                 ) {
-                    if (image != null && image.isNotEmpty()){
+                    if (image != null && image.isNotEmpty()) {
                         val intent = Intent(this@ConsentsActivity, ViewImageActivity::class.java)
                         intent.putExtra("EventImage", image)
                         intent.putExtra("EventName", calenderName)
                         startActivity(intent)
-                    }else{
+                    } else {
                         ToastUtils.showErrorCustomToast(this@ConsentsActivity, "No Image Found..!")
                     }
                 }

@@ -82,31 +82,33 @@ class NapActivity : BaseActivity() {
         }
     }
 
-    private fun getStartTime() : String{
+    private fun getStartTime(): String {
         return binding.startTimeTxt.text.toString().trim()
     }
 
-    private fun getWakeupTime() : String{
+    private fun getWakeupTime(): String {
         return binding.wakeupTimeTxt.text.toString().trim()
     }
 
-    private fun getMessageTime() : String{
+    private fun getMessageTime(): String {
         return binding.messageTxt.text.toString().trim()
     }
 
     private fun handleSubmitBtn() {
         binding.submitBtn.setOnClickListener { view ->
-            if (getStartTime().isEmpty()){
+            if (getStartTime().isEmpty()) {
                 ToastUtils.showErrorCustomToast(this, "Please Select Nap Starting Time..!")
-            } else if (getWakeupTime().isEmpty()){
+            } else if (getWakeupTime().isEmpty()) {
                 ToastUtils.showErrorCustomToast(this, "Please Select Nap Wakeup Time..!")
-            } else if(napType.isEmpty()){
+            } else if (napType.isEmpty()) {
                 ToastUtils.showErrorCustomToast(this, "Please Select Nap Type..!")
-            } else{
-               var request = DayCareApiRequest(userDetails[User.ACADEMIC_YEAR_ID].toString(),
-                   napType, "", userDetails[User.SCHOOL_ID].toString(), id, "",
-                   getMessageTime(), 1, studentId, getStartTime(),
-                   userDetails[User.ID].toString(), "insert", getWakeupTime())
+            } else {
+                var request = DayCareApiRequest(
+                    userDetails[User.ACADEMIC_YEAR_ID].toString(),
+                    napType, "", userDetails[User.SCHOOL_ID].toString(), id, "",
+                    getMessageTime(), 1, studentId, getStartTime(),
+                    userDetails[User.ID].toString(), "insert", getWakeupTime()
+                )
                 viewModel.insertDaycareReport(request)
             }
 

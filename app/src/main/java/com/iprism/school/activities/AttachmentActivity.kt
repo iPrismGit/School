@@ -78,7 +78,7 @@ class AttachmentActivity : BaseActivity() {
             .load(uri)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .skipMemoryCache(true)
-          //  .circleCrop()
+            //  .circleCrop()
             .into(binding.attachmentImg)
     }
 
@@ -116,14 +116,23 @@ class AttachmentActivity : BaseActivity() {
 
     private fun handleSubmitBtn() {
         binding.submitBtn.setOnClickListener { view ->
-           if (profileUri  == null) {
+            if (profileUri == null) {
                 ToastUtils.showErrorCustomToast(this, "Please Upload Attachment Image..!")
             } else {
                 var request = DayCareApiRequest(
                     userDetails[User.ACADEMIC_YEAR_ID].toString(),
-                    "", "", userDetails[User.SCHOOL_ID].toString(), id, convertUriToBase64Image(profileUri),
-                    getMessageTime(), 1, studentId, "",
-                    userDetails[User.ID].toString(), "insert", ""
+                    "",
+                    "",
+                    userDetails[User.SCHOOL_ID].toString(),
+                    id,
+                    convertUriToBase64Image(profileUri),
+                    getMessageTime(),
+                    1,
+                    studentId,
+                    "",
+                    userDetails[User.ID].toString(),
+                    "insert",
+                    ""
                 )
                 viewModel.insertDaycareReport(request)
             }

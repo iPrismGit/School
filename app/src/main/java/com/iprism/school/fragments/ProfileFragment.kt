@@ -54,19 +54,22 @@ class ProfileFragment : BaseFragment() {
                 is UiState.Success -> {
                     binding.mainLo.visibility = View.VISIBLE
                     binding.progress.hideProgress()
-                    binding.tvName.text = state.data.response.first_name + " " + state.data.response.middle_name + " " + state.data.response.last_name
+                    binding.tvName.text =
+                        state.data.response.first_name + " " + state.data.response.middle_name + " " + state.data.response.last_name
                     binding.rollTxt.text = state.data.response.job_title
                     binding.branchNameTxt.text = state.data.response.branch
-                    binding.experienceTxt.text = "Experience : " + state.data.response.exp + " Years"
+                    binding.experienceTxt.text =
+                        "Experience : " + state.data.response.exp + " Years"
                     binding.dateOfJoiningTxt.text = "Date of Joining : " + state.data.response.doj
                     binding.dateOfBirthTxt.text = "Date of Birth : " + state.data.response.dob
                     binding.phoneTxt.text = "Phone Number : " + state.data.response.mobile
                     binding.emailTxt.text = "Email  : " + state.data.response.email
-                    binding.addressTxt.text = "Your Address : " + state.data.response.permanent_address
+                    binding.addressTxt.text =
+                        "Your Address : " + state.data.response.permanent_address
                     var gender = state.data.response.gender
-                    if (gender.equals("1", true)){
+                    if (gender.equals("1", true)) {
                         gender = "Male"
-                    } else if (gender.equals("2", true)){
+                    } else if (gender.equals("2", true)) {
                         gender = "Female"
                     } else {
                         gender = "Other"
@@ -74,13 +77,21 @@ class ProfileFragment : BaseFragment() {
                     binding.genderTxt.text = "Gender : " + gender
                     binding.bloodGroupTxt.text = "Blood Group : " + state.data.response.blood_group
                     binding.nationalityTxt.text = "Nationality : " + state.data.response.nationality
-                    binding.imgProfile.borderColor = ContextCompat.getColor(requireContext(), R.color.blue1)
+                    binding.imgProfile.borderColor =
+                        ContextCompat.getColor(requireContext(), R.color.blue1)
                     binding.imgProfile.borderWidth = 4
-                    if (state.data.response.image.isNotEmpty()){
-                        Glide.with(requireContext()).load(Constants.IMAGES_URL + state.data.response.image).error(
-                            ContextCompat.getDrawable(requireContext(), R.drawable.message_profile)).into(binding.imgProfile)
-                    }else{
-                        binding.imgProfile.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.message_profile))
+                    if (state.data.response.image.isNotEmpty()) {
+                        Glide.with(requireContext())
+                            .load(Constants.IMAGES_URL + state.data.response.image).error(
+                            ContextCompat.getDrawable(requireContext(), R.drawable.message_profile)
+                        ).into(binding.imgProfile)
+                    } else {
+                        binding.imgProfile.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                requireContext(),
+                                R.drawable.message_profile
+                            )
+                        )
                     }
                 }
 

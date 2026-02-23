@@ -55,7 +55,7 @@ class ChatActivity : BaseActivity() {
 
     private lateinit var binding: ActivityChatBinding
     private var threadId = ""
-    private var name =""
+    private var name = ""
     private var messageType = ""
     private var studentId = ""
     private var image = ""
@@ -121,19 +121,28 @@ class ChatActivity : BaseActivity() {
     }
 
     private fun setupData() {
-       if (messageType.equals("single", true)){
-           binding.tvName.text = name
-           if (image.isNotEmpty()){
-               Glide.with(this).load(Constants.IMAGES_URL + image).error(ContextCompat.getDrawable(this,
-                   R.drawable.message_profile)).into(binding.profileIv)
-           }else{
-               ContextCompat.getDrawable(this, R.drawable.message_profile)
-           }
+        if (messageType.equals("single", true)) {
+            binding.tvName.text = name
+            if (image.isNotEmpty()) {
+                Glide.with(this).load(Constants.IMAGES_URL + image).error(
+                    ContextCompat.getDrawable(
+                        this,
+                        R.drawable.message_profile
+                    )
+                ).into(binding.profileIv)
+            } else {
+                ContextCompat.getDrawable(this, R.drawable.message_profile)
+            }
 
-       } else{
-           binding.tvName.text = "Group Message"
-           binding.profileIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.group_icon))
-       }
+        } else {
+            binding.tvName.text = "Group Message"
+            binding.profileIv.setImageDrawable(
+                ContextCompat.getDrawable(
+                    this,
+                    R.drawable.group_icon
+                )
+            )
+        }
     }
 
     override fun onResume() {
@@ -208,7 +217,7 @@ class ChatActivity : BaseActivity() {
             binding.checkInImg.setImageResource(R.drawable.document_icon)
         }
     }
-    
+
     private fun handleCrossBtn() {
         binding.deleteImg.setOnClickListener {
             selectedFileUri = null
@@ -280,7 +289,7 @@ class ChatActivity : BaseActivity() {
                 }
             })
         }
-        chatAdapter.setupListener(object : OnMessageClickListener{
+        chatAdapter.setupListener(object : OnMessageClickListener {
             override fun onItemClick(
                 threadId: String,
                 name: String,
@@ -300,18 +309,18 @@ class ChatActivity : BaseActivity() {
             }
 
             override fun onInnerItemClick(eventImage: String) {
-               if (eventImage.isNotEmpty()){
-                   if (eventImage.endsWith(".pdf")){
-                       var intent = Intent(this@ChatActivity, PdfViewActivity::class.java)
-                       intent.putExtra("pdfUrl", eventImage)
-                       startActivity(intent)
-                   }else{
-                       var intent = Intent(this@ChatActivity, ViewImageActivity::class.java)
-                       intent.putExtra("EventImage", eventImage)
-                       intent.putExtra("EventName", "Message Image")
-                       startActivity(intent)
-                   }
-               }
+                if (eventImage.isNotEmpty()) {
+                    if (eventImage.endsWith(".pdf")) {
+                        var intent = Intent(this@ChatActivity, PdfViewActivity::class.java)
+                        intent.putExtra("pdfUrl", eventImage)
+                        startActivity(intent)
+                    } else {
+                        var intent = Intent(this@ChatActivity, ViewImageActivity::class.java)
+                        intent.putExtra("EventImage", eventImage)
+                        intent.putExtra("EventName", "Message Image")
+                        startActivity(intent)
+                    }
+                }
             }
 
         })
