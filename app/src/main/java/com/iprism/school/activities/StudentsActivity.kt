@@ -3,6 +3,7 @@ package com.iprism.school.activities
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
 import androidx.core.content.ContextCompat
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
@@ -17,6 +18,7 @@ class StudentsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityStudentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enableEdgeToEdge()
         val adapter = StudentsPagerAdapter(this)
         binding.viewPager.isUserInputEnabled = false
         binding.viewPager.adapter = adapter

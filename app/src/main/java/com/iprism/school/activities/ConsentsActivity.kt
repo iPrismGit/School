@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -42,6 +43,7 @@ class ConsentsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityConsentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enableEdgeToEdge()
         handleBack()
         initViewModel()
         setupRecyclerView()

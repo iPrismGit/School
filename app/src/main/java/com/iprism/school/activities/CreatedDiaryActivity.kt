@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -63,6 +64,7 @@ class CreatedDiaryActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCreatedDiaryBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enableEdgeToEdge()
         setDate()
         handleArrowClicks()
         handleBack()

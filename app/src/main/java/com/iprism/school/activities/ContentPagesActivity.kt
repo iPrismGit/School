@@ -2,6 +2,7 @@ package com.iprism.school.activities
 
 import android.os.Bundle
 import android.view.View
+import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModelProvider
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityContentPagesBinding
@@ -26,6 +27,7 @@ class ContentPagesActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityContentPagesBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enableEdgeToEdge()
         tag = intent.getStringExtra("tag").toString()
         name = intent.getStringExtra("name").toString()
         binding.textView10.text = name

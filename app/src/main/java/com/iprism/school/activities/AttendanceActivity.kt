@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.CompoundButton
+import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -74,9 +75,9 @@ class AttendanceActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAttendanceBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enableEdgeToEdge()
         val formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy")
         currentDate = LocalDate.now().format(formatter)
-
         val formatterBackend = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         backendDate = LocalDate.now().format(formatterBackend)
         binding.dateTxt.text = currentDate

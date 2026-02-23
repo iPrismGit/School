@@ -67,19 +67,15 @@ class InitiateMessageActivity : BaseActivity() {
     private lateinit var attendanceViewModel: AttendanceViewModel
     private lateinit var studentsViewModel: StudentsViewModel
     private lateinit var fileTypeBinding: FileTypeBottomSheetBinding
-
-    // private lateinit var bottomSheetDialog: BottomSheetDialog
     private lateinit var pickImageLauncher: ActivityResultLauncher<String>
     private lateinit var pickFileLauncher: ActivityResultLauncher<Array<String>>
     private var selectedFileUri: Uri? = null
     private var classId: String = "-1"
     private var sectionId: String = "-1"
-    private val studentList = ArrayList<Student?>()
     private lateinit var studentsBottomSheetBinding: DialogSelectStudentsBinding
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private var studentsList = mutableListOf<Student>()
     private lateinit var studentsAdapter: StudentMessageSelectAdapter
-    private var isFreshLoad = false
     private var isLoading = false
     private var isLastPage = false
     private var currentPage = 1

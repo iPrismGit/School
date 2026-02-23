@@ -7,6 +7,7 @@ import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import com.iprism.school.base.BaseActivity
@@ -29,7 +30,6 @@ import kotlin.toString
 class LoginActivity : BaseActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-
     private var currentOtp: String? = null
     private var playerId: String = ""
     private var countDownTime: String = ""
@@ -39,6 +39,7 @@ class LoginActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enableEdgeToEdge()
         val deviceState = OneSignal.getDeviceState()
         if (deviceState != null) {
             playerId = deviceState.userId ?: ""

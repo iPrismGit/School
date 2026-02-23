@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -60,6 +61,7 @@ class CalenderActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCalenderBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        enableEdgeToEdge()
         handleRightArrow()
         handleLeftArrow()
         handleBack()
