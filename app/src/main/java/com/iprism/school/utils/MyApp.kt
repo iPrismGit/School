@@ -24,7 +24,7 @@ class MyApp : Application() {
         super.onCreate()
         EmojiCompat.init(this)
         OneSignal.initWithContext(this)
-        OneSignal.setAppId("e9cb5d03-036e-4f79-9a9c-d40882633bdb")
+        OneSignal.setAppId("23f0683e-01d2-431b-9d72-05e47d615c51")
         Log.d("OneSignal", "Device is subscribed: " + OneSignal.getDeviceState()!!.isSubscribed())
 
         OneSignal.setNotificationWillShowInForegroundHandler(

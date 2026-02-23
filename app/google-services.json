@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "504187044074",
+    "project_id": "school-d0efa",
+    "storage_bucket": "school-d0efa.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:504187044074:android:107674cfdb04c732195793",
+        "android_client_info": {
+          "package_name": "com.iprism.school"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDA6CtY6qG2mU5LthxExz1QLheUOlGHHWk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

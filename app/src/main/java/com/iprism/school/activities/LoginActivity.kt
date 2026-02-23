@@ -21,6 +21,8 @@ import com.iprism.school.utils.hideProgress
 import com.iprism.school.utils.showProgress
 import com.iprism.school.viewModels.AuthViewModel
 import com.iprism.school.viewModels.ViewModelFactory
+import com.onesignal.OneSignal
+import org.json.JSONObject
 import java.util.regex.Pattern
 import kotlin.toString
 
@@ -29,9 +31,6 @@ class LoginActivity : BaseActivity() {
     private lateinit var binding: ActivityLoginBinding
 
     private var currentOtp: String? = null
-    private var mobile: String? = null
-    private var login_type: String? = null
-    var cTimer: CountDownTimer? = null
     private var playerId: String = ""
     private var countDownTime: String = ""
     private lateinit var viewModel: AuthViewModel
@@ -40,6 +39,14 @@ class LoginActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val deviceState = OneSignal.getDeviceState()
+        if (deviceState != null) {
+            playerId = deviceState.userId ?: ""
+            Log.d("OneSignal", "Player ID1: $playerId")
+        }
+        val tags = JSONObject()
+        tags.put("user_type", "staff")
+        OneSignal.sendTags(tags)
         initViewModel()
         handleRequestOtpBtn()
         observeGenerateOtpResponse()
@@ -185,7 +192,7 @@ class LoginActivity : BaseActivity() {
             } else if (Pattern.matches("[0-5].*", getMobileNumber())) {
                 ToastUtils.showErrorCustomToast(this, "Please Enter Valid Mobile Number..")
             } else {
-                var loginApiRequest = LoginApiRequest(getMobileNumber(), "not_verified", "1234")
+                var loginApiRequest = LoginApiRequest(getMobileNumber(), "not_verified", playerId)
                 viewModel.generateOtp(loginApiRequest)
             }
         }

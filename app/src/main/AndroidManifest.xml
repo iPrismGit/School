@@ -190,6 +190,12 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="channel" />
+        <meta-data
+            android:name="com.onesignal.NotificationServiceExtension"
+            android:value="com.iprism.school.utils.OneSignalServiceNotifications" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
