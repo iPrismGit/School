@@ -77,6 +77,17 @@ class AddAttendanceActivity : BaseActivity() {
             }
         }
 
+    private val cameraPermissionRequest =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) {
+                if (::codeScanner.isInitialized) {
+                    codeScanner.startPreview()
+                }
+            } else {
+                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,6 +106,7 @@ class AddAttendanceActivity : BaseActivity() {
         initViewModel()
         setupScanner()
         setupClicks()
+        checkCameraPermissionAndRequest()
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         checkLocationPermissionAndFetch()
         observeInsertAttendanceResponse()
@@ -135,6 +147,21 @@ class AddAttendanceActivity : BaseActivity() {
         currentTime = LocalTime.now().format(formatter)
 
         Log.d("TIME", "Current Time: $currentTime")
+    }
+
+    private fun checkCameraPermissionAndRequest() {
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                codeScanner.startPreview()
+            }
+
+            else -> {
+                cameraPermissionRequest.launch(Manifest.permission.CAMERA)
+            }
+        }
     }
 
     private fun setupClicks() {

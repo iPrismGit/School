@@ -36,11 +36,6 @@ class MedicationAndNotesActivity : BaseActivity() {
         enableEdgeToEdge()
         binding = ActivityMedicationAndNotesBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
         planId = intent.getStringExtra("planId").toString()
         studentId = intent.getStringExtra("studentId").toString()
         type = intent.getStringExtra("type").toString()
@@ -85,7 +80,7 @@ class MedicationAndNotesActivity : BaseActivity() {
                 }
             } else {
                 if (getNotes().isEmpty()) {
-                    ToastUtils.showErrorCustomToast(this, "Please Enter Notes Message..!")
+                    ToastUtils.showErrorCustomToast(this, "Please Enter Notes..!")
                 } else {
                     var request = DayCareApiRequest(
                         userDetails[User.ACADEMIC_YEAR_ID].toString(),
@@ -116,7 +111,7 @@ class MedicationAndNotesActivity : BaseActivity() {
                 is UiState.Success -> {
                     binding.progress.hideProgress()
                     var intent = Intent(this, SuccessActivity::class.java)
-                    intent.putExtra("tag", "$type Added ")
+                    intent.putExtra("tag", "$type Added")
                     startActivity(intent)
                     binding.submitBtn.isEnabled = true
 

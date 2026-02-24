@@ -85,7 +85,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/lato_black"
-                                android:text="Adjust Time Of Update"
+                                android:text="Adjust Time of Update"
                                 android:textColor="@color/black"
                                 android:textSize="16dp" />
 
@@ -201,8 +201,8 @@
                                             android:background="@android:color/transparent"
                                             android:fontFamily="@font/lato"
                                             android:hint="Enter Message"
-                                            android:inputType="textImeMultiLine"
-                                            android:maxLength="400"
+                                            android:inputType="textMultiLine"
+                                            android:maxLength="300"
                                             android:textColor="@color/black"
                                             android:textSize="14dp" />
 
@@ -221,7 +221,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
-
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -277,8 +276,8 @@
                                             android:background="@android:color/transparent"
                                             android:fontFamily="@font/lato"
                                             android:hint="Enter Note"
-                                            android:inputType="textImeMultiLine"
-                                            android:maxLength="400"
+                                            android:inputType="textMultiLine"
+                                            android:maxLength="500"
                                             android:textColor="@color/black"
                                             android:textSize="14dp" />
 

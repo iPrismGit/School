@@ -78,24 +78,31 @@
             android:exported="false" />
         <activity
             android:name=".activities.AttachmentActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:exported="false" />
         <activity
             android:name=".activities.FoodActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:exported="false" />
         <activity
             android:name=".activities.PlayActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:exported="false" />
         <activity
             android:name=".activities.DiaperActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:exported="false" />
         <activity
             android:name=".activities.MoodActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:exported="false" />
         <activity
             android:name=".activities.MedicationAndNotesActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:exported="false" />
         <activity
             android:name=".activities.NapActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             android:exported="false" />
         <activity
             android:name=".activities.DaycareActivitiesActivity"
@@ -168,10 +175,7 @@
             android:name=".activities.HomeActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".activities.OtpVerificationActivity"
-            android:exported="false"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".activities.LoginActivity"
             android:exported="false"

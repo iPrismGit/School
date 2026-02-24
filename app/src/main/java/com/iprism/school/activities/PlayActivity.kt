@@ -37,11 +37,6 @@ class PlayActivity : BaseActivity() {
         enableEdgeToEdge()
         binding = ActivityPlayBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
         planId = intent.getStringExtra("planId").toString()
         studentId = intent.getStringExtra("studentId").toString()
         type = intent.getStringExtra("type").toString()
@@ -113,6 +108,8 @@ class PlayActivity : BaseActivity() {
                 ToastUtils.showErrorCustomToast(this, "Please Select Time..!")
             } else if (activityType.isEmpty()) {
                 ToastUtils.showErrorCustomToast(this, "Please Select Mood Type..!")
+            }  else if (activityType.equals("Others", true ) && getMessageTime().isEmpty()) {
+                ToastUtils.showErrorCustomToast(this, "Please Enter Message ..!")
             } else {
                 var request = DayCareApiRequest(
                     userDetails[User.ACADEMIC_YEAR_ID].toString(),
@@ -137,7 +134,7 @@ class PlayActivity : BaseActivity() {
                 is UiState.Success -> {
                     binding.progress.hideProgress()
                     var intent = Intent(this, SuccessActivity::class.java)
-                    intent.putExtra("tag", "Activity Added ")
+                    intent.putExtra("tag", "Activity Added")
                     startActivity(intent)
                     binding.submitBtn.isEnabled = true
 

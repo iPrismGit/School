@@ -335,7 +335,7 @@ class StudentLeaveRequestsActivity : BaseActivity() {
 
         approvalBottomSheetBinding.rejectBtn.setOnClickListener {
             if (approvalBottomSheetBinding.reasonTxt.text.toString().trim().isEmpty()) {
-                ToastUtils.showErrorCustomToast(this, "Please Enter Rejection Reason..!")
+                ToastUtils.showErrorCustomToast(this, "Please Enter Reason for Rejection..!")
             } else {
                 var request = LeaveRequestApiRequest(
                     userDetails[User.SCHOOL_ID].toString(),

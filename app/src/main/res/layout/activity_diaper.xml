@@ -58,7 +58,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ScrollView
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="none">
@@ -247,7 +247,7 @@
                                         android:background="@android:color/transparent"
                                         android:fontFamily="@font/lato"
                                         android:hint="Enter Message"
-                                        android:inputType="textImeMultiLine"
+                                        android:inputType="textMultiLine"
                                         android:maxLength="400"
                                         android:textColor="@color/black"
                                         android:textSize="14dp" />
@@ -261,7 +261,7 @@
                     </LinearLayout>
 
                 </LinearLayout>
-            </ScrollView>
+            </androidx.core.widget.NestedScrollView>
 
         </LinearLayout>
 

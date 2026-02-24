@@ -38,11 +38,6 @@ class FoodActivity : BaseActivity() {
         enableEdgeToEdge()
         binding = ActivityFoodBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
         planId = intent.getStringExtra("planId").toString()
         studentId = intent.getStringExtra("studentId").toString()
         type = intent.getStringExtra("type").toString()
@@ -126,7 +121,9 @@ class FoodActivity : BaseActivity() {
                 ToastUtils.showErrorCustomToast(this, "Please Select Time..!")
             } else if (percentage.isEmpty()) {
                 ToastUtils.showErrorCustomToast(this, "Please Select Percentage..!")
-            } else {
+            }  else if (foodType.isEmpty()) {
+                ToastUtils.showErrorCustomToast(this, "Please Select Food Type..!")
+            }else {
                 var request = DayCareApiRequest(
                     userDetails[User.ACADEMIC_YEAR_ID].toString(),
                     percentage, foodType, userDetails[User.SCHOOL_ID].toString(), id, "",

@@ -51,7 +51,6 @@ class AttachmentActivity : BaseActivity() {
     private var studentId = ""
     private var type = ""
     private var id = ""
-    private var diaperType = ""
     private val REQUEST_IMAGE_CAPTURE = 1
     private val REQUEST_CAMERA_PERMISSION = 100
     private var profileUri: Uri? = null
@@ -151,7 +150,7 @@ class AttachmentActivity : BaseActivity() {
                 is UiState.Success -> {
                     binding.progress.hideProgress()
                     var intent = Intent(this, SuccessActivity::class.java)
-                    intent.putExtra("tag", "Attachment Added ")
+                    intent.putExtra("tag", "Attachment Added")
                     startActivity(intent)
                     binding.submitBtn.isEnabled = true
 

@@ -36,11 +36,7 @@ class DiaperActivity : BaseActivity() {
         enableEdgeToEdge()
         binding = ActivityDiaperBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
         planId = intent.getStringExtra("planId").toString()
         studentId = intent.getStringExtra("studentId").toString()
         type = intent.getStringExtra("type").toString()
@@ -119,7 +115,7 @@ class DiaperActivity : BaseActivity() {
                 is UiState.Success -> {
                     binding.progress.hideProgress()
                     var intent = Intent(this, SuccessActivity::class.java)
-                    intent.putExtra("tag", "Diaper Changed ")
+                    intent.putExtra("tag", "Diaper Changed")
                     startActivity(intent)
                     binding.submitBtn.isEnabled = true
 

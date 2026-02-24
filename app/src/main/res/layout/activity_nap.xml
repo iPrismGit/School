@@ -311,7 +311,7 @@
                                         android:background="@android:color/transparent"
                                         android:fontFamily="@font/lato"
                                         android:hint="Enter Message"
-                                        android:inputType="textImeMultiLine"
+                                        android:inputType="textMultiLine"
                                         android:maxLength="400"
                                         android:textColor="@color/black"
                                         android:textSize="14dp" />

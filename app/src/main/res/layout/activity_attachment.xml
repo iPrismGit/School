@@ -130,8 +130,8 @@
                                             android:background="@android:color/transparent"
                                             android:fontFamily="@font/lato"
                                             android:hint="Enter Message"
-                                            android:inputType="textImeMultiLine"
-                                            android:maxLength="400"
+                                            android:inputType="textMultiLine"
+                                            android:maxLength="300"
                                             android:textColor="@color/black"
                                             android:textSize="14dp" />
 
@@ -210,7 +210,7 @@
                                             android:background="@android:color/transparent"
                                             android:fontFamily="@font/lato_bold"
                                             android:hint="Upload Document"
-                                            android:text="Upload Document"
+                                            android:text="Upload Attachment"
                                             android:textColor="@color/black"
                                             android:textSize="16dp" />
 

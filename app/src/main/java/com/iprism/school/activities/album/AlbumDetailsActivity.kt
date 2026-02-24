@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
@@ -54,6 +55,7 @@ class AlbumDetailsActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAlbumDetailsBinding.inflate(layoutInflater)
+        enableEdgeToEdge()
         setContentView(binding.root)
         albumId = intent.getStringExtra("albumId").toString()
         albumName = intent.getStringExtra("albumName").toString()
@@ -117,6 +119,8 @@ class AlbumDetailsActivity : BaseActivity() {
                     binding.backIv.isEnabled = true
                     binding.addBtn.isEnabled = true
                     binding.sendBtn.isEnabled = true
+                    selectedImageUris.clear()
+                    updateSelectedImagesLayout()
                     ToastUtils.showSuccessCustomToast(this, "Images Added Successfully..!")
                     loadAlbumImages()
                 }
@@ -215,7 +219,6 @@ class AlbumDetailsActivity : BaseActivity() {
             binding.albumImagesRv.visibility = View.GONE
             binding.noDataTxt.visibility = View.VISIBLE
         }
-        resetImages()
         isLoading = true
         Log.d("AlbumImagesAPI", """ albumId = $albumId
     type = image
@@ -283,25 +286,26 @@ class AlbumDetailsActivity : BaseActivity() {
         binding.albumImagesRv.apply {
             layoutManager = linearLayoutManager
             adapter = albumImagesAdapter
-
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
+
+                    if (dy <= 0) return   // only when scrolling down
+
                     binding.refreshLayout.isEnabled =
                         !binding.albumImagesRv.canScrollVertically(-1)
-                    val visibleItemCount = linearLayoutManager.childCount
+
                     val totalItemCount = linearLayoutManager.itemCount
-                    val firstVisibleItemPosition =
-                        linearLayoutManager.findFirstVisibleItemPosition()
+                    val lastVisibleItemPosition =
+                        linearLayoutManager.findLastVisibleItemPosition()
 
                     if (!isLoading && !isLastPage && albumImagesList.isNotEmpty()) {
-                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-                            && firstVisibleItemPosition >= 0
-                        ) {
+
+                        if (lastVisibleItemPosition >= totalItemCount - 3) {
                             loadMoreItems()
                         }
                     }
-
                 }
             })
             albumImagesAdapter.setupListener(object : OnAlbumClickListener{
