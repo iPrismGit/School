@@ -136,6 +136,7 @@ class CreateAlbumsActivity : BaseActivity() {
                     intent.putExtra("albumId", result.data.id)
                     intent.putExtra("albumName", result.data.title)
                     startActivity(intent)
+                    finish()
                 }
 
                 is UiState.Error -> {

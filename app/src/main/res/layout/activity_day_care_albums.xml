@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:fontFamily="@font/inter_bold"
-            android:text="Album"
+            android:text="Day Care Album"
             android:textColor="@color/black"
             android:textSize="18sp" />
 

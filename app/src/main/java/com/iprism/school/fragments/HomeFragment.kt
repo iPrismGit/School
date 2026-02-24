@@ -193,7 +193,14 @@ class HomeFragment : BaseFragment() {
         handleViewAllMessages()
         handleDigitalContentLo()
         refresh()
+        handleTimeTableLo()
         return binding.root
+    }
+
+    private fun handleTimeTableLo() {
+        binding.timeTableLo.setOnClickListener { view ->
+            ToastUtils.showErrorCustomToast(requireContext(), "This Feature is no Longer Visible..!")
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")

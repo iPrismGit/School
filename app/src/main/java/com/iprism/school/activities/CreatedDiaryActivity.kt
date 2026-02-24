@@ -1,5 +1,6 @@
 package com.iprism.school.activities
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
@@ -75,6 +76,7 @@ class CreatedDiaryActivity : BaseActivity() {
         observeClassesResponse()
         observeSectionsResponse()
         observeDeleteDiaryResponse()
+        handleDateTxt()
         var requestClasses = ClassTeacherApiRequest(
             "",
             userDetails[User.ID].toString(),
@@ -83,6 +85,32 @@ class CreatedDiaryActivity : BaseActivity() {
             "classes"
         )
         attendanceViewModel.fetchClasses(requestClasses)
+    }
+
+    private fun handleDateTxt() {
+        binding.dateTxt.setOnClickListener {
+            openDatePicker()
+        }
+    }
+
+    private fun openDatePicker() {
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { _, selectedYear, selectedMonth, selectedDay ->
+
+                calendar.set(selectedYear, selectedMonth, selectedDay)
+                updateDate()
+
+            },
+            year,
+            month,
+            day
+        )
+
+        datePickerDialog.show()
     }
 
     private fun initViewModel() {

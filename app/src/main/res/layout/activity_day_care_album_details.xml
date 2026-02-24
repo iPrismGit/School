@@ -47,7 +47,7 @@
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:layout_marginTop="4dp"
-                android:text="Album Details" />
+                android:text="Day Care Album Details" />
             <TextView
                 android:visibility="gone"
                 android:layout_width="wrap_content"

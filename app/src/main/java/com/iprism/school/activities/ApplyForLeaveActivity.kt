@@ -289,7 +289,7 @@ class ApplyForLeaveActivity : AppCompatActivity() {
                     binding.progress.hideProgress()
                     binding.submitBtn.isEnabled = false
                     var intent = Intent(this, SuccessActivity::class.java)
-                    intent.putExtra("tag", "Leave Request Sent ")
+                    intent.putExtra("tag", "Leave Request Sent")
                     startActivity(intent)
                 }
 

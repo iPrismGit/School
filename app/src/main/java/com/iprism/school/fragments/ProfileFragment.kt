@@ -65,7 +65,7 @@ class ProfileFragment : BaseFragment() {
                     binding.phoneTxt.text = "Phone Number : " + state.data.response.mobile
                     binding.emailTxt.text = "Email  : " + state.data.response.email
                     binding.addressTxt.text =
-                        "Your Address : " + state.data.response.permanent_address
+                        "Address : " + state.data.response.permanent_address
                     var gender = state.data.response.gender
                     if (gender.equals("1", true)) {
                         gender = "Male"

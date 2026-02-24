@@ -32,8 +32,7 @@ class LeaveRequestsAdapter(var leaveRequests: List<LeaveRequest>) : RecyclerView
     ) {
         var leaveRequest = leaveRequests[position]
         holder.binding.detailsTxt.text = "Details : " + leaveRequest.reason
-        holder.binding.startDateTxt.text = "Start Date : " + leaveRequest.from_date
-        holder.binding.endDateTxt.text = "End Date : " + leaveRequest.to_date
+        holder.binding.dateTxt.text = "Date : " +  leaveRequest.from_date + " - " + leaveRequest.to_date
         if (leaveRequest.status.isEmpty()){
             holder.binding.statusTxt.setTextColor(ContextCompat.getColor(holder.binding.root.context, R.color.black))
             holder.binding.statusTxt.text = "Status : Request Pending"

@@ -79,10 +79,6 @@ class DiaryFragment : BaseFragment() {
     private var diaryType: String = ""
     private var selectedImageUri: Uri? = null
     private var backendDate: String = ""
-    private var isSelectAllActive = false
-
-    lateinit var resultLauncher: ActivityResultLauncher<Intent>
-    lateinit var resultLaunchergallery: ActivityResultLauncher<Intent>
 
     private val selectAllListener =
         CompoundButton.OnCheckedChangeListener { _, isChecked ->
