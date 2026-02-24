@@ -1,5 +1,6 @@
 package com.iprism.school.activities.album
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -13,13 +14,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.activities.ViewImageActivity
 import com.iprism.school.adapters.AlbumImagesAdapter
 import com.iprism.school.databinding.ActivityAlbumDetailsBinding
 import com.iprism.school.interfaces.OnAlbumClickListener
-
 import com.iprism.school.model.albums.AlbumsGallery
 import com.iprism.school.repositories.AlbumsRepository
 import com.iprism.school.utils.ToastUtils
@@ -43,11 +42,9 @@ class AlbumDetailsActivity : BaseActivity() {
     private lateinit var albumsViewModel: AlbumsViewModel
     private lateinit var albumImagesAdapter: AlbumImagesAdapter
     private var albumImagesList = mutableListOf<AlbumsGallery>()
-    private var isFreshLoad = false
     private var isLoading = false
     private var isLastPage = false
     private var currentPage = 1
-    private val limit = 10
     private val selectedImageUris = mutableListOf<Uri>()
     private val MAX_SELECTION = 5
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
@@ -95,10 +92,9 @@ class AlbumDetailsActivity : BaseActivity() {
         handleBack()
         initViewModel()
         setupRecyclerView()
-        observeAlbumsResponse()
+        observeResponse()
         observeInsertAlbumsResponse()
-        loadAlbumImages()
-        handleRefreshLo()
+        fetchAlbumImages()
         handleAddBtn()
         handleSendBtn()
     }
@@ -122,7 +118,12 @@ class AlbumDetailsActivity : BaseActivity() {
                     selectedImageUris.clear()
                     updateSelectedImagesLayout()
                     ToastUtils.showSuccessCustomToast(this, "Images Added Successfully..!")
-                    loadAlbumImages()
+                    currentPage = 1
+                    isLastPage = false
+                    isLoading = false
+                    albumImagesList.clear()
+                    albumImagesAdapter.notifyDataSetChanged()
+                    fetchAlbumImages()
                 }
 
                 is UiState.Error -> {
@@ -204,22 +205,7 @@ class AlbumDetailsActivity : BaseActivity() {
         albumsViewModel = ViewModelProvider(this, factory)[AlbumsViewModel::class.java]
     }
 
-    private fun loadAlbumImages(isFromFilterChange: Boolean = false) {
-
-        if (isLoading) return
-
-        if (isFromFilterChange) {
-            currentPage = 1
-            isLastPage = false
-            isFreshLoad = true
-
-            albumImagesList.clear()
-            albumImagesAdapter.notifyDataSetChanged()
-
-            binding.albumImagesRv.visibility = View.GONE
-            binding.noDataTxt.visibility = View.VISIBLE
-        }
-        isLoading = true
+    fun fetchAlbumImages() {
         Log.d("AlbumImagesAPI", """ albumId = $albumId
     type = image
     page = $currentPage
@@ -243,71 +229,35 @@ class AlbumDetailsActivity : BaseActivity() {
         )
     }
 
-
-    private fun refreshItems() {
-        currentPage = 1
-        isLastPage = false
-        isLoading = false
-        albumImagesList.clear()
-        albumImagesAdapter.notifyDataSetChanged()
-        loadAlbumImages(isFromFilterChange = true)
-    }
-
     private fun loadMoreItems() {
         if (isLastPage || isLoading) return
         isLoading = true
         currentPage++
-        loadAlbumImages()
-    }
-
-    private fun resetImages() {
-        currentPage = 1
-        isLastPage = false
-        isLoading = false
-        albumImagesList.clear()
-        albumImagesAdapter.notifyDataSetChanged()
-        binding.albumImagesRv.visibility = View.GONE
-        binding.noDataTxt.visibility = View.VISIBLE
-    }
-
-    private fun handleRefreshLo() {
-        binding.refreshLayout.setOnRefreshListener(
-            SwipeRefreshLayout.OnRefreshListener {
-                refreshItems()
-                binding.refreshLayout.isRefreshing = false
-            }
-        )
+        albumImagesAdapter.showLoadingFooter()
+        fetchAlbumImages()
     }
 
     private fun setupRecyclerView() {
-        albumImagesAdapter = AlbumImagesAdapter(this, albumImagesList)
+        albumImagesAdapter = AlbumImagesAdapter(this, albumImagesList as ArrayList<AlbumsGallery?>)
         val linearLayoutManager = GridLayoutManager(this, 3)
-
         binding.albumImagesRv.apply {
             layoutManager = linearLayoutManager
             adapter = albumImagesAdapter
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-
-                    if (dy <= 0) return   // only when scrolling down
-
-                    binding.refreshLayout.isEnabled =
-                        !binding.albumImagesRv.canScrollVertically(-1)
-
+                    val visibleItemCount = linearLayoutManager.childCount
                     val totalItemCount = linearLayoutManager.itemCount
-                    val lastVisibleItemPosition =
-                        linearLayoutManager.findLastVisibleItemPosition()
-
-                    if (!isLoading && !isLastPage && albumImagesList.isNotEmpty()) {
-
-                        if (lastVisibleItemPosition >= totalItemCount - 3) {
+                    val firstVisibleItemPosition =
+                        linearLayoutManager.findFirstVisibleItemPosition()
+                    if (!isLoading && !isLastPage) {
+                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
                             loadMoreItems()
                         }
                     }
                 }
             })
+        }
             albumImagesAdapter.setupListener(object : OnAlbumClickListener{
                 override fun onCoverClick(albumId: String, albumName: String) {
                     var intent = Intent(this@AlbumDetailsActivity, ViewImageActivity::class.java)
@@ -319,11 +269,9 @@ class AlbumDetailsActivity : BaseActivity() {
             })
         }
 
-    }
-
-    private fun observeAlbumsResponse() {
+    @SuppressLint("NotifyDataSetChanged")
+    private fun observeResponse() {
         albumsViewModel.uploadMediaResponse.observe(this) { result ->
-
             when (result) {
                 is UiState.Loading -> {
                     if (currentPage == 1) {
@@ -332,49 +280,26 @@ class AlbumDetailsActivity : BaseActivity() {
                 }
 
                 is UiState.Success -> {
+                    binding.noDataTxt.visibility = View.GONE
                     binding.progress.hideProgress()
                     isLoading = false
-
-                    val newAlbumCovers = result.data.albums_gallery
-
-                    if (newAlbumCovers.isNotEmpty()) {
-
-                        if (isFreshLoad) {
-                            albumImagesList.clear()
-                            isFreshLoad = false
-                        }
-
-                        albumImagesList.addAll(newAlbumCovers)
+                    albumImagesAdapter.removeLoadingFooter()
+                    val newBookings = result.data.albums_gallery
+                    if (newBookings.isNotEmpty()) {
+                        albumImagesList.addAll(newBookings)
                         albumImagesAdapter.notifyDataSetChanged()
-
-                        binding.albumImagesRv.visibility = View.VISIBLE
-                        binding.noDataTxt.visibility = View.GONE
-
-                        isLastPage = newAlbumCovers.size < limit
-                    } else {
-                        isLastPage = true
-
-                        if (currentPage == 1) {
-                            albumImagesList.clear()
-                            albumImagesAdapter.notifyDataSetChanged()
-                            binding.albumImagesRv.visibility = View.GONE
-                            binding.noDataTxt.visibility = View.VISIBLE
+                        if (result.data.pagination.total_pages.size == currentPage) {
+                            isLastPage = true
                         }
                     }
-
                 }
 
                 is UiState.Error -> {
                     isLoading = false
+                    albumImagesAdapter.removeLoadingFooter()
                     binding.progress.hideProgress()
-                    if (albumImagesList.isEmpty()) {
-                        binding.albumImagesRv.visibility = View.GONE
+                    if (result.message.equals("no data found", true)) {
                         binding.noDataTxt.visibility = View.VISIBLE
-                        ToastUtils.showErrorCustomToast(this, result.message)
-                    } else {
-                        binding.albumImagesRv.visibility = View.VISIBLE
-                        binding.noDataTxt.visibility = View.GONE
-                        ToastUtils.showErrorCustomToast(this, "There is no more data")
                     }
                 }
             }

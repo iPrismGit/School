@@ -1,5 +1,6 @@
 package com.iprism.school.activities.album
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
@@ -71,46 +72,46 @@ class DayCareAlbumDetailsActivity : BaseActivity() {
         albumId = intent.getStringExtra("albumId").toString()
         albumName = intent.getStringExtra("albumName").toString()
         binding.titleTxt.text = albumName
-        galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        galleryLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
 
-            if (result.resultCode == Activity.RESULT_OK) {
+                if (result.resultCode == Activity.RESULT_OK) {
 
-                selectedImageUris.clear()
-                val data = result.data
+                    selectedImageUris.clear()
+                    val data = result.data
 
-                if (data?.clipData != null) {
+                    if (data?.clipData != null) {
 
-                    val count = data.clipData!!.itemCount
+                        val count = data.clipData!!.itemCount
 
-                    if (count > MAX_SELECTION) {
-                        Toast.makeText(
-                            this,
-                            "You can select maximum $MAX_SELECTION images",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        return@registerForActivityResult
+                        if (count > MAX_SELECTION) {
+                            Toast.makeText(
+                                this,
+                                "You can select maximum $MAX_SELECTION images",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            return@registerForActivityResult
+                        }
+
+                        for (i in 0 until count) {
+                            selectedImageUris.add(data.clipData!!.getItemAt(i).uri)
+                        }
+
+                    } else if (data?.data != null) {
+                        selectedImageUris.add(data.data!!)
                     }
 
-                    for (i in 0 until count) {
-                        selectedImageUris.add(data.clipData!!.getItemAt(i).uri)
-                    }
-
-                } else if (data?.data != null) {
-                    selectedImageUris.add(data.data!!)
+                    updateSelectedImagesLayout()
                 }
-
-                updateSelectedImagesLayout()
             }
-        }
 
         handleBack()
         initViewModel()
         setupRecyclerView()
-        observeAlbumsResponse()
+        observeResponse()
         observeInsertAlbumsResponse()
         observeDayCareStatusResponse()
-        loadAlbumImages()
-        handleRefreshLo()
+        fetchAlbumImages()
         handleAddBtn()
         handleSendBtn()
     }
@@ -131,8 +132,15 @@ class DayCareAlbumDetailsActivity : BaseActivity() {
                     binding.backIv.isEnabled = true
                     binding.addBtn.isEnabled = true
                     binding.sendBtn.isEnabled = true
+                    selectedImageUris.clear()
+                    updateSelectedImagesLayout()
                     ToastUtils.showSuccessCustomToast(this, "Images Added Successfully..!")
-                    loadAlbumImages()
+                    currentPage = 1
+                    isLastPage = false
+                    isLoading = false
+                    albumImagesList.clear()
+                    albumImagesAdapter.notifyDataSetChanged()
+                    fetchAlbumImages()
                 }
 
                 is UiState.Error -> {
@@ -194,13 +202,14 @@ class DayCareAlbumDetailsActivity : BaseActivity() {
 
     private fun handleSendBtn() {
         binding.sendBtn.setOnClickListener { view ->
-            if (selectedImageUris.isEmpty()){
+            if (selectedImageUris.isEmpty()) {
                 ToastUtils.showErrorCustomToast(this, "Please Select Images..!")
-            } else{
+            } else {
                 val albumId = RequestBody.create("text/plain".toMediaType(), albumId)
                 val type = RequestBody.create("text/plain".toMediaType(), "image")
                 val page = RequestBody.create("text/plain".toMediaType(), currentPage.toString())
-                val userId = RequestBody.create("text/plain".toMediaType(), userDetails[User.ID].toString())
+                val userId =
+                    RequestBody.create("text/plain".toMediaType(), userDetails[User.ID].toString())
                 val viewType = RequestBody.create("text/plain".toMediaType(), "insert")
                 val imageParts = prepareImageParts()
                 albumsViewModel.insertDayCareAlbumMedia(
@@ -265,29 +274,15 @@ class DayCareAlbumDetailsActivity : BaseActivity() {
 
     }
 
-    private fun loadAlbumImages(isFromFilterChange: Boolean = false) {
-
-        if (isLoading) return
-
-        if (isFromFilterChange) {
-            currentPage = 1
-            isLastPage = false
-            isFreshLoad = true
-
-            albumImagesList.clear()
-            albumImagesAdapter.notifyDataSetChanged()
-
-            binding.albumImagesRv.visibility = View.GONE
-            binding.noDataTxt.visibility = View.VISIBLE
-        }
-        resetImages()
-        isLoading = true
-        Log.d("AlbumImagesAPI", """ albumId = $albumId
+    fun fetchAlbumImages() {
+        Log.d(
+            "AlbumImagesAPI", """ albumId = $albumId
     type = image
     page = $currentPage
     userId = ${userDetails[User.ID]}
     viewType = view
-""".trimIndent())
+""".trimIndent()
+        )
 
         val albumId = RequestBody.create("text/plain".toMediaType(), albumId)
         val type = RequestBody.create("text/plain".toMediaType(), "image")
@@ -305,85 +300,50 @@ class DayCareAlbumDetailsActivity : BaseActivity() {
         )
     }
 
-    private fun refreshItems() {
-        currentPage = 1
-        isLastPage = false
-        isLoading = false
-        albumImagesList.clear()
-        albumImagesAdapter.notifyDataSetChanged()
-        loadAlbumImages(isFromFilterChange = true)
-    }
-
     private fun loadMoreItems() {
         if (isLastPage || isLoading) return
         isLoading = true
         currentPage++
-        loadAlbumImages()
+        albumImagesAdapter.showLoadingFooter()
+        fetchAlbumImages()
     }
 
-    private fun resetImages() {
-        currentPage = 1
-        isLastPage = false
-        isLoading = false
-        albumImagesList.clear()
-        albumImagesAdapter.notifyDataSetChanged()
-        binding.albumImagesRv.visibility = View.GONE
-        binding.noDataTxt.visibility = View.VISIBLE
-    }
-
-    private fun handleRefreshLo() {
-        binding.refreshLayout.setOnRefreshListener(
-            SwipeRefreshLayout.OnRefreshListener {
-                refreshItems()
-                binding.refreshLayout.isRefreshing = false
-            }
-        )
-    }
 
     private fun setupRecyclerView() {
-        albumImagesAdapter = AlbumImagesAdapter(this, albumImagesList)
+        albumImagesAdapter = AlbumImagesAdapter(this, albumImagesList as ArrayList<AlbumsGallery?>)
         val linearLayoutManager = GridLayoutManager(this, 3)
-
         binding.albumImagesRv.apply {
             layoutManager = linearLayoutManager
             adapter = albumImagesAdapter
-
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    binding.refreshLayout.isEnabled =
-                        !binding.albumImagesRv.canScrollVertically(-1)
                     val visibleItemCount = linearLayoutManager.childCount
                     val totalItemCount = linearLayoutManager.itemCount
                     val firstVisibleItemPosition =
                         linearLayoutManager.findFirstVisibleItemPosition()
-
-                    if (!isLoading && !isLastPage && albumImagesList.isNotEmpty()) {
-                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-                            && firstVisibleItemPosition >= 0
-                        ) {
+                    if (!isLoading && !isLastPage) {
+                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
                             loadMoreItems()
                         }
                     }
-
                 }
-            })
-            albumImagesAdapter.setupListener(object : OnAlbumClickListener{
-                override fun onCoverClick(albumId: String, albumName: String) {
-                    var intent = Intent(this@DayCareAlbumDetailsActivity, ViewImageActivity::class.java)
-                    intent.putExtra("EventImage", albumName)
-                    intent.putExtra("EventName", this@DayCareAlbumDetailsActivity.albumName)
-                    startActivity(intent)
-                }
-
             })
         }
+        albumImagesAdapter.setupListener(object : OnAlbumClickListener {
+            override fun onCoverClick(albumId: String, albumName: String) {
+                var intent = Intent(this@DayCareAlbumDetailsActivity, ViewImageActivity::class.java)
+                intent.putExtra("EventImage", albumName)
+                intent.putExtra("EventName", this@DayCareAlbumDetailsActivity.albumName)
+                startActivity(intent)
+            }
 
+        })
     }
 
-    private fun observeAlbumsResponse() {
+    @SuppressLint("NotifyDataSetChanged")
+    private fun observeResponse() {
         albumsViewModel.uploadDayCareMediaResponse.observe(this) { result ->
-
             when (result) {
                 is UiState.Loading -> {
                     if (currentPage == 1) {
@@ -392,64 +352,41 @@ class DayCareAlbumDetailsActivity : BaseActivity() {
                 }
 
                 is UiState.Success -> {
+                    binding.noDataTxt.visibility = View.GONE
                     binding.progress.hideProgress()
                     isLoading = false
-
-                    val newAlbumCovers = result.data.albums_gallery
-
-                    if (newAlbumCovers.isNotEmpty()) {
-
-                        if (isFreshLoad) {
-                            albumImagesList.clear()
-                            isFreshLoad = false
-                        }
-
-                        albumImagesList.addAll(newAlbumCovers)
+                    albumImagesAdapter.removeLoadingFooter()
+                    val newBookings = result.data.albums_gallery
+                    if (newBookings.isNotEmpty()) {
+                        albumImagesList.addAll(newBookings)
                         albumImagesAdapter.notifyDataSetChanged()
-
-                        binding.albumImagesRv.visibility = View.VISIBLE
-                        binding.noDataTxt.visibility = View.GONE
-
-                        isLastPage = newAlbumCovers.size < limit
-                    } else {
-                        isLastPage = true
-
-                        if (currentPage == 1) {
-                            albumImagesList.clear()
-                            albumImagesAdapter.notifyDataSetChanged()
-                            binding.albumImagesRv.visibility = View.GONE
-                            binding.noDataTxt.visibility = View.VISIBLE
+                        if (result.data.pagination.total_pages.size == currentPage) {
+                            isLastPage = true
                         }
                     }
-
                 }
 
                 is UiState.Error -> {
                     isLoading = false
+                    albumImagesAdapter.removeLoadingFooter()
                     binding.progress.hideProgress()
-                    if (albumImagesList.isEmpty()) {
-                        binding.albumImagesRv.visibility = View.GONE
+                    if (result.message.equals("no data found", true)) {
                         binding.noDataTxt.visibility = View.VISIBLE
-                        ToastUtils.showErrorCustomToast(this, result.message)
-                    } else {
-                        binding.albumImagesRv.visibility = View.VISIBLE
-                        binding.noDataTxt.visibility = View.GONE
-                        ToastUtils.showErrorCustomToast(this, "There is no more data")
                     }
                 }
             }
         }
     }
 
-        private fun handleAddBtn() {
-            binding.addBtn.setOnClickListener(View.OnClickListener {
-                var request = DayCareStatusApiRequest(
-                    userDetails[User.ACADEMIC_YEAR_ID].toString(),
-                    userDetails[User.SCHOOL_ID].toString(), userDetails[User.ID].toString()
-                )
-                dayCareViewModel.fetchDayCareStatus(request)
-            })
-        }
+    private fun handleAddBtn() {
+        binding.addBtn.setOnClickListener(View.OnClickListener {
+            var request = DayCareStatusApiRequest(
+                userDetails[User.ACADEMIC_YEAR_ID].toString(),
+                userDetails[User.SCHOOL_ID].toString(), userDetails[User.ID].toString()
+            )
+            dayCareViewModel.fetchDayCareStatus(request)
+        })
+    }
 
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK)
