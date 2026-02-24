@@ -13,6 +13,7 @@ import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import com.iprism.school.base.BaseFragment
 import com.iprism.school.R
@@ -34,6 +35,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.activities.AboutUsActivity
@@ -137,6 +139,9 @@ class HomeFragment : BaseFragment() {
                 }
             }
         })
+        binding.refreshLayout.setColorSchemeColors(
+            ContextCompat.getColor(requireContext(), R.color.blue1)
+        )
 
         initViewModel()
         observeAcademicYearsResponse()
@@ -187,7 +192,24 @@ class HomeFragment : BaseFragment() {
         fetchLeaveRequestCount()
         handleViewAllMessages()
         handleDigitalContentLo()
+        refresh()
         return binding.root
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun refresh() {
+        binding.refreshLayout.setOnRefreshListener(
+            SwipeRefreshLayout.OnRefreshListener {
+                var request = HomePageApiRequest(
+                    userDetails[User.ACADEMIC_YEAR_ID].toString(),
+                    userDetails[User.SCHOOL_ID].toString(),
+                    userDetails[User.ID].toString()
+                )
+                Log.d("HomePageRequest", request.toString())
+                homePageViewModel.fetchHomePageDetails(request)
+                binding.refreshLayout.isRefreshing = false
+            }
+        )
     }
 
     private fun handleDigitalContentLo() {
@@ -710,7 +732,7 @@ class HomeFragment : BaseFragment() {
         classTypesBinding.classTypeRg.setOnCheckedChangeListener { _, checkedId ->
             navigationFrom = when (checkedId) {
                 R.id.daycare_rb -> "day_care_attendance"
-                R.id.classes_rb -> ""
+                R.id.classes_rb -> "classes"
                 else -> ""
             }
         }
@@ -722,21 +744,22 @@ class HomeFragment : BaseFragment() {
 
         classTypesBinding.continueBtn.setOnClickListener { view ->
             if (navigationFrom.isEmpty()) {
-                startActivity(Intent(context, AttendanceActivity::class.java))
+                ToastUtils.showErrorCustomToast(requireContext(), "Please Select Class or Day Care")
             } else if (navigationFrom.equals("day_care_attendance", true)) {
-
                 val request = DayCareStatusApiRequest(
                     userDetails[User.ACADEMIC_YEAR_ID].toString(),
                     userDetails[User.SCHOOL_ID].toString(),
                     userDetails[User.ID].toString()
                 )
-
                 dayCareViewModel.fetchDayCareStatus(request)
+                bottomSheetDialog.dismiss()
+            } else if (navigationFrom.equals("classes", true)) {
+                startActivity(Intent(context, AttendanceActivity::class.java))
+                bottomSheetDialog.dismiss()
             }
-            bottomSheetDialog.dismiss()
+
         }
         classTypesBinding.crossIv.setOnClickListener {
-
             bottomSheetDialog.dismiss()
         }
 

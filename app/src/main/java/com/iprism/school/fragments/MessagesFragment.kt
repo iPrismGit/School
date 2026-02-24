@@ -7,10 +7,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.iprism.school.R
 import com.iprism.school.activities.ChatActivity
 import com.iprism.school.activities.InitiateMessageActivity
 import com.iprism.school.adapters.MessagesAdapter
@@ -44,6 +46,9 @@ class MessagesFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentMessagesBinding.inflate(inflater, container, false)
+        binding.refreshLayout.setColorSchemeColors(
+            ContextCompat.getColor(requireContext(), R.color.blue1)
+        )
         return binding.root
     }
 

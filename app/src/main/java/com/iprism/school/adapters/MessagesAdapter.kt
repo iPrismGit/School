@@ -4,6 +4,7 @@ import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.iprism.school.R
@@ -65,6 +66,7 @@ class MessagesAdapter(private val messages: ArrayList<MessageThread?>) :
                     if (message.student_image.isNotEmpty()) {
                         Glide.with(context)
                             .load(Constants.IMAGES_URL + message.student_image)
+                            .error(ContextCompat.getDrawable(context, R.drawable.message_profile))
                             .into(profileIv)
                     } else {
                         profileIv.setImageResource(R.drawable.message_profile)

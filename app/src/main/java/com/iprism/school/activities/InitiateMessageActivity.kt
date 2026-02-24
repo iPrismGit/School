@@ -168,16 +168,20 @@ class InitiateMessageActivity : BaseActivity() {
             bottomSheetDialog.dismiss()
         }
         studentsBottomSheetBinding.btnSave.setOnClickListener { view ->
-            binding.selectStudentTxt.text = studentName
-            Log.d("StudentDetails", studentName + ", " + value)
-            bottomSheetDialog.dismiss()
+            if (studentId.isEmpty() || studentId.equals("-1", true)){
+                ToastUtils.showErrorCustomToast(this, "Please Select Student..!")
+            } else{
+                binding.selectStudentTxt.text = studentName
+                Log.d("StudentDetails", studentId + ", " + studentName + ", " + value)
+                bottomSheetDialog.dismiss()
+            }
+
         }
         studentsBottomSheetBinding.tvSelectAll.setOnClickListener { view ->
             studentsAdapter.selectAllStudents()
         }
         bottomSheetDialog.show()
     }
-
 
     private fun initializeBottomSheet() {
         currentPage = 1
@@ -213,7 +217,7 @@ class InitiateMessageActivity : BaseActivity() {
                 ToastUtils.showErrorCustomToast(this, "Please Select Section..!")
             } else if (studentId.isEmpty() || studentId.equals("-1", true)) {
                 ToastUtils.showErrorCustomToast(this, "Please Select Students..!")
-            } else if (getMessage().isEmpty() || selectedFileUri == null) {
+            } else if (getMessage().isEmpty() && selectedFileUri == null) {
                 ToastUtils.showErrorCustomToast(this, "Please Enter Message or Select File..!")
             } else {
                 var request = MessagesApiRequest(
@@ -266,7 +270,7 @@ class InitiateMessageActivity : BaseActivity() {
                 is UiState.Success -> {
                     binding.progress.hideProgress()
                     var intent = Intent(this, SuccessActivity::class.java)
-                    intent.putExtra("tag", "Message Sent ")
+                    intent.putExtra("tag", "Message Sent")
                     startActivity(intent)
                 }
 
@@ -564,7 +568,6 @@ class InitiateMessageActivity : BaseActivity() {
     private fun getMessage(): String {
         return binding.messageTxt.text.toString().trim()
     }
-
 
     private fun handleSelectedFile(uri: Uri) {
         selectedFileUri = uri
