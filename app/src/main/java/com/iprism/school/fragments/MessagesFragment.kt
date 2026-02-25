@@ -176,7 +176,9 @@ class MessagesFragment : BaseFragment() {
         viewModel.messagesResponse.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
-                    binding.progress.showProgress()
+                    if (currentPage == 1){
+                        binding.progress.showProgress()
+                    }
                 }
 
                 is UiState.Success -> {

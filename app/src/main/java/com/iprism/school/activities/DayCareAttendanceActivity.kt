@@ -326,7 +326,9 @@ class DayCareAttendanceActivity : BaseActivity() {
         attendanceViewModel.response.observe(this) { state ->
             when (state) {
                 is UiState.Loading -> {
-                    binding.progress.showProgress()
+                    if (currentPage == 1){
+                        binding.progress.showProgress()
+                    }
                 }
 
                 is UiState.Success -> {

@@ -31,6 +31,8 @@ import com.iprism.school.model.classteachermodel.Class
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.classteachermodel.Section
 import com.iprism.school.model.classteachermodel.Student
+import com.iprism.school.model.daycare.DayCareAttendanceApiRequest
+import com.iprism.school.model.daycare.SelectedStudent
 import com.iprism.school.utils.DateTimeUtils
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.UiState
@@ -48,16 +50,12 @@ class AttendanceActivity : BaseActivity() {
     private lateinit var attendanceViewModel: AttendanceViewModel
     private var attendanceStatus: String = ""
     private var selectValue: String = "single"
-    private val selectedStudentIds = mutableSetOf<String>()
-    private var isSelectAllChecked = false
-    private var selectedAttendanceList = mutableListOf<AttendanceStudent>()
     private lateinit var studentsAdapter: AttandanceStudentsAdapter
-    private var studentsList = mutableListOf<Student>()
-    private var selectedStudentsList = mutableListOf<AttendanceStudent>()
+    private var studentsList = mutableListOf<Student?>()
     private var isLoading = false
     private var isLastPage = false
     private var currentPage = 1
-    private val limit = 10
+    private var selectedStudents = mutableListOf<AttendanceStudent>()
     private var classId: String = "-1"
     private var sectionId: String = "-1"
     private var currentDate: String = ""
@@ -65,9 +63,23 @@ class AttendanceActivity : BaseActivity() {
     private var notification_parent: String? = "no"
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private lateinit var markAttendanceBinding: AllStudentsPresentBottomSheetBinding
-    private val selectAllListener =
+    private val selectAllListener: CompoundButton.OnCheckedChangeListener =
         CompoundButton.OnCheckedChangeListener { _, isChecked ->
-            studentsAdapter.selectAll(isChecked)
+
+            if (attendanceStatus.equals("attendance_not_given", true)) {
+
+                if (isChecked) {
+                    studentsAdapter.selectAll()
+                } else {
+                    studentsAdapter.clearAll()
+                }
+
+            } else {
+                binding.checkBoxAll.setOnCheckedChangeListener(null)
+                binding.checkBoxAll.isChecked = false
+                binding.checkBoxAll.setOnCheckedChangeListener(selectAllListener)
+                ToastUtils.showErrorCustomToast(this, "Attendance Already Given..!")
+            }
         }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -88,8 +100,7 @@ class AttendanceActivity : BaseActivity() {
         observeClassesResponse()
         observeSectionsResponse()
         setupRecyclerView()
-        observeStudentsResponse()
-        handleRefreshLo()
+        setupObservers()
         observeAttendanceResponse()
         binding.checkBoxAll.setOnCheckedChangeListener(selectAllListener)
         var requestClasses = ClassTeacherApiRequest(
@@ -105,36 +116,6 @@ class AttendanceActivity : BaseActivity() {
             Log.d("NotifyValue", "Notify is: $notification_parent")
         }
 
-        binding.checkBoxAll.setOnCheckedChangeListener { _, isChecked ->
-
-            if (attendanceStatus != "attendance_not_given") {
-                ToastUtils.showErrorCustomToast(
-                    this,
-                    "Attendance already given, please select students manually to update"
-                )
-                binding.checkBoxAll.isChecked = false
-                return@setOnCheckedChangeListener
-            }
-
-            isSelectAllChecked = isChecked
-
-            studentsList.forEach { it.isSelected = isChecked }
-            studentsAdapter.notifyDataSetChanged()
-            selectedAttendanceList.clear()
-            if (isChecked) {
-
-                studentsList.forEach {
-                    selectedAttendanceList.add(AttendanceStudent(it.id))
-                }
-                selectValue = "all"
-            } else {
-                selectValue = "single"
-            }
-
-            Log.d("SelectedAttendance", selectedAttendanceList.toString())
-            Log.d("SelectValue", selectValue)
-        }
-
     }
 
     private fun resetStudentsData() {
@@ -142,50 +123,41 @@ class AttendanceActivity : BaseActivity() {
         isLastPage = false
         isLoading = false
         studentsList.clear()
-        selectedStudentsList.clear()
-        selectedAttendanceList.clear()
+        selectedStudents.clear()
+        binding.checkBoxAll.isChecked = false
         studentsAdapter.notifyDataSetChanged()
         binding.studentAttendanceRv.visibility = View.GONE
         binding.noDataTxt.visibility = View.VISIBLE
     }
 
-    private fun loadStudents() {
-        var request = AttendanceStudentsApiRequest(
-            userDetails[User.ACADEMIC_YEAR_ID].toString(), "", "",
-            userDetails[User.SCHOOL_ID].toString(), classId, backendDate, sectionId,
-            selectedStudentsList, userDetails[User.ID].toString(), "view", "", currentPage
+    private fun fetchStudents() {
+        val request = AttendanceStudentsApiRequest(
+            userDetails[User.ACADEMIC_YEAR_ID]!!,
+            "",
+            "",
+            userDetails[User.SCHOOL_ID]!!,
+            classId,
+            backendDate,
+            sectionId,
+            selectedStudents,
+            userDetails[User.ID]!!,
+            "view",
+            selectValue,
+            currentPage
         )
         attendanceViewModel.fetchStudents(request)
-        Log.d("StudentsFetchRequest", request.toString())
+        Log.d("requestLoading", request.toString())
     }
 
-    private fun refreshItems() {
-        currentPage = 1
-        isLastPage = false
-        isLoading = false
-        studentsList.clear()
-        studentsAdapter.notifyDataSetChanged()
-        loadStudents()
-    }
-
-    private fun loadMoreItems() {
-        if (isLastPage || isLoading) return
+    private fun loadMoreTutorials() {
         isLoading = true
-        currentPage++
-        loadStudents()
-    }
-
-    private fun handleRefreshLo() {
-        binding.refreshLayout.setOnRefreshListener(
-            SwipeRefreshLayout.OnRefreshListener {
-                refreshItems()
-                binding.refreshLayout.isRefreshing = false
-            }
-        )
+        currentPage += 1
+        studentsAdapter.showLoadingFooter()
+        fetchStudents()
     }
 
     private fun setupRecyclerView() {
-        studentsAdapter = AttandanceStudentsAdapter(this, studentsList)
+        studentsAdapter = AttandanceStudentsAdapter(studentsList as ArrayList<Student?>)
         val linearLayoutManager = LinearLayoutManager(this)
 
         binding.studentAttendanceRv.apply {
@@ -195,41 +167,29 @@ class AttendanceActivity : BaseActivity() {
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    binding.refreshLayout.isEnabled =
-                        !binding.studentAttendanceRv.canScrollVertically(-1)
                     val visibleItemCount = linearLayoutManager.childCount
                     val totalItemCount = linearLayoutManager.itemCount
                     val firstVisibleItemPosition =
                         linearLayoutManager.findFirstVisibleItemPosition()
-
-                    if (!isLoading && !isLastPage && studentsList.isNotEmpty()) {
-                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-                            && firstVisibleItemPosition >= 0
-                        ) {
-                            loadMoreItems()
+                    if (!isLoading && !isLastPage) {
+                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
+                            loadMoreTutorials()
                         }
                     }
-
                 }
             })
 
             studentsAdapter.setupListener(object : OnAttendanceClickListener {
-
                 override fun onAttendanceChanged(
-                    selectedIds: List<String>,
-                    isAllSelected: Boolean
+                    selectedIds: ArrayList<AttendanceStudent>,
+                    type: String
                 ) {
-
+                    selectValue = type
+                    selectedStudents = selectedIds
+                    Log.d("ATTENDANCE_LIST", "$selectedStudents , $selectValue")
                     binding.checkBoxAll.setOnCheckedChangeListener(null)
-                    binding.checkBoxAll.isChecked = isAllSelected
+                    binding.checkBoxAll.isChecked = (type == "all")
                     binding.checkBoxAll.setOnCheckedChangeListener(selectAllListener)
-
-                    selectedAttendanceList.clear()
-                    selectedIds.forEach {
-                        selectedAttendanceList.add(AttendanceStudent(it))
-                    }
-                    selectValue = "single"
-                    Log.d("SelectedIdsList", selectedAttendanceList.toString())
                 }
 
             })
@@ -238,10 +198,9 @@ class AttendanceActivity : BaseActivity() {
 
     }
 
-    private fun observeStudentsResponse() {
-        attendanceViewModel.studentsResponse.observe(this) { result ->
-
-            when (result) {
+    private fun setupObservers() {
+        attendanceViewModel.studentsResponse.observe(this) { state ->
+            when (state) {
                 is UiState.Loading -> {
                     if (currentPage == 1) {
                         binding.progress.showProgress()
@@ -249,47 +208,33 @@ class AttendanceActivity : BaseActivity() {
                 }
 
                 is UiState.Success -> {
+                    binding.noDataTxt.visibility = View.GONE
+                    binding.studentAttendanceRv.visibility = View.VISIBLE
                     binding.progress.hideProgress()
                     isLoading = false
-                    attendanceStatus = result.data.attendance_status
-                    val newStudents = result.data.students
-
-                    if (newStudents.isNotEmpty()) {
-                        selectedStudentsList = studentsList
-                            .filter { it.isSelected }
-                            .map { AttendanceStudent(it.id) }
-                            .toMutableList()
-                        if (isSelectAllChecked) {
-                            newStudents.forEach { it.isSelected = true }
-                        }
-                        studentsList.addAll(newStudents)
+                    attendanceStatus = state.data.attendance_status
+                    studentsAdapter.attendanceStatus = attendanceStatus
+                    studentsAdapter.removeLoadingFooter()
+                    val newBookings = state.data.students
+                    Log.d("StudentsList", state.data.students.toString())
+                    if (newBookings.isNotEmpty()) {
+                        studentsList.addAll(newBookings)
                         studentsAdapter.notifyDataSetChanged()
-                        isLastPage = newStudents.size < limit
-                        binding.studentAttendanceRv.visibility = View.VISIBLE
-                        binding.noDataTxt.visibility = View.GONE
-                    } else {
-                        isLastPage = true
-
-                        if (currentPage == 1) {
-                            studentsList.clear()
-                            studentsAdapter.notifyDataSetChanged()
-                            binding.studentAttendanceRv.visibility = View.GONE
-                            binding.noDataTxt.visibility = View.VISIBLE
+                        studentsAdapter.initializePresentStudents()
+                        if (state.data.pagination.total_pages.size == currentPage) {
+                            isLastPage = true
                         }
                     }
                 }
 
                 is UiState.Error -> {
                     isLoading = false
+                    studentsAdapter.removeLoadingFooter()
                     binding.progress.hideProgress()
-                    if (studentsList.isEmpty()) {
-                        binding.studentAttendanceRv.visibility = View.GONE
+                    ToastUtils.showErrorCustomToast(this, state.message)
+                    if (state.message.equals("no data found", true)) {
                         binding.noDataTxt.visibility = View.VISIBLE
-                        ToastUtils.showErrorCustomToast(this, result.message)
-                    } else {
-                        binding.studentAttendanceRv.visibility = View.VISIBLE
-                        binding.noDataTxt.visibility = View.GONE
-                        ToastUtils.showErrorCustomToast(this, "There is no more data")
+                        binding.studentAttendanceRv.visibility = View.GONE
                     }
                 }
             }
@@ -362,7 +307,8 @@ class AttendanceActivity : BaseActivity() {
                 is UiState.Success -> {
                     markAttendanceBinding.progress.hideProgress()
                     ToastUtils.showSuccessCustomToast(this, "Attendance Marked Successfully..!")
-                    refreshItems()
+                    resetStudentsData()
+                    fetchStudents()
                     bottomSheetDialog.dismiss()
 
                 }
@@ -427,7 +373,7 @@ class AttendanceActivity : BaseActivity() {
                     sectionId = genderTypes[position].section_id.toString()
                     resetStudentsData()
                     if (!sectionId.equals("-1", true)) {
-                        loadStudents()
+                        fetchStudents()
                     }
 
                 }
@@ -444,24 +390,14 @@ class AttendanceActivity : BaseActivity() {
         attendanceViewModel = ViewModelProvider(this, factory)[AttendanceViewModel::class.java]
     }
 
-    private fun handleDateLo() {
-        binding.dateLo.setOnClickListener { view ->
-            DateTimeUtils.getDate(binding.dateTxt, true)
-        }
-    }
-
     private fun handleSaveAttendanceBtn() {
         binding.saveAttendanceBtn.setOnClickListener(View.OnClickListener {
-
-            selectedStudentsList = selectedStudentIds.map {
-                AttendanceStudent(id = it)
-            }.toMutableList()
 
             if (classId.equals("-1", true)) {
                 ToastUtils.showErrorCustomToast(this, "Please Select Class..!")
             } else if (sectionId.equals("-1", true)) {
                 ToastUtils.showErrorCustomToast(this, "Please Select Section..!")
-            } else if (selectValue.equals("single", true) && selectedAttendanceList.isEmpty()) {
+            } else if (selectedStudents.isEmpty()) {
                 ToastUtils.showErrorCustomToast(this, "Please Select Students..!")
             } else {
                 showAttendanceConformationBottomSheet()
@@ -501,7 +437,7 @@ class AttendanceActivity : BaseActivity() {
             var markAttendanceRequest = AttendanceStudentsApiRequest(
                 userDetails[User.ACADEMIC_YEAR_ID].toString(),
                 "", "", userDetails[User.SCHOOL_ID].toString(),
-                classId, backendDate, sectionId, selectedAttendanceList,
+                classId, backendDate, sectionId, selectedStudents,
                 userDetails[User.ID].toString(), "insert", selectValue, 1
             )
             attendanceViewModel.updateStudentsAttendance(markAttendanceRequest)
@@ -518,6 +454,5 @@ class AttendanceActivity : BaseActivity() {
         startActivity(intent)
         finish()
     }
-
 
 }

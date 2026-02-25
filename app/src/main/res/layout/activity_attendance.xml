@@ -62,9 +62,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
 
-
-
-            <LinearLayout
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -72,7 +70,7 @@
                 <LinearLayout
                     android:id="@+id/linearLayout12"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -308,22 +306,15 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical">
 
-                        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                            android:id="@+id/refresh_layout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/student_attendance_rv"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:visibility="gone" />
-
-                        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                                android:layout_width="0dp"
+                                android:layout_height="0dp"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"/>
 
                         <TextView
                             android:id="@+id/no_data_txt"
@@ -332,6 +323,7 @@
                             android:text="@string/no_student_found_please_change_class"
                             android:visibility="gone"
                             android:textSize="18dp"
+                            android:layout_marginVertical="60dp"
                             android:textColor="@color/black"
                             android:fontFamily="@font/inter_semibold"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -339,15 +331,8 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
                 </LinearLayout>
-
-
-            </LinearLayout>
-
-
+        </LinearLayout>
     </LinearLayout>
 
     <!-- Progress -->

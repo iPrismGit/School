@@ -18,6 +18,6 @@ data class AttendanceStudentsApiRequest(
 
 data class AttendanceStudent(
 
-    val id: String
+    val id: Int
 
 )
