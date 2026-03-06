@@ -32,7 +32,7 @@ class CalenderAdapter(var context : Context, private val studentList: List<Event
         holder.binding.nameTxt.text  = event.title
         holder.binding.startDateTxt.text  =  "Start Date : " + student.start_date
         holder.binding.endDateTxt.text  = "End Date : " +  student.end_date
-        holder.binding.timeTxt.text  = student.hour + " : " + student.minute + " am"
+        holder.binding.timeTxt.text  = "Time : "+ student.hour + " : " + student.minute  + " " + student.time_zone
         holder.binding.detailsTxt.text  = "Details : " + student.description
 
         holder.binding.imageViewIv.setOnClickListener { view ->

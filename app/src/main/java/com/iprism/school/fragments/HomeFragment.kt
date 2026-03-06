@@ -765,6 +765,8 @@ class HomeFragment : BaseFragment() {
                 bottomSheetDialog.dismiss()
             }
 
+            navigationFrom = ""
+
         }
         classTypesBinding.crossIv.setOnClickListener {
             bottomSheetDialog.dismiss()

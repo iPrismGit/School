@@ -147,6 +147,7 @@ class MessagesFragment : BaseFragment() {
                     type: String,
                     studentId: String
                 ) {
+                    Log.d("MessageDetails", threadId + ", " + name + ", " + image + ", " + type + ", " + studentId)
                     var intent = Intent(requireContext(), ChatActivity::class.java)
                     intent.putExtra("threadId", threadId)
                     intent.putExtra("name", name)
@@ -154,6 +155,7 @@ class MessagesFragment : BaseFragment() {
                     intent.putExtra("messageType", type)
                     intent.putExtra("studentId", studentId)
                     startActivity(intent)
+
                 }
 
                 override fun onStudentSelectClick(

@@ -131,7 +131,7 @@ class ChatActivity : BaseActivity() {
                     )
                 ).into(binding.profileIv)
             } else {
-                ContextCompat.getDrawable(this, R.drawable.message_profile)
+                binding.profileIv.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.message_profile))
             }
 
         } else {

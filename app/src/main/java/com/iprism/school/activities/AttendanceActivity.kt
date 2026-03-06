@@ -78,7 +78,14 @@ class AttendanceActivity : BaseActivity() {
                 binding.checkBoxAll.setOnCheckedChangeListener(null)
                 binding.checkBoxAll.isChecked = false
                 binding.checkBoxAll.setOnCheckedChangeListener(selectAllListener)
-                ToastUtils.showErrorCustomToast(this, "Attendance Already Given..!")
+
+                if (classId.equals("-1", true) || sectionId.equals("-1", true)) {
+                    ToastUtils.showErrorCustomToast(this, "Please Select Class And Section..!")
+                } else {
+                    Log.d("AttendanceValue", attendanceStatus)
+                    ToastUtils.showErrorCustomToast(this, "Attendance Already Given..!")
+                }
+
             }
         }
 
@@ -216,7 +223,7 @@ class AttendanceActivity : BaseActivity() {
                     studentsAdapter.attendanceStatus = attendanceStatus
                     studentsAdapter.removeLoadingFooter()
                     val newBookings = state.data.students
-                    Log.d("StudentsList", state.data.students.toString())
+                    Log.d("AttendanceStatus", attendanceStatus)
                     if (newBookings.isNotEmpty()) {
                         studentsList.addAll(newBookings)
                         studentsAdapter.notifyDataSetChanged()
@@ -339,6 +346,7 @@ class AttendanceActivity : BaseActivity() {
                 ) {
                     classId = genderTypes[position].class_id.toString()
                     resetStudentsData()
+                    attendanceStatus = ""
                     if (!classId.equals("-1", true)) {
                         var requestClasses = ClassTeacherApiRequest(
                             classId,
@@ -372,6 +380,7 @@ class AttendanceActivity : BaseActivity() {
                 ) {
                     sectionId = genderTypes[position].section_id.toString()
                     resetStudentsData()
+                    attendanceStatus = ""
                     if (!sectionId.equals("-1", true)) {
                         fetchStudents()
                     }
@@ -445,14 +454,6 @@ class AttendanceActivity : BaseActivity() {
         }
 
         bottomSheetDialog.show()
-    }
-
-    @SuppressLint("GestureBackNavigation")
-    override fun onBackPressed() {
-        super.onBackPressed()
-        val intent = Intent(this@AttendanceActivity, HomeActivity::class.java)
-        startActivity(intent)
-        finish()
     }
 
 }
