@@ -255,6 +255,7 @@ class HomeFragment : BaseFragment() {
             "count",
             ""
         )
+        Log.d("LeaveRequestsRequest", leaveRequestApiRequest.toString())
         leaveRequestViewModel.fetchLeaveRequestsCount(leaveRequestApiRequest)
     }
 

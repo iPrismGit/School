@@ -34,18 +34,12 @@ class AttandanceStudentsAdapter(
         this.listener = listener
     }
 
-    fun initializePresentStudents() {
-        selectedStudents.clear()
-
-        studentList.filterNotNull().forEach {
+    fun addPresentStudents(newStudents: List<Student?>) {
+        newStudents.filterNotNull().forEach {
             if (it.attendance_status.equals("present", true)) {
                 selectedStudents.add(it.id)
             }
         }
-
-        modifiedStudents.clear()
-        notifyDataSetChanged()
-
     }
 
     companion object {

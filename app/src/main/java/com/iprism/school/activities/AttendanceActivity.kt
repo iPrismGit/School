@@ -50,6 +50,7 @@ class AttendanceActivity : BaseActivity() {
     private lateinit var attendanceViewModel: AttendanceViewModel
     private var attendanceStatus: String = ""
     private var selectValue: String = "single"
+    private var isSelectAllChecked = false
     private lateinit var studentsAdapter: AttandanceStudentsAdapter
     private var studentsList = mutableListOf<Student?>()
     private var isLoading = false
@@ -68,6 +69,8 @@ class AttendanceActivity : BaseActivity() {
 
             if (attendanceStatus.equals("attendance_not_given", true)) {
 
+                isSelectAllChecked = isChecked   // ⭐ store state
+
                 if (isChecked) {
                     studentsAdapter.selectAll()
                 } else {
@@ -82,10 +85,8 @@ class AttendanceActivity : BaseActivity() {
                 if (classId.equals("-1", true) || sectionId.equals("-1", true)) {
                     ToastUtils.showErrorCustomToast(this, "Please Select Class And Section..!")
                 } else {
-                    Log.d("AttendanceValue", attendanceStatus)
                     ToastUtils.showErrorCustomToast(this, "Attendance Already Given..!")
                 }
-
             }
         }
 
@@ -150,7 +151,8 @@ class AttendanceActivity : BaseActivity() {
             userDetails[User.ID]!!,
             "view",
             selectValue,
-            currentPage
+            currentPage,
+            ""
         )
         attendanceViewModel.fetchStudents(request)
         Log.d("requestLoading", request.toString())
@@ -158,7 +160,7 @@ class AttendanceActivity : BaseActivity() {
 
     private fun loadMoreTutorials() {
         isLoading = true
-        currentPage += 1
+        currentPage ++
         studentsAdapter.showLoadingFooter()
         fetchStudents()
     }
@@ -223,12 +225,20 @@ class AttendanceActivity : BaseActivity() {
                     studentsAdapter.attendanceStatus = attendanceStatus
                     studentsAdapter.removeLoadingFooter()
                     val newBookings = state.data.students
-                    Log.d("AttendanceStatus", attendanceStatus)
                     if (newBookings.isNotEmpty()) {
+
+                        val startPosition = studentsList.size
                         studentsList.addAll(newBookings)
-                        studentsAdapter.notifyDataSetChanged()
-                        studentsAdapter.initializePresentStudents()
-                        if (state.data.pagination.total_pages.size == currentPage) {
+
+                        studentsAdapter.addPresentStudents(newBookings)
+
+                        studentsAdapter.notifyItemRangeInserted(startPosition, newBookings.size)
+
+                        if (isSelectAllChecked) {
+                            studentsAdapter.selectAll()
+                        }
+
+                        if (newBookings.size < 10) {
                             isLastPage = true
                         }
                     }
@@ -447,7 +457,7 @@ class AttendanceActivity : BaseActivity() {
                 userDetails[User.ACADEMIC_YEAR_ID].toString(),
                 "", "", userDetails[User.SCHOOL_ID].toString(),
                 classId, backendDate, sectionId, selectedStudents,
-                userDetails[User.ID].toString(), "insert", selectValue, 1
+                userDetails[User.ID].toString(), "insert", selectValue, 1, notification_parent!!
             )
             attendanceViewModel.updateStudentsAttendance(markAttendanceRequest)
             Log.d("MarkAttendanceRequest", markAttendanceRequest.toString())

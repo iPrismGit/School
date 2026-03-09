@@ -13,7 +13,9 @@ data class AttendanceStudentsApiRequest(
     val user_id: String,
     val view_type: String,
     val student_type: String,
-    val page : Int
+    val page : Int,
+    val notify_parent : String
+
 )
 
 data class AttendanceStudent(
