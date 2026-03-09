@@ -404,6 +404,7 @@ class HomeFragment : BaseFragment() {
                     binding.progress.hideProgress()
 
                     if (result.data.status.equals("yes", true)) {
+                        Log.d("NavigationFrom", navigationFrom)
 
                         when (navigationFrom) {
 
@@ -506,8 +507,8 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setupMessagesAdapter(messages: ArrayList<MessageThread?>) {
-        var adapter = MessagesAdapter(messages)
-        var linearLayoutManager =
+        val adapter = MessagesAdapter(messages)
+        val linearLayoutManager =
             LinearLayoutManager(requireContext())
         binding.messagesRv.layoutManager = linearLayoutManager
         binding.messagesRv.adapter = adapter
@@ -766,7 +767,7 @@ class HomeFragment : BaseFragment() {
                 bottomSheetDialog.dismiss()
             }
 
-            navigationFrom = ""
+         //   navigationFrom = ""
 
         }
         classTypesBinding.crossIv.setOnClickListener {

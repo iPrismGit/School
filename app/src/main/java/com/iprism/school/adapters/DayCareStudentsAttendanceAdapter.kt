@@ -29,17 +29,12 @@ class DayCareStudentsAttendanceAdapter(
     fun setupListener(listener: OnDayCareStudentClickListener) {
         this.listener = listener
     }
-    fun initializePresentStudents() {
-        selectedStudents.clear()
-
-        students.filterNotNull().forEach {
+    fun addPresentStudents(newStudents: List<Student?>) {
+        newStudents.filterNotNull().forEach {
             if (it.attendance_status.equals("present", true)) {
                 selectedStudents.add(it.id)
             }
         }
-
-        modifiedStudents.clear()
-        notifyDataSetChanged()
     }
 
     inner class DayCareStudentAttendanceViewHolder(val binding: AttendanceItemBinding) :

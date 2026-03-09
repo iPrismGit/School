@@ -49,6 +49,7 @@ class DayCareAttendanceActivity : BaseActivity() {
     private var planId: String = ""
     private var attendanceStatus: String = ""
     private var selectValue: String = "single"
+    private var isSelectAllChecked = false
     private var isLoading = false
     private var isLastPage = false
     private var currentPage = 1
@@ -59,10 +60,13 @@ class DayCareAttendanceActivity : BaseActivity() {
     private var backendDate: String = ""
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private lateinit var markAttendanceBinding: AllStudentsPresentBottomSheetBinding
+    private var notification_parent: String? = "no"
     private val selectAllListener: CompoundButton.OnCheckedChangeListener =
         CompoundButton.OnCheckedChangeListener { _, isChecked ->
 
             if (attendanceStatus.equals("attendance_not_given", true)) {
+
+                isSelectAllChecked = isChecked
 
                 if (isChecked) {
                     studentsAdapter.selectAll()
@@ -74,7 +78,12 @@ class DayCareAttendanceActivity : BaseActivity() {
                 binding.checkBoxAll.setOnCheckedChangeListener(null)
                 binding.checkBoxAll.isChecked = false
                 binding.checkBoxAll.setOnCheckedChangeListener(selectAllListener)
-                ToastUtils.showErrorCustomToast(this, "Attendance Already Given..!")
+
+                if (planId.equals("-1", true)) {
+                    ToastUtils.showErrorCustomToast(this, "Please Select Class And Section..!")
+                } else {
+                    ToastUtils.showErrorCustomToast(this, "Attendance Already Given..!")
+                }
             }
         }
 
@@ -119,6 +128,10 @@ class DayCareAttendanceActivity : BaseActivity() {
         )
         viewModel.fetchDayCarePlans(request)
         binding.checkBoxAll.setOnCheckedChangeListener(selectAllListener)
+        binding.parentNotificationCb.setOnCheckedChangeListener { _, isChecked ->
+            notification_parent = if (isChecked) "yes" else "no"
+            Log.d("NotifyValue", "Notify is: $notification_parent")
+        }
     }
 
     private fun handleSaveBtn() {
@@ -162,12 +175,12 @@ class DayCareAttendanceActivity : BaseActivity() {
                 userDetails[User.SCHOOL_ID].toString(),
                 planId,
                 backendDate,
-                "yes",
                 currentPage,
                 selectValue,
                 selectedStudents,
                 userDetails[User.ID].toString(),
-                "insert"
+                "insert",
+                notification_parent!!
             )
             attendanceViewModel.insertDayCareStudentsAttendance(markAttendanceRequest)
             Log.d("MarkAttendanceRequest", markAttendanceRequest.toString())
@@ -266,7 +279,6 @@ class DayCareAttendanceActivity : BaseActivity() {
         binding.noDataTxt.visibility = View.VISIBLE
     }
 
-
     private fun fetchStudents() {
         val request = DayCareAttendanceApiRequest(
             "",
@@ -274,12 +286,12 @@ class DayCareAttendanceActivity : BaseActivity() {
             userDetails[User.SCHOOL_ID]!!,
             planId,
             backendDate,
-            "",
             currentPage,
             "",
             selectedStudents,
             userDetails[User.ID]!!,
-            "view"
+            "view",
+            ""
         )
         attendanceViewModel.fetchDayCareStudents(request)
         Log.d("requestLoading", request.toString())
@@ -342,11 +354,19 @@ class DayCareAttendanceActivity : BaseActivity() {
                     val newBookings = state.data.response.students
                     Log.d("StudentsList", state.data.response.students.toString())
                     if (newBookings.isNotEmpty()) {
-                        students.addAll(newBookings)
-                        studentsAdapter.notifyDataSetChanged()
 
-                        studentsAdapter.initializePresentStudents()
-                        if (state.data.response.pagination.total_pages.size == currentPage) {
+                        val startPosition = students.size
+                        students.addAll(newBookings)
+
+                        studentsAdapter.addPresentStudents(newBookings)
+
+                        studentsAdapter.notifyItemRangeInserted(startPosition, newBookings.size)
+
+                        if (isSelectAllChecked) {
+                            studentsAdapter.selectAll()
+                        }
+
+                        if (newBookings.size < 10) {
                             isLastPage = true
                         }
                     }
@@ -388,6 +408,7 @@ class DayCareAttendanceActivity : BaseActivity() {
                     ToastUtils.showSuccessCustomToast(this, "Attendance Marked Successfully..!")
                     resetStudentsData()
                     fetchStudents()
+                    binding.parentNotificationCb.isChecked = false
                     bottomSheetDialog.dismiss()
                 }
 

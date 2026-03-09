@@ -1,17 +1,12 @@
 package com.iprism.school.adapters
 
-import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.iprism.school.R
-import com.iprism.school.adapters.DayCareStudentsAttendanceAdapter.DayCareStudentAttendanceViewHolder
 import com.iprism.school.databinding.AttendanceItemBinding
 import com.iprism.school.databinding.ItemLoadingBinding
-import com.iprism.school.databinding.StudentAttandanceItemBinding
 import com.iprism.school.interfaces.OnAttendanceClickListener
 import com.iprism.school.model.classteachermodel.AttendanceStudent
 import com.iprism.school.model.classteachermodel.Student

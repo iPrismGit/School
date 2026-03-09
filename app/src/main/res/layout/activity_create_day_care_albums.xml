@@ -169,7 +169,7 @@
                         android:background="@drawable/edit_text_bg"
                         android:layout_marginTop="12dp"
                         android:hint="Enter Description"
-                        android:inputType="textImeMultiLine"
+                        android:inputType="textMultiLine"
                         android:maxLength="300"
                         android:textColorHint="@color/gray1"
                         android:padding="12dp"
