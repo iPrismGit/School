@@ -2,6 +2,7 @@ package com.iprism.school.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -105,6 +106,7 @@ class NapActivity : BaseActivity() {
                     userDetails[User.ID].toString(), "insert", getWakeupTime()
                 )
                 viewModel.insertDaycareReport(request)
+                Log.d("NapRequest", request.toString())
             }
 
         }

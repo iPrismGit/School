@@ -65,7 +65,7 @@ class DiaryFragment : BaseFragment() {
     private lateinit var attendanceViewModel: AttendanceViewModel
     private lateinit var studentsViewModel: StudentsViewModel
     private lateinit var diariesViewModel: DiaryViewModel
-    private var studentsList = mutableListOf<Student>()
+    private var studentsList = mutableListOf<Student?>()
     private lateinit var studentsAdapter: DiaryStudentsAdapter
     private var isFreshLoad = false
     private var isLoading = false
@@ -80,17 +80,32 @@ class DiaryFragment : BaseFragment() {
     private var selectedImageUri: Uri? = null
     private var backendDate: String = ""
 
-    private val selectAllListener =
-        CompoundButton.OnCheckedChangeListener { _, isChecked ->
+    private val selectAllListener: CompoundButton.OnCheckedChangeListener =
+        CompoundButton.OnCheckedChangeListener { buttonView: CompoundButton, isChecked: Boolean ->
 
-            studentsAdapter.selectAll(isChecked)
+            if (classId != "-1" && sectionId != "-1" && studentsList.isNotEmpty()) {
 
-            if (isChecked) {
-                studentType = "all"
-                binding.detailsLl.visibility = View.VISIBLE
+                studentsAdapter.selectAll(isChecked)
+
+                if (isChecked) {
+                    studentType = "all"
+                    binding.detailsLl.visibility = View.VISIBLE
+                } else {
+                    studentType = "single"
+                    binding.detailsLl.visibility = View.GONE
+                }
+
             } else {
-                studentType = "single"
-                binding.detailsLl.visibility = View.GONE
+
+                binding.selectAllCb.setOnCheckedChangeListener(null)
+                binding.selectAllCb.isChecked = false
+                binding.selectAllCb.setOnCheckedChangeListener(selectAllListener)
+
+                if (classId == "-1" || sectionId == "-1") {
+                    ToastUtils.showErrorCustomToast(requireContext(), "Please select Class and Section")
+                } else if (studentsList.isEmpty()) {
+                    ToastUtils.showErrorCustomToast(requireContext(), "No students available")
+                }
             }
         }
 
@@ -123,7 +138,6 @@ class DiaryFragment : BaseFragment() {
         setupRecyclerView()
         observeStudentsResponse()
         binding.selectAllCb.setOnCheckedChangeListener(selectAllListener)
-        handleRefreshLo()
         handleAllImagesLo()
         handleSaveBtn()
         observeInsertDiaryResponse()
@@ -137,6 +151,17 @@ class DiaryFragment : BaseFragment() {
         attendanceViewModel.fetchClasses(requestClasses)
         handleReportsBtn()
         return binding.root
+    }
+
+    private fun resetStudentsData() {
+        currentPage = 1
+        isLastPage = false
+        isLoading = false
+        studentsList.clear()
+        binding.selectAllCb.isChecked = false
+        studentsAdapter.notifyDataSetChanged()
+        binding.studentsRv.visibility = View.GONE
+        binding.noDataFoundTxt.visibility = View.VISIBLE
     }
 
     private fun handleReportsBtn() {
@@ -252,25 +277,7 @@ class DiaryFragment : BaseFragment() {
         }
     }
 
-    private fun loadStudents(isFromFilterChange: Boolean = false) {
-
-        if (isLoading) return
-
-        if (isFromFilterChange) {
-            currentPage = 1
-            isLastPage = false
-            isFreshLoad = true
-
-            studentsList.clear()
-            studentsAdapter.notifyDataSetChanged()
-
-            binding.studentsRv.visibility = View.GONE
-            binding.noDataFoundTxt.visibility = View.VISIBLE
-        }
-
-        isLoading = true
-        resetStudents()
-
+    private fun loadStudents() {
         val request = StudentsApiRequest(
             userDetails[User.ACADEMIC_YEAR_ID].toString(),
             userDetails[User.SCHOOL_ID].toString(),
@@ -284,41 +291,10 @@ class DiaryFragment : BaseFragment() {
         studentsViewModel.fetchActiveStudents(request)
     }
 
-    private fun refreshItems() {
-        currentPage = 1
-        isLastPage = false
-        isLoading = false
-        studentsList.clear()
-        studentsAdapter.notifyDataSetChanged()
-        loadStudents(isFromFilterChange = true)
-    }
-
     private fun loadMoreItems() {
-        if (isLastPage || isLoading) return
         isLoading = true
         currentPage++
         loadStudents()
-    }
-
-    private fun resetStudents() {
-        currentPage = 1
-        isLastPage = false
-        isLoading = false
-
-        studentsList.clear()
-        studentsAdapter.notifyDataSetChanged()
-
-        binding.studentsRv.visibility = View.GONE
-        binding.noDataFoundTxt.visibility = View.VISIBLE
-    }
-
-    private fun handleRefreshLo() {
-        binding.refreshLayout.setOnRefreshListener(
-            SwipeRefreshLayout.OnRefreshListener {
-                refreshItems()
-                binding.refreshLayout.isRefreshing = false
-            }
-        )
     }
 
     private fun setupRecyclerView() {
@@ -332,39 +308,23 @@ class DiaryFragment : BaseFragment() {
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    binding.refreshLayout.isEnabled =
-                        !binding.studentsRv.canScrollVertically(-1)
                     val visibleItemCount = linearLayoutManager.childCount
                     val totalItemCount = linearLayoutManager.itemCount
                     val firstVisibleItemPosition =
                         linearLayoutManager.findFirstVisibleItemPosition()
-
-                    if (!isLoading && !isLastPage && studentsList.isNotEmpty()) {
-                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-                            && firstVisibleItemPosition >= 0
-                        ) {
+                    if (!isLoading && !isLastPage) {
+                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
                             loadMoreItems()
                         }
                     }
-
                 }
             })
             studentsAdapter.setupListener(object : OnDiaryStudentsClickListener {
                 override fun onItemClick(studentId: String) {
-
-                    // CASE 1: Select All is active
-                    // CASE 1: Select All is active
                     if (binding.selectAllCb.isChecked) {
-
-                        // Unselect all items
-                        studentsList.forEach { it.isSelected = false }
-
-                        // ✅ SELECT CLICKED ITEM
-                        studentsList.find { it.id == studentId }?.isSelected = true
-
+                        studentsList.forEach { it!!.isSelected = false }
+                        studentsList.find { it!!.id == studentId }?.isSelected = true
                         studentsAdapter.notifyDataSetChanged()
-
-                        // Uncheck Select All safely
                         binding.selectAllCb.setOnCheckedChangeListener(null)
                         binding.selectAllCb.isChecked = false
                         binding.selectAllCb.setOnCheckedChangeListener(selectAllListener)
@@ -372,14 +332,19 @@ class DiaryFragment : BaseFragment() {
                         studentType = "single"
                         binding.detailsLl.visibility = View.GONE
 
-                        Log.d("StudentDetails", "Select all broken & selected: $studentId")
+                        Log.d("StudentDetails", "Single selected: $studentId")
+                        val bottomSheet = SingleDiaryIBottomSheetFragment.newInstance(
+                            studentId,
+                            classId,
+                            sectionId,
+                            backendDate
+                        )
+                        bottomSheet.show(parentFragmentManager, "SingleDiaryIBottomSheetFragment")
                         return
                     }
 
-
-                    // CASE 2: Normal single selection
-                    studentsList.forEach { it.isSelected = false }
-                    studentsList.find { it.id == studentId }?.isSelected = true
+                    studentsList.forEach { it!!.isSelected = false }
+                    studentsList.find { it!!.id == studentId }?.isSelected = true
                     studentsAdapter.notifyDataSetChanged()
 
                     studentType = "single"
@@ -419,29 +384,22 @@ class DiaryFragment : BaseFragment() {
                     studentType = ""
                     binding.detailsLl.visibility = View.GONE
                     val newEvents = result.data.students
+                    binding.noDataFoundTxt.visibility = View.GONE
+                    binding.studentsRv.visibility = View.VISIBLE
+                    binding.progress.hideProgress()
+                    isLoading = false
+                    studentsAdapter.removeLoadingFooter()
+                    val newBookings = result.data.students
+                    if (newBookings.isNotEmpty()) {
 
-                    if (newEvents.isNotEmpty()) {
+                        val startPosition = studentsList.size
+                        studentsList.addAll(newBookings)
 
-                        if (isFreshLoad) {
-                            studentsList.clear()
-                            isFreshLoad = false
-                        }
 
-                        studentsList.addAll(newEvents)
-                        studentsAdapter.notifyDataSetChanged()
+                        studentsAdapter.notifyItemRangeInserted(startPosition, newBookings.size)
 
-                        binding.studentsRv.visibility = View.VISIBLE
-                        binding.noDataFoundTxt.visibility = View.GONE
-
-                        isLastPage = newEvents.size < limit
-                    } else {
-                        isLastPage = true
-
-                        if (currentPage == 1) {
-                            studentsList.clear()
-                            studentsAdapter.notifyDataSetChanged()
-                            binding.studentsRv.visibility = View.GONE
-                            binding.noDataFoundTxt.visibility = View.VISIBLE
+                        if (newBookings.size < 10) {
+                            isLastPage = true
                         }
                     }
 
@@ -531,6 +489,7 @@ class DiaryFragment : BaseFragment() {
                     id: Long
                 ) {
                     classId = genderTypes[position].class_id.toString()
+                    resetStudentsData()
                     if (!classId.equals("-1", true)) {
                         var requestClasses = ClassTeacherApiRequest(
                             classId,
@@ -564,6 +523,7 @@ class DiaryFragment : BaseFragment() {
                     id: Long
                 ) {
                     sectionId = genderTypes[position].section_id.toString()
+                    resetStudentsData()
                     if (!sectionId.equals("-1", true)) {
                         loadStudents()
                     }

@@ -76,7 +76,13 @@ class ProfileFragment : BaseFragment() {
                     }
                     binding.genderTxt.text = "Gender : " + gender
                     binding.bloodGroupTxt.text = "Blood Group : " + state.data.response.blood_group
-                    binding.nationalityTxt.text = "Nationality : " + state.data.response.nationality
+                    val nationality = state.data.response.nationality
+                    val formattedNationality = if (!nationality.isNullOrEmpty()) {
+                        nationality.replaceFirstChar { it.uppercase() }
+                    } else {
+                        ""
+                    }
+                    binding.nationalityTxt.text = "Nationality : " + formattedNationality
                     binding.imgProfile.borderColor =
                         ContextCompat.getColor(requireContext(), R.color.blue1)
                     binding.imgProfile.borderWidth = 4

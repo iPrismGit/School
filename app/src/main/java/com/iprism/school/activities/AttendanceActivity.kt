@@ -69,7 +69,7 @@ class AttendanceActivity : BaseActivity() {
 
             if (attendanceStatus.equals("attendance_not_given", true)) {
 
-                isSelectAllChecked = isChecked   // ⭐ store state
+                isSelectAllChecked = isChecked
 
                 if (isChecked) {
                     studentsAdapter.selectAll()
