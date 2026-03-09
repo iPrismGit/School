@@ -54,6 +54,16 @@ class ProfileFragment : BaseFragment() {
                 is UiState.Success -> {
                     binding.mainLo.visibility = View.VISIBLE
                     binding.progress.hideProgress()
+                    user!!.storeNewUserDetails(
+                        state.data.response.id,
+                        state.data.response.first_name,
+                        state.data.response.middle_name,
+                        state.data.response.last_name,
+                        userDetails[User.SCHOOL_ID],
+                        state.data.response.mobile,
+                        userDetails[User.SCHOOL_NAME],
+                        state.data.response.image
+                    )
                     binding.tvName.text =
                         state.data.response.first_name + " " + state.data.response.middle_name + " " + state.data.response.last_name
                     binding.rollTxt.text = state.data.response.job_title
@@ -80,7 +90,7 @@ class ProfileFragment : BaseFragment() {
                     val formattedNationality = if (!nationality.isNullOrEmpty()) {
                         nationality.replaceFirstChar { it.uppercase() }
                     } else {
-                        ""
+                        "Not Given"
                     }
                     binding.nationalityTxt.text = "Nationality : " + formattedNationality
                     binding.imgProfile.borderColor =

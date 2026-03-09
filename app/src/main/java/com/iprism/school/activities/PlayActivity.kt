@@ -107,7 +107,7 @@ class PlayActivity : BaseActivity() {
             if (getStartTime().isEmpty()) {
                 ToastUtils.showErrorCustomToast(this, "Please Select Time..!")
             } else if (activityType.isEmpty()) {
-                ToastUtils.showErrorCustomToast(this, "Please Select Mood Type..!")
+                ToastUtils.showErrorCustomToast(this, "Please Select Activity Type..!")
             }  else if (activityType.equals("Others", true ) && getMessageTime().isEmpty()) {
                 ToastUtils.showErrorCustomToast(this, "Please Enter Message ..!")
             } else {

@@ -31,7 +31,7 @@ class StudentsAdapter(var context: Context, var students : List<Student>) : Adap
         holder.binding.nameTv.text = student.first_name + " " + student.middle_name + " " + student.last_name
         holder.binding.classTv.text = student.class_name + " " + student.section_name
         holder.binding.mobileTv.text = student.primary_mobile
-        if (student.child_image != null && student.child_image.isEmpty()){
+        if (student.child_image != null && student.child_image.isNotEmpty()){
             Glide.with(context).load(Constants.IMAGES_URL + student.child_image).error(ContextCompat.getDrawable(context, com.iprism.school.R.drawable.cartoon_img)).into(holder.binding.proImg)
         } else{
           holder.binding.proImg.setImageDrawable(ContextCompat.getDrawable(context, com.iprism.school.R.drawable.cartoon_img))
