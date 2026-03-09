@@ -1,5 +1,6 @@
 package com.iprism.school.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -35,7 +36,7 @@ class DayCarePlansActivity : BaseActivity() {
     private lateinit var viewModel: DayCareViewModel
     private var planId: String = ""
     private lateinit var studentsAdapter: DayCareStudentsAdapter
-    private var studentsList = mutableListOf<Student>()
+    private var studentsList = mutableListOf<Student?>()
     private var isFreshLoad = false
     private var isLoading = false
     private var isLastPage = false
@@ -56,7 +57,7 @@ class DayCarePlansActivity : BaseActivity() {
         handleBack()
         setupRecyclerView()
         observePlansResponse()
-        observeStudentsResponse()
+        observeResponse()
         handleRefreshLo()
         var request = DayCareApiRequest(
             userDetails[User.ACADEMIC_YEAR_ID].toString(),
@@ -128,7 +129,7 @@ class DayCarePlansActivity : BaseActivity() {
                     id: Long
                 ) {
                     planId = plans[position].cat_id.toString()
-                    resetEvents()
+                    //resetEvents()
                     if (!planId.equals("-1", true)) {
                         loadEvents()
                     }
@@ -141,51 +142,43 @@ class DayCarePlansActivity : BaseActivity() {
     }
 
     private fun setupRecyclerView() {
-        studentsAdapter = DayCareStudentsAdapter(this, studentsList)
+        studentsAdapter = DayCareStudentsAdapter(studentsList as ArrayList<Student?>)
         val linearLayoutManager = LinearLayoutManager(this)
-
         binding.studentsRv.apply {
             layoutManager = linearLayoutManager
             adapter = studentsAdapter
-
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    binding.refreshLayout.isEnabled =
-                        !binding.studentsRv.canScrollVertically(-1)
                     val visibleItemCount = linearLayoutManager.childCount
                     val totalItemCount = linearLayoutManager.itemCount
                     val firstVisibleItemPosition =
                         linearLayoutManager.findFirstVisibleItemPosition()
-
-                    if (!isLoading && !isLastPage && studentsList.isNotEmpty()) {
-                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-                            && firstVisibleItemPosition >= 0
-                        ) {
+                    if (!isLoading && !isLastPage) {
+                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
                             loadMoreItems()
                         }
                     }
-
                 }
-            })
-            studentsAdapter.setupListener(object : OnDayCareClickListener {
-                override fun onItemLick(id: Int) {
-                    Log.d("DayCareIds", id.toString() + ", " + planId)
-                    var intent =
-                        Intent(this@DayCarePlansActivity, DaycareActivitiesActivity::class.java)
-                    intent.putExtra("studentId", id.toString())
-                    intent.putExtra("planId", planId)
-                    startActivity(intent)
-                }
-
             })
         }
+        studentsAdapter.setupListener(object : OnDayCareClickListener {
+            override fun onItemLick(id: Int) {
+                Log.d("DayCareIds", id.toString() + ", " + planId)
+                var intent =
+                    Intent(this@DayCarePlansActivity, DaycareActivitiesActivity::class.java)
+                intent.putExtra("studentId", id.toString())
+                intent.putExtra("planId", planId)
+                startActivity(intent)
+            }
+
+        })
 
     }
 
-    private fun observeStudentsResponse() {
+    @SuppressLint("NotifyDataSetChanged")
+    private fun observeResponse() {
         viewModel.dayCareStudentsResponse.observe(this) { result ->
-
             when (result) {
                 is UiState.Loading -> {
                     if (currentPage == 1) {
@@ -194,72 +187,33 @@ class DayCarePlansActivity : BaseActivity() {
                 }
 
                 is UiState.Success -> {
+                    binding.noDataTxt.visibility = View.GONE
                     binding.progress.hideProgress()
                     isLoading = false
-
-                    val newCirculars = result.data.students
-
-                    if (newCirculars.isNotEmpty()) {
-
-                        if (isFreshLoad) {
-                            studentsList.clear()
-                            isFreshLoad = false
-                        }
-
-                        studentsList.addAll(newCirculars)
+                    studentsAdapter.removeLoadingFooter()
+                    val newBookings = result.data.students
+                    if (newBookings.isNotEmpty()) {
+                        studentsList.addAll(newBookings)
                         studentsAdapter.notifyDataSetChanged()
-
-                        binding.studentsRv.visibility = View.VISIBLE
-                        binding.noDataTxt.visibility = View.GONE
-
-                        isLastPage = newCirculars.size < limit
-                    } else {
-                        isLastPage = true
-
-                        if (currentPage == 1) {
-                            studentsList.clear()
-                            studentsAdapter.notifyDataSetChanged()
-                            binding.studentsRv.visibility = View.GONE
-                            binding.noDataTxt.visibility = View.VISIBLE
+                        if (result.data.pagination.total_pages.size == currentPage) {
+                            isLastPage = true
                         }
                     }
-
                 }
 
                 is UiState.Error -> {
                     isLoading = false
+                    studentsAdapter.removeLoadingFooter()
                     binding.progress.hideProgress()
-                    if (studentsList.isEmpty()) {
-                        binding.studentsRv.visibility = View.GONE
+                    if (result.message.equals("no data found", true)) {
                         binding.noDataTxt.visibility = View.VISIBLE
-                        ToastUtils.showErrorCustomToast(this, result.message)
-                    } else {
-                        binding.studentsRv.visibility = View.VISIBLE
-                        binding.noDataTxt.visibility = View.GONE
-                        ToastUtils.showErrorCustomToast(this, "There is no more data")
                     }
                 }
             }
         }
     }
 
-    private fun loadEvents(isFromFilterChange: Boolean = false) {
-
-        if (isLoading) return
-
-        if (isFromFilterChange) {
-            currentPage = 1
-            isLastPage = false
-            isFreshLoad = true
-
-            studentsList.clear()
-            studentsAdapter.notifyDataSetChanged()
-
-            binding.studentsRv.visibility = View.GONE
-            binding.noDataTxt.visibility = View.VISIBLE
-        }
-
-        isLoading = true
+    private fun loadEvents() {
 
         val request = DayCareApiRequest(
             userDetails[User.ACADEMIC_YEAR_ID].toString(),
@@ -287,26 +241,15 @@ class DayCarePlansActivity : BaseActivity() {
         isLoading = false
         studentsList.clear()
         studentsAdapter.notifyDataSetChanged()
-        loadEvents(isFromFilterChange = true)
+        loadEvents()
     }
 
     private fun loadMoreItems() {
         if (isLastPage || isLoading) return
         isLoading = true
         currentPage++
+        studentsAdapter.showLoadingFooter()
         loadEvents()
-    }
-
-    private fun resetEvents() {
-        currentPage = 1
-        isLastPage = false
-        isLoading = false
-
-        studentsList.clear()
-        studentsAdapter.notifyDataSetChanged()
-
-        binding.studentsRv.visibility = View.GONE
-        binding.noDataTxt.visibility = View.VISIBLE
     }
 
     private fun handleRefreshLo() {
