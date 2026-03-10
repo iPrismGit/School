@@ -30,6 +30,13 @@ class CalenderActivity : BaseActivity() {
         setupButtonsStyling(binding.classesBtn, binding.daycareBtn)
         handleClassesBtn()
         handleDayCareBtn()
+        handleBack()
+    }
+
+    private fun handleBack() {
+        binding.backIv.setOnClickListener { v ->
+            finish()
+        }
     }
 
     private fun handleClassesBtn() {

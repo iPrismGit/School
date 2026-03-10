@@ -1,5 +1,6 @@
 package com.iprism.school.fragments
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -274,6 +275,7 @@ class ClassEventsFragment : BaseFragment() {
         }
     }
 
+    @SuppressLint("SuspiciousIndentation")
     private fun updateDateText() {
         val dateFormat = SimpleDateFormat("MMM, yyyy", Locale.getDefault())
         binding.dateTxt.text = dateFormat.format(selectedCalendar.time)
