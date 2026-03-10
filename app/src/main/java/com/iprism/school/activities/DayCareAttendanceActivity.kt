@@ -1,7 +1,10 @@
 package com.iprism.school.activities
 
+import android.app.DatePickerDialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -40,13 +43,19 @@ import com.iprism.school.viewModels.DayCareViewModel
 import com.iprism.school.viewModels.ViewModelFactory
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class DayCareAttendanceActivity : BaseActivity() {
 
     private lateinit var binding: ActivityDayCareAttendanceBinding
     private lateinit var viewModel: DayCareViewModel
+    private val calendar: Calendar = Calendar.getInstance()
+    private val displayDateFormat =
+        SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
+    private val backendDateFormat =
+        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     private lateinit var attendanceViewModel: DayCareAttendanceViewModel
-    private var planId: String = ""
+    private var planId: String = "-1"
     private var attendanceStatus: String = ""
     private var selectValue: String = "single"
     private var isSelectAllChecked = false
@@ -56,7 +65,6 @@ class DayCareAttendanceActivity : BaseActivity() {
     private var students = mutableListOf<Student>()
     private var selectedStudents = mutableListOf<SelectedStudent>()
     private lateinit var studentsAdapter: DayCareStudentsAttendanceAdapter
-    private var currentDate: String = ""
     private var backendDate: String = ""
     private lateinit var bottomSheetDialog: BottomSheetDialog
     private lateinit var markAttendanceBinding: AllStudentsPresentBottomSheetBinding
@@ -98,15 +106,13 @@ class DayCareAttendanceActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy")
-        currentDate = LocalDate.now().format(formatter)
-        val formatterBackend = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        backendDate = LocalDate.now().format(formatterBackend)
-        binding.dateTxt.text = currentDate
-        handleBack()
         initViewModel()
-        observePlansResponse()
         setUpAdapter()
+        setDate()
+        handleArrowClicks()
+        handleDateLo()
+        handleBack()
+        observePlansResponse()
         setupObservers()
         handleRefresh()
         observeAttendanceResponse()
@@ -192,9 +198,11 @@ class DayCareAttendanceActivity : BaseActivity() {
     private fun handleRefresh() {
         binding.refreshLayout.setOnRefreshListener(
             SwipeRefreshLayout.OnRefreshListener {
-                resetStudentsData()
-                fetchStudents()
-                binding.refreshLayout.isRefreshing = false
+                if (!planId.equals("-1", true)){
+                    fetchStudents()
+                    binding.refreshLayout.isRefreshing = false
+                }
+
             }
         )
     }
@@ -258,7 +266,9 @@ class DayCareAttendanceActivity : BaseActivity() {
                 ) {
                     planId = plans[position].cat_id.toString()
                     resetStudentsData()
-                    fetchStudents()
+                    if (!planId.equals("-1", true)){
+                        fetchStudents()
+                    }
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
@@ -273,8 +283,12 @@ class DayCareAttendanceActivity : BaseActivity() {
         isLoading = false
         students.clear()
         selectedStudents.clear()
+
+        studentsAdapter.resetSelection()
+
         binding.checkBoxAll.isChecked = false
         studentsAdapter.notifyDataSetChanged()
+
         binding.studentAttendanceRv.visibility = View.GONE
         binding.noDataTxt.visibility = View.VISIBLE
     }
@@ -338,12 +352,18 @@ class DayCareAttendanceActivity : BaseActivity() {
         attendanceViewModel.response.observe(this) { state ->
             when (state) {
                 is UiState.Loading -> {
+                    binding.leftArrowIv.isEnabled = false
+                    binding.rightArrowIv.isEnabled = false
+                    binding.dateLo.isEnabled = false
                     if (currentPage == 1){
                         binding.progress.showProgress()
                     }
                 }
 
                 is UiState.Success -> {
+                    binding.leftArrowIv.isEnabled = true
+                    binding.rightArrowIv.isEnabled = true
+                    binding.dateLo.isEnabled = true
                     binding.noDataTxt.visibility = View.GONE
                     binding.studentAttendanceRv.visibility = View.VISIBLE
                     binding.progress.hideProgress()
@@ -373,6 +393,9 @@ class DayCareAttendanceActivity : BaseActivity() {
                 }
 
                 is UiState.Error -> {
+                    binding.leftArrowIv.isEnabled = true
+                    binding.rightArrowIv.isEnabled = true
+                    binding.dateLo.isEnabled = true
                     isLoading = false
                     studentsAdapter.removeLoadingFooter()
                     binding.progress.hideProgress()
@@ -420,6 +443,68 @@ class DayCareAttendanceActivity : BaseActivity() {
                 }
             }
         }
+    }
+
+    private fun setDate() {
+        updateDate()
+    }
+
+    private fun handleArrowClicks() {
+        binding.leftArrowIv.setOnClickListener {
+            changeDate(-1)
+        }
+
+        binding.rightArrowIv.setOnClickListener {
+            changeDate(1)
+        }
+    }
+
+    private fun changeDate(days: Int) {
+        calendar.add(Calendar.DAY_OF_MONTH, days)
+        updateDate()
+    }
+
+    private fun updateDate() {
+
+        val displayDate = displayDateFormat.format(calendar.time)
+        binding.dateTxt.text = displayDate
+        backendDate = backendDateFormat.format(calendar.time)
+
+        Log.d("DisplayDate", displayDate)
+        Log.d("BackendDate", backendDate)
+
+        if (!planId.equals("-1", true)) {
+            resetStudentsData()
+            attendanceStatus = ""
+            fetchStudents()
+        }
+    }
+
+    private fun handleDateLo() {
+        binding.dateTxt.setOnClickListener {
+            openDatePicker()
+        }
+    }
+
+    private fun openDatePicker() {
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { _, selectedYear, selectedMonth, selectedDay ->
+
+                calendar.set(selectedYear, selectedMonth, selectedDay)
+                updateDate()
+
+            },
+            year,
+            month,
+            day
+        )
+        datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
+
+        datePickerDialog.show()
     }
 
 }

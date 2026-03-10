@@ -148,7 +148,6 @@ class DayCareStudentsAttendanceAdapter(
 
     override fun getItemCount(): Int = students.size
 
-    // ✅ Select All only for attendance_not_given
     fun selectAll() {
         if (attendanceStatus.equals("attendance_not_given", true)) {
 
@@ -191,5 +190,12 @@ class DayCareStudentsAttendanceAdapter(
             notifyItemRemoved(index)
         }
     }
+
+    fun resetSelection() {
+        selectedStudents.clear()
+        modifiedStudents.clear()
+        notifyDataSetChanged()
+    }
+
 }
 

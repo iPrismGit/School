@@ -94,30 +94,61 @@
                     android:background="?android:attr/listDivider" />
 
                 <LinearLayout
-                    android:id="@+id/date_lo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="16dp"
+                    android:padding="4dp"
                     android:background="@drawable/edit_text_bg"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:padding="12dp">
-
-                    <TextView
-                        android:id="@+id/date_txt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="6dp"
-                        android:hint="Select Date"
-                        android:textColor="@color/black"
-                        android:textColorHint="@color/black"
-                        android:textSize="14dp" />
+                    android:paddingHorizontal="24dp"
+                    android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="16dp"
-                        android:layout_height="16dp"
-                        android:src="@drawable/calender_img"
-                        app:tint="@color/black" />
+                        android:id="@+id/left_arrow_iv"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:adjustViewBounds="true"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="12dp"
+                        android:layout_gravity="start"
+                        android:foreground="?attr/selectableItemBackground"
+                        app:srcCompat="@drawable/left_arrow_img" />
+                    <LinearLayout
+                        android:id="@+id/date_lo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/date_txt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:hint="Select Date"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/black"
+                            android:textSize="14dp" />
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:src="@drawable/calender_img"
+                            app:tint="@color/black" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/right_arrow_iv"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_gravity="end"
+                        android:foreground="?attr/selectableItemBackground"
+                        android:padding="12dp"
+                        app:srcCompat="@drawable/right_arrow_image" />
 
                 </LinearLayout>
 
