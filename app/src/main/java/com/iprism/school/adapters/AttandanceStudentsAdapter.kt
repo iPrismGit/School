@@ -191,6 +191,12 @@ class AttandanceStudentsAdapter(
         }
     }
 
+    fun resetSelection() {
+        selectedStudents.clear()
+        modifiedStudents.clear()
+        notifyDataSetChanged()
+    }
+
 }
 
 

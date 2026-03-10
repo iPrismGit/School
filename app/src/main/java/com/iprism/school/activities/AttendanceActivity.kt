@@ -2,9 +2,12 @@ package com.iprism.school.activities
 
 import com.iprism.school.repositories.AttendanceRepository
 import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -43,11 +46,17 @@ import com.iprism.school.viewModels.AttendanceViewModel
 import com.iprism.school.viewModels.ViewModelFactory
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class AttendanceActivity : BaseActivity() {
 
     private lateinit var binding: ActivityAttendanceBinding
     private lateinit var attendanceViewModel: AttendanceViewModel
+    private val calendar: Calendar = Calendar.getInstance()
+    private val displayDateFormat =
+        SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
+    private val backendDateFormat =
+        SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     private var attendanceStatus: String = ""
     private var selectValue: String = "single"
     private var isSelectAllChecked = false
@@ -59,7 +68,6 @@ class AttendanceActivity : BaseActivity() {
     private var selectedStudents = mutableListOf<AttendanceStudent>()
     private var classId: String = "-1"
     private var sectionId: String = "-1"
-    private var currentDate: String = ""
     private var backendDate: String = ""
     private var notification_parent: String? = "no"
     private lateinit var bottomSheetDialog: BottomSheetDialog
@@ -96,14 +104,11 @@ class AttendanceActivity : BaseActivity() {
         binding = ActivityAttendanceBinding.inflate(layoutInflater)
         setContentView(binding.root)
         enableEdgeToEdge()
-        val formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy")
-        currentDate = LocalDate.now().format(formatter)
-        val formatterBackend = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-        backendDate = LocalDate.now().format(formatterBackend)
-        binding.dateTxt.text = currentDate
+        setDate()
+        handleArrowClicks()
         initViewModel()
         handleBack()
-        // handleDateLo()
+        handleDateLo()
         handleSaveAttendanceBtn()
         observeClassesResponse()
         observeSectionsResponse()
@@ -132,13 +137,18 @@ class AttendanceActivity : BaseActivity() {
         isLoading = false
         studentsList.clear()
         selectedStudents.clear()
+
+        studentsAdapter.resetSelection()
+
         binding.checkBoxAll.isChecked = false
         studentsAdapter.notifyDataSetChanged()
+
         binding.studentAttendanceRv.visibility = View.GONE
         binding.noDataTxt.visibility = View.VISIBLE
     }
 
     private fun fetchStudents() {
+
         val request = AttendanceStudentsApiRequest(
             userDetails[User.ACADEMIC_YEAR_ID]!!,
             "",
@@ -211,12 +221,18 @@ class AttendanceActivity : BaseActivity() {
         attendanceViewModel.studentsResponse.observe(this) { state ->
             when (state) {
                 is UiState.Loading -> {
+                    binding.leftArrowIv.isEnabled = false
+                    binding.rightArrowIv.isEnabled = false
+                    binding.dateLo.isEnabled = false
                     if (currentPage == 1) {
                         binding.progress.showProgress()
                     }
                 }
 
                 is UiState.Success -> {
+                    binding.leftArrowIv.isEnabled = true
+                    binding.rightArrowIv.isEnabled = true
+                    binding.dateLo.isEnabled = true
                     binding.noDataTxt.visibility = View.GONE
                     binding.studentAttendanceRv.visibility = View.VISIBLE
                     binding.progress.hideProgress()
@@ -245,6 +261,9 @@ class AttendanceActivity : BaseActivity() {
                 }
 
                 is UiState.Error -> {
+                    binding.leftArrowIv.isEnabled = true
+                    binding.rightArrowIv.isEnabled = true
+                    binding.dateLo.isEnabled = true
                     isLoading = false
                     studentsAdapter.removeLoadingFooter()
                     binding.progress.hideProgress()
@@ -324,6 +343,7 @@ class AttendanceActivity : BaseActivity() {
                 is UiState.Success -> {
                     markAttendanceBinding.progress.hideProgress()
                     ToastUtils.showSuccessCustomToast(this, "Attendance Marked Successfully..!")
+                    binding.parentNotificationCb.isChecked = false
                     resetStudentsData()
                     fetchStudents()
                     bottomSheetDialog.dismiss()
@@ -464,6 +484,71 @@ class AttendanceActivity : BaseActivity() {
         }
 
         bottomSheetDialog.show()
+    }
+
+    private fun setDate() {
+        updateDate()
+    }
+
+    private fun handleArrowClicks() {
+        binding.leftArrowIv.setOnClickListener {
+            changeDate(-1)
+        }
+
+        binding.rightArrowIv.setOnClickListener {
+            changeDate(1)
+        }
+    }
+
+    private fun changeDate(days: Int) {
+        calendar.add(Calendar.DAY_OF_MONTH, days)
+        updateDate()
+    }
+
+    private fun updateDate() {
+
+        val displayDate = displayDateFormat.format(calendar.time)
+        binding.dateTxt.text = displayDate
+        backendDate = backendDateFormat.format(calendar.time)
+
+        Log.d("DisplayDate", displayDate)
+        Log.d("BackendDate", backendDate)
+
+        if (!classId.equals("-1", true) && !sectionId.equals("-1", true)) {
+
+            resetStudentsData()
+
+            attendanceStatus = ""
+
+            fetchStudents()
+        }
+    }
+
+    private fun handleDateLo() {
+        binding.dateTxt.setOnClickListener {
+            openDatePicker()
+        }
+    }
+
+    private fun openDatePicker() {
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { _, selectedYear, selectedMonth, selectedDay ->
+
+                calendar.set(selectedYear, selectedMonth, selectedDay)
+                updateDate()
+
+            },
+            year,
+            month,
+            day
+        )
+        datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
+
+        datePickerDialog.show()
     }
 
 }
