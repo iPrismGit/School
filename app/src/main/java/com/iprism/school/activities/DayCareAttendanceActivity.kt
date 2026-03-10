@@ -117,7 +117,7 @@ class DayCareAttendanceActivity : BaseActivity() {
         handleRefresh()
         observeAttendanceResponse()
         handleSaveBtn()
-        var request = DayCareApiRequest(
+        val request = DayCareApiRequest(
             userDetails[User.ACADEMIC_YEAR_ID].toString(),
             "",
             "",
@@ -175,7 +175,7 @@ class DayCareAttendanceActivity : BaseActivity() {
         }
 
         markAttendanceBinding.markBtn.setOnClickListener {
-            var markAttendanceRequest = DayCareAttendanceApiRequest(
+            val markAttendanceRequest = DayCareAttendanceApiRequest(
                 "",
                 userDetails[User.ACADEMIC_YEAR_ID].toString(),
                 userDetails[User.SCHOOL_ID].toString(),
@@ -235,7 +235,7 @@ class DayCareAttendanceActivity : BaseActivity() {
                 is UiState.Success -> {
                     binding.progress.hideProgress()
                     if (result.data.categories.isNotEmpty()) {
-                        var updatedList = result.data.categories.toMutableList()
+                        val updatedList = result.data.categories.toMutableList()
                         updatedList.add(0, Category("-1", "Select Plan"))
                         setupPlansAdapter(updatedList)
                     } else {
@@ -252,7 +252,7 @@ class DayCareAttendanceActivity : BaseActivity() {
     }
 
     private fun setupPlansAdapter(plans: List<Category>) {
-        var namesList = plans.map { it.name }
+        val namesList = plans.map { it.name }
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, namesList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.plansSp.adapter = adapter

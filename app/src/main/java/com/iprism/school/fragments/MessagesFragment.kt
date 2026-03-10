@@ -1,225 +1,60 @@
 package com.iprism.school.fragments
 
-import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.viewbinding.ViewBinding
 import com.iprism.school.R
-import com.iprism.school.activities.ChatActivity
-import com.iprism.school.activities.InitiateMessageActivity
-import com.iprism.school.adapters.MessagesAdapter
-import com.iprism.school.base.BaseFragment
+import com.iprism.school.adapters.HomePagerAdapter
+import com.iprism.school.adapters.MessagesPagerAdapter
 import com.iprism.school.databinding.FragmentMessagesBinding
-import com.iprism.school.interfaces.OnMessageClickListener
-import com.iprism.school.model.messagemodel.MessageThread
-import com.iprism.school.model.messagemodel.MessagesApiRequest
-import com.iprism.school.repositories.MessagesRepository
-import com.iprism.school.utils.UiState
-import com.iprism.school.utils.User
-import com.iprism.school.utils.hideProgress
-import com.iprism.school.utils.showProgress
-import com.iprism.school.viewModels.MessagesViewModel
-import com.iprism.school.viewModels.ViewModelFactory
 
-class MessagesFragment : BaseFragment() {
+class MessagesFragment : Fragment() {
 
-    private var _binding: FragmentMessagesBinding? = null
-    private val binding get() = _binding!!
-    private lateinit var viewModel: MessagesViewModel
-    private var isLoading = false
-    private var isLastPage = false
-    private var currentPage = 1
-    private var messages = mutableListOf<MessageThread>()
-    private lateinit var messagesAdapter: MessagesAdapter
+    private lateinit var binding: FragmentMessagesBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentMessagesBinding.inflate(inflater, container, false)
-        binding.refreshLayout.setColorSchemeColors(
-            ContextCompat.getColor(requireContext(), R.color.blue1)
-        )
+        binding = FragmentMessagesBinding.inflate(inflater, container, false)
+        val adapter = MessagesPagerAdapter(this)
+        binding.viewPager2.isUserInputEnabled = false
+        binding.viewPager2.adapter = adapter
+        binding.viewPager2.setCurrentItem(0, false)
+        setupButtonsStyling(binding.classesBtn, binding.daycareBtn)
+        handleClassesBtn()
+        handleDayCareBtn()
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initViewModel()
-        setUpAdapter()
-        setupObservers()
-        refresh()
-        insertMessageBtn()
-    }
-
-    @SuppressLint("NotifyDataSetChanged")
-    private fun refresh() {
-        binding.refreshLayout.setOnRefreshListener(
-            SwipeRefreshLayout.OnRefreshListener {
-                currentPage = 1
-                isLastPage = false
-                isLoading = false
-                messages.clear()
-                messagesAdapter.notifyDataSetChanged()
-                fetchChats()
-                binding.refreshLayout.isRefreshing = false
-            }
-        )
-    }
-
-    private fun insertMessageBtn() {
-        binding.messageBtn.setOnClickListener { view ->
-            startActivity(Intent(requireContext(), InitiateMessageActivity::class.java))
+    private fun handleClassesBtn() {
+        binding.classesBtn.setOnClickListener { v ->
+            binding.viewPager2.setCurrentItem(0, false)
+            setupButtonsStyling(binding.classesBtn, binding.daycareBtn)
         }
     }
 
-    private fun initViewModel() {
-        val repository = MessagesRepository(requireContext())
-        viewModel = ViewModelProvider(this, ViewModelFactory {
-            MessagesViewModel(repository)
-        })[MessagesViewModel::class.java]
-    }
-
-    private fun fetchChats() {
-        val request = MessagesApiRequest(
-            userDetails[User.ACADEMIC_YEAR_ID]!!,
-            userDetails[User.SCHOOL_ID]!!,
-            "",
-            "",
-            "",
-            "",
-            currentPage.toString(),
-            "",
-            "teacher",
-            userDetails[User.STUDENT_ID]!!,
-            "",
-            userDetails[User.ID]!!,
-            "view"
-        )
-        viewModel.fetchChats(request)
-        Log.d("requestLoading", request.toString())
-    }
-
-    override fun onResume() {
-        super.onResume()
-        currentPage = 1
-        isLastPage = false
-        isLoading = false
-        messages.clear()
-        messagesAdapter.notifyDataSetChanged()
-        fetchChats()
-    }
-
-    private fun setUpAdapter() {
-        messagesAdapter = MessagesAdapter(messages as ArrayList<MessageThread?>)
-        val linearLayoutManager = LinearLayoutManager(requireContext())
-        binding.messagesRv.apply {
-            layoutManager = linearLayoutManager
-            adapter = messagesAdapter
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    val visibleItemCount = linearLayoutManager.childCount
-                    val totalItemCount = linearLayoutManager.itemCount
-                    val firstVisibleItemPosition =
-                        linearLayoutManager.findFirstVisibleItemPosition()
-                    if (!isLoading && !isLastPage) {
-                        if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount && firstVisibleItemPosition >= 0) {
-                            loadMoreTutorials()
-                        }
-                    }
-                }
-            })
-            messagesAdapter.setupListener(object : OnMessageClickListener {
-                override fun onItemClick(
-                    threadId: String,
-                    name: String,
-                    image: String,
-                    type: String,
-                    studentId: String
-                ) {
-                    Log.d("MessageDetails", threadId + ", " + name + ", " + image + ", " + type + ", " + studentId)
-                    var intent = Intent(requireContext(), ChatActivity::class.java)
-                    intent.putExtra("threadId", threadId)
-                    intent.putExtra("name", name)
-                    intent.putExtra("image", image)
-                    intent.putExtra("messageType", type)
-                    intent.putExtra("studentId", studentId)
-                    startActivity(intent)
-
-                }
-
-                override fun onStudentSelectClick(
-                    value: String,
-                    studentId: String,
-                    studentName: String
-                ) {
-
-                }
-
-                override fun onInnerItemClick(eventImage: String) {
-
-                }
-
-            })
+    private fun handleDayCareBtn() {
+        binding.daycareBtn.setOnClickListener { v ->
+            binding.viewPager2.setCurrentItem(1, false)
+            setupButtonsStyling(binding.daycareBtn, binding.classesBtn)
         }
     }
 
-    private fun setupObservers() {
-        viewModel.messagesResponse.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is UiState.Loading -> {
-                    if (currentPage == 1){
-                        binding.progress.showProgress()
-                    }
-                }
-
-                is UiState.Success -> {
-                    binding.noDataFoundLo.visibility = View.GONE
-                    binding.progress.hideProgress()
-                    isLoading = false
-                    messagesAdapter.removeLoadingFooter()
-                    val newBookings = state.data.response.message_threads
-                    if (newBookings.isNotEmpty()) {
-                        messages.addAll(newBookings)
-                        messagesAdapter.notifyDataSetChanged()
-                        if (state.data.response.pagination.total_pages.size == currentPage) {
-                            isLastPage = true
-                        }
-                    }
-                }
-
-                is UiState.Error -> {
-                    isLoading = false
-                    messagesAdapter.removeLoadingFooter()
-                    binding.progress.hideProgress()
-                    if (state.message.equals("no data found", true)) {
-                        binding.noDataFoundLo.visibility = View.VISIBLE
-                    }
-                }
-            }
-        }
+    private fun setupButtonsStyling(
+        classesBtn: TextView,
+        daycareBtn: TextView
+    ) {
+        classesBtn.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
+        classesBtn.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.filled_button_bg))
+        daycareBtn.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue1))
+        daycareBtn.setBackgroundDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.bg_outline_button))
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    private fun loadMoreTutorials() {
-        isLoading = true
-        currentPage += 1
-        messagesAdapter.showLoadingFooter()
-        fetchChats()
-    }
 
 }
