@@ -36,6 +36,7 @@ import com.iprism.school.model.homepagemodel.HomePageApiRequest
 import com.iprism.school.model.homepagemodel.HomePageApiResponse
 import com.iprism.school.model.leaverequestmodel.LeaveRequestApiRequest
 import com.iprism.school.model.leaverequestmodel.LeaveRequestApiResponse
+import com.iprism.school.model.messagemodel.DayCareMessagesApiRequest
 import com.iprism.school.model.messagemodel.MessagesApiRequest
 import com.iprism.school.model.messagemodel.MessagesApiResponse
 import com.iprism.school.model.plannersandresources.PlannersAndResourcesApiRequest
@@ -145,6 +146,9 @@ interface StaffApiService {
 
     @POST(Constants.MESSAGES_ENDPOINT)
     suspend fun fetchAndInsertMessages(@Body request: MessagesApiRequest): MessagesApiResponse
+
+    @POST(Constants.DAYCARE_MESSAGES_ENDPOINT)
+    suspend fun fetchAndInsertDaycareMessages(@Body request: DayCareMessagesApiRequest): MessagesApiResponse
 
     @POST(Constants.DAYCARE_ATTENDANCE_ENDPOINT)
     suspend fun fetchDAyCareStudentsAndInsertAttendance(@Body request: DayCareAttendanceApiRequest): DayCareApiResponse

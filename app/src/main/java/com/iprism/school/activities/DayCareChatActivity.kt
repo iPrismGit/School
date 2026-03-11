@@ -12,6 +12,7 @@ import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -24,43 +25,38 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.R
 import com.iprism.school.adapters.ChatAdapter
 import com.iprism.school.base.BaseActivity
-import com.iprism.school.databinding.ActivityChatBinding
+import com.iprism.school.databinding.ActivityDayCareChatBinding
 import com.iprism.school.databinding.FileTypeBottomSheetBinding
 import com.iprism.school.interfaces.OnMessageClickListener
+import com.iprism.school.model.messagemodel.DayCareMessagesApiRequest
 import com.iprism.school.model.messagemodel.MessagesApiRequest
 import com.iprism.school.model.messagemodel.MessagesItem
+import com.iprism.school.repositories.DayCareMessagesRepository
 import com.iprism.school.repositories.MessagesRepository
 import com.iprism.school.utils.Constants
+import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.UiState
 import com.iprism.school.utils.User
 import com.iprism.school.utils.hideProgress
 import com.iprism.school.utils.showProgress
+import com.iprism.school.viewModels.DayCareMessagesViewModel
 import com.iprism.school.viewModels.MessagesViewModel
 import com.iprism.school.viewModels.ViewModelFactory
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlin.apply
-import kotlin.collections.filter
-import kotlin.collections.isNotEmpty
-import kotlin.collections.maxOf
-import kotlin.jvm.java
-import kotlin.text.equals
-import kotlin.text.isNotEmpty
-import kotlin.text.trim
-import kotlin.toString
 
-class ChatActivity : BaseActivity() {
+class DayCareChatActivity : BaseActivity() {
 
-    private lateinit var binding: ActivityChatBinding
+    private lateinit var binding: ActivityDayCareChatBinding
     private var threadId = ""
     private var name = ""
     private var messageType = ""
     private var studentId = ""
     private var image = ""
     private var latestMessageId = 0
-    private lateinit var viewModel: MessagesViewModel
+    private lateinit var viewModel: DayCareMessagesViewModel
     private var isLoading = false
     private var isLastPage = false
     private var isFirstLoaded = true
@@ -76,7 +72,7 @@ class ChatActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityChatBinding.inflate(layoutInflater)
+        binding = ActivityDayCareChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
         enableEdgeToEdge()
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
@@ -311,11 +307,11 @@ class ChatActivity : BaseActivity() {
             override fun onInnerItemClick(eventImage: String) {
                 if (eventImage.isNotEmpty()) {
                     if (eventImage.endsWith(".pdf")) {
-                        var intent = Intent(this@ChatActivity, PdfViewActivity::class.java)
+                        var intent = Intent(this@DayCareChatActivity, PdfViewActivity::class.java)
                         intent.putExtra("pdfUrl", eventImage)
                         startActivity(intent)
                     } else {
-                        var intent = Intent(this@ChatActivity, ViewImageActivity::class.java)
+                        var intent = Intent(this@DayCareChatActivity, ViewImageActivity::class.java)
                         intent.putExtra("EventImage", eventImage)
                         intent.putExtra("EventName", "Message Image")
                         startActivity(intent)
@@ -327,9 +323,9 @@ class ChatActivity : BaseActivity() {
     }
 
     private fun initViewModel() {
-        val repository = MessagesRepository(this)
-        val factory = ViewModelFactory { MessagesViewModel(repository) }
-        viewModel = ViewModelProvider(this, factory)[MessagesViewModel::class.java]
+        val repository = DayCareMessagesRepository(this)
+        val factory = ViewModelFactory { DayCareMessagesViewModel(repository) }
+        viewModel = ViewModelProvider(this, factory)[DayCareMessagesViewModel::class.java]
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -421,15 +417,13 @@ class ChatActivity : BaseActivity() {
     }
 
     private fun fetchMessages() {
-        val request = MessagesApiRequest(
-            userDetails[User.ACADEMIC_YEAR_ID]!!,
+        val request = DayCareMessagesApiRequest(
             userDetails[User.SCHOOL_ID]!!,
-            "",
+            "0",
             "",
             "",
             "",
             currentPage.toString(),
-            "",
             "teacher",
             studentId,
             threadId,
@@ -441,15 +435,13 @@ class ChatActivity : BaseActivity() {
     }
 
     private fun fetchNewMessages() {
-        val request = MessagesApiRequest(
-            userDetails[User.ACADEMIC_YEAR_ID]!!,
+        val request = DayCareMessagesApiRequest(
             userDetails[User.SCHOOL_ID]!!,
             "",
             "",
             "",
             "",
             currentPage.toString(),
-            "",
             "teacher",
             studentId,
             threadId,
@@ -468,15 +460,13 @@ class ChatActivity : BaseActivity() {
     }
 
     fun insertMessage(message: String) {
-        val request = MessagesApiRequest(
-            userDetails[User.ACADEMIC_YEAR_ID]!!,
+        val request = DayCareMessagesApiRequest(
             userDetails[User.SCHOOL_ID]!!,
-            "",
+            "0",
             convertUriToBase64Image(selectedFileUri),
             message,
             "single",
             currentPage.toString(),
-            "",
             "teacher",
             studentId,
             threadId,
