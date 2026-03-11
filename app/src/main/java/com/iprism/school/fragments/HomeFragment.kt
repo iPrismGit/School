@@ -543,6 +543,7 @@ class HomeFragment : BaseFragment() {
                     intent.putExtra("image", image)
                     intent.putExtra("messageType", type)
                     intent.putExtra("studentId", studentId)
+                    startActivity(intent)
                 }
 
             }
