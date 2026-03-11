@@ -16,6 +16,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.iprism.school.R
 import com.iprism.school.activities.ChatActivity
 import com.iprism.school.activities.DayCareChatActivity
+import com.iprism.school.activities.InitiateDayCareMessageActivity
 import com.iprism.school.activities.InitiateMessageActivity
 import com.iprism.school.adapters.MessagesAdapter
 import com.iprism.school.base.BaseFragment
@@ -83,7 +84,7 @@ class DayCareMessagesFragment : BaseFragment() {
 
     private fun insertMessageBtn() {
         binding.messageBtn.setOnClickListener { view ->
-            startActivity(Intent(requireContext(), InitiateMessageActivity::class.java))
+            startActivity(Intent(requireContext(), InitiateDayCareMessageActivity::class.java))
         }
     }
 
