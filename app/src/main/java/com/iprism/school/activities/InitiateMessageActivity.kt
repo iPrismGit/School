@@ -22,26 +22,16 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.iprism.school.R
-import com.iprism.school.activities.album.CreateDayCareAlbumsActivity
-import com.iprism.school.adapters.AttandanceStudentsAdapter
-import com.iprism.school.adapters.DiaryStudentsAdapter
-import com.iprism.school.adapters.MessagesAdapter
 import com.iprism.school.adapters.StudentMessageSelectAdapter
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityInitiateMessageBinding
 import com.iprism.school.databinding.DialogSelectStudentsBinding
 import com.iprism.school.databinding.FileTypeBottomSheetBinding
-import com.iprism.school.interfaces.OnAttendanceClickListener
 import com.iprism.school.interfaces.OnMessageClickListener
-import com.iprism.school.model.classteachermodel.AttendanceStudent
-import com.iprism.school.model.classteachermodel.AttendanceStudentsApiRequest
 import com.iprism.school.model.classteachermodel.Class
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.classteachermodel.Section
-import com.iprism.school.model.messagemodel.MessageThread
 import com.iprism.school.model.messagemodel.MessagesApiRequest
 import com.iprism.school.model.studentsmodel.Student
 import com.iprism.school.model.studentsmodel.StudentsApiRequest
@@ -57,8 +47,6 @@ import com.iprism.school.viewModels.AttendanceViewModel
 import com.iprism.school.viewModels.MessagesViewModel
 import com.iprism.school.viewModels.StudentsViewModel
 import com.iprism.school.viewModels.ViewModelFactory
-import java.io.ByteArrayOutputStream
-import java.io.IOException
 
 class InitiateMessageActivity : BaseActivity() {
 

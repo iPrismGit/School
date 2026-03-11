@@ -42,6 +42,7 @@ import com.iprism.school.activities.AboutUsActivity
 import com.iprism.school.activities.ApplyForLeaveActivity
 import com.iprism.school.activities.ChatActivity
 import com.iprism.school.activities.DayCareAttendanceActivity
+import com.iprism.school.activities.DayCareChatActivity
 import com.iprism.school.activities.DayCarePlansActivity
 import com.iprism.school.activities.HolidaysActivity
 import com.iprism.school.activities.PlannerCategoriesActivity
@@ -371,11 +372,15 @@ class HomeFragment : BaseFragment() {
         attendanceViewModel.academicYearsResponse.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is UiState.Loading -> {
-                    binding.progress.showProgress()
+                //    binding.progress.showProgress()
+                    binding.shimmerLo.visibility = View.VISIBLE
+                    binding.mainLo.visibility = View.GONE
                 }
 
                 is UiState.Success -> {
                     binding.progress.hideProgress()
+                    binding.shimmerLo.visibility = View.GONE
+                    binding.mainLo.visibility = View.VISIBLE
                     user!!.storeAcademicYear(result.data.id, result.data.name)
                     var request = HomePageApiRequest(
                         userDetails[User.ACADEMIC_YEAR_ID].toString(),
@@ -386,6 +391,8 @@ class HomeFragment : BaseFragment() {
                 }
 
                 is UiState.Error -> {
+                    binding.shimmerLo.visibility = View.VISIBLE
+                    binding.mainLo.visibility = View.GONE
                     ToastUtils.showErrorCustomToast(requireContext(), result.message)
                     Log.d("Message", result.message)
                     binding.progress.hideProgress()
@@ -518,15 +525,26 @@ class HomeFragment : BaseFragment() {
                 name: String,
                 image: String,
                 type: String,
-                studentId: String
+                studentId: String,
+                studentType: String
             ) {
-                var intent = Intent(requireContext(), ChatActivity::class.java)
-                intent.putExtra("threadId", threadId)
-                intent.putExtra("name", name)
-                intent.putExtra("image", image)
-                intent.putExtra("messageType", type)
-                intent.putExtra("studentId", studentId)
-                startActivity(intent)
+                if (studentType.equals("1", true)){
+                    val intent = Intent(requireContext(), ChatActivity::class.java)
+                    intent.putExtra("threadId", threadId)
+                    intent.putExtra("name", name)
+                    intent.putExtra("image", image)
+                    intent.putExtra("messageType", type)
+                    intent.putExtra("studentId", studentId)
+                    startActivity(intent)
+                } else{
+                    val intent = Intent(requireContext(), DayCareChatActivity::class.java)
+                    intent.putExtra("threadId", threadId)
+                    intent.putExtra("name", name)
+                    intent.putExtra("image", image)
+                    intent.putExtra("messageType", type)
+                    intent.putExtra("studentId", studentId)
+                }
+
             }
 
             override fun onStudentSelectClick(

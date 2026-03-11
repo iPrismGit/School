@@ -145,7 +145,8 @@ class ClassMessagesFragment : BaseFragment() {
                     name: String,
                     image: String,
                     type: String,
-                    studentId: String
+                    studentId: String,
+                    studentType: String
                 ) {
                     Log.d("MessageDetails", threadId + ", " + name + ", " + image + ", " + type + ", " + studentId)
                     var intent = Intent(requireContext(), ChatActivity::class.java)

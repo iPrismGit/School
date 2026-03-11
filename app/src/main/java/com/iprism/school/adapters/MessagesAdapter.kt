@@ -95,13 +95,15 @@ class MessagesAdapter(private val messages: ArrayList<MessageThread?>) :
                 } else {
                     fileImg.visibility = View.GONE
                 }
+
                 root.setOnClickListener {
                     listener.onItemClick(
                         message.id,
                         message.first_name + " " + message.middle_name + message.last_name,
                         message.student_image,
                         message.message_type,
-                        message.student_id
+                        message.student_id,
+                        message.student_type
                     )
                 }
             }

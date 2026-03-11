@@ -43,7 +43,7 @@ class DaycareActivitiesActivity : AppCompatActivity() {
             intent.putExtra("planId", planId)
             intent.putExtra("studentId", studentId)
             intent.putExtra("type", "Attachment")
-            intent.putExtra("id", "8")
+            intent.putExtra("id", "5")
             startActivity(intent)
         }
     }

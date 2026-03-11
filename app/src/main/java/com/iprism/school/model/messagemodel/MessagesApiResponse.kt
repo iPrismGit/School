@@ -25,6 +25,8 @@ data class MessageThread(
     val class_name: String,
     val first_name: String,
     val student_id: String,
+    val cat_name: String,
+    val student_type : String,
     val id: String,
     val image: String,
     val last_name: String,
