@@ -23,6 +23,7 @@ import com.iprism.school.databinding.ActivityTechnicalSupportBinding
 import com.iprism.school.databinding.RemarksDialogBinding
 import com.iprism.school.model.contentpagesmodel.SchoolSupportApiRequest
 import com.iprism.school.repositories.ContentPagesRepository
+import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.UiState
 import com.iprism.school.utils.User
 import com.iprism.school.utils.hideProgress
@@ -58,18 +59,26 @@ class TechnicalSupportActivity : BaseActivity() {
 
     private fun handleEmailTxt() {
         binding.emailTxt.setOnClickListener { view ->
-            openEmail(email)
+            if (email.isEmpty()){
+                ToastUtils.showErrorCustomToast(this, "Email Not Found..!")
+            } else{
+                openEmail(email)
+            }
         }
     }
 
     private fun handleMobileTxt() {
         binding.mobileTxt.setOnClickListener { view ->
-            makePhoneCall(mobile)
+            if (mobile.length == 10){
+                makePhoneCall(mobile)
+            } else{
+                ToastUtils.showErrorCustomToast(this, "Please Check The Mobile Number..!")
+            }
         }
     }
 
     private fun fetchTechnicalSupportDetails() {
-        var request = SchoolSupportApiRequest(
+        val request = SchoolSupportApiRequest(
             userDetails[User.SCHOOL_ID]!!,
             userDetails[User.ID]!!
         )
@@ -101,10 +110,20 @@ class TechnicalSupportActivity : BaseActivity() {
                     binding.noDataFoundTxt.visibility = View.GONE
                     binding.mainLo.visibility = View.VISIBLE
                     binding.progress.hideProgress()
-                    binding.emailTxt.text = state.data.response.email
-                    binding.mobileTxt.text = state.data.response.mobile
                     mobile = state.data.response.mobile
                     email = state.data.response.email
+                    if (mobile.equals("0", true)) {
+                        binding.mobileTxt.text = "Mobile Number Not Available..!"
+                    } else {
+                        binding.mobileTxt.text = mobile
+                    }
+
+                    if (email.isEmpty()){
+                        binding.emailTxt.text = "Email Not Available..!"
+                    } else{
+                        binding.emailTxt.text = email
+                    }
+
                 }
 
                 is UiState.Error -> {

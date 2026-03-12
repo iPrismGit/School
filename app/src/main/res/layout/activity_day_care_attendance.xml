@@ -161,7 +161,6 @@
                     android:gravity="center">
 
                     <LinearLayout
-                        android:id="@+id/classes_lo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -180,15 +179,12 @@
                             android:id="@+id/img_class"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerInParent="true"
                             android:layout_gravity="center"
-                            android:layout_marginEnd="15dp"
+                            android:layout_marginEnd="16dp"
                             android:gravity="center"
-                            android:padding="5dp"
+                            android:padding="2dp"
                             android:src="@drawable/down_arrow_img"
-                            android:visibility="visible"
-                            app:tint="@color/gray1"></ImageView>
+                            android:visibility="visible"/>
 
                     </LinearLayout>
 

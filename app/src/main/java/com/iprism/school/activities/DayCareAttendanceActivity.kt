@@ -88,7 +88,7 @@ class DayCareAttendanceActivity : BaseActivity() {
                 binding.checkBoxAll.setOnCheckedChangeListener(selectAllListener)
 
                 if (planId.equals("-1", true)) {
-                    ToastUtils.showErrorCustomToast(this, "Please Select Class And Section..!")
+                    ToastUtils.showErrorCustomToast(this, "Please Select  daycare Category..!")
                 } else {
                     ToastUtils.showErrorCustomToast(this, "Attendance Already Given..!")
                 }
@@ -472,6 +472,15 @@ class DayCareAttendanceActivity : BaseActivity() {
 
         Log.d("DisplayDate", displayDate)
         Log.d("BackendDate", backendDate)
+        val todayCalendar = Calendar.getInstance()
+
+        if (calendar.get(Calendar.YEAR) == todayCalendar.get(Calendar.YEAR) &&
+            calendar.get(Calendar.DAY_OF_YEAR) == todayCalendar.get(Calendar.DAY_OF_YEAR)
+        ) {
+            binding.rightArrowIv.visibility = View.GONE
+        } else {
+            binding.rightArrowIv.visibility = View.VISIBLE
+        }
 
         if (!planId.equals("-1", true)) {
             resetStudentsData()
@@ -496,7 +505,6 @@ class DayCareAttendanceActivity : BaseActivity() {
 
                 calendar.set(selectedYear, selectedMonth, selectedDay)
                 updateDate()
-
             },
             year,
             month,

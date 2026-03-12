@@ -153,7 +153,7 @@ class DayCareMessagesFragment : BaseFragment() {
                     studentType: String
                 ) {
                     Log.d("MessageDetails", threadId + ", " + name + ", " + image + ", " + type + ", " + studentId)
-                    var intent = Intent(requireContext(), DayCareChatActivity::class.java)
+                    val intent = Intent(requireContext(), DayCareChatActivity::class.java)
                     intent.putExtra("threadId", threadId)
                     intent.putExtra("name", name)
                     intent.putExtra("image", image)

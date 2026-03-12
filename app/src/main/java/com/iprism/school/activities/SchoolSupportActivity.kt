@@ -1,6 +1,7 @@
 package com.iprism.school.activities
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -23,6 +24,7 @@ import com.iprism.school.databinding.ActivitySchoolSupportBinding
 import com.iprism.school.model.contentpagesmodel.SchoolSupportApiRequest
 import com.iprism.school.repositories.ContentPagesRepository
 import com.iprism.school.repositories.HelpTutorialsRepository
+import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.UiState
 import com.iprism.school.utils.User
 import com.iprism.school.utils.hideProgress
@@ -41,6 +43,7 @@ class SchoolSupportActivity : BaseActivity() {
     private var mobile = ""
     private var alternateMobile = ""
     private var email = ""
+    private var address = ""
     private val CALL_PHONE_PERMISSION_CODE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,30 +68,46 @@ class SchoolSupportActivity : BaseActivity() {
 
     private fun handleAlternateMobileNumberTxt() {
         binding.alternativeMobileTxt.setOnClickListener { view ->
-            makePhoneCall(alternateMobile)
+            if (alternateMobile.length == 10) {
+                makePhoneCall(alternateMobile)
+            } else {
+                ToastUtils.showErrorCustomToast(this, "Please Check The Alternative Mobile Number..!")
+            }
         }
     }
 
     private fun handleEmailTxt() {
         binding.emailTxt.setOnClickListener { view ->
-            openEmail(email)
+            if (email.isEmpty()){
+                ToastUtils.showErrorCustomToast(this, "Email Not Found..!")
+            } else{
+                openEmail(email)
+            }
         }
     }
 
     private fun handleMobileTxt() {
         binding.mobileTxt.setOnClickListener { view ->
-
+            if (mobile.length == 10) {
+                makePhoneCall(mobile)
+            } else {
+                ToastUtils.showErrorCustomToast(this, "Please Check The Mobile Number..!")
+            }
         }
     }
 
     private fun handleGetDirections() {
         binding.directionsBtn.setOnClickListener { view ->
-            openDirections(lat, lon)
+            if (address.isEmpty()){
+                ToastUtils.showErrorCustomToast(this, "Address Not Found..!")
+            } else{
+                openDirections(lat, lon)
+            }
         }
     }
 
     private fun fetchSupportDetails() {
-        var request = SchoolSupportApiRequest(
+        val request = SchoolSupportApiRequest(
             userDetails[User.SCHOOL_ID]!!,
             userDetails[User.ID]!!
         )
@@ -108,6 +127,7 @@ class SchoolSupportActivity : BaseActivity() {
         })[ContentPagesViewModel::class.java]
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setupObservers() {
         viewModel.schoolSupportResponse.observe(this) { state ->
             when (state) {
@@ -120,16 +140,37 @@ class SchoolSupportActivity : BaseActivity() {
                     binding.noDataFoundTxt.visibility = View.GONE
                     binding.mainLo.visibility = View.VISIBLE
                     binding.progress.hideProgress()
-                    binding.emailTxt.text = state.data.response.email
-                    binding.mobileTxt.text = "+91 - " + state.data.response.mobile
-                    binding.alternativeMobileTxt.text =
-                        "+91 - " + state.data.response.alternate_mobile
-                    binding.addressTxt.text = state.data.response.address
                     lat = state.data.response.lat
                     lon = state.data.response.lon
                     mobile = state.data.response.mobile
                     alternateMobile = state.data.response.alternate_mobile
                     email = state.data.response.email
+                    address = state.data.response.address
+
+                    if (email.isEmpty()) {
+                        binding.emailTxt.text = "Email Not Available..!"
+                    } else {
+                        binding.emailTxt.text = email
+                    }
+                    if (mobile.equals("0", true)) {
+                        binding.mobileTxt.text = "Mobile Number Not Available..!"
+                    } else {
+                        binding.mobileTxt.text = "+91 - $mobile"
+                    }
+
+                    if (alternateMobile.equals("0", true)) {
+                        binding.alternativeMobileTxt.text =
+                            "Alternative  Mobile Number Not Available..!"
+                    } else {
+                        binding.alternativeMobileTxt.text = "+91 - $alternateMobile"
+                    }
+
+                    if (address.isNotEmpty()) {
+                        binding.addressTxt.text = address
+                    } else {
+                        binding.addressTxt.text = "Address Not Available..!"
+                    }
+
                 }
 
                 is UiState.Error -> {
@@ -252,6 +293,5 @@ class SchoolSupportActivity : BaseActivity() {
             startActivity(browserIntent)
         }
     }
-
 
 }

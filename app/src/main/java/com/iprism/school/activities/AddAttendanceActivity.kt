@@ -122,7 +122,7 @@ class AddAttendanceActivity : BaseActivity() {
                 is UiState.Success -> {
                     progressDialog.dismissDialog()
                     var intent = Intent(this, SuccessActivity::class.java)
-                    intent.putExtra("tag", value + " Added ")
+                    intent.putExtra("tag", value + "Time Added")
                     startActivity(intent)
                 }
 

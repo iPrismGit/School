@@ -149,7 +149,7 @@ class ClassMessagesFragment : BaseFragment() {
                     studentType: String
                 ) {
                     Log.d("MessageDetails", threadId + ", " + name + ", " + image + ", " + type + ", " + studentId)
-                    var intent = Intent(requireContext(), ChatActivity::class.java)
+                    val intent = Intent(requireContext(), ChatActivity::class.java)
                     intent.putExtra("threadId", threadId)
                     intent.putExtra("name", name)
                     intent.putExtra("image", image)

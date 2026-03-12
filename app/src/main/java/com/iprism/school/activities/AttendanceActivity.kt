@@ -514,6 +514,17 @@ class AttendanceActivity : BaseActivity() {
         Log.d("DisplayDate", displayDate)
         Log.d("BackendDate", backendDate)
 
+        // Check if selected date is today
+        val todayCalendar = Calendar.getInstance()
+
+        if (calendar.get(Calendar.YEAR) == todayCalendar.get(Calendar.YEAR) &&
+            calendar.get(Calendar.DAY_OF_YEAR) == todayCalendar.get(Calendar.DAY_OF_YEAR)
+        ) {
+            binding.rightArrowIv.visibility = View.GONE
+        } else {
+            binding.rightArrowIv.visibility = View.VISIBLE
+        }
+
         if (!classId.equals("-1", true) && !sectionId.equals("-1", true)) {
 
             resetStudentsData()
