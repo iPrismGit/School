@@ -295,7 +295,8 @@ class ChatActivity : BaseActivity() {
                 name: String,
                 image: String,
                 type: String,
-                studentId: String
+                studentId: String,
+                studentType: String
             ) {
 
             }
