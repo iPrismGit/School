@@ -492,6 +492,40 @@
                         android:text="Hello "
                         android:textColor="@color/black"
                         android:textSize="20sp" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/notificationIcon"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:padding="2dp"
+                            android:src="@drawable/ic_notifications_black_24dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/notificationCount"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:background="@drawable/notification_badge"
+                            android:gravity="center"
+                            android:text="10+"
+                            android:layout_marginBottom="18dp"
+                            android:textColor="@color/white"
+                            android:textSize="10sp"
+                            android:visibility="visible"
+                            app:layout_constraintBottom_toBottomOf="@+id/notificationIcon"
+                            app:layout_constraintEnd_toEndOf="@+id/notificationIcon"
+                            app:layout_constraintTop_toTopOf="@+id/notificationIcon" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
                 </LinearLayout>
 
                 <androidx.core.widget.NestedScrollView
