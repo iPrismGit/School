@@ -467,10 +467,10 @@ class HomeFragment : BaseFragment() {
                 is UiState.Success -> {
                     binding.shimmerLo.visibility = View.GONE
                     binding.mainLo.visibility = View.VISIBLE
-                    var updatedAlbumCoversList = result.data.album_covers.toMutableList()
+                    val updatedAlbumCoversList = result.data.album_covers.toMutableList()
                     updatedAlbumCoversList.add(0, AlbumCoverHome("", "", "", "-1", "", ""))
 
-                    var updatedDayCareAlbumCoversList =
+                    val updatedDayCareAlbumCoversList =
                         result.data.day_care_album_covers.toMutableList()
                     updatedDayCareAlbumCoversList.add(
                         0,
@@ -721,7 +721,7 @@ class HomeFragment : BaseFragment() {
 
     private fun handleSideMessageLo() {
         binding.messagesLo.setOnClickListener(View.OnClickListener {
-            var intent = Intent(requireContext(), HomeActivity::class.java)
+            val intent = Intent(requireContext(), HomeActivity::class.java)
             intent.putExtra("tag", "Messages")
             startActivity(intent)
         })
@@ -784,9 +784,8 @@ class HomeFragment : BaseFragment() {
             } else if (navigationFrom.equals("classes", true)) {
                 startActivity(Intent(context, AttendanceActivity::class.java))
                 bottomSheetDialog.dismiss()
+                navigationFrom = ""
             }
-
-         //   navigationFrom = ""
 
         }
         classTypesBinding.crossIv.setOnClickListener {
