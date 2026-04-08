@@ -64,13 +64,12 @@ class StudentLeaveRequestsActivity : BaseActivity() {
         observeSectionsResponse()
         observeLeaveRequestsResponse()
         observeLeaveRequestUpdateResponse()
-        var requestClasses = ClassTeacherApiRequest(
+        val requestClasses = ClassTeacherApiRequest(
             "",
             userDetails[User.ID].toString(),
             userDetails[User.SCHOOL_ID].toString(),
             userDetails[User.ACADEMIC_YEAR_ID].toString(),
-            "classes"
-        )
+            "classes")
         attendanceViewModel.fetchClasses(requestClasses)
         handleBack()
 

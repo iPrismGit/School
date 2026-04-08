@@ -144,7 +144,9 @@ class StaffAttendanceActivity : AppCompatActivity() {
                     binding.countTxt.text = result.data.total_days
                     binding.presentCountTxt.text = result.data.present_days
                     binding.absentCountTxt.text = result.data.absent_days
-                    binding.holidaysCountTxt.text = result.data.holidays
+                    binding.holidaysCountTxt.text = result.data.holidays_count
+
+                    Log.d("TAG", "Total Days : " + result.data.total_days + "....Present Days : " + result.data.present_days + "....Absent Days : " + result.data.absent_days + "....Holidays : " + result.data.holidays_count)
 
                     val presentDates = mutableSetOf<CalendarDay>()
                     val holidayDates = mutableSetOf<CalendarDay>()

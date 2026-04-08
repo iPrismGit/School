@@ -13,7 +13,7 @@ data class StaffAttendanceResponse(
     val absent_days: String,
     val attendance: List<Attendance>,
     val present_days: String,
-    val holidays: String,
+    val holidays_count: String,
     val total_days: String
 
 )

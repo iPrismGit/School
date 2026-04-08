@@ -2,6 +2,7 @@ package com.iprism.school.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -22,7 +23,7 @@ class LeaveRequestsAdapter(var leaveRequests: List<LeaveRequest>) : RecyclerView
         parent: ViewGroup,
         viewType: Int
     ): LeaveRequestsAdapter.LeaveRequestViewHolder {
-        var binding = LeaveItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = LeaveItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return LeaveRequestViewHolder(binding)
     }
 
@@ -30,18 +31,22 @@ class LeaveRequestsAdapter(var leaveRequests: List<LeaveRequest>) : RecyclerView
         holder: LeaveRequestsAdapter.LeaveRequestViewHolder,
         position: Int
     ) {
-        var leaveRequest = leaveRequests[position]
+        val leaveRequest = leaveRequests[position]
         holder.binding.detailsTxt.text = "Details : " + leaveRequest.reason
         holder.binding.dateTxt.text = "Date : " +  leaveRequest.from_date + " - " + leaveRequest.to_date
         if (leaveRequest.status.isEmpty()){
             holder.binding.statusTxt.setTextColor(ContextCompat.getColor(holder.binding.root.context, R.color.black))
             holder.binding.statusTxt.text = "Status : Request Pending"
+            holder.binding.rejectReasonTxt.visibility = View.GONE
         } else if (leaveRequest.status.equals("accepted", true)){
             holder.binding.statusTxt.setTextColor(ContextCompat.getColor(holder.binding.root.context, R.color.thick_green))
             holder.binding.statusTxt.text = "Status : Request Approved"
+            holder.binding.rejectReasonTxt.visibility = View.GONE
         } else if (leaveRequest.status.equals("rejected", true)){
             holder.binding.statusTxt.setTextColor(ContextCompat.getColor(holder.binding.root.context, R.color.red))
             holder.binding.statusTxt.text = "Status : Request Rejected"
+            holder.binding.rejectReasonTxt.text = "Reject Reason : " + leaveRequest.reject_reason
+            holder.binding.rejectReasonTxt.visibility = View.VISIBLE
         }
 
         holder.binding.imageViewIv.setOnClickListener { view ->

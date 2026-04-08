@@ -83,6 +83,15 @@
                     android:layout_marginTop="2dp"
                     android:textColor="@color/black"
                     android:text="Details : " />
+
+                <TextView
+                    android:id="@+id/reject_reason_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:visibility="gone"
+                    android:textColor="@color/red"
+                    android:text="Details : " />
             </LinearLayout>
 
         </LinearLayout>

@@ -57,7 +57,7 @@ class LeaveRequestsActivity : BaseActivity() {
         }
         initViewModel()
         observeLeaveRequestsResponse()
-        var request = ApplyForLeaveApiRequest(
+        val request = ApplyForLeaveApiRequest(
             userDetails[User.ACADEMIC_YEAR_ID].toString(),
             userDetails[User.SCHOOL_ID].toString(), "", "", "",
             "", "", userDetails[User.ID].toString(), "view"

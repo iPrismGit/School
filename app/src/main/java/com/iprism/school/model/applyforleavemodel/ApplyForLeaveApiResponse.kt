@@ -22,6 +22,7 @@ data class LeaveRequest(
     val name: String,
     val reason: String,
     val status: String,
+    val reject_reason: String,
     val to_date: String
 
 )
