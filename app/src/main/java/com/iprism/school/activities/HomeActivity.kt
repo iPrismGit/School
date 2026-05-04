@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -43,7 +44,7 @@ class HomeActivity : BaseActivity() {
             binding.bottomNavigationView.selectedItemId = R.id.messages_nav
             binding.viewPager.setCurrentItem(1, false)
         }
-
+        setupBackPressHandler()
         handleBottomNav()
         askNotificationPermission()
     }
@@ -82,41 +83,45 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-    @SuppressLint("MissingSuperCall", "GestureBackNavigation")
-    override fun onBackPressed() {
-        val currentItem = binding.viewPager.currentItem
 
-        if (currentItem != 0) {
-            changeFragment(0)
-        } else {
-            if (backPressedOnce) {
-                finishAffinity()
-                return
-            }
+    @SuppressLint("GestureBackNavigation")
+    private fun setupBackPressHandler() {
 
-            backPressedOnce = true
+        onBackPressedDispatcher.addCallback(this) {
 
-            val snackbar = Snackbar.make(
-                findViewById(android.R.id.content),
-                "Are you sure you want to exit?",
-                Snackbar.LENGTH_LONG
-            )
-                .setAction("Yes") {
+            val currentItem = binding.viewPager.currentItem
+
+            if (currentItem != 0) {
+                changeFragment(0)
+            } else {
+                if (backPressedOnce) {
+                    finishAffinity()
+                    return@addCallback
+                }
+
+                backPressedOnce = true
+
+                val snackbar = Snackbar.make(
+                    findViewById(android.R.id.content),
+                    "Are you sure you want to exit?",
+                    Snackbar.LENGTH_LONG
+                ).setAction("Yes") {
                     finishAffinity()
                 }
 
-            snackbar.setBackgroundTint(ContextCompat.getColor(this, R.color.blue1))
-            snackbar.setTextColor(ContextCompat.getColor(this, R.color.white))
-            snackbar.setActionTextColor(ContextCompat.getColor(this, R.color.white))
-            snackbar.show()
+                snackbar.setBackgroundTint(ContextCompat.getColor(this@HomeActivity, R.color.blue1))
+                snackbar.setTextColor(ContextCompat.getColor(this@HomeActivity, R.color.white))
+                snackbar.setActionTextColor(ContextCompat.getColor(this@HomeActivity, R.color.white))
+                snackbar.show()
 
-            Handler(Looper.getMainLooper()).postDelayed({
-                backPressedOnce = false
-            }, 2000)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    backPressedOnce = false
+                }, 2000)
+            }
         }
     }
 
-    private fun changeFragment(position: Int) {
+     fun changeFragment(position: Int) {
         binding.viewPager.setCurrentItem(position, false)
         binding.bottomNavigationView.menu.getItem(position).isChecked = true
     }

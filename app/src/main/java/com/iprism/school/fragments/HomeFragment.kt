@@ -208,7 +208,7 @@ class HomeFragment : BaseFragment() {
     private fun refresh() {
         binding.refreshLayout.setOnRefreshListener(
             SwipeRefreshLayout.OnRefreshListener {
-                var request = HomePageApiRequest(
+                val request = HomePageApiRequest(
                     userDetails[User.ACADEMIC_YEAR_ID].toString(),
                     userDetails[User.SCHOOL_ID].toString(),
                     userDetails[User.ID].toString()
@@ -222,17 +222,13 @@ class HomeFragment : BaseFragment() {
 
     private fun handleDigitalContentLo() {
         binding.degitalContentLo.setOnClickListener { view ->
-            var intent = Intent(requireContext(), HomeActivity::class.java)
-            intent.putExtra("tag", "Tutorial")
-            startActivity(intent)
+            (activity as? HomeActivity)?.changeFragment(3)
         }
     }
 
     private fun handleViewAllMessages() {
         binding.messagesViewAll.setOnClickListener { view ->
-            var intent = Intent(requireContext(), HomeActivity::class.java)
-            intent.putExtra("tag", "Messages")
-            startActivity(intent)
+            (activity as? HomeActivity)?.changeFragment(1)
         }
     }
 
@@ -246,7 +242,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun getNotificationCountFromApi() {
-        var leaveRequestApiRequest = LeaveRequestApiRequest(
+        val leaveRequestApiRequest = LeaveRequestApiRequest(
             userDetails[User.SCHOOL_ID].toString(),
             "",
             "",
@@ -315,17 +311,19 @@ class HomeFragment : BaseFragment() {
 
     private fun handleMessageLo() {
         binding.messageLl.setOnClickListener { view ->
-            var intent = Intent(requireContext(), HomeActivity::class.java)
-            intent.putExtra("tag", "Messages")
-            startActivity(intent)
+            (activity as? HomeActivity)?.changeFragment(1)
+//            val intent = Intent(requireContext(), HomeActivity::class.java)
+//            intent.putExtra("tag", "Messages")
+//            startActivity(intent)
         }
     }
 
     private fun handleSideHelpTutorialsLo() {
         binding.sideHelpTutorialsLo.setOnClickListener { view ->
-            var intent = Intent(requireContext(), HomeActivity::class.java)
-            intent.putExtra("tag", "Tutorial")
-            startActivity(intent)
+            (activity as? HomeActivity)?.changeFragment(3)
+//            val intent = Intent(requireContext(), HomeActivity::class.java)
+//            intent.putExtra("tag", "Tutorial")
+//            startActivity(intent)
         }
     }
 
@@ -562,8 +560,8 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setupAlbumsAdapter(albumCovers: List<AlbumCoverHome>) {
-        var adapter = HomePageAlbumsAdapter(albumCovers)
-        var linearLayoutManager =
+        val adapter = HomePageAlbumsAdapter(albumCovers)
+        val linearLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.albumsRv.layoutManager = linearLayoutManager
         binding.albumsRv.adapter = adapter
@@ -583,8 +581,8 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setupDayCareAlbumsAdapter(albumCovers: List<DayCareAlbumCoverHome>) {
-        var adapter = HomePAgeDayCareAlbumsAdapter(albumCovers)
-        var linearLayoutManager =
+        val adapter = HomePAgeDayCareAlbumsAdapter(albumCovers)
+        val linearLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.dayCareAlbumsRv.layoutManager = linearLayoutManager
         binding.dayCareAlbumsRv.adapter = adapter
@@ -721,9 +719,10 @@ class HomeFragment : BaseFragment() {
 
     private fun handleSideMessageLo() {
         binding.messagesLo.setOnClickListener(View.OnClickListener {
-            val intent = Intent(requireContext(), HomeActivity::class.java)
-            intent.putExtra("tag", "Messages")
-            startActivity(intent)
+            (activity as? HomeActivity)?.changeFragment(1)
+//            val intent = Intent(requireContext(), HomeActivity::class.java)
+//            intent.putExtra("tag", "Messages")
+//            startActivity(intent)
         })
     }
 
