@@ -59,7 +59,7 @@ class DayCarePlansActivity : BaseActivity() {
         observePlansResponse()
         observeResponse()
         handleRefreshLo()
-        var request = DayCareApiRequest(
+        val request = DayCareApiRequest(
             userDetails[User.ACADEMIC_YEAR_ID].toString(),
             "",
             "",
@@ -99,7 +99,7 @@ class DayCarePlansActivity : BaseActivity() {
                 is UiState.Success -> {
                     binding.progress.hideProgress()
                     if (result.data.categories.isNotEmpty()) {
-                        var updatedList = result.data.categories.toMutableList()
+                        val updatedList = result.data.categories.toMutableList()
                         updatedList.add(0, Category("-1", "Select Plan"))
                         setupPlansAdapter(updatedList)
                     } else {
@@ -116,7 +116,7 @@ class DayCarePlansActivity : BaseActivity() {
     }
 
     private fun setupPlansAdapter(plans: List<Category>) {
-        var namesList = plans.map { it.name }
+        val namesList = plans.map { it.name }
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, namesList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.plansSp.adapter = adapter
@@ -129,9 +129,14 @@ class DayCarePlansActivity : BaseActivity() {
                     id: Long
                 ) {
                     planId = plans[position].cat_id.toString()
-                    //resetEvents()
                     if (!planId.equals("-1", true)) {
-                        loadEvents()
+                        binding.studentsRv.visibility = View.VISIBLE
+                        refreshItems()
+                       // loadEvents()
+                    } else{
+                        studentsList.clear()
+                        binding.studentsRv.visibility = View.GONE
+                        binding.noDataTxt.visibility = View.VISIBLE
                     }
                 }
 
@@ -165,7 +170,7 @@ class DayCarePlansActivity : BaseActivity() {
         studentsAdapter.setupListener(object : OnDayCareClickListener {
             override fun onItemLick(id: Int) {
                 Log.d("DayCareIds", id.toString() + ", " + planId)
-                var intent =
+                val intent =
                     Intent(this@DayCarePlansActivity, DaycareActivitiesActivity::class.java)
                 intent.putExtra("studentId", id.toString())
                 intent.putExtra("planId", planId)
