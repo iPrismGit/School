@@ -77,7 +77,7 @@ class LoginActivity : BaseActivity() {
                 }
 
                 is UiState.Success -> {
-                    var user = User(this)
+                    val user = User(this)
                     binding.progress.hideProgress()
                     binding.loginBtn.isEnabled = true
                     user.storeNewUserDetails(
@@ -93,7 +93,7 @@ class LoginActivity : BaseActivity() {
 //                    SchoolApi.setAuthToken(result.data.auth_token)
                     user.storeNewUserAuthToken(result.data.auth_token)
                     ToastUtils.showSuccessCustomToast(this, "Teacher Logged in Successfully!")
-                    var intent = Intent(this, HomeActivity::class.java)
+                    val intent = Intent(this, HomeActivity::class.java)
                     startActivity(intent)
                     finish()
                 }
@@ -196,7 +196,7 @@ class LoginActivity : BaseActivity() {
             } else if (Pattern.matches("[0-5].*", getMobileNumber())) {
                 ToastUtils.showErrorCustomToast(this, "Please Enter Valid Mobile Number..")
             } else {
-                var loginApiRequest = LoginApiRequest(getMobileNumber(), "not_verified", playerId)
+                val loginApiRequest = LoginApiRequest(getMobileNumber(), "not_verified", playerId)
                 viewModel.generateOtp(loginApiRequest)
             }
         }
