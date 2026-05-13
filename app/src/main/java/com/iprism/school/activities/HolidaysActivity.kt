@@ -111,14 +111,14 @@ class HolidaysActivity : BaseActivity() {
             userDetails[User.ID].toString(),
             year.toString()
         )
-
+        Log.d("request", request.toString())
         holidaysViewModel.fetchHolidays(request)
     }
 
     private fun setupHolidaysAdapter(holidays: List<Holiday>) {
         val adapter = HolidaysAdapter(this, holidays)
         binding.holidaysRv.adapter = adapter
-        var linearLayoutManager = LinearLayoutManager(this)
+        val linearLayoutManager = LinearLayoutManager(this)
         binding.holidaysRv.layoutManager = linearLayoutManager
     }
 
