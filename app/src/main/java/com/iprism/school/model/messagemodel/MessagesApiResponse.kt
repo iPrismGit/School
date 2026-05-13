@@ -15,6 +15,7 @@ data class MessagesResponse (
 
     val message_threads: List<MessageThread>,
     val pagination: Pagination,
+    val chat_status: String,
     val messages: List<MessagesItem>
 
 )

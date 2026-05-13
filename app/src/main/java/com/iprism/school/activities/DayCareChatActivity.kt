@@ -56,6 +56,7 @@ class DayCareChatActivity : BaseActivity() {
     private var studentId = ""
     private var image = ""
     private var latestMessageId = 0
+    private var chatStatus = ""
     private lateinit var viewModel: DayCareMessagesViewModel
     private var isLoading = false
     private var isLastPage = false
@@ -345,6 +346,14 @@ class DayCareChatActivity : BaseActivity() {
                     isLoading = false
                     chatAdapter.removeLoadingFooter()
                     val newBookings = result.data.response.messages
+                    chatStatus = result.data.response.chat_status
+                    if (chatStatus.equals("1",true)){
+                        binding.replyLo.visibility = View.VISIBLE
+                        binding.restrictTxt.visibility = View.GONE
+                    } else{
+                        binding.replyLo.visibility = View.GONE
+                        binding.restrictTxt.visibility = View.VISIBLE
+                    }
                     if (newBookings.isNotEmpty()) {
                         if (currentPage == 1 && newBookings.isNotEmpty()) {
                             latestMessageId = newBookings.maxOf { it.id }
@@ -378,13 +387,20 @@ class DayCareChatActivity : BaseActivity() {
 
                 is UiState.Success -> {
                     val newMessages = result.data.response.messages
+                    if (chatStatus.equals("1",true)){
+                        binding.replyLo.visibility = View.VISIBLE
+                        binding.restrictTxt.visibility = View.GONE
+                    } else{
+                        binding.replyLo.visibility = View.GONE
+                        binding.restrictTxt.visibility = View.VISIBLE
+                    }
                     if (newMessages.isNotEmpty()) {
                         val filteredMessages = newMessages.filter { it.id > latestMessageId }
                         if (filteredMessages.isNotEmpty()) {
                             latestMessageId = filteredMessages.maxOf { it.id }
                             messages.addAll(0, filteredMessages)
                             chatAdapter.notifyItemRangeInserted(0, filteredMessages.size)
-                            binding.rvChat.scrollToPosition(0) // optional auto scroll
+                            binding.rvChat.scrollToPosition(0)
                         }
                     }
                 }

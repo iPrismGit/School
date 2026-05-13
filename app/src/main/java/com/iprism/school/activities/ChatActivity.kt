@@ -59,6 +59,7 @@ class ChatActivity : BaseActivity() {
     private var messageType = ""
     private var studentId = ""
     private var image = ""
+    private var chatStatus = ""
     private var latestMessageId = 0
     private lateinit var viewModel: MessagesViewModel
     private var isLoading = false
@@ -312,11 +313,11 @@ class ChatActivity : BaseActivity() {
             override fun onInnerItemClick(eventImage: String) {
                 if (eventImage.isNotEmpty()) {
                     if (eventImage.endsWith(".pdf")) {
-                        var intent = Intent(this@ChatActivity, PdfViewActivity::class.java)
+                        val intent = Intent(this@ChatActivity, PdfViewActivity::class.java)
                         intent.putExtra("pdfUrl", eventImage)
                         startActivity(intent)
                     } else {
-                        var intent = Intent(this@ChatActivity, ViewImageActivity::class.java)
+                        val intent = Intent(this@ChatActivity, ViewImageActivity::class.java)
                         intent.putExtra("EventImage", eventImage)
                         intent.putExtra("EventName", "Message Image")
                         startActivity(intent)
@@ -348,6 +349,14 @@ class ChatActivity : BaseActivity() {
                     binding.progress.hideProgress()
                     isLoading = false
                     chatAdapter.removeLoadingFooter()
+                    chatStatus = result.data.response.chat_status
+                    if (chatStatus.equals("1",true)){
+                        binding.replyLo.visibility = View.VISIBLE
+                        binding.restrictTxt.visibility = View.GONE
+                    } else{
+                        binding.replyLo.visibility = View.GONE
+                        binding.restrictTxt.visibility = View.VISIBLE
+                    }
                     val newBookings = result.data.response.messages
                     if (newBookings.isNotEmpty()) {
                         if (currentPage == 1 && newBookings.isNotEmpty()) {
@@ -381,6 +390,14 @@ class ChatActivity : BaseActivity() {
                 }
 
                 is UiState.Success -> {
+                    chatStatus = result.data.response.chat_status
+                    if (chatStatus.equals("1",true)){
+                        binding.replyLo.visibility = View.VISIBLE
+                        binding.restrictTxt.visibility = View.GONE
+                    } else{
+                        binding.replyLo.visibility = View.GONE
+                        binding.restrictTxt.visibility = View.VISIBLE
+                    }
                     val newMessages = result.data.response.messages
                     if (newMessages.isNotEmpty()) {
                         val filteredMessages = newMessages.filter { it.id > latestMessageId }
@@ -388,12 +405,13 @@ class ChatActivity : BaseActivity() {
                             latestMessageId = filteredMessages.maxOf { it.id }
                             messages.addAll(0, filteredMessages)
                             chatAdapter.notifyItemRangeInserted(0, filteredMessages.size)
-                            binding.rvChat.scrollToPosition(0) // optional auto scroll
+                            binding.rvChat.scrollToPosition(0)
                         }
                     }
                 }
 
                 is UiState.Error -> {
+
                 }
             }
         }

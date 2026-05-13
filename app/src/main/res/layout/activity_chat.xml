@@ -91,7 +91,7 @@
         android:background="@color/white"
         android:elevation="8dp"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -219,6 +219,16 @@
 
       </LinearLayout>
 
+        <TextView
+            android:id="@+id/restrict_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="2dp"
+            android:visibility="gone"
+            android:text="you cannot send messages to this chat, admin has restricted the chat. Please Contact Admin."
+            android:textColor="@color/red"
+            android:textSize="12dp"/>
 
         <LinearLayout
             android:id="@+id/leave_aprovel_lo"
