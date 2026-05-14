@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        app:srcCompat="@drawable/app_logo" />
+        app:srcCompat="@drawable/app_splash_logo" />
 
     <TextView
         android:id="@+id/textView"

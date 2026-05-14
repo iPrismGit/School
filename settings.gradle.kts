@@ -14,6 +14,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "School"
+rootProject.name = "Little Pebbles"
 include(":app")
  

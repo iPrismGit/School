@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">School</string>
+    <string name="app_name">Little Pebbles</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_home">Home</string>
     <string name="no_active_consents">No Active Consents</string>
