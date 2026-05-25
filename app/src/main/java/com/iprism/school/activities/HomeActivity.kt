@@ -96,7 +96,6 @@ class HomeActivity : BaseActivity() {
         }
     }
 
-
     @SuppressLint("GestureBackNavigation")
     private fun setupBackPressHandler() {
 
