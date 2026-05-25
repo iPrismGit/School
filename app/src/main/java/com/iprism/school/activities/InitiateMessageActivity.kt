@@ -22,6 +22,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.adapters.StudentMessageSelectAdapter
 import com.iprism.school.base.BaseActivity
@@ -115,7 +116,7 @@ class InitiateMessageActivity : BaseActivity() {
         handleCrossBtn()
         handleSelectStudentsLo()
         handleAttachmentBtn()
-        var requestClasses = ClassTeacherApiRequest(
+        val requestClasses = ClassTeacherApiRequest(
             "",
             userDetails[User.ID].toString(),
             userDetails[User.SCHOOL_ID].toString(),
@@ -169,6 +170,8 @@ class InitiateMessageActivity : BaseActivity() {
             studentsAdapter.selectAllStudents()
         }
         bottomSheetDialog.show()
+        bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        bottomSheetDialog.behavior.skipCollapsed = true
     }
 
     private fun initializeBottomSheet() {
@@ -208,7 +211,7 @@ class InitiateMessageActivity : BaseActivity() {
             } else if (getMessage().isEmpty() && selectedFileUri == null) {
                 ToastUtils.showErrorCustomToast(this, "Please Enter Message or Select File..!")
             } else {
-                var request = MessagesApiRequest(
+                val request = MessagesApiRequest(
                     userDetails[User.ACADEMIC_YEAR_ID].toString(),
                     userDetails[User.SCHOOL_ID].toString(),
                     classId,
@@ -257,7 +260,7 @@ class InitiateMessageActivity : BaseActivity() {
 
                 is UiState.Success -> {
                     binding.progress.hideProgress()
-                    var intent = Intent(this, SuccessActivity::class.java)
+                    val intent = Intent(this, SuccessActivity::class.java)
                     intent.putExtra("tag", "Message Sent")
                     startActivity(intent)
                 }
@@ -281,7 +284,7 @@ class InitiateMessageActivity : BaseActivity() {
                 is UiState.Success -> {
                     binding.progress.hideProgress()
                     if (result.data.classes.isNotEmpty()) {
-                        var updatedList = result.data.classes.toMutableList()
+                        val updatedList = result.data.classes.toMutableList()
                         updatedList.add(0, Class("-1", "Select Class"))
                         setupClassesAdapter(updatedList)
                     } else {
@@ -307,7 +310,7 @@ class InitiateMessageActivity : BaseActivity() {
                 is UiState.Success -> {
                     binding.progress.hideProgress()
                     if (result.data.sections.isNotEmpty()) {
-                        var updatedList = result.data.sections.toMutableList()
+                        val updatedList = result.data.sections.toMutableList()
                         updatedList.add(0, Section("-1", "Select Section"))
                         setupSectionsAdapter(updatedList)
                     } else {
@@ -324,7 +327,7 @@ class InitiateMessageActivity : BaseActivity() {
     }
 
     private fun setupClassesAdapter(genderTypes: List<Class>) {
-        var namesList = genderTypes.map { it.class_name }
+        val namesList = genderTypes.map { it.class_name }
         val adapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_item, namesList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -339,7 +342,7 @@ class InitiateMessageActivity : BaseActivity() {
                 ) {
                     classId = genderTypes[position].class_id.toString()
                     if (!classId.equals("-1", true)) {
-                        var requestClasses = ClassTeacherApiRequest(
+                        val requestClasses = ClassTeacherApiRequest(
                             classId,
                             userDetails[User.ID].toString(),
                             userDetails[User.SCHOOL_ID].toString(),
@@ -361,7 +364,7 @@ class InitiateMessageActivity : BaseActivity() {
     }
 
     private fun setupSectionsAdapter(genderTypes: List<Section>) {
-        var namesList = genderTypes.map { it.section_name }
+        val namesList = genderTypes.map { it.section_name }
         val adapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_item, namesList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -389,7 +392,7 @@ class InitiateMessageActivity : BaseActivity() {
     }
 
     private fun loadStudents() {
-        var request = StudentsApiRequest(
+        val request = StudentsApiRequest(
             userDetails[User.ACADEMIC_YEAR_ID].toString(),
             userDetails[User.SCHOOL_ID].toString(), classId, currentPage, sectionId,
             userDetails[User.ID].toString()

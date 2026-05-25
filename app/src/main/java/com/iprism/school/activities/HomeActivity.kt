@@ -2,6 +2,7 @@ package com.iprism.school.activities
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -17,6 +18,7 @@ import com.iprism.school.base.BaseActivity
 import com.iprism.school.R
 import com.iprism.school.adapters.HomePagerAdapter
 import com.iprism.school.databinding.ActivityHomeBinding
+import com.iprism.school.utils.InAppUpdate
 
 
 class HomeActivity : BaseActivity() {
@@ -30,6 +32,7 @@ class HomeActivity : BaseActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         enableEdgeToEdge()
+        InAppUpdate.initUpdate(this)
         tag = intent.getStringExtra("tag").toString()
         val adapter = HomePagerAdapter(this)
         binding.viewPager.isUserInputEnabled = false
@@ -47,6 +50,16 @@ class HomeActivity : BaseActivity() {
         setupBackPressHandler()
         handleBottomNav()
         askNotificationPermission()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        InAppUpdate.initResult(this, requestCode, resultCode)
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        InAppUpdate.initResume(this)
     }
 
     private val requestNotificationPermission =

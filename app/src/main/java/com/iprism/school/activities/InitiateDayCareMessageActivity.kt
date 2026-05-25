@@ -21,6 +21,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.iprism.school.R
 import com.iprism.school.adapters.DayCareMessageStudentsAdapter
@@ -125,7 +126,7 @@ class InitiateDayCareMessageActivity : BaseActivity() {
         handleCrossBtn()
         handleSelectStudentsLo()
         handleAttachmentBtn()
-        var request = DayCareApiRequest(
+        val request = DayCareApiRequest(
             userDetails[User.ACADEMIC_YEAR_ID].toString(),
             "",
             "",
@@ -198,7 +199,7 @@ class InitiateDayCareMessageActivity : BaseActivity() {
     }
 
     private fun setupPlansAdapter(plans: List<Category>) {
-        var namesList = plans.map { it.name }
+        val namesList = plans.map { it.name }
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, namesList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.plansSp.adapter = adapter
@@ -378,6 +379,8 @@ class InitiateDayCareMessageActivity : BaseActivity() {
             studentsAdapter.selectAllStudents()
         }
         bottomSheetDialog.show()
+        bottomSheetDialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        bottomSheetDialog.behavior.skipCollapsed = true
     }
 
     private fun initializeBottomSheet() {
