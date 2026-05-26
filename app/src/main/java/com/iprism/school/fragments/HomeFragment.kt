@@ -160,7 +160,7 @@ class HomeFragment : BaseFragment() {
             )
             attendanceViewModel.fetchAcademicYears(request)
         } else {
-            var request = HomePageApiRequest(
+            val request = HomePageApiRequest(
                 userDetails[User.ACADEMIC_YEAR_ID].toString(),
                 userDetails[User.SCHOOL_ID].toString(),
                 userDetails[User.ID].toString()
@@ -380,7 +380,7 @@ class HomeFragment : BaseFragment() {
                     binding.shimmerLo.visibility = View.GONE
                     binding.mainLo.visibility = View.VISIBLE
                     user!!.storeAcademicYear(result.data.id, result.data.name)
-                    var request = HomePageApiRequest(
+                    val request = HomePageApiRequest(
                         userDetails[User.ACADEMIC_YEAR_ID].toString(),
                         userDetails[User.SCHOOL_ID].toString(),
                         userDetails[User.ID].toString()
@@ -407,7 +407,7 @@ class HomeFragment : BaseFragment() {
 
                 is UiState.Success -> {
                     binding.progress.hideProgress()
-
+                    Log.d("DaycareStatus", result.data.status)
                     if (result.data.status.equals("yes", true)) {
                         Log.d("NavigationFrom", navigationFrom)
 
