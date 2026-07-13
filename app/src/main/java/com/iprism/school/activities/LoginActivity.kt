@@ -45,9 +45,7 @@ class LoginActivity : BaseActivity() {
             playerId = deviceState.userId ?: ""
             Log.d("OneSignal", "Player ID1: $playerId")
         }
-        val tags = JSONObject()
-        tags.put("user_type", "staff")
-        OneSignal.sendTags(tags)
+
         initViewModel()
         handleRequestOtpBtn()
         observeGenerateOtpResponse()

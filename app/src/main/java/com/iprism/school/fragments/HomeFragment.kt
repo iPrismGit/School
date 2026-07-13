@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
+import org.json.JSONObject
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -82,6 +83,7 @@ import com.iprism.school.viewModels.DayCareViewModel
 import com.iprism.school.viewModels.HomePageViewModel
 import com.iprism.school.viewModels.LeaveRequestsViewModel
 import com.iprism.school.viewModels.ViewModelFactory
+import com.onesignal.OneSignal
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -103,6 +105,13 @@ class HomeFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        val tags = JSONObject().apply{
+            put("user_type", "staff")
+            put("branch_id", userDetails[User.SCHOOL_ID].toString())
+        }
+
+        OneSignal.sendTags(tags)
+        Log.d("Tags", tags.toString())
         Glide.with(this)
             .asGif()
             .load(R.drawable.planner_gif)
