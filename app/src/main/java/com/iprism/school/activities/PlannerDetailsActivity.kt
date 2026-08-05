@@ -61,7 +61,7 @@ class PlannerDetailsActivity : BaseActivity() {
         handleBack()
         initViewModel()
         observePlannerDetailsResponse()
-        var request = PlannersAndResourcesApiRequest(
+        val request = PlannersAndResourcesApiRequest(
             userDetails[User.ACADEMIC_YEAR_ID].toString(),
             userDetails[User.SCHOOL_ID].toString(),
             catId,
@@ -112,9 +112,9 @@ class PlannerDetailsActivity : BaseActivity() {
     }
 
     private fun setupPlannerDetailsAdapter(pdfs: List<Pdf>) {
-        var plannerDetailsAdapter = PlannerDetailsAdapter(this, pdfs)
+        val plannerDetailsAdapter = PlannerDetailsAdapter(this, pdfs)
         binding.plannersRv.adapter = plannerDetailsAdapter
-        var linearLayoutManager = LinearLayoutManager(this)
+        val linearLayoutManager = LinearLayoutManager(this)
         binding.plannersRv.layoutManager = linearLayoutManager
         plannerDetailsAdapter.setupListener(object : OnPlannerClickListener {
             override fun onCategoryClick(id: String, catName: String) {
@@ -122,13 +122,18 @@ class PlannerDetailsActivity : BaseActivity() {
             }
 
             override fun onViewClick(pdfUrl: String) {
-                var intent = Intent(this@PlannerDetailsActivity, PdfViewActivity::class.java)
-                intent.putExtra("pdfUrl", pdfUrl)
-                startActivity(intent)
+                if (pdfUrl.endsWith(".pdf")) {
+                    val intent = Intent(this@PlannerDetailsActivity, PdfViewActivity::class.java)
+                    intent.putExtra("pdfUrl", pdfUrl)
+                    startActivity(intent)
+                } else {
+                    val intent = Intent(this@PlannerDetailsActivity, ViewImageActivity::class.java)
+                    intent.putExtra("EventImage", pdfUrl)
+                    intent.putExtra("EventName", "Review")
+                    startActivity(intent)
+                }
             }
-
         })
-
     }
 
     private fun handleBack() {
