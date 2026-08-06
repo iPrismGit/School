@@ -254,7 +254,10 @@ class AttendanceActivity : BaseActivity() {
                             studentsAdapter.selectAll()
                         }
 
-                        if (newBookings.size < 10) {
+                        /*if (newBookings.size < 10) {
+                            isLastPage = true
+                        }*/
+                        if (state.data.pagination.total_pages.size == currentPage) {
                             isLastPage = true
                         }
                     }
@@ -268,7 +271,7 @@ class AttendanceActivity : BaseActivity() {
                     studentsAdapter.removeLoadingFooter()
                     binding.progress.hideProgress()
                     ToastUtils.showErrorCustomToast(this, state.message)
-                    if (state.message.equals("no data found", true)) {
+                    if (state.message.equals("no data found", true) && currentPage == 1) {
                         binding.noDataTxt.visibility = View.VISIBLE
                         binding.studentAttendanceRv.visibility = View.GONE
                     }
