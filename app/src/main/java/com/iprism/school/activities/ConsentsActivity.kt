@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.iprism.school.adapters.CircularsAdapter
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityConsentsBinding
@@ -44,6 +45,21 @@ class ConsentsActivity : BaseActivity() {
         initViewModel()
         observeResponse()
         fetchCirculars()
+        refresh()
+    }
+
+    private fun refresh() {
+        binding.refreshLayout.setOnRefreshListener(
+            SwipeRefreshLayout.OnRefreshListener {
+                currentPage = 1
+                isLastPage = false
+                isLoading = false
+                circularsItems.clear()
+                circularsAdapter.notifyDataSetChanged()
+                fetchCirculars()
+                binding.refreshLayout.isRefreshing = false
+            }
+        )
     }
 
     private fun handleBack() {
