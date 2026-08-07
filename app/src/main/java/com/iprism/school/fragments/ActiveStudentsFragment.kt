@@ -23,6 +23,7 @@ import com.iprism.school.base.BaseFragment
 import com.iprism.school.adapters.StudentsAdapter
 import com.iprism.school.databinding.FragmentActiveStudentsBinding
 import com.iprism.school.interfaces.OnStudentClickListener
+import com.iprism.school.model.circularmodels.Circular
 import com.iprism.school.model.classteachermodel.Class
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
 import com.iprism.school.model.classteachermodel.Section
@@ -203,7 +204,7 @@ class ActiveStudentsFragment : BaseFragment() {
 
     private fun loadStudents(isFromFilterChange: Boolean = false) {
 
-        if (isLoading) return
+        /*if (isLoading) return
 
         if (isFromFilterChange) {
             currentPage = 1
@@ -217,7 +218,7 @@ class ActiveStudentsFragment : BaseFragment() {
             binding.noDataFoundTxt.visibility = View.VISIBLE
         }
 
-        isLoading = true
+        isLoading = true*/
 
         val request = StudentsApiRequest(
             userDetails[User.ACADEMIC_YEAR_ID].toString(),
@@ -242,9 +243,9 @@ class ActiveStudentsFragment : BaseFragment() {
     }
 
     private fun loadMoreItems() {
-        if (isLastPage || isLoading) return
         isLoading = true
         currentPage++
+        studentsAdapter.showLoadingFooter()
         loadStudents()
     }
 
@@ -270,7 +271,7 @@ class ActiveStudentsFragment : BaseFragment() {
     }
 
     private fun setupRecyclerView() {
-        studentsAdapter = StudentsAdapter(requireContext(), studentsList)
+        studentsAdapter = StudentsAdapter(studentsList as ArrayList<Student?>)
         val linearLayoutManager = LinearLayoutManager(requireContext())
 
         binding.studentsRv.apply {
@@ -324,10 +325,19 @@ class ActiveStudentsFragment : BaseFragment() {
                 is UiState.Success -> {
                     binding.progress.hideProgress()
                     isLoading = false
+                    studentsAdapter.removeLoadingFooter()
+                    val newStudents = result.data.students
+                    if (newStudents.isNotEmpty()) {
+                        studentsList.addAll(newStudents)
+                        studentsAdapter.notifyDataSetChanged()
+                        binding.studentsRv.visibility = View.VISIBLE
+                        binding.noDataFoundTxt.visibility = View.GONE
+                        if (result.data.pagination.total_pages.size == currentPage) {
+                            isLastPage = true
+                        }
+                    }
 
-                    val newEvents = result.data.students
-
-                    if (newEvents.isNotEmpty()) {
+                   /* if (newEvents.isNotEmpty()) {
 
                         if (isFreshLoad) {
                             studentsList.clear()
@@ -350,13 +360,14 @@ class ActiveStudentsFragment : BaseFragment() {
                             binding.studentsRv.visibility = View.GONE
                             binding.noDataFoundTxt.visibility = View.VISIBLE
                         }
-                    }
+                    }*/
 
                 }
 
                 is UiState.Error -> {
                     isLoading = false
                     binding.progress.hideProgress()
+                    studentsAdapter.removeLoadingFooter()
                     if (studentsList.isEmpty()) {
                         binding.studentsRv.visibility = View.GONE
                         binding.noDataFoundTxt.visibility = View.VISIBLE
