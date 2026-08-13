@@ -139,13 +139,13 @@ class LoginActivity : BaseActivity() {
                     binding.progress.hideProgress()
                     if (getMobileNumber().equals("8585858585", true)){
                         currentOtp = "5555"
+                        ToastUtils.showSuccessCustomToast(this, currentOtp.toString())
                     }else{
                         currentOtp = result.data.otp
                     }
                     binding.mobileLo.visibility = View.GONE
                     binding.otpLl.visibility = View.VISIBLE
                     countDown()
-                    ToastUtils.showSuccessCustomToast(this, currentOtp.toString())
                 }
 
                 is UiState.Error -> {
@@ -176,12 +176,12 @@ class LoginActivity : BaseActivity() {
                     binding.progress.hideProgress()
                     if (getMobileNumber().equals("8585858585", true)){
                         currentOtp = "5555"
+                        ToastUtils.showSuccessCustomToast(this, currentOtp.toString())
                     }else{
                         currentOtp = result.data.otp
                     }
                     binding.resendBtn.isEnabled = true
                     countDown()
-                    ToastUtils.showSuccessCustomToast(this, currentOtp.toString())
                 }
 
                 is UiState.Error -> {
