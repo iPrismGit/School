@@ -242,9 +242,7 @@ class TimeTableActivity : BaseActivity() {
                     id: Long
                 ) {
                     sectionId = genderTypes[position].section_id.toString()
-                    if (sectionId != "-1") {
-                        fetchTimeTable()
-                    }
+                    fetchTimeTable()
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
