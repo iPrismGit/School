@@ -49,7 +49,6 @@ class TimeTableActivity : BaseActivity() {
         }
         handleBack()
         initViewModel()
-        fetchTimeTable()
         setupObservers()
         observeClassesResponse()
         observeSectionsResponse()
@@ -243,7 +242,9 @@ class TimeTableActivity : BaseActivity() {
                     id: Long
                 ) {
                     sectionId = genderTypes[position].section_id.toString()
-                    fetchTimeTable()
+                    if (sectionId != "-1") {
+                        fetchTimeTable()
+                    }
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
