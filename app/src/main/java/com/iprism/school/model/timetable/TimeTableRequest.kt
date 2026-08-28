@@ -10,8 +10,11 @@ data class TimeTableRequest(
 	@field:SerializedName("branch_id")
 	val branchId: String,
 
-	@field:SerializedName("student_id")
-	val studentId: String,
+	@field:SerializedName("class_id")
+	val classId: String,
+
+	@field:SerializedName("section_id")
+	val sectionId: String,
 
 	@field:SerializedName("page")
 	val page: String
