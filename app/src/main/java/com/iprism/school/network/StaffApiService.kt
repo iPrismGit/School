@@ -49,6 +49,8 @@ import com.iprism.school.model.staffattendacemodel.StaffAttendanceApiRequest
 import com.iprism.school.model.staffattendacemodel.StaffAttendanceApiResponse
 import com.iprism.school.model.studentsmodel.StudentsApiRequest
 import com.iprism.school.model.studentsmodel.StudentsApiResponse
+import com.iprism.school.model.timetable.TimeTableApiResponse
+import com.iprism.school.model.timetable.TimeTableRequest
 import com.iprism.school.utils.Constants
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -165,4 +167,6 @@ interface StaffApiService {
     @POST(Constants.PROFILE_ENDPOINT)
     suspend fun fetchProfileDetails(@Body request: ProfileApiRequest): ProfileApiResponse
 
+    @POST(Constants.TIME_TABLE_ENDPOINT)
+    suspend fun fetchTimeTable(@Body request: TimeTableRequest): TimeTableApiResponse
 }

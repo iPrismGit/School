@@ -51,6 +51,7 @@ import com.iprism.school.activities.SchoolSupportActivity
 import com.iprism.school.activities.StaffAttendanceActivity
 import com.iprism.school.activities.StudentLeaveRequestsActivity
 import com.iprism.school.activities.TechnicalSupportActivity
+import com.iprism.school.activities.TimeTableActivity
 import com.iprism.school.activities.album.AlbumDetailsActivity
 import com.iprism.school.activities.album.CreateDayCareAlbumsActivity
 import com.iprism.school.activities.album.DayCareAlbumDetailsActivity
@@ -203,14 +204,8 @@ class HomeFragment : BaseFragment() {
         handleViewAllMessages()
         handleDigitalContentLo()
         refresh()
-        handleTimeTableLo()
+        handleTimeTable()
         return binding.root
-    }
-
-    private fun handleTimeTableLo() {
-        binding.timeTableLo.setOnClickListener { view ->
-            ToastUtils.showErrorCustomToast(requireContext(), "This Feature is no Longer Visible..!")
-        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -303,6 +298,12 @@ class HomeFragment : BaseFragment() {
     private fun handleLeaveRequestsLo() {
         binding.leaveRequestsLo.setOnClickListener { view ->
             startActivity(Intent(requireContext(), StudentLeaveRequestsActivity::class.java))
+        }
+    }
+
+    private fun handleTimeTable() {
+        binding.timeTableLl.setOnClickListener { view ->
+            startActivity(Intent(requireContext(), TimeTableActivity::class.java))
         }
     }
 

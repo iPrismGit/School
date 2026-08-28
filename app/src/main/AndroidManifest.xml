@@ -46,6 +46,9 @@
             android:name=".activities.SchoolSupportActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.TimeTableActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.DayCareAttendanceActivity"
             android:exported="false" />
         <activity

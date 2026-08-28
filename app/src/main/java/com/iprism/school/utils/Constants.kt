@@ -34,5 +34,5 @@ object Constants {
     const val TECH_SUPPORT_ENDPOINT = "technical_support"
     const val STUDENT_LEAVE_REQUEST_ENDPOINT = "student_leave_requests"
     const val PROFILE_ENDPOINT = "profile"
-
+    const val TIME_TABLE_ENDPOINT = "time_table"
 }
