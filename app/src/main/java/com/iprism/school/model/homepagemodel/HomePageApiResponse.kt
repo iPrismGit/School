@@ -1,5 +1,6 @@
 package com.iprism.school.model.homepagemodel
 
+import com.google.gson.annotations.SerializedName
 import com.iprism.school.model.messagemodel.MessageThread
 
 data class HomePageApiResponse(
@@ -14,7 +15,9 @@ data class HomePageResponse (
 
     val album_covers: List<AlbumCoverHome>,
     val day_care_album_covers: List<DayCareAlbumCoverHome>,
-    val messages: List<MessageThread>
+    val messages: List<MessageThread>,
+    @field:SerializedName("review_status")
+    val reviewStatus: String
 
 )
 

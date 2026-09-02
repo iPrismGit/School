@@ -504,6 +504,14 @@ class HomeFragment : BaseFragment() {
                     } else {
                         binding.messagesListLo.visibility = View.GONE
                     }
+
+                    if (!result.data.reviewStatus.equals("not_show", true)) {
+                        val feedbackBottomSheet = FeedbackBottomSheet()
+                        feedbackBottomSheet.show(
+                            parentFragmentManager,
+                            "FeedbackBottomSheet"
+                        )
+                    }
                 }
 
                 is UiState.Error -> {

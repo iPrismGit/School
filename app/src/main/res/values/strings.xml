@@ -46,5 +46,8 @@
     <string name="inactive_students">In-Active Students</string>
     <string name="underlined_text"><u>Underlined Text</u></string>
     <string name="office_hours">(Office Hours : <font fgcolor='#FF000000'>Monday - Saturday, </font>10 : 00 AM to 06 : 00 PM.)</string>
+    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="check_you_internet_connection">Check your connection, then refresh the page.</string>
+    <string name="refresh">Refresh</string>
 
 </resources>

@@ -27,3 +27,7 @@ fun ProgressDialog.dismissDialog() {
         this.dismiss()
     }
 }
+
+fun Context.showToast(message: String?) {
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+}

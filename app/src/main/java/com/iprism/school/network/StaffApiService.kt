@@ -1,5 +1,7 @@
 package com.iprism.school.network
 
+import com.iprism.parentapp.model.appreview.AppReviewApiResponse
+import com.iprism.parentapp.model.appreview.AppReviewRequest
 import com.iprism.school.model.daycare.DayCareAttendanceApiRequest
 import com.iprism.school.model.albums.AlbumCoverImagesApiRequest
 import com.iprism.school.model.albums.AlbumCoverImagesApiResponse
@@ -169,4 +171,7 @@ interface StaffApiService {
 
     @POST(Constants.TIME_TABLE_ENDPOINT)
     suspend fun fetchTimeTable(@Body request: TimeTableRequest): TimeTableApiResponse
+
+    @POST(Constants.APP_REVIEW_ENDPOINT)
+    suspend fun insertReview(@Body request: AppReviewRequest): AppReviewApiResponse
 }

@@ -33,4 +33,5 @@
     <color name="diary_bg">#FFC442</color>
     <color name="day_care_bg">#239AD4</color>
     <color name="students_bg">#9E698C</color>
+    <color name="unselected_item_color">#D1D1D1</color>
 </resources>
