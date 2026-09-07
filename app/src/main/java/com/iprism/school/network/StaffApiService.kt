@@ -2,6 +2,7 @@ package com.iprism.school.network
 
 import com.iprism.parentapp.model.appreview.AppReviewApiResponse
 import com.iprism.parentapp.model.appreview.AppReviewRequest
+import com.iprism.parentapp.model.notifications.NotificationsApiResponse
 import com.iprism.school.model.daycare.DayCareAttendanceApiRequest
 import com.iprism.school.model.albums.AlbumCoverImagesApiRequest
 import com.iprism.school.model.albums.AlbumCoverImagesApiResponse
@@ -41,6 +42,7 @@ import com.iprism.school.model.leaverequestmodel.LeaveRequestApiResponse
 import com.iprism.school.model.messagemodel.DayCareMessagesApiRequest
 import com.iprism.school.model.messagemodel.MessagesApiRequest
 import com.iprism.school.model.messagemodel.MessagesApiResponse
+import com.iprism.school.model.notifications.NotificationsRequest
 import com.iprism.school.model.plannersandresources.PlannersAndResourcesApiRequest
 import com.iprism.school.model.plannersandresources.PlannersAndResourcesApiResponse
 import com.iprism.school.model.profile.ProfileApiRequest
@@ -174,4 +176,7 @@ interface StaffApiService {
 
     @POST(Constants.APP_REVIEW_ENDPOINT)
     suspend fun insertReview(@Body request: AppReviewRequest): AppReviewApiResponse
+
+    @POST(Constants.NOTIFICATIONS_ENDPOINT)
+    suspend fun fetchNotifications(@Body request : NotificationsRequest) : NotificationsApiResponse
 }

@@ -46,6 +46,7 @@ import com.iprism.school.activities.DayCareAttendanceActivity
 import com.iprism.school.activities.DayCareChatActivity
 import com.iprism.school.activities.DayCarePlansActivity
 import com.iprism.school.activities.HolidaysActivity
+import com.iprism.school.activities.NotificationsActivity
 import com.iprism.school.activities.PlannerCategoriesActivity
 import com.iprism.school.activities.SchoolSupportActivity
 import com.iprism.school.activities.StaffAttendanceActivity
@@ -205,6 +206,7 @@ class HomeFragment : BaseFragment() {
         handleDigitalContentLo()
         refresh()
         handleTimeTable()
+        handleNotificationsImg()
         return binding.root
     }
 
@@ -228,6 +230,12 @@ class HomeFragment : BaseFragment() {
         binding.degitalContentLo.setOnClickListener { view ->
             (activity as? HomeActivity)?.changeFragment(3)
         }
+    }
+
+    private fun handleNotificationsImg() {
+        binding.notificationsImg.setOnClickListener(View.OnClickListener {
+            startActivity(Intent(requireContext(), NotificationsActivity::class.java))
+        })
     }
 
     private fun handleViewAllMessages() {

@@ -49,6 +49,9 @@
             android:name=".activities.TimeTableActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.NotificationsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.DayCareAttendanceActivity"
             android:exported="false" />
         <activity
