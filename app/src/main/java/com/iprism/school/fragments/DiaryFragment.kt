@@ -1,10 +1,12 @@
 package com.iprism.school.fragments
 
+import android.Manifest
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -24,6 +26,7 @@ import android.widget.TextView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -79,6 +82,21 @@ class DiaryFragment : BaseFragment() {
     private var diaryType: String = ""
     private var selectedImageUri: Uri? = null
     private var backendDate: String = ""
+
+    private val cameraPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted ->
+
+            if (isGranted) {
+                launchCamera()
+            } else {
+                ToastUtils.showErrorCustomToast(
+                    requireContext(),
+                    "Camera permission is required to take a photo"
+                )
+            }
+        }
 
     private val selectAllListener: CompoundButton.OnCheckedChangeListener =
         CompoundButton.OnCheckedChangeListener { buttonView: CompoundButton, isChecked: Boolean ->
@@ -569,8 +587,17 @@ class DiaryFragment : BaseFragment() {
     }
 
     private fun openCamera() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        cameraLauncher.launch(intent)
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            launchCamera()
+        } else {
+            cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+        }
+        /*val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        cameraLauncher.launch(intent)*/
     }
 
     private fun openGallery() {
@@ -592,11 +619,25 @@ class DiaryFragment : BaseFragment() {
     }
 
     private val cameraLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+
             if (result.resultCode == Activity.RESULT_OK) {
-                val bitmap = result.data?.extras?.get("data") as Bitmap
-                selectedImageUri = getImageUriFromBitmap(bitmap)
-                setFileName(selectedImageUri)
+
+                val bitmap = result.data
+                    ?.extras
+                    ?.get("data") as? Bitmap
+
+                if (bitmap != null) {
+                    selectedImageUri = getImageUriFromBitmap(bitmap)
+                    setFileName(selectedImageUri)
+                } else {
+                    ToastUtils.showErrorCustomToast(
+                        requireContext(),
+                        "Unable to capture image"
+                    )
+                }
             }
         }
 
@@ -623,4 +664,16 @@ class DiaryFragment : BaseFragment() {
         return Uri.parse(path)
     }
 
+    private fun launchCamera() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+        if (intent.resolveActivity(requireContext().packageManager) != null) {
+            cameraLauncher.launch(intent)
+        } else {
+            ToastUtils.showErrorCustomToast(
+                requireContext(),
+                "No camera app available"
+            )
+        }
+    }
 }
