@@ -31,12 +31,16 @@ import com.iprism.school.model.daycare.DayCareStatusApiRequest
 import com.iprism.school.model.daycare.DayCareStatusApiResponse
 import com.iprism.school.model.eventsmodel.EventsApiRequest
 import com.iprism.school.model.eventsmodel.EventsApiResponse
+import com.iprism.school.model.fees.FeesApiResponse
+import com.iprism.school.model.fees.FeesRequest
 import com.iprism.school.model.helptutorials.HelpTutorialsApiRequest
 import com.iprism.school.model.helptutorials.HelpTutorialsApiResponse
 import com.iprism.school.model.holidaysmodel.HolidaysApiRequest
 import com.iprism.school.model.holidaysmodel.HolidaysApiResponse
 import com.iprism.school.model.homepagemodel.HomePageApiRequest
 import com.iprism.school.model.homepagemodel.HomePageApiResponse
+import com.iprism.school.model.insertfee.InsertFeeApiResponse
+import com.iprism.school.model.insertfee.InsertFeeRequest
 import com.iprism.school.model.leaverequestmodel.LeaveRequestApiRequest
 import com.iprism.school.model.leaverequestmodel.LeaveRequestApiResponse
 import com.iprism.school.model.messagemodel.DayCareMessagesApiRequest
@@ -179,4 +183,10 @@ interface StaffApiService {
 
     @POST(Constants.NOTIFICATIONS_ENDPOINT)
     suspend fun fetchNotifications(@Body request : NotificationsRequest) : NotificationsApiResponse
+
+    @POST(Constants.FEES_ENDPOINT)
+    suspend fun fetchFees(@Body request : FeesRequest) : FeesApiResponse
+
+    @POST(Constants.INSERT_FEE_ENDPOINT)
+    suspend fun insertFee(@Body request : InsertFeeRequest) : InsertFeeApiResponse
 }

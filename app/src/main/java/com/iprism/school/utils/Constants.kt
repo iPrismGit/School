@@ -37,4 +37,6 @@ object Constants {
     const val TIME_TABLE_ENDPOINT = "time_table"
     const val APP_REVIEW_ENDPOINT = "review"
     const val NOTIFICATIONS_ENDPOINT = "notifications"
+    const val FEES_ENDPOINT = "fees"
+    const val INSERT_FEE_ENDPOINT = "insert_fee"
 }
