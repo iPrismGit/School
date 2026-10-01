@@ -137,6 +137,7 @@ class LoginActivity : BaseActivity() {
 
                 is UiState.Success -> {
                     binding.progress.hideProgress()
+                    Log.d("otpResponse", result.data.toString())
                     if (getMobileNumber().equals("8585858585", true)){
                         currentOtp = "5555"
                         ToastUtils.showSuccessCustomToast(this, currentOtp.toString())
