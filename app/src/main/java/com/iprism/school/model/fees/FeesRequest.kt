@@ -5,17 +5,17 @@ import com.google.gson.annotations.SerializedName
 data class FeesRequest(
 
 	@field:SerializedName("section_id")
-	val sectionId: Int,
+	val sectionId: String,
 
 	@field:SerializedName("user_id")
-	val userId: Int,
+	val userId: String,
 
 	@field:SerializedName("branch_id")
-	val branchId: Int,
+	val branchId: String,
 
 	@field:SerializedName("class_id")
-	val classId: Int,
+	val classId: String,
 
 	@field:SerializedName("student_id")
-	val studentId: Int
+	val studentId: String
 )

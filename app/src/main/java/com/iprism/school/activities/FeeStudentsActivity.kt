@@ -317,9 +317,15 @@ class FeeStudentsActivity : BaseActivity() {
             })
 
             studentsAdapter.setupListener(object : OnFeeStudentClickListener {
-                override fun onStudentClick(studentId: String) {
+                override fun onStudentClick(
+                    studentId: String,
+                    sectionId: String,
+                    classId: String
+                ) {
                     val intent = Intent(this@FeeStudentsActivity, StudentFeeDetailsActivity::class.java)
                     intent.putExtra("studentId", studentId)
+                    intent.putExtra("sectionId", sectionId)
+                    intent.putExtra("classId", classId)
                     startActivity(intent)
                 }
             })

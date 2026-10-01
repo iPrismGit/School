@@ -44,10 +44,11 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout16"
+        android:id="@+id/data_ll"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -309,7 +310,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/collect_fee_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -318,10 +319,43 @@
         android:padding="12dp"
         android:text="Collect Fee"
         android:fontFamily="@font/inter_semibold"
+        android:visibility="gone"
         android:textAllCaps="false"
         app:cornerRadius="12dp"
-        app:layout_constraintBottom_toBottomOf="@+id/linearLayout16"
+        app:layout_constraintBottom_toBottomOf="@+id/data_ll"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/no_data_ll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout9">
+
+        <com.github.chrisbanes.photoview.PhotoView
+            android:id="@+id/image_iv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:src="@drawable/cartoon_img"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/no_time_table_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_bold"
+            android:gravity="center"
+            android:text="Student fee is not yet configured"
+            android:textColor="@color/black"
+            android:visibility="visible" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

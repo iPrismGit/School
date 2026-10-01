@@ -76,7 +76,7 @@ class FeeStudentsAdapter(private var students : ArrayList<Student?>) : Adapter<V
             }
             holder.binding.callImg.setImageDrawable(holder.binding.root.context.getDrawable(R.drawable.right_arrow))
             holder.binding.root.setOnClickListener(View.OnClickListener {
-                listener.onStudentClick(student.id)
+                listener.onStudentClick(student.id, student.section_id, student.class_id)
             })
         }
     }
