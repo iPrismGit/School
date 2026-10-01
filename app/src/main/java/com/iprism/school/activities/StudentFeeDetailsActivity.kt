@@ -9,8 +9,11 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.iprism.school.adapters.FeeTypesAdapter
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityStudentFeeDetailsBinding
+import com.iprism.school.model.fees.FeeTypesItem
 import com.iprism.school.model.fees.FeesRequest
 import com.iprism.school.model.fees.Response
 import com.iprism.school.repositories.FeesRepository
@@ -114,5 +117,14 @@ class StudentFeeDetailsActivity : BaseActivity() {
         binding.tvTotalAmount.text = "₹" + response.totalAmount.toString()
         binding.tvPaidAmount.text = "₹" + response.paidAmount.toString()
         binding.tvPendingAmount.text = "₹" + response.pendingAmount.toString()
+        binding.itemsTxt.text = response.feeTypes.size.toString() + " Items"
+        setupFeeTypesAdapter(response.feeTypes)
+    }
+
+    private fun setupFeeTypesAdapter(feeTypes: List<FeeTypesItem>) {
+        val adapter = FeeTypesAdapter(this, feeTypes)
+        val linearLayoutManager = LinearLayoutManager(this)
+        binding.feeTypesRv.adapter = adapter
+        binding.feeTypesRv.layoutManager = linearLayoutManager
     }
 }

@@ -17,10 +17,10 @@ data class FeesApiResponse(
 data class FeeTypesItem(
 
 	@field:SerializedName("total_fee")
-	val totalFee: Int,
+	val totalFee: String,
 
 	@field:SerializedName("fee_id")
-	val feeId: Int,
+	val feeId: String,
 
 	@field:SerializedName("fee_type_id")
 	val feeTypeId: Int,
