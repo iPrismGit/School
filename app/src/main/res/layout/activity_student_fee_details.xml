@@ -153,13 +153,10 @@
                 android:padding="10dp">
 
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/bg_paid_amount"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:gravity="center"
-                    android:padding="6dp"
-                    android:src="@drawable/rupee"
-                    android:tint="#118A72" />
+                    android:src="@drawable/total_amount_img" />
 
 
                 <LinearLayout
@@ -185,7 +182,7 @@
                         android:fontFamily="@font/inter_semibold"
                         android:text="₹700"
                         android:textColor="#118A72"
-                        android:textSize="25sp" />
+                        android:textSize="20sp" />
 
                 </LinearLayout>
 
@@ -212,8 +209,7 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:gravity="center"
-                        android:src="@drawable/rupee"
-                        android:tint="#1769D1" />
+                        android:src="@drawable/paid_amount_img" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -238,7 +234,7 @@
                             android:fontFamily="@font/inter_semibold"
                             android:text="₹200"
                             android:textColor="#1769D1"
-                            android:textSize="24sp" />
+                            android:textSize="20sp" />
 
                     </LinearLayout>
 
@@ -260,8 +256,7 @@
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:gravity="center"
-                        android:src="@drawable/rupee"
-                        android:tint="#C86D00" />
+                        android:src="@drawable/pending_amount_img" />
 
                     <LinearLayout
                         android:layout_width="0dp"
@@ -286,7 +281,7 @@
                             android:fontFamily="@font/inter_semibold"
                             android:text="₹500"
                             android:textColor="#C86D00"
-                            android:textSize="24sp" />
+                            android:textSize="20sp" />
 
                     </LinearLayout>
 
