@@ -15,13 +15,17 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.iprism.school.adapters.FeeStudentsAdapter
 import com.iprism.school.adapters.StudentsAdapter
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityFeeStudentsBinding
+import com.iprism.school.interfaces.OnFeeStudentClickListener
 import com.iprism.school.interfaces.OnStudentClickListener
 import com.iprism.school.model.classteachermodel.Class
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
@@ -45,7 +49,7 @@ class FeeStudentsActivity : BaseActivity() {
     private lateinit var attendanceViewModel: AttendanceViewModel
     private lateinit var studentsViewModel: StudentsViewModel
     private var studentsList = mutableListOf<Student>()
-    private lateinit var studentsAdapter: StudentsAdapter
+    private lateinit var studentsAdapter: FeeStudentsAdapter
     private val CALL_PHONE_PERMISSION_CODE = 1
     private var mobileNumber: String = ""
     private var isFreshLoad = false
@@ -62,6 +66,13 @@ class FeeStudentsActivity : BaseActivity() {
         binding = ActivityFeeStudentsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         enableEdgeToEdge()
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+        window.statusBarColor =
+            ContextCompat.getColor(this, com.iprism.school.R.color.blue)
+        WindowInsetsControllerCompat(
+            window,
+            window.decorView
+        ).isAppearanceLightStatusBars = false
         initViewModel()
         observeClassesResponse()
         observeSectionsResponse()
@@ -270,7 +281,7 @@ class FeeStudentsActivity : BaseActivity() {
     }
 
     private fun setupRecyclerView() {
-        studentsAdapter = StudentsAdapter(studentsList as ArrayList<Student?>)
+        studentsAdapter = FeeStudentsAdapter(studentsList as ArrayList<Student?>)
         val linearLayoutManager = LinearLayoutManager(this)
 
         binding.studentsRv.apply {
@@ -298,14 +309,10 @@ class FeeStudentsActivity : BaseActivity() {
                 }
             })
 
-            studentsAdapter.setupListener(object : OnStudentClickListener {
-                override fun onCallClick(mobileNumber: String) {
-                    this@FeeStudentsActivity.mobileNumber = mobileNumber
-                    if (mobileNumber.isNotEmpty()) {
-                        makePhoneCall(this@FeeStudentsActivity.mobileNumber)
-                    }
-                }
+            studentsAdapter.setupListener(object : OnFeeStudentClickListener {
+                override fun onStudentClick(studentId: String) {
 
+                }
             })
         }
 

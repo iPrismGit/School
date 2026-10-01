@@ -1394,7 +1394,10 @@
                         android:focusable="true"
                         android:foreground="?attr/selectableItemBackground"
                         android:orientation="horizontal"
-                        android:padding="12dp">
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp">
 
                         <ImageView
                             android:layout_width="32dp"
