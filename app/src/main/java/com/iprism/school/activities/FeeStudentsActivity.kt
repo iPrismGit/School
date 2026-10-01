@@ -76,6 +76,7 @@ class FeeStudentsActivity : BaseActivity() {
         initViewModel()
         observeClassesResponse()
         observeSectionsResponse()
+        handleBack()
         setupRecyclerView()
         observeEventsResponse()
         handleRefreshLo()
@@ -87,6 +88,12 @@ class FeeStudentsActivity : BaseActivity() {
             "classes"
         )
         attendanceViewModel.fetchClasses(requestClasses)
+    }
+
+    private fun handleBack() {
+        binding.backIv.setOnClickListener { view ->
+            finish()
+        }
     }
 
     private fun observeClassesResponse() {
@@ -311,7 +318,9 @@ class FeeStudentsActivity : BaseActivity() {
 
             studentsAdapter.setupListener(object : OnFeeStudentClickListener {
                 override fun onStudentClick(studentId: String) {
-
+                    val intent = Intent(this@FeeStudentsActivity, StudentFeeDetailsActivity::class.java)
+                    intent.putExtra("studentId", studentId)
+                    startActivity(intent)
                 }
             })
         }
