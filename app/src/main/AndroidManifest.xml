@@ -64,6 +64,9 @@
             android:name=".activities.AboutUsActivity"
             android:exported="false" />
         <activity
+            android:name=".activities.FeeStudentsActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.LeaveRequestsActivity"
             android:exported="false" />
         <activity

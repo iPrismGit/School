@@ -45,6 +45,7 @@ import com.iprism.school.activities.ChatActivity
 import com.iprism.school.activities.DayCareAttendanceActivity
 import com.iprism.school.activities.DayCareChatActivity
 import com.iprism.school.activities.DayCarePlansActivity
+import com.iprism.school.activities.FeeStudentsActivity
 import com.iprism.school.activities.HolidaysActivity
 import com.iprism.school.activities.NotificationsActivity
 import com.iprism.school.activities.PlannerCategoriesActivity
@@ -207,6 +208,7 @@ class HomeFragment : BaseFragment() {
         refresh()
         handleTimeTable()
         handleNotificationsImg()
+        handleFee()
         return binding.root
     }
 
@@ -312,6 +314,12 @@ class HomeFragment : BaseFragment() {
     private fun handleTimeTable() {
         binding.timeTableLl.setOnClickListener { view ->
             startActivity(Intent(requireContext(), TimeTableActivity::class.java))
+        }
+    }
+
+    private fun handleFee() {
+        binding.feeLl.setOnClickListener { view ->
+            startActivity(Intent(requireContext(), FeeStudentsActivity::class.java))
         }
     }
 
