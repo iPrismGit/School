@@ -320,12 +320,16 @@ class FeeStudentsActivity : BaseActivity() {
                 override fun onStudentClick(
                     studentId: String,
                     sectionId: String,
-                    classId: String
+                    classId: String,
+                    className: String,
+                    sectionName: String
                 ) {
                     val intent = Intent(this@FeeStudentsActivity, StudentFeeDetailsActivity::class.java)
                     intent.putExtra("studentId", studentId)
                     intent.putExtra("sectionId", sectionId)
                     intent.putExtra("classId", classId)
+                    intent.putExtra("className", className)
+                    intent.putExtra("sectionName", sectionName)
                     startActivity(intent)
                 }
             })

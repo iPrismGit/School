@@ -27,6 +27,8 @@ class StudentFeeDetailsActivity : BaseActivity() {
     private var studentId : String = ""
     private var sectionId : String = ""
     private var classId : String = ""
+    private var className : String = ""
+    private var sectionName : String = ""
     private lateinit var viewModel: FeesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +47,8 @@ class StudentFeeDetailsActivity : BaseActivity() {
             studentId = intent.getStringExtra("studentId").toString()
             sectionId = intent.getStringExtra("sectionId").toString()
             classId = intent.getStringExtra("classId").toString()
+            className = intent.getStringExtra("className").toString()
+            sectionName = intent.getStringExtra("sectionName").toString()
         }
         handleBack()
         initViewModel()
@@ -105,7 +109,7 @@ class StudentFeeDetailsActivity : BaseActivity() {
     @SuppressLint("SetTextI18n")
     private fun setData(response: Response) {
         binding.nameTxt.text = response.studentDetails.firstName + " " + response.studentDetails.middleName + " " + response.studentDetails.lastName
-        binding.classTxt.text = "Class " + response.studentDetails.classId + " | Section " + response.studentDetails.sectionId
+        binding.classTxt.text = "$className | Section $sectionName"
         binding.academicYearTxt.text = "Academic Year : " + response.studentDetails.academicYear.toString()
         binding.tvTotalAmount.text = "₹" + response.totalAmount.toString()
         binding.tvPaidAmount.text = "₹" + response.paidAmount.toString()
