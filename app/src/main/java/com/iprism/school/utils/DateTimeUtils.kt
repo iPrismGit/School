@@ -44,6 +44,36 @@ object DateTimeUtils {
         return dateMonthYear
     }
 
+    fun getDateYmd(dateTxt: TextView, isPreviousCalendar: Boolean): String {
+        val c = Calendar.getInstance()
+        val year = c.get(Calendar.YEAR)
+        val month = c.get(Calendar.MONTH)
+        val day = c.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            dateTxt.context,
+            { _: DatePicker, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+                c.set(year, monthOfYear , dayOfMonth)
+
+                // Format the date to "dd MMM, yyyy"
+                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val formattedDate = sdf.format(c.time)
+                dateTxt.text = formattedDate
+                dateMonthYear = "$year-${monthOfYear + 1}-$dayOfMonth"
+            },
+            year, month, day
+        )
+
+        if (isPreviousCalendar) {
+            datePickerDialog.datePicker.maxDate = c.timeInMillis
+        } else {
+            datePickerDialog.datePicker.minDate = c.timeInMillis
+        }
+        datePickerDialog.show()
+
+        return dateMonthYear
+    }
+
     @SuppressLint("SetTextI18n")
     fun getTime(timeTxt: TextView) {
         val c = Calendar.getInstance()

@@ -60,8 +60,12 @@ class StudentFeeDetailsActivity : BaseActivity() {
         handleBack()
         handleCollectFeeBtn()
         initViewModel()
-        fetchFees()
         observeFeesResponse()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        fetchFees()
     }
 
     private fun handleBack() {
