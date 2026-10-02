@@ -43,7 +43,7 @@
 
     </LinearLayout>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/data_ll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -371,7 +371,7 @@
             </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/progress"

@@ -58,6 +58,7 @@ class CollectFeeActivity : BaseActivity() {
             response = intent.getSerializableExtra("response") as FeesApiResponse
             setData()
         }
+        handleBack()
         setupPaymentTypesSpinner()
         handleDueDate()
         handleReceiptDate()
@@ -65,6 +66,12 @@ class CollectFeeActivity : BaseActivity() {
         initViewModel()
         observeFeesResponse()
         handleSubmit()
+    }
+
+    private fun handleBack() {
+        binding.backIv.setOnClickListener { view ->
+            finish()
+        }
     }
 
     fun getReceiptDate(): String = binding.receiptDateTxt.text.toString().trim()
