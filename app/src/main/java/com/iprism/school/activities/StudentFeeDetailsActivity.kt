@@ -1,6 +1,7 @@
 package com.iprism.school.activities
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -54,6 +55,7 @@ class StudentFeeDetailsActivity : BaseActivity() {
             sectionName = intent.getStringExtra("sectionName").toString()
         }
         handleBack()
+        handleCollectFeeBtn()
         initViewModel()
         fetchFees()
         observeFeesResponse()
@@ -62,6 +64,16 @@ class StudentFeeDetailsActivity : BaseActivity() {
     private fun handleBack() {
         binding.backIv.setOnClickListener { view ->
             finish()
+        }
+    }
+
+    private fun handleCollectFeeBtn() {
+        binding.collectFeeBtn.setOnClickListener {
+            val intent = Intent(this, CollectFeeActivity::class.java)
+            intent.putExtra("studentId", studentId)
+            intent.putExtra("sectionId", sectionId)
+            intent.putExtra("classId", classId)
+            startActivity(intent)
         }
     }
 
