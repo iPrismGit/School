@@ -210,7 +210,7 @@
                 android:textColor="@color/black1" />
 
             <EditText
-                android:id="@+id/primary_number_et"
+                android:id="@+id/late_fee_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -329,15 +329,13 @@
                 android:text="Amount Collected"
                 android:textColor="@color/black1" />
 
-            <EditText
+            <TextView
                 android:id="@+id/amount_collected_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/edit_text_bg"
                 android:fontFamily="@font/inter"
-                android:hint="Enter Admin Remark"
-                android:inputType="number"
                 android:padding="12dp"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
@@ -350,15 +348,13 @@
                 android:text="Balance Amount"
                 android:textColor="@color/black1" />
 
-            <EditText
+            <TextView
                 android:id="@+id/balance_amount_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/edit_text_bg"
                 android:fontFamily="@font/inter"
-                android:hint="Enter Admin Remark"
-                android:inputType="number"
                 android:padding="12dp"
                 android:textColor="@color/black"
                 android:textSize="14sp" />

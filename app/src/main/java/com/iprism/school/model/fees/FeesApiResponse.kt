@@ -1,6 +1,8 @@
 package com.iprism.school.model.fees
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
+
 
 data class FeesApiResponse(
 
@@ -12,7 +14,7 @@ data class FeesApiResponse(
 
 	@field:SerializedName("status")
 	val status: Boolean
-)
+) : java.io.Serializable
 
 data class FeeTypesItem(
 
@@ -30,7 +32,7 @@ data class FeeTypesItem(
 
 	@field:SerializedName("category")
 	val category: String
-)
+) : java.io.Serializable
 
 data class StudentDetails(
 
@@ -51,7 +53,7 @@ data class StudentDetails(
 
 	@field:SerializedName("first_name")
 	val firstName: String
-)
+) : java.io.Serializable
 
 data class Response(
 
@@ -78,4 +80,4 @@ data class Response(
 
 	@field:SerializedName("pending_amount")
 	val pendingAmount: Int
-)
+) : java.io.Serializable

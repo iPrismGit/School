@@ -15,6 +15,7 @@ import com.iprism.school.adapters.FeeTypesAdapter
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityStudentFeeDetailsBinding
 import com.iprism.school.model.fees.FeeTypesItem
+import com.iprism.school.model.fees.FeesApiResponse
 import com.iprism.school.model.fees.FeesRequest
 import com.iprism.school.model.fees.Response
 import com.iprism.school.repositories.FeesRepository
@@ -34,6 +35,8 @@ class StudentFeeDetailsActivity : BaseActivity() {
     private var className : String = ""
     private var sectionName : String = ""
     private lateinit var viewModel: FeesViewModel
+
+    private var response: FeesApiResponse? =  null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +76,9 @@ class StudentFeeDetailsActivity : BaseActivity() {
             intent.putExtra("studentId", studentId)
             intent.putExtra("sectionId", sectionId)
             intent.putExtra("classId", classId)
+            intent.putExtra("className", className)
+            intent.putExtra("sectionName", sectionName)
+            intent.putExtra("response", response)
             startActivity(intent)
         }
     }
@@ -106,6 +112,7 @@ class StudentFeeDetailsActivity : BaseActivity() {
                     binding.progress.hideProgress()
                     binding.dataLl.visibility = View.VISIBLE
                     binding.collectFeeBtn.visibility = View.VISIBLE
+                    response = state.data
                     setData(state.data.response)
                 }
 
