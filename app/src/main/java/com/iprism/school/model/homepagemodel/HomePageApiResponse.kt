@@ -17,8 +17,10 @@ data class HomePageResponse (
     val day_care_album_covers: List<DayCareAlbumCoverHome>,
     val messages: List<MessageThread>,
     @field:SerializedName("review_status")
-    val reviewStatus: String
+    val reviewStatus: String,
 
+    @field:SerializedName("fee_status")
+    val feeStatus: String
 )
 
 data class AlbumCoverHome(

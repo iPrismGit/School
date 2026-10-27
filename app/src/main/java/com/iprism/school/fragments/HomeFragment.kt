@@ -528,6 +528,13 @@ class HomeFragment : BaseFragment() {
                             "FeedbackBottomSheet"
                         )
                     }
+                    if (result.data.feeStatus.equals("yes", true)) {
+                        binding.feeLl.visibility = View.VISIBLE
+                        binding.feeDivider.visibility = View.VISIBLE
+                    } else {
+                        binding.feeLl.visibility = View.GONE
+                        binding.feeDivider.visibility = View.GONE
+                    }
                 }
 
                 is UiState.Error -> {
