@@ -69,7 +69,7 @@ class PlannerDetailsActivity : BaseActivity() {
             id,
             userDetails[User.ID].toString(),
             "planner_images",
-            ""
+            classId
         )
         plannersViewModel.fetchPlannerDetails(request)
         Log.d("PlannerDetailsRequest", request.toString())

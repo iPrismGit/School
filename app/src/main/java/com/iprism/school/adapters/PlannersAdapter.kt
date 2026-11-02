@@ -1,5 +1,6 @@
 package com.iprism.school.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,8 +8,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.iprism.school.databinding.PlannerItemBinding
 import com.iprism.school.model.plannersandresources.Planner
+import com.iprism.school.model.plannersandresources.PlannerInner
 
-class PlannersAdapter(var context: Context, var planners: List<Planner>) :
+class PlannersAdapter(var context: Context, var planners: List<PlannerInner>) :
     RecyclerView.Adapter<PlannersAdapter.PlannerViewHolder>(),
     PlannersInnerAdapter.OnPlannerInnerClickListener {
 
@@ -34,17 +36,18 @@ class PlannersAdapter(var context: Context, var planners: List<Planner>) :
         parent: ViewGroup,
         viewType: Int
     ): PlannersAdapter.PlannerViewHolder {
-        var binding = PlannerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = PlannerItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PlannerViewHolder(binding)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: PlannersAdapter.PlannerViewHolder, position: Int) {
-        var planner = planners[position]
-        holder.binding.plannerDateTxt.text = planner.date
-        var plannersInnerAdapter = PlannersInnerAdapter(context, planner.planners)
-        holder.binding.plannersInnerRv.adapter = plannersInnerAdapter
-        holder.binding.plannersInnerRv.layoutManager = LinearLayoutManager(context)
-        plannersInnerAdapter.setupListener(this)
+        val planner = planners[position]
+        holder.binding.apply {
+            subjectTxt.text = "Subject : ${planner.subject}"
+            descriptionTxt.text = "Description : ${planner.description}"
+            dateTxt.text = "Date : ${planner.created_on}"
+        }
     }
 
     override fun getItemCount(): Int {
