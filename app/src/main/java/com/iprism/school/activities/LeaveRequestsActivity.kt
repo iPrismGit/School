@@ -86,7 +86,6 @@ class LeaveRequestsActivity : BaseActivity() {
                 is UiState.Loading -> {
                     binding.progress.showProgress()
                     binding.leaveRequestsRv.visibility = View.GONE
-                    binding.noDataLo.visibility = View.VISIBLE
                 }
 
                 is UiState.Success -> {
@@ -113,8 +112,8 @@ class LeaveRequestsActivity : BaseActivity() {
     }
 
     private fun setupLeaveRequestsAdapter(leaveRequests: List<LeaveRequest>) {
-        var leaveRequestsAdapter = LeaveRequestsAdapter(leaveRequests)
-        var linearLayoutManager = LinearLayoutManager(this)
+        val leaveRequestsAdapter = LeaveRequestsAdapter(leaveRequests)
+        val linearLayoutManager = LinearLayoutManager(this)
         binding.leaveRequestsRv.adapter = leaveRequestsAdapter
         binding.leaveRequestsRv.layoutManager = linearLayoutManager
         leaveRequestsAdapter.setupListener(object : OnCalenderClickListener {
@@ -125,12 +124,12 @@ class LeaveRequestsActivity : BaseActivity() {
             ) {
                 if (image.isNotEmpty()) {
                     if (image.endsWith(".pdf")) {
-                        var intent = Intent(this@LeaveRequestsActivity, PdfViewActivity::class.java)
+                        val intent = Intent(this@LeaveRequestsActivity, PdfViewActivity::class.java)
                         intent.putExtra("pdfUrl", image)
                         intent.putExtra("EventName", "Leave Request")
                         startActivity(intent)
                     } else {
-                        var intent =
+                        val intent =
                             Intent(this@LeaveRequestsActivity, ViewImageActivity::class.java)
                         intent.putExtra("EventImage", image)
                         intent.putExtra("EventName", "Leave Request")

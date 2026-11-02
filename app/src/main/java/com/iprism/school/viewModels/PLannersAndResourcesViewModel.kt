@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.iprism.school.model.circularmodels.CircularApiRequest
 import com.iprism.school.model.circularmodels.CircularResponse
 import com.iprism.school.model.plannersandresources.PlannersAndResourcesApiRequest
+import com.iprism.school.model.plannersandresources.PlannersAndResourcesApiResponse
 import com.iprism.school.model.plannersandresources.PlannersAndResourcesResponse
 import com.iprism.school.repositories.CircularRepository
 import com.iprism.school.repositories.PlannersRepository
@@ -18,8 +19,8 @@ class PLannersAndResourcesViewModel(private val repository: PlannersRepository) 
     private val _plannerCategoriesResponse = MutableLiveData<UiState<PlannersAndResourcesResponse>>()
     val plannerCategoriesResponse: LiveData<UiState<PlannersAndResourcesResponse>> = _plannerCategoriesResponse
 
-    private val _plannersResponse = MutableLiveData<UiState<PlannersAndResourcesResponse>>()
-    val plannersResponse: LiveData<UiState<PlannersAndResourcesResponse>> = _plannersResponse
+    private val _plannersResponse = MutableLiveData<UiState<PlannersAndResourcesApiResponse>>()
+    val plannersResponse: LiveData<UiState<PlannersAndResourcesApiResponse>> = _plannersResponse
 
     private val _plannerDetailsResponse = MutableLiveData<UiState<PlannersAndResourcesResponse>>()
     val plannerDetailsResponse: LiveData<UiState<PlannersAndResourcesResponse>> = _plannerDetailsResponse
@@ -46,7 +47,7 @@ class PLannersAndResourcesViewModel(private val repository: PlannersRepository) 
             try {
                 val response = repository.fetchPlannersAndResources(request)
                 if (response.status) {
-                    _plannersResponse.value = UiState.Success(response.response)
+                    _plannersResponse.value = UiState.Success(response)
                 } else {
                     _plannersResponse.value = UiState.Error(response.message ?: "Something went wrong")
                 }

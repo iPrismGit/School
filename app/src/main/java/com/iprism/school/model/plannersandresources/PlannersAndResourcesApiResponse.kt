@@ -15,7 +15,7 @@ data class PlannersAndResourcesResponse(
     val categories: List<Category>,
     val pagination: Pagination,
     val pdfs: List<Pdf>,
-    val planners: List<Planner>
+    val planners: List<PlannerInner>
 
 )
 

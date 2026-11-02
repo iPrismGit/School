@@ -34,9 +34,9 @@ class PlannerDetailsActivity : BaseActivity() {
 
     private lateinit var binding: ActivityPlannerDetailsBinding
     private lateinit var plannersViewModel: PLannersAndResourcesViewModel
-    private var catId = ""
     private var category = ""
     private var id = ""
+    private var classId = ""
     private var subject = ""
     private var subCategory = ""
     private var description = ""
@@ -51,9 +51,9 @@ class PlannerDetailsActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        catId = intent.getStringExtra("catId").toString()
         category = intent.getStringExtra("category").toString()
         id = intent.getStringExtra("id").toString()
+        classId = intent.getStringExtra("classId").toString()
         subject = intent.getStringExtra("subject").toString()
         subCategory = intent.getStringExtra("subCategory").toString()
         description = intent.getStringExtra("description").toString()
@@ -64,11 +64,12 @@ class PlannerDetailsActivity : BaseActivity() {
         val request = PlannersAndResourcesApiRequest(
             userDetails[User.ACADEMIC_YEAR_ID].toString(),
             userDetails[User.SCHOOL_ID].toString(),
-            catId,
+            "",
             1,
             id,
             userDetails[User.ID].toString(),
-            "planner_images"
+            "planner_images",
+            ""
         )
         plannersViewModel.fetchPlannerDetails(request)
         Log.d("PlannerDetailsRequest", request.toString())

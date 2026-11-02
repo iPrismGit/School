@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -20,7 +22,11 @@ import com.iprism.school.databinding.ActivityPlannersBinding
 import com.iprism.school.interfaces.OnCalenderClickListener
 import com.iprism.school.model.circularmodels.Circular
 import com.iprism.school.model.circularmodels.CircularApiRequest
+import com.iprism.school.model.classteachermodel.Class
+import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
+import com.iprism.school.model.classteachermodel.Section
 import com.iprism.school.model.plannersandresources.Planner
+import com.iprism.school.model.plannersandresources.PlannerInner
 import com.iprism.school.model.plannersandresources.PlannersAndResourcesApiRequest
 import com.iprism.school.repositories.AttendanceRepository
 import com.iprism.school.repositories.CircularRepository
@@ -38,11 +44,11 @@ import com.iprism.school.viewModels.ViewModelFactory
 class PlannersActivity : BaseActivity() {
 
     private lateinit var binding: ActivityPlannersBinding
-    private var catId = ""
-    private var catName = ""
     private lateinit var plannersViewModel: PLannersAndResourcesViewModel
+    private lateinit var attendanceViewModel: AttendanceViewModel
+    private var classId: String = "-1"
     private lateinit var plannersAdapter: PlannersAdapter
-    private var plannersList = mutableListOf<Planner>()
+    private var plannersList = mutableListOf<PlannerInner>()
     private var isFreshLoad = false
     private var isLoading = false
     private var isLastPage = false
@@ -59,15 +65,20 @@ class PlannersActivity : BaseActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        catId = intent.getStringExtra("catId").toString()
-        catName = intent.getStringExtra("catName").toString()
-        binding.titleTxt.text = catName
         initViewModel()
         setupRecyclerView()
-        loadPlanners()
         observePlannersResponse()
         handleRefreshLo()
         handleBack()
+        observeClassesResponse()
+        val requestClasses = ClassTeacherApiRequest(
+            "",
+            userDetails[User.ID].toString(),
+            userDetails[User.SCHOOL_ID].toString(),
+            userDetails[User.ACADEMIC_YEAR_ID].toString(),
+            "classes"
+        )
+        attendanceViewModel.fetchClasses(requestClasses)
     }
 
     private fun handleBack() {
@@ -81,6 +92,10 @@ class PlannersActivity : BaseActivity() {
         val plannersFactory = ViewModelFactory { PLannersAndResourcesViewModel(plannersRepository) }
         plannersViewModel =
             ViewModelProvider(this, plannersFactory)[PLannersAndResourcesViewModel::class.java]
+
+        val attendanceRepository = AttendanceRepository(this)
+        val attendanceFactory = ViewModelFactory { AttendanceViewModel(attendanceRepository) }
+        attendanceViewModel = ViewModelProvider(this, attendanceFactory)[AttendanceViewModel::class.java]
     }
 
     private fun loadPlanners(isFromFilterChange: Boolean = false) {
@@ -104,10 +119,11 @@ class PlannersActivity : BaseActivity() {
         val request = PlannersAndResourcesApiRequest(
             userDetails[User.ACADEMIC_YEAR_ID].toString(),
             userDetails[User.SCHOOL_ID].toString(),
-            catId,
+            "",
             currentPage,
             "",
-            userDetails[User.ID].toString(), "planners"
+            userDetails[User.ID].toString(), "planners",
+            classId
         )
 
         Log.d("PlannersApiRequest", request.toString())
@@ -190,20 +206,17 @@ class PlannersActivity : BaseActivity() {
                     category: String,
                     subCategory: String
                 ) {
-                    var intent = Intent(this@PlannersActivity, PlannerDetailsActivity::class.java)
+                    val intent = Intent(this@PlannersActivity, PlannerDetailsActivity::class.java)
                     intent.putExtra("id", id)
-                    intent.putExtra("catId", catId)
+                    intent.putExtra("classId", classId)
                     intent.putExtra("subject", subject)
                     intent.putExtra("description", description)
                     intent.putExtra("category", category)
                     intent.putExtra("subCategory", subCategory)
                     startActivity(intent)
                 }
-
             })
-
         }
-
     }
 
     private fun observePlannersResponse() {
@@ -220,7 +233,7 @@ class PlannersActivity : BaseActivity() {
                     binding.progress.hideProgress()
                     isLoading = false
 
-                    val newCirculars = result.data.planners
+                    val newCirculars = result.data.response.planners
 
                     if (newCirculars.isNotEmpty()) {
 
@@ -266,4 +279,55 @@ class PlannersActivity : BaseActivity() {
         }
     }
 
+    private fun observeClassesResponse() {
+        attendanceViewModel.classesResponse.observe(this) { result ->
+            when (result) {
+                is UiState.Loading -> {
+                    binding.progress.showProgress()
+                }
+
+                is UiState.Success -> {
+                    binding.progress.hideProgress()
+                    if (result.data.classes.isNotEmpty()) {
+                        val updatedList = result.data.classes.toMutableList()
+                        updatedList.add(0, Class("-1", "Select Class"))
+                        setupClassesAdapter(updatedList)
+                    } else {
+                        ToastUtils.showErrorCustomToast(this, "No Classes Found..!")
+                    }
+                }
+
+                is UiState.Error -> {
+                    ToastUtils.showErrorCustomToast(this, result.message)
+                    binding.progress.hideProgress()
+                }
+            }
+        }
+    }
+
+    private fun setupClassesAdapter(genderTypes: List<Class>) {
+        val namesList = genderTypes.map { it.class_name }
+        val adapter =
+            ArrayAdapter(this, android.R.layout.simple_spinner_item, namesList)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.classesSp.adapter = adapter
+        binding.classesSp.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    classId = genderTypes[position].class_id.toString()
+                    if (!classId.equals("-1", true)) {
+                        loadPlanners()
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+
+                }
+            }
+    }
 }

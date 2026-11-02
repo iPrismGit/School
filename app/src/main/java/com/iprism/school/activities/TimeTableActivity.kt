@@ -52,7 +52,7 @@ class TimeTableActivity : BaseActivity() {
         setupObservers()
         observeClassesResponse()
         observeSectionsResponse()
-        var requestClasses = ClassTeacherApiRequest(
+        val requestClasses = ClassTeacherApiRequest(
             "",
             userDetails[User.ID].toString(),
             userDetails[User.SCHOOL_ID].toString(),
@@ -152,7 +152,7 @@ class TimeTableActivity : BaseActivity() {
                 is UiState.Success -> {
                     binding.progress.hideProgress()
                     if (result.data.classes.isNotEmpty()) {
-                        var updatedList = result.data.classes.toMutableList()
+                        val updatedList = result.data.classes.toMutableList()
                         updatedList.add(0, Class("-1", "Select Class"))
                         setupClassesAdapter(updatedList)
                     } else {
@@ -178,7 +178,7 @@ class TimeTableActivity : BaseActivity() {
                 is UiState.Success -> {
                     binding.progress.hideProgress()
                     if (result.data.sections.isNotEmpty()) {
-                        var updatedList = result.data.sections.toMutableList()
+                        val updatedList = result.data.sections.toMutableList()
                         updatedList.add(0, Section("-1", "Select Section"))
                         setupSectionsAdapter(updatedList)
                     } else {
@@ -195,7 +195,7 @@ class TimeTableActivity : BaseActivity() {
     }
 
     private fun setupClassesAdapter(genderTypes: List<Class>) {
-        var namesList = genderTypes.map { it.class_name }
+        val namesList = genderTypes.map { it.class_name }
         val adapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_item, namesList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -210,7 +210,7 @@ class TimeTableActivity : BaseActivity() {
                 ) {
                     classId = genderTypes[position].class_id.toString()
                     if (!classId.equals("-1", true)) {
-                        var requestClasses = ClassTeacherApiRequest(
+                        val requestClasses = ClassTeacherApiRequest(
                             classId,
                             userDetails[User.ID].toString(),
                             userDetails[User.SCHOOL_ID].toString(),
@@ -228,7 +228,7 @@ class TimeTableActivity : BaseActivity() {
     }
 
     private fun setupSectionsAdapter(genderTypes: List<Section>) {
-        var namesList = genderTypes.map { it.section_name }
+        val namesList = genderTypes.map { it.section_name }
         val adapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_item, namesList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

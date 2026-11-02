@@ -49,6 +49,7 @@ import com.iprism.school.activities.FeeStudentsActivity
 import com.iprism.school.activities.HolidaysActivity
 import com.iprism.school.activities.NotificationsActivity
 import com.iprism.school.activities.PlannerCategoriesActivity
+import com.iprism.school.activities.PlannersActivity
 import com.iprism.school.activities.SchoolSupportActivity
 import com.iprism.school.activities.StaffAttendanceActivity
 import com.iprism.school.activities.StudentLeaveRequestsActivity
@@ -656,7 +657,7 @@ class HomeFragment : BaseFragment() {
 
     private fun handlePlannersAndResorcesLo() {
         binding.plannersAndResourcesLo.setOnClickListener(View.OnClickListener {
-            startActivity(Intent(requireContext(), PlannerCategoriesActivity::class.java))
+            startActivity(Intent(requireContext(), PlannersActivity::class.java))
         })
     }
 

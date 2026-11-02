@@ -8,6 +8,7 @@ data class PlannersAndResourcesApiRequest(
     val page: Int,
     val planner_id: String,
     val user_id: String,
-    val view_type: String
+    val view_type: String,
+    val class_id: String,
 
 )

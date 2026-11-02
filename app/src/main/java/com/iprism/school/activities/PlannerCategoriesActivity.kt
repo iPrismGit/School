@@ -62,7 +62,8 @@ class PlannerCategoriesActivity : BaseActivity() {
             1,
             "",
             userDetails[User.ID].toString(),
-            "categories"
+            "categories",
+            ""
         )
 
         Log.d("PlannersRequest", request.toString())
@@ -79,7 +80,8 @@ class PlannerCategoriesActivity : BaseActivity() {
                     1,
                     "",
                     userDetails[User.ID].toString(),
-                    "categories"
+                    "categories",
+                    ""
                 )
 
                 Log.d("PlannersRequest", request.toString())
