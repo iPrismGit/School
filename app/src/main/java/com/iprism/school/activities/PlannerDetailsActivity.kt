@@ -5,28 +5,22 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.iprism.school.R
-import com.iprism.school.adapters.PlannerCategoriesAdapter
+import androidx.recyclerview.widget.GridLayoutManager
 import com.iprism.school.adapters.PlannerDetailsAdapter
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityPlannerDetailsBinding
 import com.iprism.school.interfaces.OnPlannerClickListener
-import com.iprism.school.model.plannersandresources.Category
 import com.iprism.school.model.plannersandresources.Pdf
 import com.iprism.school.model.plannersandresources.PlannersAndResourcesApiRequest
-import com.iprism.school.repositories.AttendanceRepository
 import com.iprism.school.repositories.PlannersRepository
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.UiState
 import com.iprism.school.utils.User
 import com.iprism.school.utils.hideProgress
 import com.iprism.school.utils.showProgress
-import com.iprism.school.viewModels.AttendanceViewModel
 import com.iprism.school.viewModels.PLannersAndResourcesViewModel
 import com.iprism.school.viewModels.ViewModelFactory
 
@@ -115,8 +109,8 @@ class PlannerDetailsActivity : BaseActivity() {
     private fun setupPlannerDetailsAdapter(pdfs: List<Pdf>) {
         val plannerDetailsAdapter = PlannerDetailsAdapter(this, pdfs)
         binding.plannersRv.adapter = plannerDetailsAdapter
-        val linearLayoutManager = LinearLayoutManager(this)
-        binding.plannersRv.layoutManager = linearLayoutManager
+        val gridLayoutManager = GridLayoutManager(this, 2)
+        binding.plannersRv.layoutManager = gridLayoutManager
         plannerDetailsAdapter.setupListener(object : OnPlannerClickListener {
             override fun onCategoryClick(id: String, catName: String) {
 
@@ -145,17 +139,10 @@ class PlannerDetailsActivity : BaseActivity() {
 
     private fun setupData() {
         binding.titleTxt.text = subject
-        if (subCategory.isEmpty()) {
-            binding.categoryTxt.text = category + " | N/A"
-        } else {
-            binding.categoryTxt.text = category + " | " + subCategory
-        }
         if (description.isEmpty()) {
             binding.messageTxt.text = "N/A"
         } else {
             binding.messageTxt.text = description
         }
-
     }
-
 }

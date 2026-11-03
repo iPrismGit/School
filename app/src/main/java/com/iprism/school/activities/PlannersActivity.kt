@@ -7,29 +7,20 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.iprism.school.R
-import com.iprism.school.adapters.CircularsAdapter
 import com.iprism.school.adapters.PlannersAdapter
 import com.iprism.school.base.BaseActivity
 import com.iprism.school.databinding.ActivityPlannersBinding
-import com.iprism.school.interfaces.OnCalenderClickListener
-import com.iprism.school.model.circularmodels.Circular
-import com.iprism.school.model.circularmodels.CircularApiRequest
 import com.iprism.school.model.classteachermodel.Class
 import com.iprism.school.model.classteachermodel.ClassTeacherApiRequest
-import com.iprism.school.model.classteachermodel.Section
-import com.iprism.school.model.plannersandresources.Planner
 import com.iprism.school.model.plannersandresources.PlannerInner
 import com.iprism.school.model.plannersandresources.PlannersAndResourcesApiRequest
 import com.iprism.school.repositories.AttendanceRepository
-import com.iprism.school.repositories.CircularRepository
 import com.iprism.school.repositories.PlannersRepository
 import com.iprism.school.utils.ToastUtils
 import com.iprism.school.utils.UiState
@@ -37,7 +28,6 @@ import com.iprism.school.utils.User
 import com.iprism.school.utils.hideProgress
 import com.iprism.school.utils.showProgress
 import com.iprism.school.viewModels.AttendanceViewModel
-import com.iprism.school.viewModels.CircularViewModel
 import com.iprism.school.viewModels.PLannersAndResourcesViewModel
 import com.iprism.school.viewModels.ViewModelFactory
 
@@ -100,7 +90,7 @@ class PlannersActivity : BaseActivity() {
 
     private fun loadPlanners(isFromFilterChange: Boolean = false) {
 
-        if (isLoading) return
+        /*if (isLoading) return
 
         if (isFromFilterChange) {
             currentPage = 1
@@ -114,7 +104,7 @@ class PlannersActivity : BaseActivity() {
             binding.noDataTxt.visibility = View.VISIBLE
         }
 
-        isLoading = true
+        isLoading = true*/
 
         val request = PlannersAndResourcesApiRequest(
             userDetails[User.ACADEMIC_YEAR_ID].toString(),
@@ -134,16 +124,16 @@ class PlannersActivity : BaseActivity() {
         currentPage = 1
         isLastPage = false
         isLoading = false
-        resetEvents()
+        //resetEvents()
         plannersList.clear()
         plannersAdapter.notifyDataSetChanged()
         loadPlanners(isFromFilterChange = true)
     }
 
     private fun loadMoreItems() {
-        if (isLastPage || isLoading) return
         isLoading = true
         currentPage++
+        plannersAdapter.showLoadingFooter()
         loadPlanners()
     }
 
@@ -169,7 +159,7 @@ class PlannersActivity : BaseActivity() {
     }
 
     private fun setupRecyclerView() {
-        plannersAdapter = PlannersAdapter(this, plannersList)
+        plannersAdapter = PlannersAdapter(this, plannersList as ArrayList<PlannerInner?>)
         val linearLayoutManager = LinearLayoutManager(this)
 
         binding.plannersRv.apply {
@@ -232,10 +222,19 @@ class PlannersActivity : BaseActivity() {
                 is UiState.Success -> {
                     binding.progress.hideProgress()
                     isLoading = false
+                    plannersAdapter.removeLoadingFooter()
+                    val newPlanners = result.data.response.planners
+                    if (newPlanners.isNotEmpty()) {
+                        plannersList.addAll(newPlanners)
+                        plannersAdapter.notifyDataSetChanged()
+                        binding.plannersRv.visibility = View.VISIBLE
+                        binding.noDataTxt.visibility = View.GONE
+                        if (result.data.response.pagination.total_pages.size == currentPage) {
+                            isLastPage = true
+                        }
+                    }
 
-                    val newCirculars = result.data.response.planners
-
-                    if (newCirculars.isNotEmpty()) {
+                    /*if (newCirculars.isNotEmpty()) {8
 
                         if (isFreshLoad) {
                             plannersList.clear()
@@ -258,13 +257,14 @@ class PlannersActivity : BaseActivity() {
                             binding.plannersRv.visibility = View.GONE
                             binding.noDataTxt.visibility = View.VISIBLE
                         }
-                    }
+                    }*/
 
                 }
 
                 is UiState.Error -> {
                     isLoading = false
                     binding.progress.hideProgress()
+                    plannersAdapter.removeLoadingFooter()
                     if (plannersList.isEmpty()) {
                         binding.plannersRv.visibility = View.GONE
                         binding.noDataTxt.visibility = View.VISIBLE
